@@ -39,6 +39,7 @@
     "prettier": "^2.4.1"
   },
   "dependencies": {
-    "lit": "^2.0.0"
+    "lit": "^2.0.0",
+    "web-dialog": "^0.0.11"
   }
 }
