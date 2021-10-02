@@ -10,10 +10,14 @@
     "lint:eslint": "eslint --ext .js,.html . --ignore-path .gitignore",
     "format:eslint": "eslint --ext .js,.html . --fix --ignore-path .gitignore",
     "lint:prettier": "prettier \"**/*.js\" --check --ignore-path .gitignore",
-    "format:prettier": "prettier \"**/*.js\" --write --ignore-path .gitignore"
+    "format:prettier": "prettier \"**/*.js\" --write --ignore-path .gitignore",
+    "start": "web-dev-server"
   },
   "eslintConfig": {
-    "extends": ["@open-wc/eslint-config", "eslint-config-prettier"]
+    "extends": [
+      "@open-wc/eslint-config",
+      "eslint-config-prettier"
+    ]
   },
   "prettier": {
     "singleQuote": true,
@@ -28,6 +32,8 @@
     "@open-wc/eslint-config": "^4.3.0",
     "@typescript-eslint/eslint-plugin": "^4.32.0",
     "@typescript-eslint/parser": "^4.32.0",
+    "@web/dev-server": "^0.1.24",
+    "@web/dev-server-esbuild": "^0.2.14",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "prettier": "^2.4.1"
