@@ -1,0 +1,35 @@
+{
+  "name": "rekenspelletjes",
+  "version": "1.0.0",
+  "description": "Math games for primary school.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "npm run lint:eslint && npm run lint:prettier",
+    "format": "npm run format:eslint && npm run format:prettier",
+    "lint:eslint": "eslint --ext .js,.html . --ignore-path .gitignore",
+    "format:eslint": "eslint --ext .js,.html . --fix --ignore-path .gitignore",
+    "lint:prettier": "prettier \"**/*.js\" --check --ignore-path .gitignore",
+    "format:prettier": "prettier \"**/*.js\" --write --ignore-path .gitignore"
+  },
+  "eslintConfig": {
+    "extends": ["@open-wc/eslint-config", "eslint-config-prettier"]
+  },
+  "prettier": {
+    "singleQuote": true,
+    "arrowParens": "avoid"
+  },
+  "keywords": [
+    "math"
+  ],
+  "author": "Ronald Koster",
+  "license": "GPL-3.0-or-later",
+  "devDependencies": {
+    "@open-wc/eslint-config": "^4.3.0",
+    "@typescript-eslint/eslint-plugin": "^4.32.0",
+    "@typescript-eslint/parser": "^4.32.0",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "prettier": "^2.4.1"
+  }
+}
