@@ -1,60 +1,60 @@
 /* eslint-disable class-methods-use-this */
-import { LitElement, html, css, svg, SVGTemplateResult, TemplateResult} from 'lit';
+import { LitElement, html } from 'lit';
+import type { PropertyDeclarations, TemplateResult } from 'lit';
 
 
-interface PhotoMetaData{fileName: string, width: number, height: number}
+interface PhotoMetaData{fileName: string, width: number, height: number, color: string}
+export type PhotoId = "Jan"|"Anne"|"Johannes"|"Frank"|"Disabled"
 
-const photos = {Anne: {fileName: "Mompitz Anne.png", width: 434, height: 449, color: "#97cdb4"},
+const photos : {[key: string] : PhotoMetaData} = 
+               {Anne: {fileName: "Mompitz Anne.png", width: 434, height: 449, color: "#97cdb4"},
                 Jan: {fileName: "Mompitz Jan.png", width: 1183, height: 1133, color: "#f6d435"},
                 Johannes: {fileName: "Mompitz Johannes.png", width: 469, height: 556, color: "#f2444e"},
                 Frank: {fileName: "Mompitz Frank.png", width: 584, height: 579, color: "#9c6ccf"},
                 Disabled: {fileName: "cross-out-black.png", width: 980, height: 900, color: "#000000"},
 };
 
-export type PhotoId = "Jan"|"Anne"|"Johannes"|"Frank"
+
 
 export class FramedPhoto extends LitElement{    
   photoId: PhotoId
-  frameColor: string;
   label: number;
   disabled: boolean;
 
-  static get properties() {
+  static get properties(): PropertyDeclarations {
     return {
       photoId: { type: String },
-      frameColor: {type: String },
       label: {type: Number},
       disabled: {type: Boolean},
     };
   }
 
-  static getFrameColor(photo: PhotoId){
+  static getFrameColor(photo: PhotoId): string{
     return photos[photo].color;
   }
     
   /** Construct a hanging photo 
-   * @param photoId - Photo to show in frame.
   */
   constructor (){
     super();
     this.photoId = "Frank"
-    this.frameColor = "red"
     this.label = 10
     this.disabled = false;
   }
 
-  get photoInfo(){
-    if (!this.disabled)
+  get photoInfo(): PhotoMetaData{
+    if (!this.disabled){
       return photos[this.photoId]
-    else 
-      return photos["Disabled"];
+    } 
+    // eslint-disable-next-line dot-notation
+    return photos["Disabled"];
   }
 
   /* Determine the width of the custom-element. expressed in vw units.
     * By using vw units, the dimensions that are based on the width of 
     * the custom-element nicely scale when the window size is changed.
     */
-  get width(): Number{
+  get width(): number{
     const widthInPixels = this.getBoundingClientRect().width;
     const viewPortWidthInPixels = window.innerWidth;
     const widthInVw = widthInPixels / viewPortWidthInPixels*100;
@@ -65,7 +65,7 @@ export class FramedPhoto extends LitElement{
   /** Render the photoframe
    * @return Template for the photoframe, including attaching line.
    */
-  render(){
+  render(): TemplateResult{
     let photoWidth = 0;
     let photoHeight = 0;
     if (this.photoInfo.width <= this.photoInfo.height){
@@ -84,8 +84,8 @@ export class FramedPhoto extends LitElement{
                     <rect
                         x = "1"
                         y = "1"
-                        width = "${42}"
-                        height = "${42}"
+                        width = "42"
+                        height = "42"
                         fill = "none"
                         style= "fill: white; stroke: ${this.photoInfo.color}; stroke-width: 2"
                     />

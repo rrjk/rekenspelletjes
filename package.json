@@ -14,10 +14,21 @@
     "start": "web-dev-server"
   },
   "eslintConfig": {
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+      "@typescript-eslint"
+    ],
     "extends": [
       "@open-wc/eslint-config",
+      "plugin:@typescript-eslint/recommended",
+      "plugin:import/typescript",
       "eslint-config-prettier"
-    ]
+    ],
+    "rules":{
+      "lines-between-class-members": ["error", "always", { "exceptAfterSingleLine": true }],
+      "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
+      "import/extensions":["error", "never"]
+    }
   },
   "prettier": {
     "singleQuote": true,

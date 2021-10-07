@@ -1,5 +1,7 @@
-/* eslint-disable class-methods-use-this */
-import { LitElement, html, css, svg, SVGTemplateResult, TemplateResult} from 'lit';
+import { LitElement, html, css, svg, SVGTemplateResult, TemplateResult, CSSResultGroup, PropertyDeclarations} from 'lit';
+
+export type TickMarkType = 1 | 5 | 10
+
 
 export class NumberLine extends LitElement {
     show1TickMarks: boolean;
@@ -11,7 +13,7 @@ export class NumberLine extends LitElement {
     margin: number;  
     yPosLine: number;
   
-    static get properties() {
+    static get properties(): PropertyDeclarations {
       return {
         show10TickMarks: { type: Boolean },
         show5TickMarks: {type: Boolean},
@@ -22,7 +24,7 @@ export class NumberLine extends LitElement {
       };
     }
   
-    static get styles() {
+    static get styles(): CSSResultGroup {
       return css``;
     }
   
@@ -40,7 +42,7 @@ export class NumberLine extends LitElement {
       this.yPosLine = 8;
     }
   
-    get viewBoxWidth(){
+    get viewBoxWidth(): number{
       return 1000 + 2*this.margin;
     }
 
@@ -63,13 +65,12 @@ export class NumberLine extends LitElement {
       return 1000/(this.maximum-this.minimum)*distance;
     }
   
-
     /** Render tickmark on the number line
-     * @param {number} type - type of tickMark, can be 1, 5  or 10.
-     * @param {number} position - position along the y-axis for the tickmark
+     * @param type - type of tickMark, can be 1, 5  or 10.
+     * @param position - position along the y-axis for the tickmark
      *
      */ 
-    renderTickMark(position: number, type: number = 10){
+    renderTickMark(position: number, type: TickMarkType = 10): SVGTemplateResult{
       const tickMarkInfo = {
         1: {y1: this.yPosLine-2, y2: this.yPosLine+2, strokeWidth: 1},
         5: {y1: this.yPosLine-5, y2: this.yPosLine+5, strokeWidth: 1},
@@ -90,7 +91,7 @@ export class NumberLine extends LitElement {
   
     /** Render all multiple of 10 tickmarks
      */
-    render10TickMarks() {
+    render10TickMarks(): SVGTemplateResult {
       const positions = [];
       const numberTickMarks = (this.maximum - this.minimum)/10 + 1;
       for (let i = 0; i < numberTickMarks; i++){ 
@@ -104,7 +105,7 @@ export class NumberLine extends LitElement {
     
     /** Render all multiple of 5 tickmarks
      */
-    render5TickMarks() {
+    render5TickMarks(): SVGTemplateResult {
       const positions = [];
       for (let i = this.translatePosition(this.minimum+5); i < this.translatePosition(this.maximum); i+=this.numberDistanceToViewportDistance(10)){ 
         positions.push(i)
@@ -117,7 +118,7 @@ export class NumberLine extends LitElement {
   
     /** Render all single tickmarks
      */
-    render1TickMarks(){
+    render1TickMarks(): SVGTemplateResult{
       const positions = [];
       for (let i = this.translatePosition(this.minimum+1); i < this.translatePosition(this.maximum); i+=this.numberDistanceToViewportDistance(1)){ 
         positions.push(i)
@@ -163,7 +164,7 @@ export class NumberLine extends LitElement {
       `;
     }
   
-    renderNumber(number: number){
+    renderNumber(number: number): SVGTemplateResult{
       return svg`
         <text x="${this.translatePosition(number)}" y="${this.yPosLine+10}" dominant-baseline="hanging" text-anchor="middle">${number}</text>
       `

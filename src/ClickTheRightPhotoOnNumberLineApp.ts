@@ -1,16 +1,21 @@
-import "./NumberLineHangingPhotos";
-import { NumberLineHangingPhotos } from "./NumberLineHangingPhotos";
-import "./ScoreBox";
-import "./ProgressBar";
-import { ProgressBar} from "./ProgressBar";
-import { LitElement, html, css, svg, } from 'lit';
-import { randomIntFromRange } from "./Randomizer";
-import { ScoreBox } from "./ScoreBox";
-import "./MessageDialog";
-import { MessageDialog } from "./MessageDialog";
-import "./GameOverDialog";
-import { GameOverDialog } from "./GameOverDialog";
+import { LitElement, html } from 'lit';
 
+import "./NumberLineHangingPhotos";
+import type { NumberLineHangingPhotos } from "./NumberLineHangingPhotos";
+
+import "./ProgressBar";
+import type { ProgressBar} from "./ProgressBar";
+
+import { randomIntFromRange } from "./Randomizer";
+
+import "./ScoreBox";
+import type { ScoreBox } from "./ScoreBox";
+
+import "./MessageDialog";
+import type { MessageDialog } from "./MessageDialog";
+
+import "./GameOverDialog";
+import type { GameOverDialog } from "./GameOverDialog";
 
 class ClickTheRightPhotoOnNumberLineApp extends LitElement{
     numberToClick: number;
@@ -70,14 +75,14 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement{
     parseUrl(){
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.has('minimum')) { 
-            let minimum = parseInt(urlParams.get('minimum'), 10); 
+            const minimum = parseInt(urlParams.get('minimum'), 10); 
             if (minimum % 10 === 0) {
                 this.minimum = minimum;
             }
         
         }
         if (urlParams.has('maximum')) {
-            let maximum = parseInt(urlParams.get('maximum'), 10); 
+            const maximum = parseInt(urlParams.get('maximum'), 10); 
             if (maximum % 10 === 0) {
                 this.maximum = maximum;
             }
@@ -108,7 +113,7 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement{
     }
 
     handlePhotoClicked(event){
-        if (event.detail.position != this.numberToClick){
+        if (event.detail.position !== this.numberToClick){
             this.disabledPositions = this.disabledPositions.concat(event.detail.position);
             this._numberNok+=1;
         }
@@ -131,8 +136,8 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement{
         this.numberToClick = randomIntFromRange(this.minimum, this.maximum);
         this.positions = [this.numberToClick];
         while (this.positions.length < 4){
-            let position = randomIntFromRange(this.minimum, this.maximum);
-            if (!this.positions.some(element => element == position))
+            const position = randomIntFromRange(this.minimum, this.maximum);
+            if (!this.positions.some(element => element === position))
                 this.positions.push(position);
         }
     }
@@ -158,21 +163,21 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement{
     }
 
 
-    async firstUpdated(changedProperties){
+    async firstUpdated(){
         await this.updateComplete;
         await this.showWelcomeMessage();
         this._progressBar.restart();
         this.startNewGame();
     }
 
-    async _getUpdateComplete() {
-        await super.getUpdateComplete();
+    override async getUpdateComplete() {
+        const result = await super.getUpdateComplete();
         await this._progressBar.updateComplete;
         await this._numberLine.updateComplete;
         await this._scoreBox.updateComplete;
         await this._gameOverDialog.updateComplete;
         await this._messageDialog.updateComplete;
-
+        return result;
     }
 
     async showWelcomeMessage(){
@@ -214,6 +219,7 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement{
             </score-box>
             <div style="text-align: center; font-size: 8vw;">${this.numberToClick}</div>
             <number-line-hanging-photos 
+
                 id = "numberLine"
                 ?show10TickMarks=${this.show10TickMarks}
                 ?show5TickMarks=${this.show5TickMarks}

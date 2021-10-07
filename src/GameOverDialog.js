@@ -2,7 +2,7 @@ import { LitElement, html } from 'lit';
 // eslint-disable-next-line no-unused-vars
 import { WebDialog } from 'web-dialog';
 
-import { RKdialogStyles } from './RKDialog.js';
+import { RKdialogStyles } from './RKDialog';
 
 /** Game over dialog */
 export class GameOverDialog extends LitElement {
