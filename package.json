@@ -9,8 +9,8 @@
     "format": "npm run format:eslint && npm run format:prettier",
     "lint:eslint": "eslint --ext .js,.html,.ts . --ignore-path .gitignore",
     "format:eslint": "eslint --ext .js,.html,.ts . --fix --ignore-path .gitignore",
-    "lint:prettier": "prettier \"**/*.js\" --check --ignore-path .gitignore",
-    "format:prettier": "prettier \"**/*.js\" --write --ignore-path .gitignore",
+    "lint:prettier": "prettier \"**/*.ts\" --check --ignore-path .gitignore",
+    "format:prettier": "prettier \"**/*.ts\" --write --ignore-path .gitignore",
     "start": "web-dev-server"
   },
   "eslintConfig": {

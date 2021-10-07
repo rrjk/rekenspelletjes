@@ -101,4 +101,3 @@ export class ProgressBar extends LitElement {
 }
 
 customElements.define('progress-bar', ProgressBar);
-  
