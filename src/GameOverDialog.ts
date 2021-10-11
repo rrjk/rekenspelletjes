@@ -12,17 +12,16 @@ import { RKdialogStyles } from './RKDialog';
 
 /** Game over dialog */
 export class GameOverDialog extends LitElement {
-
   text: HTMLTemplateResult;
 
-  static get properties(): PropertyDeclarations{
+  static get properties(): PropertyDeclarations {
     return {
-      text: { state: true, attribute : false },
+      text: { state: true, attribute: false },
     };
   }
 
   static get styles(): CSSResultGroup {
-    return RKdialogStyles; 
+    return RKdialogStyles;
   }
 
   constructor() {
@@ -30,27 +29,33 @@ export class GameOverDialog extends LitElement {
     this.text = html``;
   }
 
-  show (text: HTMLTemplateResult): Promise<string> {
+  show(text: HTMLTemplateResult): Promise<string> {
     this.text = text;
-    const dialog = <WebDialog> this.shadowRoot.getElementById('dialog');
-    return new Promise((resolve) => {
-      dialog.addEventListener("close", (e) => {resolve((<CustomEvent<string>>e).detail);}, {once:true});
+    const dialog = <WebDialog>this.shadowRoot.getElementById('dialog');
+    return new Promise(resolve => {
+      dialog.addEventListener(
+        'close',
+        e => {
+          resolve((<CustomEvent<string>>e).detail);
+        },
+        { once: true }
+      );
       dialog.show();
     });
   }
 
   handleAgainButton(): void {
-    const dialog = <WebDialog> this.shadowRoot.getElementById('dialog');
+    const dialog = <WebDialog>this.shadowRoot.getElementById('dialog');
     dialog.close('again');
   }
 
-  handleBackToMenuButton():void {
-    const dialog = <WebDialog> this.shadowRoot.getElementById('dialog');
+  handleBackToMenuButton(): void {
+    const dialog = <WebDialog>this.shadowRoot.getElementById('dialog');
     dialog.close('stop');
   }
 
   /** Render the dialog */
-  render():HTMLTemplateResult {
+  render(): HTMLTemplateResult {
     return html` <web-dialog id="dialog" center @closing="${event =>
       event.preventDefault()}">
                     <header>

@@ -12,9 +12,7 @@ import type { WebDialog } from 'web-dialog';
 
 import { RKdialogStyles } from './RKDialog';
 
-
 export class MessageDialog extends LitElement {
-
   dialogTitle: string;
   text: string;
 
@@ -26,7 +24,7 @@ export class MessageDialog extends LitElement {
   }
 
   static get styles(): CSSResultGroup {
-    return RKdialogStyles; 
+    return RKdialogStyles;
   }
 
   constructor() {
@@ -35,25 +33,31 @@ export class MessageDialog extends LitElement {
     this.dialogTitle = ``;
   }
 
-  show(title: string, text:string):Promise<string> {
+  show(title: string, text: string): Promise<string> {
     this.text = text;
     this.dialogTitle = title;
     console.log(this._dialog);
-    return new Promise((resolve) => {
-      this._dialog.addEventListener("close", (e) => {resolve((<CustomEvent<string>>e).detail);}, {once:true});
+    return new Promise(resolve => {
+      this._dialog.addEventListener(
+        'close',
+        e => {
+          resolve((<CustomEvent<string>>e).detail);
+        },
+        { once: true }
+      );
       this._dialog.show();
     });
   }
 
-  handleOkButton():void {
+  handleOkButton(): void {
     this._dialog.close('Ok');
   }
 
-  get _dialog(): WebDialog{
+  get _dialog(): WebDialog {
     return <WebDialog>this.shadowRoot.getElementById('dialog');
   }
 
-  render():HTMLTemplateResult {
+  render(): HTMLTemplateResult {
     return html` <web-dialog id="dialog" center @closing="${event =>
       event.preventDefault()}">
                     <header>
@@ -74,4 +78,3 @@ export class MessageDialog extends LitElement {
 }
 
 customElements.define('message-dialog', MessageDialog);
-
