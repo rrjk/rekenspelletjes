@@ -1,55 +1,63 @@
 import { LitElement, html } from 'lit';
+
+import type {
+  PropertyDeclarations,
+  CSSResultGroup,
+  HTMLTemplateResult,
+} from 'lit';
+
 // eslint-disable-next-line no-unused-vars
-import { WebDialog } from 'web-dialog';
+import 'web-dialog';
+import type { WebDialog } from 'web-dialog';
 
 import { RKdialogStyles } from './RKDialog';
 
+
 export class MessageDialog extends LitElement {
-  static get properties() {
+
+  dialogTitle: string;
+  text: string;
+
+  static get properties(): PropertyDeclarations {
     return {
-      title: { type: String },
+      dialogTitle: { type: String },
       text: { type: String },
     };
   }
 
-  static get styles() {
-    return RKdialogStyles; // By default a button has a font-size that is not equal to 1em, but some fixed number. As I need it to be responsive, I set it to 1em.
+  static get styles(): CSSResultGroup {
+    return RKdialogStyles; 
   }
 
   constructor() {
     super();
-    this.promiseResolve = null;
-    this.promiseReject = null;
-    this.text = html``;
-    this.title = html``;
+    this.text = ``;
+    this.dialogTitle = ``;
   }
 
-  show(title, text) {
+  show(title: string, text:string):Promise<string> {
     this.text = text;
-    this.title = title;
-    /** @type WebDialog */
-    const dialog = this.shadowRoot.getElementById('dialog');
-    return new Promise((resolve, reject) => {
-      this.promiseReject = reject;
-      this.promiseResolve = resolve;
-      dialog.show();
+    this.dialogTitle = title;
+    console.log(this._dialog);
+    return new Promise((resolve) => {
+      this._dialog.addEventListener("close", (e) => {resolve((<CustomEvent<string>>e).detail);}, {once:true});
+      this._dialog.show();
     });
   }
 
-  handleOkButton() {
-    /** @type WebDialog */
-    const dialog = this.shadowRoot.getElementById('dialog');
-    dialog.close();
-    if (this.promiseResolve !== null) this.promiseResolve();
-    this.promiseResolve = null;
-    this.promiseReject = null;
+  handleOkButton():void {
+    this._dialog.close('Ok');
   }
 
-  render() {
+  get _dialog(): WebDialog{
+    return <WebDialog>this.shadowRoot.getElementById('dialog');
+  }
+
+  render():HTMLTemplateResult {
     return html` <web-dialog id="dialog" center @closing="${event =>
       event.preventDefault()}">
                     <header>
-                        <h1>${this.title}</h1>
+                        <h1>${this.dialogTitle}</h1>
                     </header>
                     <article>
                         <div>
@@ -66,3 +74,4 @@ export class MessageDialog extends LitElement {
 }
 
 customElements.define('message-dialog', MessageDialog);
+
