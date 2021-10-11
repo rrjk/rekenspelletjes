@@ -1,16 +1,23 @@
 import { LitElement, html, css } from 'lit';
 
+import type {
+  PropertyDeclarations,
+  CSSResultGroup,
+  HTMLTemplateResult,
+} from 'lit';
+
+
 /**
  * CCS custome properties:
  *   - --progress-bar-gameTime: How long should the progress bar run (e.g. 120s), default is 60s
  */
 
 export class ProgressBar extends LitElement {
-  static get properties() {
+  static get properties(): PropertyDeclarations {
     return {};
   }
 
-  static get styles() {
+  static get styles(): CSSResultGroup  {
     return css`
       #ProgressBarOutline {
         margin: 0;
@@ -59,9 +66,8 @@ export class ProgressBar extends LitElement {
   }
 */
 
-  firstUpdated() {
-    this.progressBar = this.shadowRoot.getElementById('ProgressBar');
-    this.progressBar.addEventListener('animationend', () => this.timeUp());
+  firstUpdated():void {
+    this._progressBar.addEventListener('animationend', () => this.timeUp());
   }
 
   /*  
@@ -75,25 +81,25 @@ export class ProgressBar extends LitElement {
     this.progressBar.removeEventListener('animationend', () => this.timeUp());
   }
 */
-  get _progressBar() {
+  get _progressBar(): HTMLElement {
     return this.shadowRoot.querySelector('#ProgressBar');
   }
 
-  restart() {
+  restart(): void {
     this._progressBar.classList.remove('TransitionToZeroWidth');
-    // eslint-disable-next-line no-unused-vars
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const dummy = this._progressBar.offsetWidth; // This is a dummy command to force a reflow such that the transition is reset.
     this._progressBar.classList.add('TransitionToZeroWidth');
   }
 
-  timeUp() {
+  timeUp(): void {
     const event = new CustomEvent('timeUp', {
       detail: { message: "time's up" },
     });
     this.dispatchEvent(event);
   }
 
-  render() {
+  render(): HTMLTemplateResult {
     return html`<div id="ProgressBarOutline">
       <div id="ProgressBar">&nbsp;</div>
     </div>`;
