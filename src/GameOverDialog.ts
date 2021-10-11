@@ -5,6 +5,7 @@ import type {
   HTMLTemplateResult,
 } from 'lit';
 
+import 'web-dialog';
 import type { WebDialog } from 'web-dialog';
 
 import { RKdialogStyles } from './RKDialog';
