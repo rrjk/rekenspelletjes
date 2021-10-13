@@ -1,7 +1,15 @@
 import { LitElement, html, css } from 'lit';
+import type { PropertyDeclarations, HTMLTemplateResult, CSSResultGroup } from 'lit';
 
 export class TimedScoreBox extends LitElement {
-  static get properties() {
+  paused: boolean;
+  numberNok: number;
+  minutes: number;
+  seconds: number;
+
+
+
+  static get properties(): PropertyDeclarations {
     return {
       minutes: { type: Number },
       seconds: { type: Number },
@@ -9,7 +17,7 @@ export class TimedScoreBox extends LitElement {
     };
   }
 
-  static get styles() {
+  static get styles(): CSSResultGroup {
     return css`
       #scoreBox {
         border-style: solid;
@@ -38,14 +46,14 @@ export class TimedScoreBox extends LitElement {
     this.minutes = 0;
     this.seconds = 0;
 
-    this.interval = setInterval(() => this.increaseTime(), 1000);
+    setInterval(() => this.increaseTime(), 1000);
   }
 
-  increaseNok() {
+  increaseNok(): void {
     this.numberNok += 1;
   }
 
-  increaseTime() {
+  increaseTime():void {
     if (!this.paused) {
       this.seconds += 1;
       if (this.seconds === 60) {
@@ -55,26 +63,26 @@ export class TimedScoreBox extends LitElement {
     }
   }
 
-  getTimeAsString() {
-    return `${this.minutes}:${this.seconds.toString().padStart(2, 0)}`;
+  getTimeAsString(): string {
+    return `${this.minutes}:${this.seconds.toString().padStart(2, '0')}`;
   }
 
-  pause() {
+  pause(): void {
     this.paused = true;
   }
 
-  resume() {
+  resume(): void {
     this.paused = false;
   }
 
-  resetScore() {
+  resetScore(): void {
     this.numberNok = 0;
     this.minutes = 0;
     this.seconds = 0;
     this.paused = false;
   }
 
-  render() {
+  render(): HTMLTemplateResult {
     return html`
       <div id="scoreBox">
         <div style="text-align: center;">${this.getTimeAsString()}</div>
