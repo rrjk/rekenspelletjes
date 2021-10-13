@@ -14,12 +14,12 @@ import { RKdialogStyles } from './RKDialog';
 
 export class MessageDialog extends LitElement {
   dialogTitle: string;
-  text: string;
+  text: HTMLTemplateResult;
 
   static get properties(): PropertyDeclarations {
     return {
       dialogTitle: { type: String },
-      text: { type: String },
+      text: { attribute: false },
     };
   }
 
@@ -29,14 +29,13 @@ export class MessageDialog extends LitElement {
 
   constructor() {
     super();
-    this.text = ``;
+    this.text = html``;
     this.dialogTitle = ``;
   }
 
-  show(title: string, text: string): Promise<string> {
+  show(title: string, text: HTMLTemplateResult): Promise<string> {
     this.text = text;
     this.dialogTitle = title;
-    console.log(this._dialog);
     return new Promise(resolve => {
       this._dialog.addEventListener(
         'close',
