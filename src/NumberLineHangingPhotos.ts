@@ -25,6 +25,7 @@ export class NumberLineHangingPhotos extends LitElement {
   show1TickMarks: boolean;
   show5TickMarks: boolean;
   show10TickMarks: boolean;
+  showAll10Numbers: boolean;
 
   minimum: number;
   maximum: number;
@@ -39,7 +40,6 @@ export class NumberLineHangingPhotos extends LitElement {
     verticalDistance: verticalDistanceEnum;
     photoId: PhotoId;
   }[];
-  showAll10Numbers: boolean;
 
   static get properties(): PropertyDeclarations {
     return {
