@@ -11,7 +11,8 @@
     "format:eslint": "eslint --ext .js,.html,.ts . --fix --ignore-path .gitignore",
     "lint:prettier": "prettier \"**/*.ts\" --check --ignore-path .gitignore",
     "format:prettier": "prettier \"**/*.ts\" --write --ignore-path .gitignore",
-    "start": "web-dev-server"
+    "start": "web-dev-server",
+    "prepare": "husky install"
   },
   "eslintConfig": {
     "parser": "@typescript-eslint/parser",
@@ -24,10 +25,24 @@
       "plugin:import/typescript",
       "eslint-config-prettier"
     ],
-    "rules":{
-      "lines-between-class-members": ["error", "always", { "exceptAfterSingleLine": true }],
-      "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
-      "import/extensions":["error", "never"]
+    "rules": {
+      "lines-between-class-members": [
+        "error",
+        "always",
+        {
+          "exceptAfterSingleLine": true
+        }
+      ],
+      "no-plusplus": [
+        "error",
+        {
+          "allowForLoopAfterthoughts": true
+        }
+      ],
+      "import/extensions": [
+        "error",
+        "never"
+      ]
     }
   },
   "prettier": {
@@ -47,10 +62,16 @@
     "@web/dev-server-esbuild": "^0.2.14",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
+    "husky": "^7.0.2",
+    "lint-staged": "^11.2.3",
     "prettier": "^2.4.1"
   },
   "dependencies": {
     "lit": "^2.0.0",
     "web-dialog": "^0.0.11"
+  },
+  "lint-staged": {
+    "*.ts": ["eslint --cache", "prettier --write"],
+    "*.js": ["eslint --cache", "prettier --write"]
   }
 }
