@@ -1,14 +1,23 @@
+
 import { LitElement, html, css } from 'lit';
+import type { PropertyDeclarations, HTMLTemplateResult, CSSResultGroup } from 'lit';
+
+
 
 export class ScoreBox extends LitElement {
-  static get properties() {
+
+
+  numberOk: number;
+  numberNok: number;
+
+  static get properties(): PropertyDeclarations {
     return {
       numberOk: { type: Number },
       numberNok: { type: Number },
     };
   }
 
-  static get styles() {
+  static get styles(): CSSResultGroup {
     return css`
       div {
         border-style: solid;
@@ -40,20 +49,20 @@ export class ScoreBox extends LitElement {
     this.numberNok = 0;
   }
 
-  increaseOk() {
+  increaseOk(): void {
     this.numberOk += 1;
   }
 
-  increaseNok() {
+  increaseNok():void {
     this.numberNok += 1;
   }
 
-  resetScore() {
+  resetScore():void {
     this.numberOk = 0;
     this.numberNok = 0;
   }
 
-  render() {
+  render(): HTMLTemplateResult {
     return html`
         <div>
           <span class="ScoreSign GreenText">✓</span> : ${this.numberOk}
