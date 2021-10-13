@@ -1,13 +1,15 @@
 import { LitElement, html, css } from 'lit';
-import type { PropertyDeclarations, HTMLTemplateResult, CSSResultGroup } from 'lit';
+import type {
+  PropertyDeclarations,
+  HTMLTemplateResult,
+  CSSResultGroup,
+} from 'lit';
 
 export class TimedScoreBox extends LitElement {
   paused: boolean;
   numberNok: number;
   minutes: number;
   seconds: number;
-
-
 
   static get properties(): PropertyDeclarations {
     return {
@@ -53,7 +55,7 @@ export class TimedScoreBox extends LitElement {
     this.numberNok += 1;
   }
 
-  increaseTime():void {
+  increaseTime(): void {
     if (!this.paused) {
       this.seconds += 1;
       if (this.seconds === 60) {

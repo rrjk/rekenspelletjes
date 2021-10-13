@@ -6,7 +6,6 @@ import type {
   HTMLTemplateResult,
 } from 'lit';
 
-
 /**
  * CCS custome properties:
  *   - --progress-bar-gameTime: How long should the progress bar run (e.g. 120s), default is 60s
@@ -17,7 +16,7 @@ export class ProgressBar extends LitElement {
     return {};
   }
 
-  static get styles(): CSSResultGroup  {
+  static get styles(): CSSResultGroup {
     return css`
       #ProgressBarOutline {
         margin: 0;
@@ -66,7 +65,7 @@ export class ProgressBar extends LitElement {
   }
 */
 
-  firstUpdated():void {
+  firstUpdated(): void {
     this._progressBar.addEventListener('animationend', () => this.timeUp());
   }
 

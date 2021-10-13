@@ -1,12 +1,11 @@
-
 import { LitElement, html, css } from 'lit';
-import type { PropertyDeclarations, HTMLTemplateResult, CSSResultGroup } from 'lit';
-
-
+import type {
+  PropertyDeclarations,
+  HTMLTemplateResult,
+  CSSResultGroup,
+} from 'lit';
 
 export class ScoreBox extends LitElement {
-
-
   numberOk: number;
   numberNok: number;
 
@@ -53,11 +52,11 @@ export class ScoreBox extends LitElement {
     this.numberOk += 1;
   }
 
-  increaseNok():void {
+  increaseNok(): void {
     this.numberNok += 1;
   }
 
-  resetScore():void {
+  resetScore(): void {
     this.numberOk = 0;
     this.numberNok = 0;
   }
