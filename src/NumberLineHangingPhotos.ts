@@ -74,6 +74,7 @@ export class NumberLineHangingPhotos extends LitElement {
 
     this.photoPositions = [12, 18, 3, 2, 56, 38];
     this.disabledPositions = [];
+    this.photoMetaData = [];
     this.calcPhotoMetaData();
   }
 

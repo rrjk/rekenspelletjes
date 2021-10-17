@@ -17,6 +17,8 @@ import type { MessageDialog } from './MessageDialog';
 import './GameOverDialog';
 import type { GameOverDialog } from './GameOverDialog';
 
+import { ChildNotFoundError } from './ChildNotFoundError';
+
 class ClickTheRightPhotoOnNumberLineApp extends LitElement {
   numberToClick: number;
   minimum: number;
@@ -71,13 +73,13 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
   parseUrl() {
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.has('minimum')) {
-      const minimum = parseInt(urlParams.get('minimum'), 10);
+      const minimum = parseInt(urlParams.get('minimum') || '', 10);
       if (minimum % 10 === 0) {
         this.minimum = minimum;
       }
     }
     if (urlParams.has('maximum')) {
-      const maximum = parseInt(urlParams.get('maximum'), 10);
+      const maximum = parseInt(urlParams.get('maximum') || '', 10);
       if (maximum % 10 === 0) {
         this.maximum = maximum;
       }
@@ -106,7 +108,7 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
     }
   }
 
-  handlePhotoClicked(event) {
+  handlePhotoClicked(event: CustomEvent) {
     if (event.detail.position !== this.numberToClick) {
       this.disabledPositions = this.disabledPositions.concat(
         event.detail.position
@@ -136,24 +138,82 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
     }
   }
 
+  /** Get the scoreBox child
+   *  @throws {ChildNotFoundError} Child was not found, probably because app was not rendered yet.
+   */
   get _scoreBox(): ScoreBox {
-    return this.renderRoot.querySelector('#scoreBox');
+    const ret = <ScoreBox | null>this.renderRoot.querySelector('#scoreBox');
+    if (ret === null) {
+      throw new ChildNotFoundError(
+        'scoreBox',
+        'ClickTheRightPhotoOnNumberLineApp'
+      );
+    }
+    return ret;
   }
 
+  /** Get the progressBar child
+   *  @throws {ChildNotFoundError} Child was not found, probably because app was not rendered yet.
+   */
   get _progressBar(): ProgressBar {
-    return this.renderRoot.querySelector('#progressBar');
+    const ret = <ProgressBar | null>(
+      this.renderRoot.querySelector('#progressBar')
+    );
+    if (ret === null) {
+      throw new ChildNotFoundError(
+        'progressBar',
+        'ClickTheRightPhotoOnNumberLineApp'
+      );
+    }
+    return ret;
   }
 
+  /** Get the numberLine child
+   *  @throws {ChildNotFoundError} Child was not found, probably because app was not rendered yet.
+   */
   get _numberLine(): NumberLineHangingPhotos {
-    return this.renderRoot.querySelector('#numberLine');
+    const ret = <NumberLineHangingPhotos | null>(
+      this.renderRoot.querySelector('#numberLine')
+    );
+    if (ret === null) {
+      throw new ChildNotFoundError(
+        'numberLine',
+        'ClickTheRightPhotoOnNumberLineApp'
+      );
+    }
+    return ret;
   }
 
+  /** Get the messageDialog child
+   *  @throws {ChildNotFoundError} Child was not found, probably because app was not rendered yet.
+   */
   get _messageDialog(): MessageDialog {
-    return this.renderRoot.querySelector('#messageDialog');
+    const ret = <MessageDialog | null>(
+      this.renderRoot.querySelector('#messageDialog')
+    );
+    if (ret === null) {
+      throw new ChildNotFoundError(
+        'messageDialog',
+        'ClickTheRightPhotoOnNumberLineApp'
+      );
+    }
+    return ret;
   }
 
+  /** Get the gameOverDialog child
+   *  @throws {ChildNotFoundError} Child was not found, probably because app was not rendered yet.
+   */
   get _gameOverDialog(): GameOverDialog {
-    return this.renderRoot.querySelector('#gameOverDialog'); //    querySelector('gameOverDialog');
+    const ret = <GameOverDialog | null>(
+      this.renderRoot.querySelector('#gameOverDialog')
+    );
+    if (ret === null) {
+      throw new ChildNotFoundError(
+        'gameOverDialog',
+        'ClickTheRightPhotoOnNumberLineApp'
+      );
+    }
+    return ret;
   }
 
   async firstUpdated() {
@@ -232,7 +292,7 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
         width="95vw"
         .photoPositions="${this.positions}"
         .disabledPositions="${this.disabledPositions}"
-        @photo-clicked="${evt => this.handlePhotoClicked(evt)}"
+        @photo-clicked="${(evt: CustomEvent) => this.handlePhotoClicked(evt)}"
         style="position:absolute; 
                     left: 2.5vw; 
                     top: 30vh; 

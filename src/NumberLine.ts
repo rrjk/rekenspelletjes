@@ -87,7 +87,6 @@ export class NumberLine extends LitElement {
       5: { y1: this.yPosLine - 5, y2: this.yPosLine + 5, strokeWidth: 1 },
       10: { y1: this.yPosLine - 8, y2: this.yPosLine + 8, strokeWidth: 2 },
     };
-    console.assert(type === 1 || type === 5 || type === 10);
     return svg`
         <line 
           x1 = "${position}"

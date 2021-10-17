@@ -6,6 +6,8 @@ import type {
   HTMLTemplateResult,
 } from 'lit';
 
+import { ChildNotFoundError } from './ChildNotFoundError';
+
 /**
  * CCS custome properties:
  *   - --progress-bar-gameTime: How long should the progress bar run (e.g. 120s), default is 60s
@@ -80,8 +82,18 @@ export class ProgressBar extends LitElement {
     this.progressBar.removeEventListener('animationend', () => this.timeUp());
   }
 */
+
+  /** Get the progress bar child
+   *  @throws {ChildNotFoundError} Child was not found, probably because the progress bar was not rendered yet.
+   */
   get _progressBar(): HTMLElement {
-    return this.shadowRoot.querySelector('#ProgressBar');
+    const ret = <HTMLElement | null>(
+      this.renderRoot.querySelector('#ProgressBar')
+    );
+    if (ret === null) {
+      throw new ChildNotFoundError('ProgressBar', 'ProgressBar');
+    }
+    return ret;
   }
 
   restart(): void {

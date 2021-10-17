@@ -10,6 +10,8 @@ import type { WebDialog } from 'web-dialog';
 
 import { RKdialogStyles } from './RKDialog';
 
+import { ChildNotFoundError } from './ChildNotFoundError';
+
 /** Game over dialog */
 export class GameOverDialog extends LitElement {
   text: HTMLTemplateResult;
@@ -29,35 +31,45 @@ export class GameOverDialog extends LitElement {
     this.text = html``;
   }
 
+  /** Get the dialog child
+   *  @throws {ChildNotFoundError} Child was not found, probably because the game over dialog was not rendered yet.
+   */
+  get _dialog(): WebDialog {
+    const ret = <WebDialog | null>(
+      this.renderRoot.querySelector('#messageDialog')
+    );
+    if (ret === null) {
+      throw new ChildNotFoundError('dialog', 'MessageDialog');
+    }
+    return ret;
+  }
+
   show(text: HTMLTemplateResult): Promise<string> {
     this.text = text;
-    const dialog = <WebDialog>this.shadowRoot.getElementById('dialog');
     return new Promise(resolve => {
-      dialog.addEventListener(
+      this._dialog.addEventListener(
         'close',
         e => {
           resolve((<CustomEvent<string>>e).detail);
         },
         { once: true }
       );
-      dialog.show();
+      this._dialog.show();
     });
   }
 
   handleAgainButton(): void {
-    const dialog = <WebDialog>this.shadowRoot.getElementById('dialog');
-    dialog.close('again');
+    this._dialog.close('again');
   }
 
   handleBackToMenuButton(): void {
-    const dialog = <WebDialog>this.shadowRoot.getElementById('dialog');
-    dialog.close('stop');
+    this._dialog.close('stop');
   }
 
   /** Render the dialog */
   render(): HTMLTemplateResult {
-    return html` <web-dialog id="dialog" center @closing="${event =>
-      event.preventDefault()}">
+    return html` <web-dialog id="dialog" center @closing="${(evt: Event) =>
+      evt.preventDefault()}">
                     <header>
                         <h1>Game over</h1>
                     </header>
