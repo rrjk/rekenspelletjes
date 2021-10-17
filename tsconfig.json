@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+      "forceConsistentCasingInFileNames": true,
+      "importHelpers": true,
+      "removeComments": true,
+      "moduleResolution": "node",
+      "target": "ES2020",
+//      "strict": true
+    },
+    "$schema": "https://json.schemastore.org/tsconfig",
+    "display": "Recommended"
+  }
