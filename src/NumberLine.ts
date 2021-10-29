@@ -85,6 +85,15 @@ export class NumberLine extends LitElement {
     );
   }
 
+  /** Translate a fraction of the total width to a delta in the position on the number line */
+  translateWidthFractionToDeltaPosition(widthFraction: number): number {
+    return (
+      (NumberLine.viewBoxWidth / NumberLine.lineLength) *
+      widthFraction *
+      (this.maximum - this.minimum)
+    );
+  }
+
   /** Convert a position from numberline units to percentage of total width numberline */
   translatePostionToWidthFraction(position: number): number {
     return (
@@ -231,8 +240,8 @@ export class NumberLine extends LitElement {
   render(): TemplateResult {
     return html` <div>
       <svg
-        width="${this.width}vw"
-        height="${this.width * NumberLine.heightWidthAspectRatio}vw"
+        style="width:${this.width}vw; height:${this.width *
+        NumberLine.heightWidthAspectRatio}vw;"
         viewBox="0 0 ${NumberLine.viewBoxWidth} ${NumberLine.viewBoxHeight}"
       >
         ${this.renderNumberLine()} ${this.renderNumbers()}

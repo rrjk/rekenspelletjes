@@ -154,11 +154,23 @@ class FindOnNumberLineApp extends LitElement {
                display: block; 
                border: none; 
                padding: 0;"
+        maxDeltaX=${(NumberLine.lineLength / NumberLine.viewBoxWidth) * 100}
       ></numberline-platform>
 
       <div style="text-align: center; font-size: 8vw;">
         ${this.numberToClick}
       </div>
+
+      <button
+        @click="${() =>
+          console.log(
+            this.numberLine.translateWidthFractionToDeltaPosition(
+              this.numberLinePlatform.cummulativeDeltaX / 100
+            )
+          )}"
+      >
+        Test
+      </button>
       <message-dialog id="messageDialog"></message-dialog>
       <gameover-dialog id="gameOverDialog"></gameover-dialog>
     `;

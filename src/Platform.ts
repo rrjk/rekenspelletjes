@@ -6,6 +6,7 @@ export class Platform extends LitElement {
   enabled = true;
   cummulativeDeltaX = 0;
   drag = false;
+  maxDeltaX = 0;
 
   static get styles(): CSSResultGroup {
     return css`
@@ -17,7 +18,8 @@ export class Platform extends LitElement {
 
   static get properties(): PropertyDeclarations {
     return {
-      locaton: { type: Number },
+      location: { type: Number },
+      maxDeltaX: { type: Number }, // Maximum delta for the platform in vw units
     };
   }
 
@@ -49,11 +51,11 @@ export class Platform extends LitElement {
 
   mouseMove(evt: MouseEvent): void {
     if (this.drag) {
-      this.cummulativeDeltaX += evt.movementX;
-      if (this.cummulativeDeltaX > 0.98 * window.innerWidth)
-        this.cummulativeDeltaX = 0.98 * window.innerWidth;
+      this.cummulativeDeltaX += (evt.movementX / window.innerWidth) * 100;
+      if (this.cummulativeDeltaX > this.maxDeltaX)
+        this.cummulativeDeltaX = this.maxDeltaX;
       else if (this.cummulativeDeltaX < 0) this.cummulativeDeltaX = 0;
-      this.style.transform = `translate(${this.cummulativeDeltaX}px, 0px)`;
+      this.style.transform = `translate(${this.cummulativeDeltaX}vw, 0px)`;
     }
   }
 
@@ -72,9 +74,6 @@ export class Platform extends LitElement {
    * @return Template for the photoframe, including attaching line.
    */
   render(): TemplateResult {
-    console.log(`platter.width=${this.width}`);
-    console.log(`platter.height=${this.height}`);
-
     return html`
       <svg
         viewBox="0 0 100 100"
