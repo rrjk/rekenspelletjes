@@ -18,7 +18,9 @@ export class NumberLine extends LitElement {
   showAll10Numbers: boolean;
   minimum: number;
   maximum: number;
-  margin: number;
+  static margin = 15;
+  static viewBoxHeight = 35;
+  static lineLength = 1000;
   yPosLine: number;
 
   static get properties(): PropertyDeclarations {
@@ -46,12 +48,51 @@ export class NumberLine extends LitElement {
     this.minimum = 0;
     this.maximum = 100;
 
-    this.margin = 15;
+    NumberLine.margin = 15;
     this.yPosLine = 8;
   }
 
-  get viewBoxWidth(): number {
-    return 1000 + 2 * this.margin;
+  /* Determine the width of the custom-element. expressed in vw units.
+   * By using vw units, the dimensions that are based on the width of
+   * the custom-element nicely scale when the window size is changed.
+   */
+  get width(): number {
+    const widthInPixels = this.getBoundingClientRect().width;
+    const viewPortWidthInPixels = window.innerWidth;
+    const widthInVw = (widthInPixels / viewPortWidthInPixels) * 100;
+    return widthInVw;
+  }
+
+  static get viewBoxWidth(): number {
+    return NumberLine.lineLength + 2 * NumberLine.margin;
+  }
+
+  static get heightWidthAspectRatio(): number {
+    return NumberLine.viewBoxHeight / NumberLine.viewBoxWidth;
+  }
+
+  static get marginAsWidthPercentage(): number {
+    return NumberLine.margin / NumberLine.viewBoxWidth;
+  }
+
+  static get widthFractionMinimum(): number {
+    return NumberLine.margin / NumberLine.viewBoxWidth;
+  }
+
+  static get widthFractionMaximum(): number {
+    return (
+      (NumberLine.viewBoxWidth - NumberLine.margin) / NumberLine.viewBoxWidth
+    );
+  }
+
+  /** Convert a position from numberline units to percentage of total width numberline */
+  translatePostionToWidthFraction(position: number): number {
+    return (
+      (NumberLine.margin +
+        ((position - this.minimum) / (this.maximum - this.minimum)) *
+          NumberLine.lineLength) /
+      NumberLine.viewBoxWidth
+    );
   }
 
   /** Convert a position from numberline units to viewport units
@@ -62,8 +103,9 @@ export class NumberLine extends LitElement {
   translatePosition(position: number): number {
     // We divide the 1000 pixels by the the range between highest and lowest number to get the number of pixels per unit
     return (
-      (1000 / (this.maximum - this.minimum)) * (position - this.minimum) +
-      this.margin
+      (NumberLine.lineLength / (this.maximum - this.minimum)) *
+        (position - this.minimum) +
+      NumberLine.margin
     );
   }
 
@@ -73,7 +115,7 @@ export class NumberLine extends LitElement {
    */
   numberDistanceToViewportDistance(distance: number): number {
     // We divide the 1000 pixels by the the range between highest and lowest number to get the number of pixels per unit
-    return (1000 / (this.maximum - this.minimum)) * distance;
+    return (NumberLine.lineLength / (this.maximum - this.minimum)) * distance;
   }
 
   /** Render tickmark on the number line
@@ -188,7 +230,11 @@ export class NumberLine extends LitElement {
 
   render(): TemplateResult {
     return html` <div>
-      <svg width="100%" viewBox="0 0 ${this.viewBoxWidth} 35">
+      <svg
+        width="${this.width}vw"
+        height="${this.width * NumberLine.heightWidthAspectRatio}vw"
+        viewBox="0 0 ${NumberLine.viewBoxWidth} ${NumberLine.viewBoxHeight}"
+      >
         ${this.renderNumberLine()} ${this.renderNumbers()}
         ${this.show10TickMarks ? this.render10TickMarks() : ''}
         ${this.show5TickMarks ? this.render5TickMarks() : ''}

@@ -1,13 +1,12 @@
 /* eslint-disable class-methods-use-this */
 import { LitElement, html } from 'lit';
 
-import './NumberLine';
-import type { NumberLine } from './NumberLineHangingPhotos';
+import { NumberLine } from './NumberLine';
 
 import './ProgressBar';
 import type { ProgressBar } from './ProgressBar';
 
-import { randomIntFromRange } from './Randomizer';
+// import { randomIntFromRange } from './Randomizer';
 
 import './ScoreBox';
 import type { ScoreBox } from './ScoreBox';
@@ -17,6 +16,9 @@ import type { MessageDialog } from './MessageDialog';
 
 import './GameOverDialog';
 import type { GameOverDialog } from './GameOverDialog';
+
+import './Platform';
+import type { Platform } from './Platform';
 
 import { ChildNotFoundError } from './ChildNotFoundError';
 
@@ -59,6 +61,10 @@ class FindOnNumberLineApp extends LitElement {
     return this.getElement<NumberLine>('#numberLine');
   }
 
+  private get numberLinePlatform(): Platform {
+    return this.getElement<Platform>('#numberLinePlatform');
+  }
+
   handleTimeUp(): void {
     this.gameOverDialog
       .show(
@@ -93,6 +99,7 @@ class FindOnNumberLineApp extends LitElement {
     const result = await super.getUpdateComplete();
     await this.progressBar.updateComplete;
     await this.numberLine.updateComplete;
+    await this.numberLinePlatform.updateComplete;
     await this.scoreBox.updateComplete;
     await this.gameOverDialog.updateComplete;
     await this.messageDialog.updateComplete;
@@ -123,9 +130,6 @@ class FindOnNumberLineApp extends LitElement {
       >
       </score-box>
 
-      <div style="text-align: center; font-size: 8vw;">
-        ${this.numberToClick}
-      </div>
       <number-line
         id="numberLine"
         ?show10TickMarks=${this.show10TickMarks}
@@ -134,13 +138,27 @@ class FindOnNumberLineApp extends LitElement {
         ?showAll10Numbers=${this.showAll10Numbers}
         minimum=${this.minimum}
         maximum=${this.maximum}
-        width="95vw"
-        style="position:absolute; 
-                    left: 2.5vw; 
-                    top: 60vh; 
-                    width:95vw;"
+        style="position:absolute;
+               left: 0; 
+               top: 60vh; 
+               width: 100vw"
       >
       </number-line>
+      <numberline-platform
+        id="numberLinePlatform"
+        style="position: absolute; 
+               top: calc(60vh - 0.5 * ${NumberLine.heightWidthAspectRatio} * 100vw);
+               left: calc(${NumberLine.widthFractionMinimum} * 100vw - 1vw);
+               height: calc(${NumberLine.heightWidthAspectRatio} * 100vw);
+               width: 2vw;
+               display: block; 
+               border: none; 
+               padding: 0;"
+      ></numberline-platform>
+
+      <div style="text-align: center; font-size: 8vw;">
+        ${this.numberToClick}
+      </div>
       <message-dialog id="messageDialog"></message-dialog>
       <gameover-dialog id="gameOverDialog"></gameover-dialog>
     `;
