@@ -292,7 +292,7 @@ class FindOnNumberLineApp extends LitElement {
     );
     this.hideJan = false;
 
-    /* We now need to process the update, to ensure Jan is at the righ location, so we can get it's position on the screen */
+    /* We now need to process the update, to ensure Jan is at the right location, so we can get it's position on the screen */
     this.requestUpdate();
     await this.updateComplete;
 
@@ -309,9 +309,12 @@ class FindOnNumberLineApp extends LitElement {
     const platformLeft = platformBoundRect.x;
     const platformRight = platformBoundRect.x + platformBoundRect.width;
 
-    if (janFootRight > platformLeft && janFootLeft < platformRight)
+    let timeOut = 0;
+
+    if (janFootRight > platformLeft && janFootLeft < platformRight) {
       this.janAnimation = 'moveDownCorrect';
-    else if (janFootRight < platformLeft && janRight > platformLeft)
+      timeOut = 500;
+    } else if (janFootRight < platformLeft && janRight > platformLeft)
       this.janAnimation = 'moveDownAlmostCorrectLeftSide';
     else if (janFootLeft > platformRight && janLeft < platformRight)
       this.janAnimation = 'moveDownAlmostCorrectRightSide';
@@ -326,7 +329,7 @@ class FindOnNumberLineApp extends LitElement {
           this.hideJan = true;
           this.janAnimation = 'none';
           this.newRound();
-        }, 500);
+        }, timeOut);
       },
       { once: true }
     );

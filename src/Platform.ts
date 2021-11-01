@@ -5,13 +5,15 @@ import type { PropertyDeclarations, TemplateResult, CSSResultGroup } from 'lit';
 export class Platform extends LitElement {
   enabled = true;
   cummulativeDeltaX = 0;
-  drag = false;
+  mouseDrag = false;
+  touchDrag = false;
+  touchPreviousScreenX = 0;
   maxDeltaX = 0;
 
   static get styles(): CSSResultGroup {
     return css`
-      .hide {
-        display: none;
+      :host {
+        transform: translate(var(--cummulativeDeltaX, 0), 0);
       }
     `;
   }
@@ -20,6 +22,7 @@ export class Platform extends LitElement {
     return {
       location: { type: Number },
       maxDeltaX: { type: Number }, // Maximum delta for the platform in vw units
+      cummulativeDeltaX: { type: Number },
     };
   }
 
@@ -46,28 +49,62 @@ export class Platform extends LitElement {
   }
 
   mouseDown(): void {
-    this.drag = true;
+    this.mouseDrag = true;
+  }
+
+  touchStart(evt: TouchEvent): void {
+    this.touchDrag = true;
+    this.touchPreviousScreenX = evt.changedTouches[0].screenX;
   }
 
   mouseMove(evt: MouseEvent): void {
-    if (this.drag) {
+    if (this.mouseDrag) {
       this.cummulativeDeltaX += (evt.movementX / window.innerWidth) * 100;
       if (this.cummulativeDeltaX > this.maxDeltaX)
         this.cummulativeDeltaX = this.maxDeltaX;
       else if (this.cummulativeDeltaX < 0) this.cummulativeDeltaX = 0;
-      this.style.transform = `translate(${this.cummulativeDeltaX}vw, 0px)`;
+      //      this.style.transform = `translate(${this.cummulativeDeltaX}vw, 0px)`;
+      this.style.setProperty(
+        '--cummulativeDeltaX',
+        `${this.cummulativeDeltaX}vw`
+      );
+    }
+  }
+
+  touchMove(evt: TouchEvent): void {
+    if (this.touchDrag) {
+      this.cummulativeDeltaX +=
+        ((evt.changedTouches[0].screenX - this.touchPreviousScreenX) /
+          window.innerWidth) *
+        100;
+      this.touchPreviousScreenX = evt.changedTouches[0].screenX;
+      if (this.cummulativeDeltaX > this.maxDeltaX)
+        this.cummulativeDeltaX = this.maxDeltaX;
+      else if (this.cummulativeDeltaX < 0) this.cummulativeDeltaX = 0;
+      this.style.setProperty(
+        '--cummulativeDeltaX',
+        `${this.cummulativeDeltaX}vw`
+      );
+      //    this.style.transform = `translate(${this.cummulativeDeltaX}vw, 0px)`;
     }
   }
 
   mouseUp(): void {
-    this.drag = false;
+    this.mouseDrag = false;
+  }
+
+  touchEnd(): void {
+    this.touchDrag = false;
   }
 
   async firstUpdated(): Promise<void> {
     await this.updateComplete;
     this.addEventListener('mousedown', () => this.mouseDown()); // Construction with => used to ensure this is set properly.
+    this.addEventListener('touchstart', evt => this.touchStart(evt));
     window.addEventListener('mousemove', evt => this.mouseMove(evt));
+    window.addEventListener('touchmove', evt => this.touchMove(evt));
     window.addEventListener('mouseup', () => this.mouseUp());
+    window.addEventListener('touchend', () => this.touchEnd());
   }
 
   /** Render the photoframe
@@ -80,6 +117,7 @@ export class Platform extends LitElement {
         preserveAspectRatio="none"
         style="width: 100%; height: 100%; display: block;"
       >
+        <!--  -->
         <g>
           <!--
           <rect
