@@ -86,11 +86,20 @@ export class NumberLine extends LitElement {
   }
 
   /** Translate a fraction of the total width to a delta in the position on the number line */
-  translateWidthFractionToDeltaPosition(widthFraction: number): number {
+  translateDeltaWidthFractionToDeltaPosition(widthFraction: number): number {
     return (
       (NumberLine.viewBoxWidth / NumberLine.lineLength) *
       widthFraction *
       (this.maximum - this.minimum)
+    );
+  }
+
+  /** Translate a fraction of the total width to a delta in the position on the number line */
+  translateWidthFractionToPosition(widthFraction: number): number {
+    return (
+      this.translateDeltaWidthFractionToDeltaPosition(
+        widthFraction - NumberLine.widthFractionMinimum
+      ) + this.minimum
     );
   }
 

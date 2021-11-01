@@ -81,6 +81,7 @@ export class Platform extends LitElement {
         style="width: 100%; height: 100%; display: block;"
       >
         <g>
+          <!--
           <rect
             x="0"
             y="0"
@@ -89,6 +90,7 @@ export class Platform extends LitElement {
             fill="grey"
             fill-opacity="25%"
           ></rect>
+  -->
           <line x1="0" y1="0" x2="100" y2="0" stroke="red" stroke-width="5" />
           <line x1="50" y1="0" x2="50" y2="100" stroke="red" stroke-width="5" />
         </g>
