@@ -27,7 +27,7 @@ import type { Platform } from './Platform';
 
 import { ChildNotFoundError } from './ChildNotFoundError';
 
-class FindOnNumberLineApp extends LitElement {
+class JumpOnNumberLineApp extends LitElement {
   /* Properties for the custom element */
   private numberOk = 0;
   private numberNok = 0;
@@ -84,10 +84,10 @@ class FindOnNumberLineApp extends LitElement {
         --desiredPosition: 0;
 
         --janWidthFraction: 0.04;
-        --janLeftOfFootFraction: ${FindOnNumberLineApp.janLeftOfFootFraction};
-        --janRightOfFootFraction: ${FindOnNumberLineApp.janRightOfFootFraction};
-        --janMiddleOfFootFraction: ${FindOnNumberLineApp.janMiddleOfFootFraction};
-        --janFootFraction: ${FindOnNumberLineApp.janFootFraction};
+        --janLeftOfFootFraction: ${JumpOnNumberLineApp.janLeftOfFootFraction};
+        --janRightOfFootFraction: ${JumpOnNumberLineApp.janRightOfFootFraction};
+        --janMiddleOfFootFraction: ${JumpOnNumberLineApp.janMiddleOfFootFraction};
+        --janFootFraction: ${JumpOnNumberLineApp.janFootFraction};
 
         --janAspectRatio: calc(591 / 214);
 
@@ -255,9 +255,8 @@ class FindOnNumberLineApp extends LitElement {
     this.gameOverDialog
       .show(
         html` <p>
-            Je hebt ${this.numberOk === 0 ? 'geen' : this.numberOk}
-            ${this.numberOk === 1 ? 'foto' : "foto's"} goed op de getallenlijn
-            geprikt.
+            Jan is ${this.numberOk === 0 ? 'nooit' : `${this.numberOk} keer`} op
+            het platform geland.
           </p>
           <p>
             Je hebt ${this.numberNok === 0 ? 'geen' : this.numberNok}
@@ -303,9 +302,9 @@ class FindOnNumberLineApp extends LitElement {
     const janRight = janBoundingRect.x + janBoundingRect.width;
     const janFootLeft =
       janBoundingRect.x +
-      janBoundingRect.width * FindOnNumberLineApp.janLeftOfFootFraction;
+      janBoundingRect.width * JumpOnNumberLineApp.janLeftOfFootFraction;
     const janFootRight =
-      janFootLeft + janBoundingRect.width * FindOnNumberLineApp.janFootFraction;
+      janFootLeft + janBoundingRect.width * JumpOnNumberLineApp.janFootFraction;
     const platformLeft = platformBoundRect.x;
     const platformRight = platformBoundRect.x + platformBoundRect.width;
 
@@ -355,7 +354,10 @@ class FindOnNumberLineApp extends LitElement {
   async showWelcomeMessage() {
     return this.messageDialog.show(
       'Vind op de getallenlijn',
-      html`<p>Zet het platteau op de juiste plek op de getallenlijn</p>
+      html`<p>
+          Zet het platform op de juiste plek op de getallenlijn, zodat Jan erop
+          kan springen.
+        </p>
         <p>Dit spel kun je op de telefoon het beste horizontaal spelen.</p>`
     );
   }
@@ -414,4 +416,4 @@ class FindOnNumberLineApp extends LitElement {
   }
 }
 
-customElements.define('find-on-numberline-app', FindOnNumberLineApp);
+customElements.define('jump-on-numberline-app', JumpOnNumberLineApp);
