@@ -54,7 +54,7 @@ export class Platform extends LitElement {
   }
 
   touchStart(evt: TouchEvent): void {
-    this.touchDrag = true;
+    if (!this.dragDisabled) this.touchDrag = true;
     this.touchPreviousScreenX = evt.changedTouches[0].screenX;
   }
 

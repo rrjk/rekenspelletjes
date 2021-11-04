@@ -81,6 +81,11 @@ class JumpOnNumberLineApp extends LitElement {
         --numberLineWidth: 100vw;
         --numberLineTop: 60vh;
 
+        --checkButtonTop: 70vh;
+        --checkButtonLeft: 70vw;
+        --checkButtonWidth: 10vw;
+        --checkButtonHeight: 5vw;
+
         --platformWidthFraction: 0.035;
 
         /* This is the correct position of the number to set on the numberline, it will be updated in the javascript.*/
@@ -141,6 +146,16 @@ class JumpOnNumberLineApp extends LitElement {
         width: var(--janWidth);
         top: 0;
         left: var(--janLeft);
+      }
+
+      #spring {
+        position: absolute;
+        top: var(--checkButtonTop);
+        left: var(--checkButtonLeft);
+        width: var(--checkButtonWidth);
+        height: var(--checkButtonHeight);
+        font-size: 2vw;
+        background-color: #0f0;
       }
 
       .moveDownAlmostCorrectRightSide {
@@ -415,7 +430,7 @@ class JumpOnNumberLineApp extends LitElement {
         style="display: ${this.hideJan ? 'none' : 'block'};"
         class="${this.renderJanClass()}"
       />
-      <button @click="${() => this.checkAnswer()}">Controleer</button>
+      <button id="spring" @click="${() => this.checkAnswer()}">Spring</button>
       <message-dialog id="messageDialog"></message-dialog>
       <gameover-dialog id="gameOverDialog"></gameover-dialog>
     `;
