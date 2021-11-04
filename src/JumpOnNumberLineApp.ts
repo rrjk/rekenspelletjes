@@ -50,6 +50,8 @@ class JumpOnNumberLineApp extends LitElement {
     | 'none' = 'none';
   private vertPosJan = 0;
 
+  private dragDisabled = false;
+
   private static readonly janLeftOfFootFraction = 80 / 214;
   private static readonly janRightOfFootFraction = 125 / 214;
   private static readonly janFootFraction = (214 - 80 - 125) / 214;
@@ -69,6 +71,7 @@ class JumpOnNumberLineApp extends LitElement {
       vertPosJan: { type: Number },
       hideJan: { type: Boolean },
       janAnimation: { type: String },
+      dragDisabled: { type: Boolean },
     };
   }
 
@@ -283,6 +286,7 @@ class JumpOnNumberLineApp extends LitElement {
   }
 
   async checkAnswer() {
+    this.dragDisabled = true;
     this.style.setProperty(
       '--desiredPosition',
       `${
@@ -326,6 +330,7 @@ class JumpOnNumberLineApp extends LitElement {
         else this.numberNok += 1;
         setTimeout(() => {
           this.hideJan = true;
+          this.dragDisabled = false;
           this.janAnimation = 'none';
           this.newRound();
         }, timeOut);
@@ -353,7 +358,7 @@ class JumpOnNumberLineApp extends LitElement {
 
   async showWelcomeMessage() {
     return this.messageDialog.show(
-      'Vind op de getallenlijn',
+      'Spring op de getallenlijn',
       html`<p>
           Zet het platform op de juiste plek op de getallenlijn, zodat Jan erop
           kan springen.
@@ -397,6 +402,7 @@ class JumpOnNumberLineApp extends LitElement {
       </number-line>
       <numberline-platform
         id="numberLinePlatform"
+        ?dragDisabled=${this.dragDisabled}
         maxDeltaX=${(NumberLine.lineLength / NumberLine.viewBoxWidth) * 100}
       ></numberline-platform>
 

@@ -3,7 +3,7 @@ import { LitElement, html, css } from 'lit';
 import type { PropertyDeclarations, TemplateResult, CSSResultGroup } from 'lit';
 
 export class Platform extends LitElement {
-  enabled = true;
+  dragDisabled = false;
   cummulativeDeltaX = 0;
   mouseDrag = false;
   touchDrag = false;
@@ -23,6 +23,7 @@ export class Platform extends LitElement {
       location: { type: Number },
       maxDeltaX: { type: Number }, // Maximum delta for the platform in vw units
       cummulativeDeltaX: { type: Number },
+      dragDisabled: { type: Boolean },
     };
   }
 
@@ -49,7 +50,7 @@ export class Platform extends LitElement {
   }
 
   mouseDown(): void {
-    this.mouseDrag = true;
+    if (!this.dragDisabled) this.mouseDrag = true;
   }
 
   touchStart(evt: TouchEvent): void {
