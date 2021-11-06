@@ -5,7 +5,9 @@
       "removeComments": true,
       "moduleResolution": "node",
       "target": "ES2020",
-      "strict": true
+      "strict": true,
+      "useDefineForClassFields": false,
+      "experimentalDecorators": true
     },
     "$schema": "https://json.schemastore.org/tsconfig",
     "display": "Recommended"

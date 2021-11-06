@@ -2,7 +2,8 @@ import html from '@web/rollup-plugin-html';
 import { babel } from '@rollup/plugin-babel';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import { copy } from '@web/rollup-plugin-copy';
-import minifyHTML from 'rollup-plugin-minify-html-literals';
+// MinifyHTML removed because it caused in some cases ; to be removed while it shouldn't be removed.
+// import minifyHTML from 'rollup-plugin-minify-html-literals';
 import { terser } from 'rollup-plugin-terser';
 import summary from 'rollup-plugin-summary';
 
@@ -11,7 +12,8 @@ export default {
   input: '*.html',
   plugins: [
     html({ minify: true }),
-    minifyHTML(),
+    // MinifyHTML removed because it caused in some cases ; to be removed while it shouldn't be removed.
+    // minifyHTML(),
     babel({ babelHelpers: 'bundled', extensions: ['.ts'] }),
     nodeResolve({ extensions: ['.ts', 'mjs', 'js'] }),
     copy({ patterns: 'images/*.{svg,png}', exclude: '', rootDir: undefined }),

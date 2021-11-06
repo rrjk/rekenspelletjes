@@ -1,11 +1,9 @@
 /* eslint-disable class-methods-use-this */
 import { LitElement, html, css } from 'lit';
-import type {
-  PropertyDeclarations,
-  CSSResultGroup,
-  HTMLTemplateResult,
-} from 'lit';
+import { /* customElement, property, */ state } from 'lit/decorators.js';
+import type { CSSResultGroup, HTMLTemplateResult } from 'lit';
 
+// import './NumberLine';
 import { NumberLine } from './NumberLine';
 
 import './ProgressBar';
@@ -29,51 +27,43 @@ import { ChildNotFoundError } from './ChildNotFoundError';
 
 class JumpOnNumberLineApp extends LitElement {
   /* Properties for the custom element */
+  @state()
   private numberOk = 0;
+  @state()
   private numberNok = 0;
+  @state()
   private numberToSet = 70;
+  @state()
   private show10TickMarks = true;
-
+  @state()
   private show5TickMarks = true;
+  @state()
   private show1TickMarks = true;
+  @state()
   private showAll10Numbers = true;
 
+  @state()
   private minimum = 0;
+  @state()
   private maximum = 100;
 
+  @state()
   private hideJan = true;
+  @state()
   private janAnimation:
     | 'moveDownCorrect'
     | 'moveDownInCorrect'
     | 'moveDownAlmostCorrectLeftSide'
     | 'moveDownAlmostCorrectRightSide'
     | 'none' = 'none';
-  private vertPosJan = 0;
 
+  @state()
   private dragDisabled = false;
 
   private static readonly janLeftOfFootFraction = 80 / 214;
   private static readonly janRightOfFootFraction = 125 / 214;
   private static readonly janFootFraction = (214 - 80 - 125) / 214;
   private static readonly janMiddleOfFootFraction = 102 / 214;
-
-  static get properties(): PropertyDeclarations {
-    return {
-      numberOk: { type: Number },
-      numberNok: { type: Number },
-      numberToSet: { type: Number },
-      show10TickMarks: { type: Boolean },
-      show5TickMarks: { type: Boolean },
-      show1TickMarks: { type: Boolean },
-      showAll10Numbers: { type: Boolean },
-      minimum: { type: Number },
-      maximum: { type: Number },
-      vertPosJan: { type: Number },
-      hideJan: { type: Boolean },
-      janAnimation: { type: String },
-      dragDisabled: { type: Boolean },
-    };
-  }
 
   static get styles(): CSSResultGroup {
     return css`
@@ -311,8 +301,7 @@ class JumpOnNumberLineApp extends LitElement {
     this.hideJan = false;
 
     /* We now need to process the update, to ensure Jan is at the right location, so we can get it's position on the screen */
-    this.requestUpdate();
-    await this.updateComplete;
+    await this.performUpdate();
 
     const platformBoundRect = this.numberLinePlatform.getBoundingClientRect();
     const janBoundingRect = this.jan.getBoundingClientRect();
@@ -329,15 +318,6 @@ class JumpOnNumberLineApp extends LitElement {
 
     let timeOut = 0;
 
-    if (janFootRight > platformLeft && janFootLeft < platformRight) {
-      this.janAnimation = 'moveDownCorrect';
-      timeOut = 500;
-    } else if (janFootRight < platformLeft && janRight > platformLeft)
-      this.janAnimation = 'moveDownAlmostCorrectLeftSide';
-    else if (janFootLeft > platformRight && janLeft < platformRight)
-      this.janAnimation = 'moveDownAlmostCorrectRightSide';
-    else this.janAnimation = 'moveDownInCorrect';
-
     this.jan.addEventListener(
       'animationend',
       () => {
@@ -352,6 +332,17 @@ class JumpOnNumberLineApp extends LitElement {
       },
       { once: true }
     );
+
+    if (janFootRight > platformLeft && janFootLeft < platformRight) {
+      this.janAnimation = 'moveDownCorrect';
+      timeOut = 500;
+    } else if (janFootRight < platformLeft && janRight > platformLeft) {
+      this.janAnimation = 'moveDownAlmostCorrectLeftSide';
+    } else if (janFootLeft > platformRight && janLeft < platformRight) {
+      this.janAnimation = 'moveDownAlmostCorrectRightSide';
+    } else {
+      this.janAnimation = 'moveDownInCorrect';
+    }
   }
 
   async firstUpdated() {
