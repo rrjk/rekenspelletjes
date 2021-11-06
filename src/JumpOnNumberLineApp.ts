@@ -1,6 +1,6 @@
 /* eslint-disable class-methods-use-this */
 import { LitElement, html, css } from 'lit';
-import { /* customElement, property, */ state } from 'lit/decorators.js';
+import { customElement, state } from 'lit/decorators.js';
 import type { CSSResultGroup, HTMLTemplateResult } from 'lit';
 
 // import './NumberLine';
@@ -25,7 +25,8 @@ import type { Platform } from './Platform';
 
 import { ChildNotFoundError } from './ChildNotFoundError';
 
-class JumpOnNumberLineApp extends LitElement {
+@customElement('jump-on-numberline-app')
+export class JumpOnNumberLineApp extends LitElement {
   /* Properties for the custom element */
   @state()
   private numberOk = 0;
@@ -277,7 +278,7 @@ class JumpOnNumberLineApp extends LitElement {
       });
   }
 
-  startNewGame() {
+  startNewGame(): void {
     this.progressBar.restart();
     this.hideJan = true;
     this.janAnimation = 'none';
@@ -286,11 +287,11 @@ class JumpOnNumberLineApp extends LitElement {
     this.newRound();
   }
 
-  newRound() {
+  newRound(): void {
     this.numberToSet = randomIntFromRange(this.minimum, this.maximum);
   }
 
-  async checkAnswer() {
+  async checkAnswer(): Promise<void> {
     this.dragDisabled = true;
     this.style.setProperty(
       '--desiredPosition',
@@ -345,13 +346,13 @@ class JumpOnNumberLineApp extends LitElement {
     }
   }
 
-  async firstUpdated() {
+  async firstUpdated(): Promise<void> {
     await this.updateComplete;
     await this.showWelcomeMessage();
     this.startNewGame();
   }
 
-  override async getUpdateComplete() {
+  override async getUpdateComplete(): Promise<boolean> {
     const result = await super.getUpdateComplete();
     await this.progressBar.updateComplete;
     await this.numberLine.updateComplete;
@@ -362,7 +363,7 @@ class JumpOnNumberLineApp extends LitElement {
     return result;
   }
 
-  async showWelcomeMessage() {
+  async showWelcomeMessage(): Promise<string> {
     return this.messageDialog.show(
       'Spring op de getallenlijn',
       html`<p>
@@ -427,5 +428,3 @@ class JumpOnNumberLineApp extends LitElement {
     `;
   }
 }
-
-customElements.define('jump-on-numberline-app', JumpOnNumberLineApp);
