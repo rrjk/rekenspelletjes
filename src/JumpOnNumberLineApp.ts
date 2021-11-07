@@ -27,6 +27,8 @@ import { ChildNotFoundError } from './ChildNotFoundError';
 import { ParseNumberLineParameters } from './NumberLineParameters';
 import type { NumberLineParameters } from './NumberLineParameters';
 
+import { ParseGametimeFromUrl } from './GametimeParameters';
+
 @customElement('jump-on-numberline-app')
 export class JumpOnNumberLineApp extends LitElement {
   /** Number correct answers */
@@ -68,6 +70,10 @@ export class JumpOnNumberLineApp extends LitElement {
   @state()
   private dragDisabled = false;
 
+  /** Gametime in number of seconds */
+  @state()
+  private gameTime: number;
+
   /** Width of the number line in vw units */
   private static readonly numberLineWidth = 100;
   /** Top of the number line in vh units */
@@ -99,6 +105,7 @@ export class JumpOnNumberLineApp extends LitElement {
   constructor() {
     super();
     this.numberLineProperties = ParseNumberLineParameters();
+    this.gameTime = ParseGametimeFromUrl(60);
   }
 
   /** Get all static styles */
@@ -446,7 +453,7 @@ export class JumpOnNumberLineApp extends LitElement {
       </style>
 
       <progress-bar
-        style="--progress-bar-gameTime: 60s;"
+        style="--progress-bar-gametime: ${this.gameTime}s;"
         id="progressBar"
         @timeUp="${() => this.handleTimeUp()}"
       ></progress-bar>

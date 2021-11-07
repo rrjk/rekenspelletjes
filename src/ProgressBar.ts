@@ -8,9 +8,10 @@ import type {
 
 import { ChildNotFoundError } from './ChildNotFoundError';
 
-/**
- * CCS custome properties:
- *   - --progress-bar-gameTime: How long should the progress bar run (e.g. 120s), default is 60s
+/** Progressbar element
+ * This is a bar taking the full width counting down time.
+ *
+ * @cssprop --progress-bar-gametime - How long should the progress bar run (e.g. 120s), default is 60s
  */
 
 export class ProgressBar extends LitElement {
@@ -37,7 +38,7 @@ export class ProgressBar extends LitElement {
       }
 
       .TransitionToZeroWidth {
-        animation: MakeZeroWidth linear var(--progress-bar-gameTime, 60s);
+        animation: MakeZeroWidth linear var(--progress-bar-gametime, 60s);
         animation-fill-mode: forwards;
       }
 
