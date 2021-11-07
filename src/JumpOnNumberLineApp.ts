@@ -32,12 +32,15 @@ export class JumpOnNumberLineApp extends LitElement {
   /** Number incorrect answers */
   @state()
   private numberNok = 0;
-  /** Number to set by student */
 
+  /** Number to set by student */
   @state()
   private numberToSet = 70;
-  /** The desired position of Jan in vw units. */
+  /** Show the number or not, useful in the beginning and end of the game. */
+  @state()
+  private showNumber = false;
 
+  /** The desired position of Jan in vw units. */
   @state()
   private desiredPosition = 0;
   /** Show 10 divider tick marks */
@@ -311,6 +314,7 @@ export class JumpOnNumberLineApp extends LitElement {
 
   /** Handle the time up, when the game is over. */
   handleTimeUp(): void {
+    this.showNumber = false;
     this.gameOverDialog
       .show(
         html` <p>
@@ -331,6 +335,7 @@ export class JumpOnNumberLineApp extends LitElement {
   /** Start a new game, resets the timer and the number of correct and incorrect answer. */
   startNewGame(): void {
     this.progressBar.restart();
+    this.showNumber = true;
     this.hideJan = true;
     this.janAnimation = 'none';
     this.numberNok = 0;
@@ -472,7 +477,9 @@ export class JumpOnNumberLineApp extends LitElement {
         maxDeltaX=${(NumberLine.lineLength / NumberLine.viewBoxWidth) * 100}
       ></numberline-platform>
 
-      <div style="text-align: center; font-size: 8vw;">${this.numberToSet}</div>
+      <div style="text-align: center; font-size: 8vw;">
+        ${this.showNumber ? this.numberToSet : ''}
+      </div>
 
       <img
         id="jan"
