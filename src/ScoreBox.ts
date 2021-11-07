@@ -21,7 +21,7 @@ export class ScoreBox extends LitElement {
       div {
         border-style: solid;
         border-color: black;
-        padding: 10% 10% 10% 10% 10%;
+        padding: 10% 10% 10% 10%;
         display: inline-block;
         width: calc(100% - 6px);
         font-size: calc(0.25 * var(--scoreBoxWidth));
