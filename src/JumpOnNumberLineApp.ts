@@ -3,7 +3,6 @@ import { LitElement, html, css } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import type { CSSResultGroup, HTMLTemplateResult } from 'lit';
 
-// import './NumberLine';
 import { NumberLine } from './NumberLine';
 
 import './ProgressBar';
@@ -27,29 +26,45 @@ import { ChildNotFoundError } from './ChildNotFoundError';
 
 @customElement('jump-on-numberline-app')
 export class JumpOnNumberLineApp extends LitElement {
-  /* Properties for the custom element */
+  /** Number correct answers */
   @state()
   private numberOk = 0;
+  /** Number incorrect answers */
   @state()
   private numberNok = 0;
+  /** Number to set by student */
+
   @state()
   private numberToSet = 70;
+  /** The desired position of Jan in vw units. */
+
+  @state()
+  private desiredPosition = 0;
+  /** Show 10 divider tick marks */
   @state()
   private show10TickMarks = true;
+  /** Show 5 divider tick marks */
   @state()
   private show5TickMarks = true;
+  /** Show 1 divider tick marks */
   @state()
   private show1TickMarks = true;
+  /** Show all multiples of 10 on the numberline or just the minimum and maximum. */
   @state()
   private showAll10Numbers = true;
 
+  /** Minumum number of the numberLine, has to be a multiple of 10. */
   @state()
   private minimum = 0;
+  /** Maximum number of the numberLine, has to be a multiple of 10. */
   @state()
   private maximum = 100;
 
+  /** Hide Jan or not. Jan is hidden when the student is setting the platform correctly. */
   @state()
   private hideJan = true;
+
+  /** Animation to apply to Jan, depends on whether the student put the platform correctly or not. */
   @state()
   private janAnimation:
     | 'moveDownCorrect'
@@ -58,37 +73,57 @@ export class JumpOnNumberLineApp extends LitElement {
     | 'moveDownAlmostCorrectRightSide'
     | 'none' = 'none';
 
+  /** Is dragging the platform disabled/ */
   @state()
   private dragDisabled = false;
 
+  /** Width of the number line in vw units */
+  private static readonly numberLineWidth = 100;
+  /** Top of the number line in vh units */
+  private static readonly numberLineTop = 60;
+  /** Top of the check button in vh units */
+  private static readonly checkButtonTop = 70;
+  /** Left of the check button in vw units */
+  private static readonly checkButtonLeft = 70;
+  /** Width of the check button in vw units */
+  private static readonly checkButtonWidth = 10;
+  /** Height of the check button in vw units */
+  private static readonly checkButtonHeight = 5;
+
+  /** Width of the platform as a fraction of the width of the numberline */
+  private static readonly platformWidthFraction = 0.035;
+  /** Width of Jan as a fraction of the width of the numberline */
+  private static readonly janWidthFraction = 0.04;
+
+  /** Aspect ration of Jan added here to prevent having to calculate it run-time */
+  private static readonly janAspectRatio = 591 / 214;
+  /** Left border location of the foot of Jan as fraction of total width of Jan */
   private static readonly janLeftOfFootFraction = 80 / 214;
-  private static readonly janRightOfFootFraction = 125 / 214;
+  /** Width of the foot as fraction of the width of Jan */
   private static readonly janFootFraction = (214 - 80 - 125) / 214;
+  /** Middle of the foot location as fraction of the width of Jan */
   private static readonly janMiddleOfFootFraction = 102 / 214;
 
+  /** Get all static styles */
   static get styles(): CSSResultGroup {
     return css`
       :host {
-        --numberLineWidth: 100vw;
-        --numberLineTop: 60vh;
+        --numberLineWidth: ${JumpOnNumberLineApp.numberLineWidth}vw;
+        --numberLineTop: ${JumpOnNumberLineApp.numberLineTop}vh;
 
-        --checkButtonTop: 70vh;
-        --checkButtonLeft: 70vw;
-        --checkButtonWidth: 10vw;
-        --checkButtonHeight: 5vw;
+        --checkButtonTop: ${JumpOnNumberLineApp.checkButtonTop}vh;
+        --checkButtonLeft: ${JumpOnNumberLineApp.checkButtonLeft}vw;
+        --checkButtonWidth: ${JumpOnNumberLineApp.checkButtonWidth}vw;
+        --checkButtonHeight: ${JumpOnNumberLineApp.checkButtonHeight}vw;
 
-        --platformWidthFraction: 0.035;
+        --platformWidthFraction: ${JumpOnNumberLineApp.platformWidthFraction};
 
-        /* This is the correct position of the number to set on the numberline, it will be updated in the javascript.*/
-        --desiredPosition: 0;
-
-        --janWidthFraction: 0.04;
+        --janWidthFraction: ${JumpOnNumberLineApp.janWidthFraction};
         --janLeftOfFootFraction: ${JumpOnNumberLineApp.janLeftOfFootFraction};
-        --janRightOfFootFraction: ${JumpOnNumberLineApp.janRightOfFootFraction};
         --janMiddleOfFootFraction: ${JumpOnNumberLineApp.janMiddleOfFootFraction};
         --janFootFraction: ${JumpOnNumberLineApp.janFootFraction};
 
-        --janAspectRatio: calc(591 / 214);
+        --janAspectRatio: ${JumpOnNumberLineApp.janAspectRatio};
 
         --janWidth: calc(var(--janWidthFraction) * var(--numberLineWidth));
         --janMiddleOfFootWidth: calc(
@@ -96,6 +131,7 @@ export class JumpOnNumberLineApp extends LitElement {
         );
         --janHeight: calc(var(--janWidth) * var(--janAspectRatio));
 
+        /* desiredPosition is set in javaScript based on where number to set */
         --janLeft: calc(var(--desiredPosition) - var(--janMiddleOfFootWidth));
 
         --platformTop: calc(
@@ -197,7 +233,7 @@ export class JumpOnNumberLineApp extends LitElement {
       }
 
       .moveDownCorrect {
-        animation: MoveDownCorrect linear 1.6s forwards;
+        animation: MoveDownCorrect linear 1.4s forwards;
       }
 
       @keyframes MoveDownCorrect {
@@ -224,6 +260,12 @@ export class JumpOnNumberLineApp extends LitElement {
     `;
   }
 
+  /** Helper function to easily query for an element.
+   *  @param query Querystring for the element.
+   *  @template T The type of the element.
+   *  @throws ChildNotFoundError in case the element can't be found.
+   *
+   */
   private getElement<T>(query: string): T {
     const ret = <T | null>this.renderRoot.querySelector(query);
     if (ret === null) {
@@ -232,34 +274,42 @@ export class JumpOnNumberLineApp extends LitElement {
     return ret;
   }
 
+  /** Get Jan */
   private get jan(): HTMLImageElement {
     return this.getElement<HTMLImageElement>('#jan');
   }
 
+  /** Get the game over dialog */
   private get gameOverDialog(): GameOverDialog {
     return this.getElement<GameOverDialog>('#gameOverDialog');
   }
 
+  /** Get the message dialog. */
   private get messageDialog(): MessageDialog {
     return this.getElement<MessageDialog>('#messageDialog');
   }
 
+  /** Get the progress bar. */
   private get progressBar(): ProgressBar {
     return this.getElement<ProgressBar>('#progressBar');
   }
 
+  /** Get the scorebox */
   private get scoreBox(): ScoreBox {
     return this.getElement<ScoreBox>('#scoreBox');
   }
 
+  /** Get the numberline */
   private get numberLine(): NumberLine {
     return this.getElement<NumberLine>('#numberLine');
   }
 
+  /** Get the numberline platform */
   private get numberLinePlatform(): Platform {
     return this.getElement<Platform>('#numberLinePlatform');
   }
 
+  /** Handle the time up, when the game is over. */
   handleTimeUp(): void {
     this.gameOverDialog
       .show(
@@ -278,6 +328,7 @@ export class JumpOnNumberLineApp extends LitElement {
       });
   }
 
+  /** Start a new game, resets the timer and the number of correct and incorrect answer. */
   startNewGame(): void {
     this.progressBar.restart();
     this.hideJan = true;
@@ -287,18 +338,17 @@ export class JumpOnNumberLineApp extends LitElement {
     this.newRound();
   }
 
+  /** Start a new round, a new number the student should jump to is set. */
   newRound(): void {
     this.numberToSet = randomIntFromRange(this.minimum, this.maximum);
   }
 
+  /** Ceck the answer the student has selected and make Jan jump. */
   async checkAnswer(): Promise<void> {
     this.dragDisabled = true;
-    this.style.setProperty(
-      '--desiredPosition',
-      `${
-        this.numberLine.translatePostionToWidthFraction(this.numberToSet) * 100
-      }vw`
-    );
+    this.desiredPosition =
+      this.numberLine.translatePostionToWidthFraction(this.numberToSet) *
+      JumpOnNumberLineApp.numberLineWidth;
     this.hideJan = false;
 
     /* We now need to process the update, to ensure Jan is at the right location, so we can get it's position on the screen */
@@ -346,6 +396,7 @@ export class JumpOnNumberLineApp extends LitElement {
     }
   }
 
+  /** Actions performed after the first update is complete. */
   async firstUpdated(): Promise<void> {
     await this.updateComplete;
     await this.showWelcomeMessage();
@@ -363,6 +414,7 @@ export class JumpOnNumberLineApp extends LitElement {
     return result;
   }
 
+  /** Show the welcome message */
   async showWelcomeMessage(): Promise<string> {
     return this.messageDialog.show(
       'Spring op de getallenlijn',
@@ -382,8 +434,15 @@ export class JumpOnNumberLineApp extends LitElement {
     return ret;
   }
 
+  /** Render the application */
   render(): HTMLTemplateResult {
     return html`
+      <style>
+        :host {
+          --desiredPosition: ${this.desiredPosition}vw;
+        }
+      </style>
+
       <progress-bar
         style="--progress-bar-gameTime: 60s;"
         id="progressBar"
