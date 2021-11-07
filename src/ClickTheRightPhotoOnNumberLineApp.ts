@@ -263,7 +263,7 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
   render() {
     return html`
       <progress-bar
-        style="--progress-bar-gameTime: 60s;"
+        style="--progress-bar-gametime: 60s;"
         id="progressBar"
         @timeUp="${() => this.handleTimeUp()}"
       ></progress-bar>
