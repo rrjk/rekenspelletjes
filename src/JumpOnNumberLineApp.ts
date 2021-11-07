@@ -24,6 +24,9 @@ import type { Platform } from './Platform';
 
 import { ChildNotFoundError } from './ChildNotFoundError';
 
+import { ParseNumberLineParameters } from './NumberLineParameters';
+import type { NumberLineParameters } from './NumberLineParameters';
+
 @customElement('jump-on-numberline-app')
 export class JumpOnNumberLineApp extends LitElement {
   /** Number correct answers */
@@ -35,7 +38,7 @@ export class JumpOnNumberLineApp extends LitElement {
 
   /** Number to set by student */
   @state()
-  private numberToSet = 70;
+  private numberToSet = 0;
   /** Show the number or not, useful in the beginning and end of the game. */
   @state()
   private showNumber = false;
@@ -43,25 +46,10 @@ export class JumpOnNumberLineApp extends LitElement {
   /** The desired position of Jan in vw units. */
   @state()
   private desiredPosition = 0;
-  /** Show 10 divider tick marks */
-  @state()
-  private show10TickMarks = true;
-  /** Show 5 divider tick marks */
-  @state()
-  private show5TickMarks = true;
-  /** Show 1 divider tick marks */
-  @state()
-  private show1TickMarks = true;
-  /** Show all multiples of 10 on the numberline or just the minimum and maximum. */
-  @state()
-  private showAll10Numbers = true;
 
-  /** Minumum number of the numberLine, has to be a multiple of 10. */
+  /** Numberline properties */
   @state()
-  private minimum = 0;
-  /** Maximum number of the numberLine, has to be a multiple of 10. */
-  @state()
-  private maximum = 100;
+  private numberLineProperties: NumberLineParameters;
 
   /** Hide Jan or not. Jan is hidden when the student is setting the platform correctly. */
   @state()
@@ -106,6 +94,12 @@ export class JumpOnNumberLineApp extends LitElement {
   private static readonly janFootFraction = (214 - 80 - 125) / 214;
   /** Middle of the foot location as fraction of the width of Jan */
   private static readonly janMiddleOfFootFraction = 102 / 214;
+
+  /** Constructor, parse URL parameters */
+  constructor() {
+    super();
+    this.numberLineProperties = ParseNumberLineParameters();
+  }
 
   /** Get all static styles */
   static get styles(): CSSResultGroup {
@@ -345,7 +339,10 @@ export class JumpOnNumberLineApp extends LitElement {
 
   /** Start a new round, a new number the student should jump to is set. */
   newRound(): void {
-    this.numberToSet = randomIntFromRange(this.minimum, this.maximum);
+    this.numberToSet = randomIntFromRange(
+      this.numberLineProperties.minimum,
+      this.numberLineProperties.maximum
+    );
   }
 
   /** Ceck the answer the student has selected and make Jan jump. */
@@ -463,12 +460,12 @@ export class JumpOnNumberLineApp extends LitElement {
 
       <number-line
         id="numberLine"
-        ?show10TickMarks=${this.show10TickMarks}
-        ?show5TickMarks=${this.show5TickMarks}
-        ?show1TickMarks=${this.show1TickMarks}
-        ?showAll10Numbers=${this.showAll10Numbers}
-        minimum=${this.minimum}
-        maximum=${this.maximum}
+        ?show10TickMarks=${this.numberLineProperties.show10TickMarks}
+        ?show5TickMarks=${this.numberLineProperties.show5TickMarks}
+        ?show1TickMarks=${this.numberLineProperties.show1TickMarks}
+        ?showAll10Numbers=${this.numberLineProperties.showAll10Numbers}
+        minimum=${this.numberLineProperties.minimum}
+        maximum=${this.numberLineProperties.maximum}
       >
       </number-line>
       <numberline-platform
