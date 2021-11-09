@@ -75,9 +75,11 @@ export class JumpOnNumberLineApp extends LitElement {
   private gameTime: number;
 
   /** Width of the number line in vw units */
-  private static readonly numberLineWidth = 100;
+  private static readonly numberLineWidth = 94;
   /** Top of the number line in vh units */
   private static readonly numberLineTop = 60;
+  /** Left of the number line in vw units */
+  private static readonly numberLineLeft = 3;
   /** Top of the check button in vh units */
   private static readonly checkButtonTop = 70;
   /** Left of the check button in vw units */
@@ -114,6 +116,7 @@ export class JumpOnNumberLineApp extends LitElement {
       :host {
         --numberLineWidth: ${JumpOnNumberLineApp.numberLineWidth}vw;
         --numberLineTop: ${JumpOnNumberLineApp.numberLineTop}vh;
+        --numberLineLeft: ${JumpOnNumberLineApp.numberLineLeft}vw;
 
         --checkButtonTop: ${JumpOnNumberLineApp.checkButtonTop}vh;
         --checkButtonLeft: ${JumpOnNumberLineApp.checkButtonLeft}vw;
@@ -146,8 +149,8 @@ export class JumpOnNumberLineApp extends LitElement {
           var(--platformWidthFraction) * var(--numberLineWidth)
         );
         --platformLeft: calc(
-          ${NumberLine.widthFractionMinimum} * var(--numberLineWidth) - 0.5 *
-            var(--platformWidth)
+          var(--numberLineLeft) + ${NumberLine.widthFractionMinimum} *
+            var(--numberLineWidth) - 0.5 * var(--platformWidth)
         );
         --platformHeight: calc(
           ${NumberLine.heightWidthAspectRatio} * var(--numberLineWidth)
@@ -156,7 +159,7 @@ export class JumpOnNumberLineApp extends LitElement {
 
       #numberLine {
         position: absolute;
-        left: 0;
+        left: var(--numberLineLeft);
         top: var(--numberLineTop);
         width: var(--numberLineWidth);
       }
@@ -356,8 +359,9 @@ export class JumpOnNumberLineApp extends LitElement {
   async checkAnswer(): Promise<void> {
     this.dragDisabled = true;
     this.desiredPosition =
+      JumpOnNumberLineApp.numberLineLeft +
       this.numberLine.translatePostionToWidthFraction(this.numberToSet) *
-      JumpOnNumberLineApp.numberLineWidth;
+        JumpOnNumberLineApp.numberLineWidth;
     this.hideJan = false;
 
     /* We now need to process the update, to ensure Jan is at the right location, so we can get it's position on the screen */
