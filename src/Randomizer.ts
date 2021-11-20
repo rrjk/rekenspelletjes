@@ -21,7 +21,6 @@ export function randomFromSet<T>(arrayOfPossibleValues: T[]): T {
  * @returns random element from the arrayOfPossibleValues
  */
 export function randomFromSetAndSplice<T>(arrayOfPossibleValues: T[]): T {
-  console.log(arrayOfPossibleValues.length);
   return arrayOfPossibleValues.splice(
     randomIntFromRange(0, arrayOfPossibleValues.length - 1),
     1
