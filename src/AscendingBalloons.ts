@@ -1,6 +1,6 @@
 import { LitElement, html, css } from 'lit';
 import { customElement, state, property } from 'lit/decorators.js';
-import type { CSSResultGroup, HTMLTemplateResult } from 'lit';
+import type { CSSResultGroup, HTMLTemplateResult, PropertyValues } from 'lit';
 import { randomFromSetAndSplice } from './Randomizer';
 
 interface Answers {
@@ -13,6 +13,7 @@ type BalloonColors = 'blue' | 'green' | 'yellow' | 'purple';
 interface BalloonInfo {
   color: BalloonColors;
   label: number;
+  disabled: boolean;
 }
 
 @customElement('ascending-balloons')
@@ -22,7 +23,7 @@ export class AscendingBalloons extends LitElement {
   @property({ attribute: false })
   answers: Answers = { correct: 12, incorrect: [1, 3, 74] };
   @state()
-  balloonInfo: BalloonInfo[] = [];
+  balloonInfoList: BalloonInfo[] = [];
 
   constructor() {
     super();
@@ -30,7 +31,7 @@ export class AscendingBalloons extends LitElement {
   }
 
   updateBalloonInfo(): void {
-    this.balloonInfo = [];
+    this.balloonInfoList = [];
     const availableColors: BalloonColors[] = [
       'blue',
       'green',
@@ -43,19 +44,29 @@ export class AscendingBalloons extends LitElement {
     ];
 
     while (availableAnswers.length > 0) {
-      this.balloonInfo.push({
+      this.balloonInfoList.push({
         color: randomFromSetAndSplice(availableColors),
         label: randomFromSetAndSplice(availableAnswers),
+        disabled: false,
       });
     }
 
     this.requestUpdate();
   }
 
+  willUpdate(changedProperties: PropertyValues): void {
+    if (changedProperties.has('answers')) {
+      this.updateBalloonInfo();
+    }
+  }
+
   static get styles(): CSSResultGroup {
     return css`
       .MoveUp {
-        animation: MoveUp linear 10s;
+        animation-name: MoveUp;
+        animation-duration: 10s;
+        animation-delay: 0.05s; /* Needed to ensure iOS safari has sufficient time to process restarts of the animation */
+        animation-timing-function: linear;
         animation-fill-mode: forwards;
       }
       @keyframes MoveUp {
@@ -63,7 +74,7 @@ export class AscendingBalloons extends LitElement {
           transform: translate(0px, -0px);
         }
         to {
-          transform: translate(0px, -86vh);
+          transform: translate(0px, calc(-100vh + 2em));
         }
       }
 
@@ -83,7 +94,7 @@ export class AscendingBalloons extends LitElement {
       #balloons {
         position: absolute;
         width: 100%;
-        border: 1px red solid;
+        border: none;
         display: flex;
         justify-content: space-around;
         bottom: 0px;
@@ -92,6 +103,7 @@ export class AscendingBalloons extends LitElement {
   }
 
   async reset(): Promise<void> {
+    this.updateBalloonInfo();
     this.ascension = false;
     await this.performUpdate();
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -103,41 +115,42 @@ export class AscendingBalloons extends LitElement {
     this.ascension = true;
   }
 
+  balloonClicked(label: number): void {
+    if (label !== this.answers.correct) {
+      const balloonInfo = this.balloonInfoList.find(b => b.label === label);
+      if (balloonInfo != null) {
+        balloonInfo.disabled = true;
+      } else {
+        throw Error(
+          'Balloon label not found in balloonInfoList, this should not happen'
+        );
+      }
+      this.requestUpdate();
+      const event = new CustomEvent('wrong-balloon-clicked');
+      this.dispatchEvent(event);
+    } else {
+      const event = new CustomEvent('correct-balloon-clicked');
+      this.dispatchEvent(event);
+    }
+  }
+
   render(): HTMLTemplateResult {
     return html`
       <div id="balloons" class="${this.ascension ? 'MoveUp' : ''}">
-        <button
-          type="button"
-          class="Balloon"
-          id="Balloon0"
-          style="background-image: url('images/balloon-blue.png');"
-        >
-          1
-        </button>
-        <button
-          type="button"
-          class="Balloon"
-          id="Balloon1"
-          style="background-image: url('images/balloon-green.png');"
-        >
-          12
-        </button>
-        <button
-          type="button"
-          class="Balloon"
-          id="Balloon2"
-          style="background-image: url('images/balloon-yellow.png');"
-        >
-          3
-        </button>
-        <button
-          type="button"
-          class="Balloon"
-          id="Balloon3"
-          style="background-image: url('images/balloon-purple.png');"
-        >
-          74
-        </button>
+        ${this.balloonInfoList.map(
+          balloonInfo =>
+            html`
+              <button
+                type="button"
+                class="Balloon"
+                style="background-image: url('images/balloon-${balloonInfo.color}.png');"
+                @click="${() => this.balloonClicked(balloonInfo.label)}"
+                ?disabled="${balloonInfo.disabled}"
+              >
+                ${balloonInfo.disabled ? '✗' : balloonInfo.label}
+              </button>
+            `
+        )}
       </div>
     `;
   }

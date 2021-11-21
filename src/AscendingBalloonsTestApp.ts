@@ -4,8 +4,9 @@ import { customElement, state } from 'lit/decorators.js';
 import type { CSSResultGroup, HTMLTemplateResult } from 'lit';
 
 import './AscendingBalloons';
-
 import type { AscendingBalloons } from './AscendingBalloons';
+
+import { ChildNotFoundError } from './ChildNotFoundError';
 
 @customElement('ascending-balloons-test-app')
 export class AscendingBalloonsTestApp extends LitElement {
@@ -37,13 +38,15 @@ export class AscendingBalloonsTestApp extends LitElement {
     return html`
       <ascending-balloons
         style="position: absolute; height: 100%; width:100%; border: 1px black solid"
+        @correct-balloon-clicked="${() => this.ascendingBalloons.reset()}"
+        @wrong-balloon-clicked="${() => console.log('wrong balloon clicked')}"
+        .answers=${{ correct: 13, incorrect: [67, 45, 3] }}
       ></ascending-balloons>
 
       <button
         style="position:absolute; left: 0; top:0;"
         id="ascendButton"
         @click="${() => {
-          console.log('button pressed');
           this.ascendingBalloons.startAscension();
         }}"
       >
@@ -54,7 +57,6 @@ export class AscendingBalloonsTestApp extends LitElement {
         style="position:absolute; left: 0; top:50px;"
         id="resetButton"
         @click="${() => {
-          console.log('button pressed');
           this.ascendingBalloons.reset();
         }}"
       >
