@@ -1,15 +1,20 @@
 /* eslint-disable class-methods-use-this */
-import { LitElement, html, css } from 'lit';
+import { LitElement, html } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
-import type { CSSResultGroup, HTMLTemplateResult } from 'lit';
+import type { HTMLTemplateResult } from 'lit';
 
 import './AscendingBalloons';
-import type { AscendingBalloons } from './AscendingBalloons';
+import type { AscendingBalloons, Answers } from './AscendingBalloons';
 
 import { ChildNotFoundError } from './ChildNotFoundError';
 
 @customElement('ascending-balloons-test-app')
 export class AscendingBalloonsTestApp extends LitElement {
+  @state()
+  disabled = true;
+  @state()
+  answers = <Answers>{ correct: 13, incorrect: [67, 45, 3] };
+
   /** Helper function to easily query for an element.
    *  @param query Querystring for the element.
    *  @template T The type of the element.
@@ -38,9 +43,13 @@ export class AscendingBalloonsTestApp extends LitElement {
     return html`
       <ascending-balloons
         style="position: absolute; height: 100%; width:100%; border: 1px black solid"
-        @correct-balloon-clicked="${() => this.ascendingBalloons.reset()}"
+        @correct-balloon-clicked="${() =>
+          this.ascendingBalloons.restartAscension()}"
         @wrong-balloon-clicked="${() => console.log('wrong balloon clicked')}"
-        .answers=${{ correct: 13, incorrect: [67, 45, 3] }}
+        @ascension-complete="${() =>
+          console.log('ascension complete event received')}"
+        .answers=${this.answers}
+        ?disabled=${this.disabled}
       ></ascending-balloons>
 
       <button
@@ -61,6 +70,16 @@ export class AscendingBalloonsTestApp extends LitElement {
         }}"
       >
         Reset
+      </button>
+
+      <button
+        style="position:absolute; left: 0; top:75px;"
+        id="toggleDisabledButton"
+        @click="${() => {
+          this.disabled = !this.disabled;
+        }}"
+      >
+        Toggle disabled
       </button>
     `;
   }
