@@ -15,6 +15,10 @@
     "prepare": "husky install",
     "build": "rollup --config rollup.config.ts --configPlugin typescript"
   },
+  "browserslist": [
+    "> 1% and not dead and not ie 11",
+    "last 2 versions and not dead and not ie 11"
+  ],
   "eslintConfig": {
     "parser": "@typescript-eslint/parser",
     "plugins": [
@@ -69,6 +73,7 @@
     "@web/rollup-plugin-html": "^1.10.1",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
+    "hint": "^6.1.9",
     "husky": "^7.0.2",
     "lint-staged": "^11.2.3",
     "prettier": "^2.4.1",
