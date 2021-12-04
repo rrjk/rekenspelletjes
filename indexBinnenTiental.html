@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="nl">    
+    <style>
+        html {
+            font-size: x-large;
+        }
+        .buttonTable{
+            position: relative;
+            display: flex;
+            gap: 10px 10px;
+            flex-wrap: wrap;
+        }
+    </style>
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+        <title>Sommen zonder splitsen</title>
+    </head>
+    <body>
+        <script type="module" src="./src/BalloonIndex.ts"></script>  
+
+        <h2>Sommen tot de 10</h2>
+        <div class="buttonTable">
+            <balloon-index 
+                ballooncolor="yellow" 
+                title="Sommen als 3+4" 
+                time="1min"
+                text1="3+4"
+                href="PlusMinBinnenTiental.html?decade=0&operator=plus">
+            </balloon-index>
+            <balloon-index 
+                ballooncolor="yellow" 
+                title="Sommen als 3+4" 
+                time="3min"
+                text1="3+4"
+                href="PlusMinBinnenTiental.html?decade=0&operator=plus">
+            </balloon-index>
+            <balloon-index 
+                ballooncolor="purple" 
+                title="Sommen als 7-5" 
+                time="1min"
+                text1="7-5"
+                href="PlusMinBinnenTiental.html?decade=0&operator=minus">
+            </balloon-index>
+            <balloon-index 
+                ballooncolor="purple" 
+                title="Sommen als 7-5" 
+                time="3min"
+                text1="7-5"
+                href="PlusMinBinnenTiental.html?decade=0&operator=minus">
+            </balloon-index>
+            <balloon-index 
+                ballooncolor="yellowPurple" 
+                title="Sommen als 3+4 en 7-5" 
+                time="1min"
+                text1="3+4"
+                text2="7-5"
+                href="PlusMinBinnenTiental.html?decade=0&operator=minus&operator=plus">
+            </balloon-index>
+            <balloon-index 
+                ballooncolor="yellowPurple" 
+                title="Sommen als 3+4 en 7-5" 
+                time="3min"
+                text1="3+4"
+                text2="7-5"
+                href="PlusMinBinnenTiental.html?decade=0&operator=minus&operator=plus">
+            </balloon-index>
+        </div>
+
+    <h2>Sommen van 10 tot 20</h2>
+        <div class="buttonTable">
+            <balloon-index 
+                ballooncolor="yellow" 
+                title="Sommen als 13+4" 
+                time="1min"
+                text1="13+4"
+                href="PlusMinBinnenTiental.html?decade=10&operator=plus">
+            </balloon-index>
+            <balloon-index 
+                ballooncolor="yellow" 
+                title="Sommen als 13+4" 
+                time="3min"
+                text1="13+4"
+                href="PlusMinBinnenTiental.html?decade=10&operator=plus">
+            </balloon-index>
+            <balloon-index 
+                ballooncolor="purple" 
+                title="Sommen als 17-5" 
+                time="1min"
+                text1="17-5"
+                href="PlusMinBinnenTiental.html?decade=10&operator=minus">
+            </balloon-index>
+            <balloon-index 
+                ballooncolor="purple" 
+                title="Sommen als 17-5" 
+                time="3min"
+                text1="17-5"
+                href="PlusMinBinnenTiental.html?decade=10&operator=minus">
+            </balloon-index>
+            <balloon-index 
+                ballooncolor="yellowPurple" 
+                title="Sommen als 13+4 en 17-5" 
+                time="1min"
+                text1="13+4"
+                text2="17-5"
+                href="PlusMinBinnenTiental.html?decade=10&operator=minus&operator=plus">
+            </balloon-index>
+            <balloon-index 
+                ballooncolor="yellowPurple" 
+                title="Sommen als 13+4 en 17-5" 
+                time="3min"
+                text1="13+4"
+                text2="17-5"
+                href="PlusMinBinnenTiental.html?decade=10&operator=minus&operator=plus">
+            </balloon-index>
+        </div>
+
+        <h2>Sommen tot de 100</h2>
+        <div class="buttonTable">
+            <balloon-index 
+                ballooncolor="yellow" 
+                title="Sommen als 45+2" 
+                time="1min"
+                text1="45+2"
+                href="PlusMinBinnenTiental.html?decade=0&decade=10&decade=20&decade=30&decade=40&decade=50&decade=60&decade=70&decade=80&decade=90&operator=plus">
+            </balloon-index>
+            <balloon-index 
+                ballooncolor="yellow" 
+                title="Sommen als 45+2" 
+                time="3min"
+                text1="45+2"
+                href="PlusMinBinnenTiental.html?decade=0&decade=10&decade=20&decade=30&decade=40&decade=50&decade=60&decade=70&decade=80&decade=90&operator=plus">
+            </balloon-index>
+            <balloon-index 
+                ballooncolor="purple" 
+                title="Sommen als 77-3" 
+                time="1min"
+                text1="77-3"
+                href="PlusMinBinnenTiental.html?decade=0&decade=10&decade=20&decade=30&decade=40&decade=50&decade=60&decade=70&decade=80&decade=90&operator=minus">
+            </balloon-index>
+            <balloon-index 
+                ballooncolor="purple" 
+                title="Sommen als 77-3" 
+                time="3min"
+                text1="77-3"
+                href="PlusMinBinnenTiental.html?decade=0&decade=10&decade=20&decade=30&decade=40&decade=50&decade=60&decade=70&decade=80&decade=90&operator=minus">
+            </balloon-index>
+            <balloon-index 
+                ballooncolor="yellowPurple" 
+                title="Sommen als 45+2 en 77-3" 
+                time="1min"
+                text1="45+2"
+                text2="77-3"
+                href="PlusMinBinnenTiental.html?decade=0&decade=10&decade=20&decade=30&decade=40&decade=50&decade=60&decade=70&decade=80&decade=90&operator=minus&operator=plus">
+            </balloon-index>
+            <balloon-index 
+                ballooncolor="yellowPurple" 
+                title="Sommen als 45+2 en 77-3" 
+                time="3min"
+                text1="45+2"
+                text2="77-3"
+                href="PlusMinBinnenTiental.html?decade=0&decade=10&decade=20&decade=30&decade=40&decade=50&decade=60&decade=70&decade=80&decade=90&operator=minus&operator=plus">
+            </balloon-index>
+        </div>
+
+
+        <h2>Sommen tot de 10</h2>
+        <div style="position: relative; display: grid; gap: 10px 10px; grid-template-columns: 200px 200px;">
+            <div class="HourglassDiv"><img class="Hourglass" alt="1 minuut" src="images/hourglass_green_1min.png"/>1 min</div>
+            <div class="HourglassDiv"><img class="Hourglass" alt="3 minuten" src="images/hourglass_blue_3min.png"/>3 min</div>
+            <a class="Balloon BalloonYellow" title="Sommen als 3+4 (1 minuut)" href="PlusMinBinnenTiental.html?time=60&decade=0&operator=plus">
+                <span class="Text">3+4</span>
+            </a>
+            <a class="Balloon BalloonYellow" title="Sommen als 3+4 (3 minuten)" href="PlusMinBinnenTiental.html?time=180&decade=0&operator=plus">
+                <span class="Text">3+4</span>
+            </a>
+            <a class="Balloon BalloonPurple" title="Sommen als 7-5 (1 minuut)" href="PlusMinBinnenTiental.html?time=60&decade=0&operator=minus">
+                <span class="Text">7-5</span>
+            </a>
+            <a class="Balloon BalloonPurple" title="Sommen als 7-5 (3 minuten)" href="PlusMinBinnenTiental.html?time=180&decade=0&operator=minus">
+                <span class="Text">7-5</span>
+            </a>
+            <a class="Balloon BalloonYellowPurple" title="Sommen als 3+4 en 7-5 (1 minuut)" href="PlusMinBinnenTiental.html?time=60&decade=0&operator=plus&operator=minus">
+                <span class="Text">3+4<br/>7-5</span>
+            </a>
+            <a class="Balloon BalloonYellowPurple" title="Sommen als 3+4 en 7-5 (3 minuten)" href="PlusMinBinnenTiental.html?time=180&decade=0&operator=plus&operator=minus">
+                <span class="Text">3+4<br/>7-5</span>
+            </a>
+        </div>
+
+        <h2>Sommen van 10 tot 20</h2>
+        <div style="position: relative; display: grid; gap: 10px 10px; grid-template-columns: 200px 200px;">
+            <div class="HourglassDiv"><img class="Hourglass" alt="1 minuut" src="images/hourglass_green_1min.png"/>1 min</div>
+            <div class="HourglassDiv"><img class="Hourglass" alt="3 minuten" src="images/hourglass_blue_3min.png"/>3 min</div>
+            <a class="Balloon BalloonYellow1Min" title="Sommen als 13+4 (1 minuut)" href="PlusMinBinnenTiental.html?time=60&decade=10&operator=plus">
+                <span class="Text">13+4</span>
+            </a>
+            <a class="Balloon BalloonYellow1Min" title="Sommen als 13+4 (3 minuten)" href="PlusMinBinnenTiental.html?time=180&decade=10&operator=plus">
+                <span class="Text">13+4</span>
+            </a>
+            <a class="Balloon BalloonPurple1Min" title="Sommen als 17-5 (1 minuut)" href="PlusMinBinnenTiental.html?time=60&decade=10&operator=minus">
+                <span class="Text">17-5</span>
+            </a>
+            <a class="Balloon BalloonPurple1Min" title="Sommen als 17-5 (3 minuten)" href="PlusMinBinnenTiental.html?time=180&decade=10&operator=minus">
+                <span class="Text">17-5</span>
+            </a>
+            <a class="Balloon BalloonYellowPurple1Min" title="Sommen als 13+4 en 17-5 (1 minuut)" href="PlusMinBinnenTiental.html?time=60&decade=10&operator=plus&operator=minus">
+                <span class="Text">13+4<br/>17-5</span>
+            </a>
+            <a class="Balloon BalloonYellowPurple1Min" title="Sommen als 13+4 en 17-5 (3 minuten)" href="PlusMinBinnenTiental.html?time=180&decade=10&operator=plus&operator=minus">
+                <span class="Text">13+4<br/>17-5</span>
+            </a>
+        </div>
+
+
+        <h2>Sommen tot de 10</h2>
+        <div style="position: relative; display: grid; gap: 10px 10px; grid-template-columns: 200px 200px;">
+            <a title="Sommen als 3+4 (1 minuut)" href="PlusMinBinnenTiental.html?time=60&decade=0&operator=plus">
+                <div style="position: relative; color: black; font-size: 22px;">
+                    <img style="vertical-align: middle;" height="75px" width="62px" alt="Sommen als 3+4 (1 minuut)" src="images/balloon-yellow.png"/><img style="vertical-align: middle;" height="50px" alt="Sommen als 3+4 (1 minuut)" src="images/hourglass_green_1min.png"/>
+                    <div style="width: 62px; text-align: center; color: black; font-size: 22px; position: absolute; top: 20px; left: 0;"> 3+4 </div>
+                </div>
+            </a>
+            <a title="Sommen als 3+4 (3 minuten)" href="PlusMinBinnenTiental.html?time=180&decade=0&operator=plus">
+                <div style="position: relative; color: black; font-size: 22px;">
+                    <img style="vertical-align: middle;" height="75px" width="62px" alt="Sommen als 3+4 (3 minuten)" src="images/balloon-yellow.png"/><img style="vertical-align: middle;" height="50px" alt="Sommen als 3+4 (3 minuten)" src="images/hourglass_blue_3min.png"/>
+                    <div style="width: 62px; text-align: center; color: black; font-size: 22px; position: absolute; top: 20px; left: 0;"> 3+4 </div>
+                </div>
+            </a>
+            <a title="Sommen als 7-5 (1 minuut)" href="PlusMinBinnenTiental.html?time=60&decade=0&operator=minus">
+                <div style="position: relative; color: black; font-size: 22px;">
+                    <img style="vertical-align: middle;" height="75px" width="62px" alt="Sommen als 7-5 (1 minuut)" src="images/balloon-purple.png"/><img style="vertical-align: middle;" height="50px" alt="Sommen als 7-5 (1 minuut)" src="images/hourglass_green_1min.png"/>
+                    <div style="width: 62px; text-align: center;color: black; font-size: 22px; position: absolute; top: 20px; left: 0;"> 7-5 </div>
+                </div>
+            </a>
+            <a title="Sommen als 7-5 (3 minuten)" href="PlusMinBinnenTiental.html?time=180&decade=0&operator=minus">
+                <div style="position: relative; color: black; font-size: 22px;">
+                    <img style="vertical-align: middle;" height="75px" width="62px" alt="Sommen als 7-5 (3 minuten)" src="images/balloon-purple.png"/><img style="vertical-align: middle;" height="50px" alt="Sommen als 3+4 (3 minuten)" src="images/hourglass_blue_3min.png"/>
+                    <div style="width: 62px; text-align: center;color: black; font-size: 22px; position: absolute; top: 20px; left: 0;"> 7-5 </div>
+                </div>
+            </a>
+            <a title="Sommen als 3+4 en 7-5 (1 minuut)" href="PlusMinBinnenTiental.html?time=60&decade=0&operator=plus&operator=minus">
+                <div style="position: relative; color: black; font-size: 22px;">
+                    <img style="vertical-align: middle;" height="75px" width="62px" alt="Sommen als 3+4 en 7-5 (1 minuut)" src="images/balloon-yellow-purple.png"/><img style="vertical-align: middle;" height="50px" alt="Sommen als 3+4 en 7-5 (1 minuut)" src="images/hourglass_green_1min.png"/>
+                    <div style="width: 62px; text-align: center;color: black; font-size: 22px; position: absolute; top: 10px; left: 0;"> 3+4</div>
+                    <div style="width: 62px; text-align: center;color: black; font-size: 22px; position: absolute; top: 35px; left: 0;"> 7-5</div>
+                </div>
+            </a>
+            <a title="Sommen als 3+4 en 7-5 (3 minuten)" href="PlusMinBinnenTiental.html?time=180&decade=0&operator=plus&operator=minus">
+                <div style="position: relative; color: black; font-size: 22px;">
+                    <img style="vertical-align: middle;" height="75px" width="62px" alt="Sommen als 3+4 en 7-5 (3 minuten)" src="images/balloon-yellow-purple.png"/><img style="vertical-align: middle;" height="50px" alt="Sommen als 3+4 en 7-5 (3 minuten)" src="images/hourglass_blue_3min.png"/>
+                    <div style="width: 62px; text-align: center;color: black; font-size: 22px; position: absolute; top: 10px; left: 0;"> 3+4</div>
+                    <div style="width: 62px; text-align: center;color: black; font-size: 22px; position: absolute; top: 35px; left: 0;"> 7-5</div>
+                </div>
+            </a>
+
+        </div>
+
+        <h2>Sommen van 10 tot 20</h2>
+        <div style="position: relative; display: grid; gap: 10px 10px; grid-template-columns: 200px 200px;">
+            <a title="Sommen als 13+4 (1 minuut)" href="PlusMinBinnenTiental.html?time=60&decade=10&operator=plus">
+                <div style="position: relative; color: black; font-size: 22px;">
+                    <img style="vertical-align: middle;" height="75px" width="62px" alt="Sommen als 13+4 (1 minuut)" src="images/balloon-yellow.png"/><img style="vertical-align: middle;" height="50px" alt="Sommen als 13+4 (1 minuut)" src="images/hourglass_green_1min.png"/>
+                    <div style="width: 62px; text-align: center;color: black; font-size: 22px; position: absolute; top: 20px; left: 0;"> 13+4 </div>
+                </div>
+            </a>
+            <a title="Sommen als 3+4 (3 minuten)" href="PlusMinBinnenTiental.html?time=180&decade=10&operator=plus">
+                <div style="position: relative; color: black; font-size: 22px;">
+                    <img style="vertical-align: middle;" height="75px" width="62px" alt="Sommen als 13+4 (3 minuten)" src="images/balloon-yellow.png"/><img style="vertical-align: middle;" height="50px" alt="Sommen als 13+4 (3 minuten)" src="images/hourglass_blue_3min.png"/>
+                    <div style="width: 62px; text-align: center;color: black; font-size: 22px; position: absolute; top: 20px; left: 0;"> 13+4 </div>
+                </div>
+            </a>
+            <a title="Sommen als 17-5 (1 minuut)" href="PlusMinBinnenTiental.html?time=60&decade=10&operator=minus">
+                <div style="position: relative; color: black; font-size: 22px;">
+                    <img style="vertical-align: middle;" height="75px" width="62px" alt="Sommen als 17-5 (1 minuut)" src="images/balloon-yellow.png"/><img style="vertical-align: middle;" height="50px" alt="Sommen als 17-5 (1 minuut)" src="images/hourglass_green_1min.png"/>
+                    <div style="width: 62px; text-align: center;color: black; font-size: 22px; position: absolute; top: 20px; left: 0;"> 17-5 </div>
+                </div>
+            </a>
+            <a title="Sommen als 7-5 (3 minuten)" href="PlusMinBinnenTiental.html?time=180&decade=10&operator=minus">
+                <div style="position: relative; color: black; font-size: 22px;">
+                    <img style="vertical-align: middle;" height="75px" width="62px" alt="Sommen als 17-5 (1 minuten)" src="images/balloon-yellow.png"/><img style="vertical-align: middle;" height="50px" alt="Sommen als 17-5 (3 minuten)" src="images/hourglass_blue_3min.png"/>
+                    <div style="width: 62px; text-align: center;color: black; font-size: 22px; position: absolute; top: 20px; left: 0;"> 17-5 </div>
+                </div>
+            </a>
+            <a title="Sommen als 13+4 en 17-5 (1 minuut)" href="PlusMinBinnenTiental.html?time=60&decade=10&operator=plus&operator=minus">
+                <div style="position: relative; color: black; font-size: 22px;">
+                    <img style="vertical-align: middle;" height="100px" width="83px" alt="Sommen als 13+4 en 17-5 (1 minuut)" src="images/balloon-yellow.png"/><img style="vertical-align: middle;" height="50px" alt="Sommen als 13+4 en 17-5 (1 minuut)" src="images/hourglass_green_1min.png"/>
+                    <div style="width: 83px; text-align: center;color: black; font-size: 22px; position: absolute; top: 20px; left: 0;"> 13+4</div>
+                    <div style="width: 83px; text-align: center;color: black; font-size: 22px; position: absolute; top: 50px; left: 0;"> 17-5</div>
+                </div>
+            </a>
+            <a title="Sommen als 3+4 en 7-5 (3 minuten)" href="PlusMinBinnenTiental.html?time=180&decade=10&operator=plus&operator=minus">
+                <div style="position: relative; color: black; font-size: 22px;">
+                    <img style="vertical-align: middle;" height="100px" width="83px" alt="Sommen als 13+4 en 17-5 (1 minuut)" src="images/balloon-yellow.png"/><img style="vertical-align: middle;" height="50px" alt="Sommen als 13+4 en 17-5 (1 minuut)" src="images/hourglass_blue_3min.png"/>
+                    <div style="width: 83px; text-align: center;color: black; font-size: 22px; position: absolute; top: 20px; left: 0;"> 13+4</div>
+                    <div style="width: 83px; text-align: center;color: black; font-size: 22px; position: absolute; top: 50px; left: 0;"> 17-5</div>
+                </div>
+            </a>
+
+        </div>
+
+
+<!----
+        <h2>Sommen tot de 10</h2>
+        <div style="display: grid; grid-template-columns: 200px 200px;"">
+        <a title="Sommen als 3+4 (1 minuut)" href="PlusMinBinnenTiental.html?time=60&decade=0&operator=plus"><div><img height="75px" alt="Sommen als 3+4 (1 minuut)" src="images/balloon-yellow-3+4.png"/><img height="60px" alt="Sommen als 3+4 (1 minuut)" src="images/hourglass_green_1min.png"/></div></a>
+        <a title="Sommen als 3+4 (3 minuten)" href="PlusMinBinnenTiental.html?time=180&decade=0&operator=plus"><div><img height="75px" alt="Sommen als 3+4 (3 minuten)" src="images/balloon-yellow-3+4.png"/><img height="60px" alt="Sommen als 3+4 (3 minuten)" src="images/hourglass_blue_3min.png"/></div></a>
+        <a title="Sommen als 7-5 (1 minuut)" href="PlusMinBinnenTiental.html?time=60&decade=0&operator=minus"><div><img height="75px" alt="Sommen als 7-5 (1 minuut)" src="images/balloon-purple-7-5.png"/><img height="60px" alt="Sommen als 7-5 (1 minuut)" src="images/hourglass_green_1min.png"/></div></a>
+        <a title="Sommen als 7-5 (3 minuten)" href="PlusMinBinnenTiental.html?time=180&decade=0&operator=minus"><div><img height="75px" alt="Sommen als 7-5 (3 minuten)" src="images/balloon-purple-7-5.png"/><img height="60px" alt="Sommen als 7-5 (3 minuten)" src="images/hourglass_blue_3min.png"/></div></a>
+        <a title="Sommen als 3+4 en 7-5 (1 minuut)" href="PlusMinBinnenTiental.html?time=60&decade=0&operator=minus&operator=plus"><div><img height="75px" alt="Sommen als 3+4 en 7-5 (1 minuut)" src="images/balloon-yellow-purple-3+4-7-5.png"/><img height="60px" alt="Sommen als 7-5 (1 minuut)" src="images/hourglass_green_1min.png"/></div></a>
+        <a title="Sommen als 3+4 en 7-5 (3 minuten)" href="PlusMinBinnenTiental.html?time=180&decade=0&operator=minus&operator=plus"><div><img height="75px" alt="Sommen als 3+4 en 7-5 (3 minuten)" src="images/balloon-yellow-purple-3+4-7-5.png"/><img height="60px" alt="Sommen als 7-5 (3 minuten)" src="images/hourglass_blue_3min.png"/></div></a>
+        </div>
+
+        <h2>Sommen van 10 tot 20</h2>
+        <div style="display: flex; flex-wrap: wrap; gap: 40px;">
+        <a title="Sommen als 13+4 (1 minuut)" href="PlusMinBinnenTiental.html?time=60&decade=10&operator=plus"><div><img height="75px" alt="Sommen als 13+4 (1 minuut)" src="images/balloon-yellow-13+4.png"/><img height="60px" alt="Sommen als 13+4 (1 minuut)" src="images/hourglass_green_1min.png"/></div></a>
+        <a title="Sommen als 13+4 (3 minuten)" href="PlusMinBinnenTiental.html?time=180&decade=10&operator=plus"><div><img height="75px" alt="Sommen als 13+4 (3 minuten)" src="images/balloon-yellow-13+4.png"/><img height="60px" alt="Sommen als 13+4 (3 minuten)" src="images/hourglass_blue_3min.png"/></div></a>
+        <a title="Sommen als 17-5 (1 minuut)" href="PlusMinBinnenTiental.html?time=60&decade=10&operator=minus"><div><img height="75px" alt="Sommen als 17-5 (1 minuut)" src="images/balloon-purple-17-5.png"/><img height="60px" alt="Sommen als 17-5 (1 minuut)" src="images/hourglass_green_1min.png"/></div></a>
+        <a title="Sommen als 17-5 (3 minuten)" href="PlusMinBinnenTiental.html?time=180&decade=10&operator=minus"><div><img height="75px" alt="Sommen als 17-5 (3 minuten)" src="images/balloon-purple-17-5.png"/><img height="60px" alt="Sommen als 17-5 (3 minuten)" src="images/hourglass_blue_3min.png"/></div></a>
+        <a title="Sommen als 13+4 en 17-5 (1 minuut)" href="PlusMinBinnenTiental.html?time=60&decade=10&operator=minus&operator=plus"><div><img height="75px" alt="Sommen als 13+4 en 17-5 (1 minuut)" src="images/balloon-yellow-purple-13+4-17-5.png"/><img height="60px" alt="Sommen als 13+4 en 17-5 (1 minuut)" src="images/hourglass_green_1min.png"/></div></a>
+        <a title="Sommen als 13+4 en 17-5 (3 minuten)" href="PlusMinBinnenTiental.html?time=180&decade=10&operator=minus&operator=plus"><div><img height="75px" alt="Sommen als 13+4 en 17-5 (3 minuten)" src="images/balloon-yellow-purple-13+4-17-5.png"/><img height="60px" alt="Sommen als 13+4 en 17-5 (3 minuten)" src="images/hourglass_blue_3min.png"/></div></a>
+        </div>
+-->
+        <a href="index.html">Terug naar het hoofdmenu</a>
+    </body>
+</html>
