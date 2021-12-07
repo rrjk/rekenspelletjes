@@ -3,7 +3,7 @@ import type { HTMLTemplateResult, CSSResultGroup } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
 /** Possible balloon colors */
-type BalloonColors = 'yellow' | 'purple' | 'yellowPurple';
+type BalloonColors = 'yellow' | 'purple' | 'yellowPurple' | 'green' | 'blue';
 type TimeEnum = '1min' | '3min';
 
 @customElement('balloon-index')
@@ -51,8 +51,16 @@ export class BalloonIndex extends LitElement {
         padding: 0;
       }
 
+      .balloonBlue {
+        background-image: url('images/balloon-blue.png');
+      }
+
       .balloonPurple {
         background-image: url('images/balloon-purple.png');
+      }
+
+      .balloonGreen {
+        background-image: url('images/balloon-green.png');
       }
 
       .balloonYellow {
@@ -78,13 +86,9 @@ export class BalloonIndex extends LitElement {
   }
 
   render(): HTMLTemplateResult {
-    let text: HTMLTemplateResult;
-    if (this.text1 !== '' && this.text2 !== '')
-      text = html`${this.text1} <br />
-        ${this.text2}`;
-    else if (this.text1 !== '') text = html`${this.text1}`;
-    else if (this.text2 !== '') text = html`${this.text2}`;
-    else text = html``;
+    let linebreakAfter1 = html``;
+    if (this.text1 !== '' && this.text2 !== '') linebreakAfter1 = html`<br />`;
+    const text = html`${this.text1}${linebreakAfter1}${this.text2}`;
 
     const balloonColorClass =
       this.ballooncolor.charAt(0).toUpperCase() + this.ballooncolor.slice(1);
@@ -97,12 +101,12 @@ export class BalloonIndex extends LitElement {
     if (this.time === '1min') {
       timeText = '(1 minuut)';
       timeLabel = '';
-      hourglassImage = 'hourglass_green_1min.png';
+      hourglassImage = 'hourglass_1min.png';
       url = this.href.concat('&time=60');
     } else {
       timeText = '(3 minuten)';
       timeLabel = '';
-      hourglassImage = 'hourglass_blue_3min.png';
+      hourglassImage = 'hourglass_3min.png';
       url = this.href.concat('&time=180');
     }
 
