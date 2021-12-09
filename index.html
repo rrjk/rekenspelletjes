@@ -4,6 +4,13 @@
         html {
             font-size: xx-large;
         }
+        .buttonTable{
+            position: relative;
+            display: grid;
+            gap: 10px 10px;
+            flex-wrap: wrap;
+            width: 450px;
+        }
     </style>
     <head>
         <meta charset="UTF-8">
@@ -11,14 +18,34 @@
         <title>Rekenspelletjes</title>
     </head>
     <body>
+        <script type="module" src="./src/IconLabelButton.ts"></script>  
+        <script type="module" src="./src/BalloonWithTextOverlay.ts"></script>
+        <script type="module" src="./src/JumpingJanWithTextOverlay.ts"></script>
+
         <h1>Rekenspelletjes</h1>
+        <div class="buttonTable">
+            <icon-label-button 
+                title="Splitsen van getallen"
+                href="indexSplitsen.html">
+                <balloon-with-text-overlay ballooncolor="yellow" text1="/ \"></balloon-with-text-overlay>
+            </icon-label-button>
+            <icon-label-button 
+                title="Plus- en minsommen zonder splitsen" 
+                href="indexBinnenTiental.html">
+                <balloon-with-text-overlay ballooncolor="green" text1="+" text2="−"></balloon-with-text-overlay>
+            </icon-label-button>
+            <icon-label-button 
+                title="Laat Jan op de juiste plek op de getallenlijn springen" 
+                href="indexSpringOpGetallenlijn.html">
+                <jumping-jan-with-text-overlay smallestTickmark="tickMark1"></balloon-with-text-overlay>
+            </icon-label-button>
+
+        </div>
+
+
         <ul>
             <li><a href="indexAanklikkenInVolgorde.html">Getallenrijen ...</a></li>
             <li><a href="indexKlikFotoOpGetallenlijn.html">Klik de juiste foto aan op de getallenlijn ...</a></li>
-            <li><a href="indexSpringOpGetallenlijn.html">Laat Jan op de juiste plek op de getallenlijn springen ...</a></li>
-            <li><a href="indexSplitsen.html">Splitsen van getallen ... </a></li>
-            <li><a href="indexBinnenTiental.html">Sommen zonder splitsen... </a></li>
-            
             <li><a href="indexSommenTot20Splitsen.html">Sommen tot de 20, over het tiental, met splitsen ... </a></li>
             <li><a href="indexSommenTot100Splitsen.html">Sommen tot de 100, over het tiental, met splitsen ... </a></li>
             <li><a href="indexBallenKnallen.html">Wegklikken met sprongen: Ballen knallen ... </a></li>
