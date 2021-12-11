@@ -22,7 +22,7 @@ export class IconLabelButton extends LitElement {
         border: 1px solid black;
         padding: 2px 8px;
         display: grid;
-        grid-template-columns: 100px auto;
+        grid-template-columns: 140px auto;
         background-color: lightgrey;
         align-items: center;
         border-radius: 20px;
@@ -30,6 +30,8 @@ export class IconLabelButton extends LitElement {
 
       p {
         font-size: 25px;
+        margin: 0;
+        padding: 0;
       }
     `;
   }
