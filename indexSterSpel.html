@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="nl">    
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+        <title>Sterrenspel</title>
+    </head>
+    <style>
+        html {
+            font-size: x-large;
+        }
+        .buttonTable{
+            position: relative;
+            display: flex;
+            gap: 10px 10px;
+            flex-wrap: wrap;
+            width: 410px;
+        }
+    </style>
+    <body>
+        <script type="module" src="./src/IconHourglassButton.ts"></script>  
+        <script type="module" src="./src/ElliStarWithTextOverlay.ts"></script>  
+
+
+        <h2>Sterrenspel - Plus en min sommen met hele tientallen.</h2>
+        <div class="buttonTable">
+            <icon-hourglass-button 
+                title="Sommen als 34+40" 
+                time="1min"
+                href="PlusMinHeleTientallen.html?operator=plus"
+            >
+                <elli-star-with-text-overlay
+                    imagecolor="yellow" 
+                    text1="+40"
+                ></elli-star-with-text-overlay>
+            </icon-hourglass-button>
+            <icon-hourglass-button 
+                title="Sommen als 34+40" 
+                time="3min"
+                href="PlusMinHeleTientallen.html?operator=plus"
+            >
+                <elli-star-with-text-overlay
+                imagecolor="yellow"  
+                    text1="+40"
+                ></elli-star-with-text-overlay>
+            </icon-hourglass-button>
+
+            <icon-hourglass-button 
+                title="Sommen als 58−30" 
+                time="1min"
+                href="PlusMinHeleTientallen.html?operator=minus"
+            >
+                <elli-star-with-text-overlay
+                    imagecolor="green"  
+                    text1="−30"
+                ></elli-star-with-text-overlay>
+            </icon-hourglass-button>
+            <icon-hourglass-button 
+                title="Sommen als 58−30" 
+                time="3min"
+                href="PlusMinHeleTientallen.html?operator=minus"
+            >
+                <elli-star-with-text-overlay
+                    imagecolor="green" 
+                    text1="−30"
+                ></elli-star-with-text-overlay>
+            </icon-hourglass-button>
+
+            <icon-hourglass-button 
+                title="Sommen als 34+40 en 58−30" 
+                time="1min"
+                href="PlusMinHeleTientallen.html?operator=minus"
+            >
+                <elli-star-with-text-overlay
+                    imagecolor="blue"  
+                    text1="+40"
+                    text2="−30"
+                ></elli-star-with-text-overlay>
+            </icon-hourglass-button>
+            <icon-hourglass-button 
+                title="Sommen als 34+40 en 58−30" 
+                time="3min"
+                href="PlusMinHeleTientallen.html?operator=minus"
+            >
+                <elli-star-with-text-overlay
+                    imagecolor="blue"  
+                    text1="+40"
+                    text2="−30"
+                ></elli-star-with-text-overlay>
+            </icon-hourglass-button>
+
+            
+            
+        </div>
+        <p>
+            <a href="index.html">Terug naar het hoofdmenu</a>
+        </p>
+    </body>
+</html>

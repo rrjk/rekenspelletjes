@@ -1,11 +1,7 @@
 import { LitElement, html, css } from 'lit';
 import type { HTMLTemplateResult, CSSResultGroup } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import type { BalloonColors } from './BalloonWithTextOverlay';
 import './BalloonWithTextOverlay';
-
-/** Possible balloon colors */
-type TimeEnum = '1min' | '3min';
 
 @customElement('icon-label-button')
 export class IconLabelButton extends LitElement {

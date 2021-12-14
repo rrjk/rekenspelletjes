@@ -11,6 +11,7 @@ export interface Answers {
 
 /** Possible balloon colors */
 type BalloonColors = 'blue' | 'green' | 'yellow' | 'purple';
+type ImageType = 'balloon' | 'star';
 
 /** Interface definition for the ballooninfo */
 interface BalloonInfo {
@@ -45,6 +46,9 @@ export class AscendingBalloons extends LitElement {
    */
   @state()
   balloonInfoList: BalloonInfo[] = [];
+
+  @property()
+  imageType: ImageType = 'balloon';
 
   constructor() {
     super();
@@ -106,7 +110,21 @@ export class AscendingBalloons extends LitElement {
         }
       }
 
-      .Balloon {
+      .star {
+        background-size: 3.5em 3.5em;
+        background-color: Transparent;
+        font-size: calc(0.9em + 2vmin);
+        border: none;
+        outline: none;
+        width: 3.5em;
+        height: 3.5em;
+        line-height: 3.8em;
+        color: black;
+        text-align: center;
+        padding: 0;
+      }
+
+      .balloon {
         background-size: 1.76em 2em;
         background-color: Transparent;
         font-size: calc(1em + 4vmin);
@@ -206,8 +224,9 @@ export class AscendingBalloons extends LitElement {
             html`
               <button
                 type="button"
-                class="Balloon"
-                style="background-image: url('images/balloon-${balloonInfo.color}.png');"
+                class="${this.imageType}"
+                style="background-image: url('images/${this
+                  .imageType}-${balloonInfo.color}.png');"
                 @click="${() => this.balloonClicked(balloonInfo.label)}"
                 ?disabled="${balloonInfo.disabled || this.disabled}"
               >

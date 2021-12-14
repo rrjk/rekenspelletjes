@@ -28,6 +28,8 @@ export abstract class TimeLimitedGame extends LitElement {
   /** Gametime in number of seconds */
   @state()
   private gameTime: number;
+  @state()
+  protected welcomeDialogImageUrl = `images/Mompitz Otto.png`;
 
   /** Constructor, parse URL parameters */
   constructor() {
@@ -129,7 +131,10 @@ export abstract class TimeLimitedGame extends LitElement {
       >
       </score-box>
 
-      <message-dialog id="messageDialog"></message-dialog>
+      <message-dialog
+        id="messageDialog"
+        imageUrl="${this.welcomeDialogImageUrl}"
+      ></message-dialog>
       <gameover-dialog id="gameOverDialog"></gameover-dialog>
     `;
   }

@@ -3,11 +3,7 @@ import { customElement, state } from 'lit/decorators.js';
 import type { CSSResultGroup, HTMLTemplateResult } from 'lit';
 
 import { TimeLimitedGame } from './TimeLimitedGame';
-import {
-  randomFromSet,
-  randomFromSetAndSplice,
-  randomIntFromRange,
-} from './Randomizer';
+import { randomFromSet, randomFromSetAndSplice } from './Randomizer';
 
 import './AscendingBalloons';
 import type { Answers, AscendingBalloons } from './AscendingBalloons';
