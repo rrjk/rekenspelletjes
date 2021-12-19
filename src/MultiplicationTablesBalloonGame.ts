@@ -10,6 +10,7 @@ import {
 } from './Randomizer';
 import './AscendingBalloons';
 import type { Answers, AscendingBalloons } from './AscendingBalloons';
+import { GameLogger } from './GameLogger';
 
 @customElement('mutiplication-tables-balloon-game-app')
 export class MultiplicationTablesBalloonGameApp extends TimeLimitedGame {
@@ -23,6 +24,7 @@ export class MultiplicationTablesBalloonGameApp extends TimeLimitedGame {
   private gameElementsDisabled = true;
 
   private tablesToUse: number[] = [];
+  private gameLogger = new GameLogger('C', '');
 
   constructor() {
     super();
@@ -142,6 +144,7 @@ export class MultiplicationTablesBalloonGameApp extends TimeLimitedGame {
 
   executeGameOverActions(): void {
     this.gameElementsDisabled = true;
+    this.gameLogger.logGameOver();
   }
 
   /** Render the application */

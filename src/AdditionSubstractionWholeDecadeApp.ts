@@ -10,6 +10,7 @@ import {
 } from './Randomizer';
 import './AscendingBalloons';
 import type { Answers, AscendingBalloons } from './AscendingBalloons';
+import { GameLogger } from './GameLogger';
 
 type Operator = '+' | '-';
 
@@ -27,6 +28,8 @@ export class AdditionSubstractionWholeDecadeApp extends TimeLimitedGame {
   private gameElementsDisabled = true;
 
   private operators: Operator[] = [];
+
+  private gameLogger = new GameLogger('B', '');
 
   constructor() {
     super();
@@ -48,6 +51,14 @@ export class AdditionSubstractionWholeDecadeApp extends TimeLimitedGame {
         this.operators.push('-');
     });
     if (this.operators.length === 0) this.operators.push('+');
+
+    if (this.operators.length === 2) {
+      this.gameLogger.setSubCode('c');
+    } else if (this.operators[0] === '+') {
+      this.gameLogger.setSubCode('a');
+    } else if (this.operators[1] === '-') {
+      this.gameLogger.setSubCode('b');
+    }
   }
 
   /** Get the ascending balloons child */
@@ -171,6 +182,9 @@ export class AdditionSubstractionWholeDecadeApp extends TimeLimitedGame {
 
   executeGameOverActions(): void {
     this.gameElementsDisabled = true;
+    fetch('asdflog.php?game=B', {
+      method: 'POST',
+    });
   }
 
   /** Render the application */
