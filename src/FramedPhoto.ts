@@ -18,9 +18,9 @@ const photos: { [key: string]: PhotoMetaData } = {
     color: '#97cdb4',
   },
   Jan: {
-    fileName: 'Mompitz Jan.png',
-    width: 1183,
-    height: 1133,
+    fileName: 'Mompitz Jan-500.png',
+    width: 500,
+    height: 479,
     color: '#f6d435',
   },
   Johannes: {
@@ -36,9 +36,9 @@ const photos: { [key: string]: PhotoMetaData } = {
     color: '#9c6ccf',
   },
   Disabled: {
-    fileName: 'cross-out-black.png',
-    width: 980,
-    height: 900,
+    fileName: 'cross-out-black-500.png',
+    width: 500,
+    height: 459,
     color: '#000000',
   },
 };

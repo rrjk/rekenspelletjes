@@ -14,7 +14,8 @@
     "typecheck": "tsc --noEmit",
     "start": "web-dev-server",
     "prepare": "husky install",
-    "build": "rollup --config rollup.config.ts --configPlugin typescript"
+    "clean": "del-cli  dist",
+    "build": "npm run clean && rollup --config rollup.config.ts --configPlugin typescript"
   },
   "browserslist": [
     "> 1% and not dead and not ie 11",
@@ -73,6 +74,7 @@
     "@web/dev-server-esbuild": "^0.2.16",
     "@web/rollup-plugin-copy": "^0.3.0",
     "@web/rollup-plugin-html": "^1.10.1",
+    "del-cli": "^4.0.1",
     "eslint": "^8.6.0",
     "eslint-config-prettier": "^8.3.0",
     "hint": "^6.1.9",

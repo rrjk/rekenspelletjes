@@ -34,7 +34,6 @@ export class BalloonIndex extends LitElement {
         text-align: center;
         margin: 2px;
         padding: 0;
-        background-image: url('images/Mompitz Elli star.png');
       }
 
       .image-blue {
