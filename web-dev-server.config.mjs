@@ -4,7 +4,5 @@ export default /** @type {import('@web/dev-server').DevServerConfig} */ ({
   nodeResolve: true,
   open: '/',
 
-  plugins: [
-    esbuildPlugin({ ts: true, target: 'auto' }),
-  ],
+  plugins: [esbuildPlugin({ ts: true, target: 'auto' })],
 });
