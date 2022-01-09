@@ -6,10 +6,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     />
-    <meta
-      name="Description"
-      content="Gooi de getallen op de juiste volgorde in de kist."
-    />
+    <meta name="Description" content="Tets playing field" />
     <style>
       body {
         margin: 0;
@@ -18,14 +15,20 @@
         background-color: #ededed;
         overflow: hidden; /* This ensures we won't get scrollbars.*/
         touch-action: none;
-        user-select: none;
       }
     </style>
-    <title>Getallen sorteren</title>
+    <title>Test playing field</title>
   </head>
 
   <body>
-    <sorting-game-app></sorting-game-app>
-    <script type="module" src="./src/SortingGameApp.ts"></script>
+    <div style="display: flex">
+      <div style="width: 200px">
+        <img src="images/red-box.png" style="width: 100%; height: auto" />
+      </div>
+    </div>
+
+    <div style="display: inline-block; translate: (100px, 200px)">
+      <img src="images/red-box.png" style="width: 400px" />
+    </div>
   </body>
 </html>

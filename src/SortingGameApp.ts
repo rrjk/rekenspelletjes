@@ -4,6 +4,7 @@ import { customElement, state } from 'lit/decorators.js';
 import type { CSSResultGroup, HTMLTemplateResult } from 'lit';
 
 import { TimeLimitedGame } from './TimeLimitedGame';
+
 import {
   randomFromSet,
   randomFromSetAndSplice,
@@ -13,6 +14,11 @@ import './AscendingBalloons';
 import type { Answers, AscendingBalloons } from './AscendingBalloons';
 import { GameLogger } from './GameLogger';
 
+import { DragAndDropCoordinator } from './DragAndDropCoordinator';
+import type { Draggable } from './DragAndDropCoordinator';
+
+import './DraggableElement';
+
 @customElement('sorting-game-app')
 export class SortingGameApp extends TimeLimitedGame {
   @state()
@@ -21,6 +27,13 @@ export class SortingGameApp extends TimeLimitedGame {
   private gameElementsDisabled = true;
 
   private gameLogger = new GameLogger('B', '');
+
+  private dragDisabled = false;
+  private mouseDrag = true;
+  private cummulativeDeltaX = 0;
+  private cummulativeDeltaY = 0;
+
+  private dragAndDropCoordinator = new DragAndDropCoordinator();
 
   constructor() {
     super();
@@ -71,34 +84,68 @@ export class SortingGameApp extends TimeLimitedGame {
         align-items: center;
       }
 
-      .number {
-        display: block;
-        width: auto;
-        height: 18vh;
+      @media (min-aspect-ratio: 2/3) {
+        .number {
+          display: block;
+          width: auto;
+          height: 18vh;
+        }
+
+        .boxSmallest {
+          display: block;
+          width: auto;
+          height: 12vh;
+        }
+
+        .boxSmall {
+          display: block;
+          width: auto;
+          height: 25vh;
+        }
+
+        .boxBig {
+          display: block;
+          width: auto;
+          height: 35vh;
+        }
+
+        .boxBiggest {
+          display: block;
+          width: auto;
+          height: 45vh;
+        }
       }
 
-      .boxSmallest {
-        display: block;
-        width: auto;
-        height: 12vh;
-      }
+      @media (max-aspect-ratio: 2/3) {
+        .number {
+          display: block;
+          width: 10vw;
+          height: auto;
+        }
 
-      .boxSmall {
-        display: block;
-        width: auto;
-        height: 25vh;
-      }
+        .boxSmallest {
+          display: block;
+          width: 8vw;
+          height: auto;
+        }
 
-      .boxBig {
-        display: block;
-        width: auto;
-        height: 35vh;
-      }
+        .boxSmall {
+          display: block;
+          width: 12vw;
+          height: auto;
+        }
 
-      .boxBiggest {
-        display: block;
-        width: auto;
-        height: 45vh;
+        .boxBig {
+          display: block;
+          width: 16vw;
+          height: auto;
+        }
+
+        .boxBiggest {
+          display: block;
+          width: 20vw;
+          height: auto;
+        }
       }
     `;
   }
@@ -150,24 +197,33 @@ export class SortingGameApp extends TimeLimitedGame {
     });
   }
 
-  numberDragStart(evt: DragEvent) {
-    // evt.dataTransfer!.setData('text/plain', evt.target!.id);
-    // evt.dataTransfer!.dropEffect = 'move';
-    console.log(evt);
+  async firstUpdated(): Promise<void> {
+    await this.getUpdateComplete();
+
+    const numberElements: NodeListOf<Draggable> =
+      this.getElement<HTMLElement>('#numbersContainer').querySelectorAll(
+        'draggable-element'
+      );
+
+    numberElements.forEach(element => {
+      this.dragAndDropCoordinator.addDraggable(element.id, element);
+    });
+
+    /* Workaround for bug found in firefox where draggable=false is ignored in case user-select is set to none.
+     * Please note that this expression cannot pierce into webcomponent's shadowroms.
+     * The img in slots are found though.
+     */
+    if (window.navigator.userAgent.toLowerCase().includes('firefox')) {
+      this.renderRoot.querySelectorAll('img[draggable=false]').forEach(el => {
+        el.addEventListener('mousedown', event => event.preventDefault());
+      });
+    }
+
+    return super.firstUpdated();
   }
 
-  boxDragOver(evt: DragEvent) {
-    evt.preventDefault();
-    // evt.dataTransfer!.dropEffect = 'move';
-    console.log('drag over');
-    // console.log(evt.target.id);
-  }
-
-  boxDragDrop(evt: DragEvent) {
-    alert('box Drag Drop');
-    evt.preventDefault();
-    console.log('drag drop');
-    console.log(evt);
+  mouseUp(): void {
+    this.mouseDrag = false;
   }
 
   /** Render the application */
@@ -175,34 +231,50 @@ export class SortingGameApp extends TimeLimitedGame {
     return html`
       ${this.renderTimedGameApp()}
       <div class="numbersAndBoxes">
-        <div class="numbers">
-          <img alt="number 1" id="number1" @dragstart="${(evt: DragEvent) =>
-            this.numberDragStart(
-              evt
-            )}" draggable="true" class="number" src="images/Mompitz4.png"></img>
-          <img alt="number 2" id="number2" @dragstart="${(evt: DragEvent) =>
-            this.numberDragStart(
-              evt
-            )}" draggable="true" class="number" src="images/Mompitz7.png"></img>
-          <img alt="number 3" id="number3" @dragstart="${(evt: DragEvent) =>
-            this.numberDragStart(
-              evt
-            )}" draggable="true" class="number" src="images/Mompitz4.png"></img>
-          <img alt="number 4" id="number4" @dragstart="${(evt: DragEvent) =>
-            this.numberDragStart(
-              evt
-            )}" draggable="true" class="number" src="images/Mompitz7.png"></img>
+        <div class="numbers" id="numbersContainer">
+          <draggable-element
+            id="number1" >
+            <img 
+              draggable="false" 
+              alt="number 1" 
+              class="number" 
+              src="images/Mompitz4.png"
+            />
+          </draggable-element>
+          <draggable-element
+            id="number2" >
+            <img 
+              draggable="false" 
+              alt="number 2" 
+              class="number" 
+              src="images/Mompitz7.png"
+            />
+          </draggable-element>
+          <draggable-element
+            id="number3">
+            <img 
+              draggable="false" 
+              alt="number 3" 
+              class="number" 
+              src="images/Mompitz5.png"
+            />
+          </draggable-element>
+          <draggable-element
+            id="number4">
+            <img 
+              draggable="false" 
+              alt="number 4" 
+              class="number" 
+              src="images/Mompitz8.png"
+            />
+          </draggable-element>
 
         </div>
         <div class="boxes">
-          <img alt="smallest box" @drop="${(evt: DragEvent) =>
-            this.boxDragDrop(evt)}" @dragover="${(evt: DragEvent) =>
-      this.boxDragOver(evt)}"
-            
-            class="boxSmallest" src="images/red-box.png"></img>
-          <img alt="small box" class="boxSmall" src="images/red-box.png"></img>
-          <img alt="big box" class="boxBig" src="images/red-box.png"></img>
-          <img alt="biggest box" class="boxBiggest" src="images/red-box.png"></img>
+          <img draggable="false" alt="smallest box" class="boxSmallest" src="images/red-box.png"></img>
+          <img draggable="false" alt="small box" class="boxSmall" src="images/red-box.png"></img>
+          <img draggable="false" alt="big box" class="boxBig" src="images/red-box.png"></img>
+          <img draggable="false" alt="biggest box" class="boxBiggest" src="images/red-box.png"></img>
         </div>
       </div>
     `;

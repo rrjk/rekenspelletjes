@@ -47,7 +47,7 @@ export abstract class TimeLimitedGame extends LitElement {
   protected getElement<T>(query: string): T {
     const ret = <T | null>this.renderRoot.querySelector(query);
     if (ret === null) {
-      throw new ChildNotFoundError(query, 'FindOnNumberApp');
+      throw new ChildNotFoundError(query, 'TimeLimitedGame');
     }
     return ret;
   }
