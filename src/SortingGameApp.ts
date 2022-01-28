@@ -5,70 +5,91 @@ import type { CSSResultGroup, HTMLTemplateResult } from 'lit';
 
 import { TimeLimitedGame } from './TimeLimitedGame';
 
-import {
-  randomFromSet,
-  randomFromSetAndSplice,
-  randomIntFromRange,
-} from './Randomizer';
+import type { DropTargetBox } from './DropTargetBox';
+import './DropTargetBox';
+
+import { randomIntFromRange } from './Randomizer';
 import './AscendingBalloons';
-import type { Answers, AscendingBalloons } from './AscendingBalloons';
 import { GameLogger } from './GameLogger';
 
-import { DragAndDropCoordinator } from './DragAndDropCoordinator';
-import type { Draggable } from './DragAndDropCoordinator';
-
+import type { DraggableElement } from './DraggableElement';
 import './DraggableElement';
+
+type BoxSize = 'Smallest' | 'Small' | 'Big' | 'Biggest';
+
+type NumberInformation = {
+  id: string;
+  visible: boolean;
+  value: number;
+};
+
+type BoxInformation = {
+  id: string;
+  numberVisible: boolean;
+  intendedValue: number;
+  size: BoxSize;
+};
 
 @customElement('sorting-game-app')
 export class SortingGameApp extends TimeLimitedGame {
+  private static boxSizes: Map<number, BoxSize[]> = new Map<number, BoxSize[]>([
+    [4, ['Smallest', 'Small', 'Big', 'Biggest']],
+    [3, ['Small', 'Big', 'Biggest']],
+    [2, ['Small', 'Biggest']],
+  ]);
+
   @state()
-  private numbers = [1, 2, 3, 4];
+  private numbers: NumberInformation[] = [];
+
   @state()
-  private gameElementsDisabled = true;
+  private boxes: BoxInformation[] = [];
 
-  private gameLogger = new GameLogger('B', '');
+  private gameLogger = new GameLogger('E', 'a');
 
-  private dragDisabled = false;
-  private mouseDrag = true;
-  private cummulativeDeltaX = 0;
-  private cummulativeDeltaY = 0;
+  private numberCorrectDrag = 0;
 
-  private dragAndDropCoordinator = new DragAndDropCoordinator();
+  private getNumber(query: string): DraggableElement {
+    return this.getElement<DraggableElement>(query);
+  }
+
+  private getBox(query: string): DropTargetBox {
+    return this.getElement<DropTargetBox>(query);
+  }
 
   constructor() {
     super();
-    this.welcomeDialogImageUrl = 'images/Mompitz Elli star-yellow.png';
+    this.welcomeDialogImageUrl = 'images/Mompitz7.png';
     this.parseUrl();
   }
 
-  private parseUrl(): void {
+  protected parseUrl(): void {
     const urlParams = new URLSearchParams(window.location.search);
-    /*
-    const operatorsFromUrl = urlParams.getAll('operator');
-    operatorsFromUrl.forEach(operator => {
-      if (operator === 'plus' && !this.operators.find(value => value === '+'))
-        this.operators.push('+');
-      else if (
-        operator === 'minus' &&
-        !this.operators.find(value => value === '-')
-      )
-        this.operators.push('-');
-    });
-    if (this.operators.length === 0) this.operators.push('+');
 
-    if (this.operators.length === 2) {
-      this.gameLogger.setSubCode('c');
-    } else if (this.operators[0] === '+') {
-      this.gameLogger.setSubCode('a');
-    } else if (this.operators[1] === '-') {
-      this.gameLogger.setSubCode('b');
+    let numberBoxes = 4;
+    if (urlParams.has('numberBoxes')) {
+      numberBoxes = parseInt(urlParams.get('numberBoxes') || '', 10);
+      if (!numberBoxes || numberBoxes < 2 || numberBoxes > 4) {
+        numberBoxes = 4;
+      }
     }
-*/
+    for (let i = 0; i < numberBoxes; i++) {
+      this.numbers.push({ id: `number${i}`, visible: false, value: i });
+
+      this.boxes.push({
+        id: `box${i}`,
+        numberVisible: false,
+        intendedValue: i,
+        size: SortingGameApp.boxSizes.get(numberBoxes)?.[i] ?? 'Smallest',
+      });
+    }
   }
 
   /** Get all static styles */
   static get styles(): CSSResultGroup {
     return css`
+      .hidden {
+        visibility: hidden;
+      }
       .numbersAndBoxes {
         display: flex;
         flex-direction: column;
@@ -90,30 +111,6 @@ export class SortingGameApp extends TimeLimitedGame {
           width: auto;
           height: 18vh;
         }
-
-        .boxSmallest {
-          display: block;
-          width: auto;
-          height: 12vh;
-        }
-
-        .boxSmall {
-          display: block;
-          width: auto;
-          height: 25vh;
-        }
-
-        .boxBig {
-          display: block;
-          width: auto;
-          height: 35vh;
-        }
-
-        .boxBiggest {
-          display: block;
-          width: auto;
-          height: 45vh;
-        }
       }
 
       @media (max-aspect-ratio: 2/3) {
@@ -122,37 +119,22 @@ export class SortingGameApp extends TimeLimitedGame {
           width: 10vw;
           height: auto;
         }
-
-        .boxSmallest {
-          display: block;
-          width: 8vw;
-          height: auto;
-        }
-
-        .boxSmall {
-          display: block;
-          width: 12vw;
-          height: auto;
-        }
-
-        .boxBig {
-          display: block;
-          width: 16vw;
-          height: auto;
-        }
-
-        .boxBiggest {
-          display: block;
-          width: 20vw;
-          height: auto;
-        }
       }
     `;
   }
 
   override async getUpdateComplete(): Promise<boolean> {
     const result = await super.getUpdateComplete();
-    // await this.ascendingBalloons.updateComplete;
+
+    const promises = [];
+    for (const number of this.numbers) {
+      promises.push(this.getNumber(`#${number.id}`).updateComplete);
+    }
+    for (const box of this.boxes) {
+      promises.push(this.getBox(`#${box.id}`).updateComplete);
+    }
+
+    await Promise.all(promises);
     return result;
   }
 
@@ -160,21 +142,26 @@ export class SortingGameApp extends TimeLimitedGame {
    * Progress bar and counters are automatically reset.
    */
   startNewGame(): void {
-    window.scrollTo(0, 1);
     this.newRound();
   }
 
   /** Get the text to show in the game over dialog */
   get welcomeMessage(): HTMLTemplateResult {
     return html`<p>
-      Gooi het kleinste getal in de kleinste doos en het grootste getal in de
-      grootste doos
+      Verplaats het kleinste getal naar de kleinste doos en het grootste getal
+      naar de grootste doos
     </p>`;
   }
 
   /** Get the title for the welcome dialog. */
   get welcomeDialogTitle(): string {
     return `Sorteer de getallen`;
+  }
+
+  private handleCorrectDrag(): void {
+    this.numberCorrectDrag += 1;
+    if (this.numberCorrectDrag === this.numbers.length)
+      this.handleCorrectAnswer();
   }
 
   private handleCorrectAnswer(): void {
@@ -187,26 +174,55 @@ export class SortingGameApp extends TimeLimitedGame {
   }
 
   private newRound() {
-    this.gameElementsDisabled = false;
+    this.numberCorrectDrag = 0;
+    for (const box of this.boxes) {
+      box.numberVisible = false;
+    }
+
+    const newValues: number[] = [];
+    while (newValues.length !== this.numbers.length) {
+      const proposedValue = randomIntFromRange(0, 9);
+      if (newValues.find(value => value === proposedValue) === undefined)
+        newValues.push(proposedValue);
+    }
+
+    this.numbers.forEach((number, index) => {
+      number.value = newValues[index];
+      this.getNumber(`#${number.id}`).resetDrag();
+      this.getNumber(`#${number.id}`).markAllTargetsAsDropOk();
+      number.visible = true;
+    });
+
+    newValues.sort((a, b) => a - b);
+
+    this.boxes.forEach((box, index) => {
+      box.intendedValue = newValues[index];
+      box.numberVisible = false;
+    });
+
+    this.requestUpdate();
   }
 
   executeGameOverActions(): void {
-    this.gameElementsDisabled = true;
-    fetch('asdflog.php?game=D', {
-      method: 'POST',
-    });
+    this.gameLogger.logGameOver();
   }
 
   async firstUpdated(): Promise<void> {
     await this.getUpdateComplete();
 
-    const numberElements: NodeListOf<Draggable> =
-      this.getElement<HTMLElement>('#numbersContainer').querySelectorAll(
-        'draggable-element'
-      );
+    // Add all boxes as targets to all draggable numbers;
+    this.renderRoot.querySelectorAll('.draggableNumber').forEach(draggable => {
+      this.renderRoot
+        .querySelectorAll('drop-target-box')
+        .forEach(dropTarget => {
+          (<DraggableElement>draggable).addDropElement(
+            <DropTargetBox>dropTarget
+          );
+        });
 
-    numberElements.forEach(element => {
-      this.dragAndDropCoordinator.addDraggable(element.id, element);
+      draggable.addEventListener('dropped', event =>
+        this.handleDropped(<CustomEvent>event)
+      );
     });
 
     /* Workaround for bug found in firefox where draggable=false is ignored in case user-select is set to none.
@@ -222,8 +238,35 @@ export class SortingGameApp extends TimeLimitedGame {
     return super.firstUpdated();
   }
 
-  mouseUp(): void {
-    this.mouseDrag = false;
+  handleDropped(evt: CustomEvent) {
+    const number = this.numbers.find(elt => elt.id === evt.detail.draggableId);
+    if (number !== undefined) {
+      const box = this.boxes.find(elt => elt.id === evt.detail.dropTargetId);
+      if (box !== undefined) {
+        if (number.value === box.intendedValue) {
+          number.visible = false;
+          box.numberVisible = true;
+          // Mark this target as a wrong drop target for all numbers
+          for (const numberToMark of this.numbers) {
+            this.getNumber(`#${numberToMark.id}`).markAsWrongDrop(
+              this.getBox(`#${evt.detail.dropTargetId}`)
+            );
+          }
+          this.handleCorrectDrag();
+          // The content of this.numbers and this.boxes has changed, but the variables have not been assigned a different object, so we need to manually request an update
+          this.requestUpdate();
+        } else if (evt.detail.dropType === 'dropOk') {
+          this.handleWrongAnswer();
+          this.getNumber(`#${number.id}`).resetDrag();
+          // A wrong drop was done, this target is marked as a wrong drop to prevent repeated wrong drops.
+          this.getNumber(`#${number.id}`).markAsWrongDrop(
+            this.getBox(`#${evt.detail.dropTargetId}`)
+          );
+        } else {
+          this.getNumber(`#${number.id}`).resetDrag();
+        }
+      }
+    }
   }
 
   /** Render the application */
@@ -232,49 +275,33 @@ export class SortingGameApp extends TimeLimitedGame {
       ${this.renderTimedGameApp()}
       <div class="numbersAndBoxes">
         <div class="numbers" id="numbersContainer">
-          <draggable-element
-            id="number1" >
-            <img 
-              draggable="false" 
-              alt="number 1" 
-              class="number" 
-              src="images/Mompitz4.png"
-            />
-          </draggable-element>
-          <draggable-element
-            id="number2" >
-            <img 
-              draggable="false" 
-              alt="number 2" 
-              class="number" 
-              src="images/Mompitz7.png"
-            />
-          </draggable-element>
-          <draggable-element
-            id="number3">
-            <img 
-              draggable="false" 
-              alt="number 3" 
-              class="number" 
-              src="images/Mompitz5.png"
-            />
-          </draggable-element>
-          <draggable-element
-            id="number4">
-            <img 
-              draggable="false" 
-              alt="number 4" 
-              class="number" 
-              src="images/Mompitz8.png"
-            />
-          </draggable-element>
-
+          ${this.numbers.map(
+            elt =>
+              html` <draggable-element
+                class="draggableNumber ${elt.visible === false ? 'hidden' : ''}"
+                id="${elt.id}"
+              >
+                <img
+                  draggable="false"
+                  alt="${elt.value}"
+                  class="number"
+                  src="images/Mompitz${elt.value}.png"
+                />
+              </draggable-element>`
+          )}
         </div>
+
         <div class="boxes">
-          <img draggable="false" alt="smallest box" class="boxSmallest" src="images/red-box.png"></img>
-          <img draggable="false" alt="small box" class="boxSmall" src="images/red-box.png"></img>
-          <img draggable="false" alt="big box" class="boxBig" src="images/red-box.png"></img>
-          <img draggable="false" alt="biggest box" class="boxBiggest" src="images/red-box.png"></img>
+          ${this.boxes.map(
+            elt => html`<drop-target-box id="${elt.id}" size="${elt.size}">
+              <img
+                draggable="false"
+                alt="${elt.id}"
+                class="number ${elt.numberVisible === false ? 'hidden' : ''}"
+                src="images/Mompitz${elt.intendedValue}.png"
+              />
+            </drop-target-box>`
+          )}
         </div>
       </div>
     `;

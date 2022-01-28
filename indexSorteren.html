@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="nl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Zet de getallen in de juiste volgorde</title>
+  </head>
+  <style>
+    html {
+      font-size: x-large;
+    }
+    .buttonTable {
+      position: relative;
+      display: flex;
+      gap: 10px 10px;
+      flex-wrap: wrap;
+      width: 410px;
+    }
+  </style>
+  <body>
+    <script type="module" src="./src/IconHourglassButton.ts"></script>
+    <script type="module" src="./src/BalloonWithTextOverlay.ts"></script>
+
+    <h2>Zet getallen 0 - 9 in de goede volgorde</h2>
+    <div class="buttonTable">
+      <icon-hourglass-button
+        title="Zet twee getallen in de juiste volgorde"
+        time="1min"
+        href="Sorteren.html?numberBoxes=2"
+      >
+        <img src="images/2BoxesBelow10.png" width="85px" />
+      </icon-hourglass-button>
+      <icon-hourglass-button
+        title="Zet twee getallen in de juiste volgorde"
+        time="3min"
+        href="Sorteren.html?numberBoxes=2"
+      >
+        <img src="images/2BoxesBelow10.png" width="85px" />
+      </icon-hourglass-button>
+
+      <icon-hourglass-button
+        title="Zet drie getallen in de juiste volgorde"
+        time="1min"
+        href="Sorteren.html?numberBoxes=3"
+      >
+        <img src="images/3BoxesBelow10.png" width="85px" />
+      </icon-hourglass-button>
+      <icon-hourglass-button
+        title="Zet drie getallen in de juiste volgorde"
+        time="3min"
+        href="Sorteren.html?numberBoxes=3"
+      >
+        <img src="images/3BoxesBelow10.png" width="85px" />
+      </icon-hourglass-button>
+
+      <icon-hourglass-button
+        title="Zet vier getallen in de juiste volgorde"
+        time="1min"
+        href="Sorteren.html?numberBoxes=4"
+      >
+        <img src="images/4BoxesBelow10.png" width="85px" />
+      </icon-hourglass-button>
+
+      <icon-hourglass-button
+        title="Zet vier getallen in de juiste volgorde"
+        time="3min"
+        href="Sorteren.html?numberBoxes=4"
+      >
+        <img src="images/4BoxesBelow10.png" width="85px" />
+      </icon-hourglass-button>
+    </div>
+
+    <p>
+      <a href="index.html">Terug naar het hoofdmenu</a>
+    </p>
+  </body>
+</html>
