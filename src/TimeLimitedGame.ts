@@ -129,7 +129,7 @@ export abstract class TimeLimitedGame extends LitElement {
         id="scoreBox"
         numberOk="${this.numberOk}"
         numberNok="${this.numberNok}"
-        style="width: 16vmin;--scoreBoxWidth: 16vmin; position: absolute; top: calc(1em + 22px); right: 1em;"
+        style="width: 13vmin;--scoreBoxWidth: 13vmin; position: absolute; top: calc(1em + 22px); right: 1em;"
       >
       </score-box>
 
