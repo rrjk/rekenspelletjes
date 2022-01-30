@@ -260,7 +260,8 @@ export class DraggableElement extends LitElement {
   }
 
   render(): HTMLTemplateResult {
-    return html` <style>
+    return html`
+      <style>
         :host {
           transform: translate(
             calc(${this.cummulativeDeltaX} * var(--vw, 1vw)),
@@ -268,6 +269,7 @@ export class DraggableElement extends LitElement {
           );
         }
       </style>
-      <slot> </slot>`;
+      <slot> </slot>
+    `;
   }
 }

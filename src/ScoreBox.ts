@@ -25,6 +25,7 @@ export class ScoreBox extends LitElement {
         display: inline-block;
         width: calc(100% - 6px);
         font-size: calc(0.25 * var(--scoreBoxWidth));
+        box-sizing: border-box;
       }
 
       .ScoreSign {

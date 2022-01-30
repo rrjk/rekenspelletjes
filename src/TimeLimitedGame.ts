@@ -119,7 +119,8 @@ export abstract class TimeLimitedGame extends LitElement {
   renderTimedGameApp(): HTMLTemplateResult {
     return html`
       <progress-bar
-        style="--progress-bar-gametime: ${this.gameTime}s;"
+        style="--progress-bar-gametime: ${this
+          .gameTime}s; width:calc(100 * var(--vw));"
         id="progressBar"
         @timeUp="${() => this.handleTimeUp()}"
       ></progress-bar>
@@ -128,7 +129,7 @@ export abstract class TimeLimitedGame extends LitElement {
         id="scoreBox"
         numberOk="${this.numberOk}"
         numberNok="${this.numberNok}"
-        style="width: 12vmin;--scoreBoxWidth: 12vmin; position: absolute; top: calc(1em + 22px); right: 1em;"
+        style="width: 16vmin;--scoreBoxWidth: 16vmin; position: absolute; top: calc(1em + 22px); right: 1em;"
       >
       </score-box>
 

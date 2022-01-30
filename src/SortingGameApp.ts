@@ -15,6 +15,10 @@ import { GameLogger } from './GameLogger';
 import type { DraggableElement } from './DraggableElement';
 import './DraggableElement';
 
+import './MompitzNumber';
+
+import { getRealViewportHeight, getRealViewportWidth } from './RealHeight';
+
 type BoxSize = 'Smallest' | 'Small' | 'Big' | 'Biggest';
 
 type NumberInformation = {
@@ -43,6 +47,12 @@ export class SortingGameApp extends TimeLimitedGame {
 
   @state()
   private boxes: BoxInformation[] = [];
+
+  private minimumValue = 1;
+  private maximumValue = 10;
+
+  @state()
+  private maxNumberDigits = 1.5;
 
   private gameLogger = new GameLogger('E', 'a');
 
@@ -82,6 +92,26 @@ export class SortingGameApp extends TimeLimitedGame {
         size: SortingGameApp.boxSizes.get(numberBoxes)?.[i] ?? 'Smallest',
       });
     }
+
+    if (urlParams.has('minimumValue')) {
+      this.minimumValue = parseInt(urlParams.get('minimumValue') ?? '', 10);
+      if (Number.isNaN(this.minimumValue)) this.minimumValue = 1;
+    }
+
+    if (urlParams.has('maximumValue')) {
+      this.maximumValue = parseInt(urlParams.get('maximumValue') ?? '', 10);
+      if (Number.isNaN(this.maximumValue)) this.maximumValue = 10;
+    }
+
+    if (this.minimumValue + 5 >= this.maximumValue)
+      this.maximumValue = this.minimumValue + 5;
+
+    if (this.maximumValue < 10) this.maxNumberDigits = 1;
+    else if (this.maximumValue === 10) this.maxNumberDigits = 1.5;
+    else if (this.maximumValue < 100) this.maxNumberDigits = 2;
+    else if (this.maximumValue === 100) this.maxNumberDigits = 2.5;
+    else if (this.maximumValue < 1000) this.maxNumberDigits = 3;
+    else if (this.maximumValue === 1000) this.maxNumberDigits = 3.5;
   }
 
   /** Get all static styles */
@@ -94,7 +124,9 @@ export class SortingGameApp extends TimeLimitedGame {
         display: flex;
         flex-direction: column;
         justify-content: space-evenly;
-        height: 80vh;
+        align-items: center;
+        height: calc(100 * var(--vh));
+        width: calc(100 * var(--vw));
       }
 
       .numbers,
@@ -103,22 +135,19 @@ export class SortingGameApp extends TimeLimitedGame {
         flex-direction: row;
         justify-content: space-evenly;
         align-items: center;
+        width: 100%;
       }
 
-      @media (min-aspect-ratio: 2/3) {
-        .number {
-          display: block;
-          width: auto;
-          height: 18vh;
-        }
+      .number {
+        display: inline-block;
+        width: calc(80 / var(--numberNumbers) * var(--vw));
+        height: calc(30 * var(--vh));
       }
 
-      @media (max-aspect-ratio: 2/3) {
-        .number {
-          display: block;
-          width: 10vw;
-          height: auto;
-        }
+      .box {
+        display: inline-block;
+        width: calc(80 / var(--numberNumbers) * var(--vw));
+        height: calc(60 * var(--vh));
       }
     `;
   }
@@ -181,7 +210,10 @@ export class SortingGameApp extends TimeLimitedGame {
 
     const newValues: number[] = [];
     while (newValues.length !== this.numbers.length) {
-      const proposedValue = randomIntFromRange(0, 9);
+      const proposedValue = randomIntFromRange(
+        this.minimumValue,
+        this.maximumValue
+      );
       if (newValues.find(value => value === proposedValue) === undefined)
         newValues.push(proposedValue);
     }
@@ -273,6 +305,13 @@ export class SortingGameApp extends TimeLimitedGame {
   render(): HTMLTemplateResult {
     return html`
       ${this.renderTimedGameApp()}
+
+      <style>
+        :host {
+          --numberNumbers: ${this.numbers.length};
+        }
+      </style>
+
       <div class="numbersAndBoxes">
         <div class="numbers" id="numbersContainer">
           ${this.numbers.map(
@@ -281,25 +320,27 @@ export class SortingGameApp extends TimeLimitedGame {
                 class="draggableNumber ${elt.visible === false ? 'hidden' : ''}"
                 id="${elt.id}"
               >
-                <img
-                  draggable="false"
-                  alt="${elt.value}"
+                <mompitz-number
+                  number="${elt.value}"
+                  minimumNumberDigitsForSize="${this.maxNumberDigits}"
                   class="number"
-                  src="images/Mompitz${elt.value}.png"
-                />
+                ></mompitz-number>
               </draggable-element>`
           )}
         </div>
 
         <div class="boxes">
           ${this.boxes.map(
-            elt => html`<drop-target-box id="${elt.id}" size="${elt.size}">
-              <img
-                draggable="false"
-                alt="${elt.id}"
+            elt => html`<drop-target-box
+              class="box"
+              id="${elt.id}"
+              size="${elt.size}"
+            >
+              <mompitz-number
+                number="${elt.intendedValue}"
                 class="number ${elt.numberVisible === false ? 'hidden' : ''}"
-                src="images/Mompitz${elt.intendedValue}.png"
-              />
+                minimumNumberDigitsForSize="${this.maxNumberDigits}"
+              ></mompitz-number>
             </drop-target-box>`
           )}
         </div>

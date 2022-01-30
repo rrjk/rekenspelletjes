@@ -13,10 +13,20 @@ export class DropTargetBox extends LitElement implements DropTargetElement {
   size: BoxSize = 'Smallest';
 
   @state()
+  tallWide: 'Tall' | 'Wide' = 'Tall';
+
+  @state()
   highlighted: HighlightType = 'none';
 
   highlightForDrop(newState: HighlightType): void {
     this.highlighted = newState;
+  }
+
+  constructor() {
+    super();
+    window.addEventListener('resize', () => {
+      this.updateViewPortDimensions();
+    });
   }
 
   /** Get all static styles */
@@ -25,73 +35,73 @@ export class DropTargetBox extends LitElement implements DropTargetElement {
       .box {
         display: flex;
         background-image: url('images/red-box.png');
-        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center center;
         text-align: center;
         justify-content: center;
         align-items: center;
-        box-sizing: content-box;
+        height: 100%;
+        width: 100%;
       }
 
       .highlightDroppable {
-        background-color: grey;
+        background-color: transparent;
       }
 
       .highlightWrong {
-        background-color: salmon;
+        background-color: transparent;
       }
 
-      @media (min-aspect-ratio: 2/3) {
-        .boxSmallest {
-          height: 12vh;
-          width: 12.05vh;
-        }
-
-        .boxSmall {
-          height: 25vh;
-          width: 25.11vh;
-        }
-
-        .boxBig {
-          height: 35vh;
-          width: 35.16vh;
-        }
-
-        .boxBiggest {
-          height: 45vh;
-          width: 45.2vh;
-        }
+      .boxSmallestTall {
+        background-size: 30% auto;
       }
 
-      @media (max-aspect-ratio: 2/3) {
-        .boxSmallest {
-          height: 7.96vw;
-          width: 8vw;
-        }
+      .boxSmallTall {
+        background-size: 50% auto;
+      }
 
-        .boxSmall {
-          height: 11.95vw;
-          width: 12vw;
-        }
+      .boxBigTall {
+        background-size: 70% auto;
+      }
 
-        .boxBig {
-          height: 15.93vw;
-          width: 16vw;
-        }
+      .boxBiggestTall {
+        background-size: 90% auto;
+      }
 
-        .boxBiggest {
-          height: 19.91vw;
-          width: 20vw;
-        }
+      .boxSmallestWide {
+        background-size: auto 30%;
+      }
+
+      .boxSmallWide {
+        background-size: auto 50%;
+      }
+
+      .boxBigWide {
+        background-size: auto 70%;
+      }
+
+      .boxBiggestWide {
+        background-size: auto 90%;
       }
     `;
+  }
+
+  updateViewPortDimensions() {
+    if (this.clientWidth > this.clientHeight) this.tallWide = 'Wide';
+    else this.tallWide = 'Tall';
+  }
+
+  async firstUpdated(): Promise<void> {
+    await this.getUpdateComplete();
+    this.updateViewPortDimensions();
   }
 
   render(): HTMLTemplateResult {
     return html`
       <div
-        draggable="false"
         alt="smallest box"
-        class="box box${this.size} ${this.highlighted === 'droppable'
+        class="box box${this.size}${this.tallWide} ${this.highlighted ===
+        'droppable'
           ? 'highlightDroppable'
           : ''} ${this.highlighted === 'wrong' ? 'highlightWrong' : ''}"
       >
