@@ -17,7 +17,7 @@ import './DraggableElement';
 
 import './MompitzNumber';
 
-import { getRealViewportHeight, getRealViewportWidth } from './RealHeight';
+import './RealHeight';
 
 type BoxSize = 'Smallest' | 'Small' | 'Big' | 'Biggest';
 
