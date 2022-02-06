@@ -5,10 +5,11 @@ import type { CSSResultGroup, HTMLTemplateResult } from 'lit';
 
 import { TimeLimitedGame } from './TimeLimitedGame';
 
-import { randomIntFromRange } from './Randomizer';
+import { randomFromSet, randomIntFromRange } from './Randomizer';
 import { GameLogger } from './GameLogger';
 
-import './GroupOfImages';
+import type { ImageEnum } from './GroupOfImages';
+import { GroupOfImages } from './GroupOfImages';
 import type { Digit, DigitKeyboard } from './DigitKeyboard';
 import './DigitKeyboard';
 
@@ -18,9 +19,11 @@ import './RealHeight';
 export class RecognizeGroupsApp extends TimeLimitedGame {
   private gameLogger = new GameLogger('F', '');
   @state()
-  private numberGroups = 0;
+  private numberOfGroups = 0;
   @state()
-  private perGroup = 4;
+  private groupSize = 4;
+  @state()
+  private image: ImageEnum = GroupOfImages.possibleImages[0];
   @state()
   private numberOfGroupsText = '';
   @state()
@@ -36,6 +39,9 @@ export class RecognizeGroupsApp extends TimeLimitedGame {
     | 'resultDigit1'
     | 'resultDigit2'
     | 'none' = 'numberGroups';
+
+  private groupsSize1Seen = false;
+  private numberOfGroups1Seen = false;
 
   constructor() {
     super('integrateScoreBoxInProgressBar');
@@ -75,6 +81,8 @@ export class RecognizeGroupsApp extends TimeLimitedGame {
    * Progress bar and counters are automatically reset.
    */
   startNewGame(): void {
+    this.groupsSize1Seen = false;
+    this.numberOfGroups1Seen = false;
     this.newRound();
   }
 
@@ -100,8 +108,29 @@ export class RecognizeGroupsApp extends TimeLimitedGame {
   }
 
   private newRound() {
-    this.numberGroups = randomIntFromRange(1, 9);
-    this.perGroup = randomIntFromRange(1, 9);
+    let proposedNumberOfGroups = this.numberOfGroups;
+    while (proposedNumberOfGroups === this.numberOfGroups) {
+      proposedNumberOfGroups = randomIntFromRange(
+        this.numberOfGroups1Seen ? 2 : 1,
+        9
+      );
+    }
+    if (proposedNumberOfGroups === 1) this.numberOfGroups1Seen = true;
+    this.numberOfGroups = proposedNumberOfGroups;
+
+    let proposedGroupsSize = this.groupSize;
+    while (proposedGroupsSize === this.groupSize) {
+      proposedGroupsSize = randomIntFromRange(this.groupsSize1Seen ? 2 : 1, 9);
+    }
+    if (proposedGroupsSize === 1) this.groupsSize1Seen = true;
+    this.groupSize = proposedGroupsSize;
+
+    let proposedImage = this.image;
+    while (proposedImage === this.image) {
+      proposedImage = randomFromSet(GroupOfImages.possibleImages);
+    }
+    this.image = proposedImage;
+
     this.numberOfGroupsText = '';
     this.groupSizeText = '';
     this.resultDigit1Text = '';
@@ -226,19 +255,21 @@ export class RecognizeGroupsApp extends TimeLimitedGame {
   }
 
   handleDigit(digit: Digit) {
-    const resultDigit1 = Math.floor((this.numberGroups * this.perGroup) / 10);
-    const resultDigit2 = (this.numberGroups * this.perGroup) % 10;
+    const resultDigit1 = Math.floor(
+      (this.numberOfGroups * this.groupSize) / 10
+    );
+    const resultDigit2 = (this.numberOfGroups * this.groupSize) % 10;
 
     if (
       this.activeFillIn === 'numberGroups' &&
-      `${digit}` === `${this.numberGroups}`
+      `${digit}` === `${this.numberOfGroups}`
     ) {
       this.numberOfGroupsText = `${digit}`;
       this.activeFillIn = 'groupSize';
       this.getElement<DigitKeyboard>('digit-keyboard').enableAllDigits();
     } else if (
       this.activeFillIn === 'groupSize' &&
-      `${digit}` === `${this.perGroup}`
+      `${digit}` === `${this.groupSize}`
     ) {
       this.groupSizeText = `${digit}`;
       this.getElement<DigitKeyboard>('digit-keyboard').enableAllDigits();
@@ -273,11 +304,11 @@ export class RecognizeGroupsApp extends TimeLimitedGame {
     const groupsPerRow: number[] = [0, 1, 2, 2, 2, 3, 2, 3, 3, 3];
 
     const groups: HTMLTemplateResult[] = [];
-    for (let i = 0; i < this.numberGroups; i++) {
+    for (let i = 0; i < this.numberOfGroups; i++) {
       groups.push(
         html` <group-of-images
-          numberInGroup="${this.perGroup}"
-          image="box"
+          numberInGroup="${this.groupSize}"
+          image="${this.image}"
         ></group-of-images>`
       );
     }
@@ -285,9 +316,9 @@ export class RecognizeGroupsApp extends TimeLimitedGame {
     return html`
       <style>
         #groups{
-          --groupsPerRow: ${groupsPerRow[this.numberGroups]};
+          --groupsPerRow: ${groupsPerRow[this.numberOfGroups]};
           --numberRows: ${Math.ceil(
-            this.numberGroups / groupsPerRow[this.numberGroups]
+            this.numberOfGroups / groupsPerRow[this.numberOfGroups]
           )} 
         }
       </style>
