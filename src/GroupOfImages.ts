@@ -8,7 +8,7 @@ import {
   addResizeObserverClient,
 } from './ResizeObserver';
 
-export type ImageEnum = 'box' | 'balloon' | 'star' | 'cherries' | 'tractor';
+export type ImageEnum = 'box' | 'balloon' | 'star' | 'tractor' | 'strawberry';
 
 type ImageInfo = { name: string; url: string; aspectRatio: number };
 
@@ -38,19 +38,19 @@ const imageInfo = new Map<ImageEnum, ImageInfo>([
     },
   ],
   [
-    'cherries',
-    <ImageInfo>{
-      name: 'cherries',
-      url: 'images/red-cherry.png',
-      aspectRatio: 250 / 336,
-    },
-  ],
-  [
     'tractor',
     <ImageInfo>{
       name: 'cherries',
       url: 'images/tractor.png',
       aspectRatio: 250 / 183,
+    },
+  ],
+  [
+    'strawberry',
+    <ImageInfo>{
+      name: 'strawberry',
+      url: 'images/strawberry.png',
+      aspectRatio: 227 / 242,
     },
   ],
 ]);
@@ -81,8 +81,8 @@ export class GroupOfImages
     'box',
     'balloon',
     'star',
-    'cherries',
     'tractor',
+    'strawberry',
   ];
 
   static get styles(): CSSResultGroup {
