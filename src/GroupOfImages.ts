@@ -8,7 +8,7 @@ import {
   addResizeObserverClient,
 } from './ResizeObserver';
 
-export type ImageEnum = 'box' | 'balloon' | 'star' | 'cherries';
+export type ImageEnum = 'box' | 'balloon' | 'star' | 'cherries' | 'tractor';
 
 type ImageInfo = { name: string; url: string; aspectRatio: number };
 
@@ -45,6 +45,14 @@ const imageInfo = new Map<ImageEnum, ImageInfo>([
       aspectRatio: 250 / 336,
     },
   ],
+  [
+    'tractor',
+    <ImageInfo>{
+      name: 'cherries',
+      url: 'images/tractor.png',
+      aspectRatio: 250 / 183,
+    },
+  ],
 ]);
 
 function getImageInfo(name: ImageEnum) {
@@ -69,7 +77,13 @@ export class GroupOfImages
   @state()
   tallWideFlexItem: 'tall' | 'wide' = 'tall';
 
-  static possibleImages: ImageEnum[] = ['box', 'balloon', 'star', 'cherries'];
+  static possibleImages: ImageEnum[] = [
+    'box',
+    'balloon',
+    'star',
+    'cherries',
+    'tractor',
+  ];
 
   static get styles(): CSSResultGroup {
     return css`
