@@ -164,8 +164,8 @@ export class DigitKeyboard
 
     for (let row = 0; row < 4; row++) {
       const buttons: HTMLTemplateResult[] = [];
-      const firstDigitInRow = row === 0 ? 0 : (row - 1) * 3 + 1;
-      const lastDigitInRow = row === 0 ? 0 : row * 3;
+      const firstDigitInRow = row === 3 ? 0 : row * 3 + 1;
+      const lastDigitInRow = row === 3 ? 0 : row * 3 + 3;
       for (
         let digitAsNumber = firstDigitInRow;
         digitAsNumber <= lastDigitInRow;
