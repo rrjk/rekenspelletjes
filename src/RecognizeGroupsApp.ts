@@ -233,14 +233,14 @@ export class RecognizeGroupsApp extends TimeLimitedGame {
       this.activeFillIn === 'numberGroups' &&
       `${digit}` === `${this.numberGroups}`
     ) {
-      this.numberOfGroupsText = digit;
+      this.numberOfGroupsText = `${digit}`;
       this.activeFillIn = 'groupSize';
       this.getElement<DigitKeyboard>('digit-keyboard').enableAllDigits();
     } else if (
       this.activeFillIn === 'groupSize' &&
       `${digit}` === `${this.perGroup}`
     ) {
-      this.groupSizeText = digit;
+      this.groupSizeText = `${digit}`;
       this.getElement<DigitKeyboard>('digit-keyboard').enableAllDigits();
       if (resultDigit1 === 0) {
         this.activeFillIn = 'resultDigit2';
@@ -251,14 +251,14 @@ export class RecognizeGroupsApp extends TimeLimitedGame {
       this.activeFillIn === 'resultDigit1' &&
       `${digit}` === `${resultDigit1}`
     ) {
-      this.resultDigit1Text = digit;
+      this.resultDigit1Text = `${digit}`;
       this.activeFillIn = 'resultDigit2';
       this.getElement<DigitKeyboard>('digit-keyboard').enableAllDigits();
     } else if (
       this.activeFillIn === 'resultDigit2' &&
       `${digit}` === `${resultDigit2}`
     ) {
-      this.resultDigit2Text = digit;
+      this.resultDigit2Text = `${digit}`;
       this.activeFillIn = 'none';
       this.getElement<DigitKeyboard>('digit-keyboard').enableAllDigits();
       this.handleCorrectAnswer();

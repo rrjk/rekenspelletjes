@@ -8,24 +8,8 @@ import {
   ResizeObserverClientInterface,
 } from './ResizeObserver';
 
-export type Digit = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9';
-
-function translateNumberToDigit(number: number): Digit {
-  if (
-    number === 0 ||
-    number === 1 ||
-    number === 2 ||
-    number === 3 ||
-    number === 4 ||
-    number === 5 ||
-    number === 6 ||
-    number === 7 ||
-    number === 8 ||
-    number === 9
-  )
-    return `${number}`;
-  return '0';
-}
+// export type Digit = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9';
+export type Digit = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
 
 @customElement('digit-keyboard')
 export class DigitKeyboard
@@ -113,19 +97,23 @@ export class DigitKeyboard
   handleKeyDown(evt: KeyboardEvent) {
     const keyName = evt.key;
 
-    if (
-      keyName === '0' ||
-      keyName === '1' ||
-      keyName === '2' ||
-      keyName === '3' ||
-      keyName === '4' ||
-      keyName === '5' ||
-      keyName === '6' ||
-      keyName === '7' ||
-      keyName === '8' ||
-      keyName === '9'
-    ) {
-      this.handleDigit(keyName);
+    const digitMap: Map<string, Digit> = new Map([
+      ['0', 0],
+      ['1', 1],
+      ['2', 2],
+      ['3', 3],
+      ['4', 4],
+      ['5', 5],
+      ['6', 6],
+      ['7', 7],
+      ['8', 8],
+      ['9', 9],
+    ]);
+
+    const digit = digitMap.get(keyName);
+
+    if (digit !== undefined) {
+      this.handleDigit(digit);
     }
   }
 
@@ -142,7 +130,7 @@ export class DigitKeyboard
   }
 
   disable(digit: Digit) {
-    this.disabled[parseInt(digit, 10)] = true;
+    this.disabled[digit] = true;
     this.requestUpdate();
   }
 
@@ -162,7 +150,7 @@ export class DigitKeyboard
   }
 
   handleDigit(digit: Digit) {
-    if (!this.disabled[parseInt(digit, 10)]) {
+    if (!this.disabled[digit]) {
       const event = new CustomEvent<Digit>('digit-entered', {
         detail: digit,
       });
@@ -172,21 +160,29 @@ export class DigitKeyboard
 
   render(): HTMLTemplateResult {
     const rows: HTMLTemplateResult[] = [];
+    const digits: Digit[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
     for (let row = 0; row < 4; row++) {
       const buttons: HTMLTemplateResult[] = [];
       const firstDigitInRow = row === 0 ? 0 : (row - 1) * 3 + 1;
       const lastDigitInRow = row === 0 ? 0 : row * 3;
-      for (let digit = firstDigitInRow; digit <= lastDigitInRow; digit++) {
+      for (
+        let digitAsNumber = firstDigitInRow;
+        digitAsNumber <= lastDigitInRow;
+        digitAsNumber++
+      ) {
+        const digit = digits[digitAsNumber];
+        if (firstDigitInRow === undefined || lastDigitInRow === undefined)
+          throw new Error('Out of bounds in determining digit');
         buttons.push(html`
           <button
             class="Digit"
             id="Digit${digit}"
-            @click="${() => this.handleDigit(translateNumberToDigit(digit))}"
+            @click="${() => this.handleDigit(digit)}"
           >
             ${this.disabled[digit]
               ? this.renderDigitAsSvg('disabled')
-              : this.renderDigitAsSvg(translateNumberToDigit(digit))}
+              : this.renderDigitAsSvg(digit)}
           </button>
         `);
       }
