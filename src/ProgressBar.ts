@@ -1,10 +1,8 @@
 import { LitElement, html, css } from 'lit';
+// eslint-disable-next-line import/extensions
+import { customElement, property } from 'lit/decorators.js';
 
-import type {
-  PropertyDeclarations,
-  CSSResultGroup,
-  HTMLTemplateResult,
-} from 'lit';
+import type { CSSResultGroup, HTMLTemplateResult } from 'lit';
 
 import { ChildNotFoundError } from './ChildNotFoundError';
 
@@ -13,14 +11,25 @@ import { ChildNotFoundError } from './ChildNotFoundError';
  *
  * @cssprop --progress-bar-gametime - How long should the progress bar run (e.g. 120s), default is 60s
  */
-
+@customElement('progress-bar')
 export class ProgressBar extends LitElement {
-  static get properties(): PropertyDeclarations {
-    return {};
-  }
+  @property({ type: Number })
+  numberOk = 0;
+  @property({ type: Number })
+  numberNok = 0;
+  @property({ type: Boolean })
+  integrateScoreBox = false;
 
   static get styles(): CSSResultGroup {
     return css`
+      .GreenText {
+        color: green;
+      }
+
+      .RedText {
+        color: red;
+      }
+
       #ProgressBarOutline {
         margin: 0;
         padding: 0;
@@ -28,6 +37,7 @@ export class ProgressBar extends LitElement {
         height: 20px;
         border-style: none;
         background-color: lightgrey;
+        text-align: right;
       }
 
       #ProgressBar {
@@ -35,6 +45,15 @@ export class ProgressBar extends LitElement {
         transform-origin: left;
         height: 100%;
         border-style: none;
+      }
+
+      #ScoreBox {
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin-right: 1em;
+        margin-top: auto;
+        margin-bottom: auto;
       }
 
       .TransitionToZeroWidth {
@@ -113,9 +132,13 @@ export class ProgressBar extends LitElement {
 
   render(): HTMLTemplateResult {
     return html`<div id="ProgressBarOutline">
-      <div id="ProgressBar">&nbsp;</div>
+      <div id="ProgressBar"></div>
+      ${this.integrateScoreBox
+        ? html` <div id="ScoreBox">
+            <span class="GreenText">✓</span> : ${this.numberOk}
+            <span class="RedText">✗</span> : ${this.numberNok}
+          </div>`
+        : ''}
     </div>`;
   }
 }
-
-customElements.define('progress-bar', ProgressBar);

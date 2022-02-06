@@ -19,6 +19,10 @@ import { ChildNotFoundError } from './ChildNotFoundError';
 
 import { ParseGametimeFromUrl } from './GametimeParameters';
 
+export type ScoreLocationBoxEnum =
+  | 'integrateScoreBoxInProgressBar'
+  | 'separateScoreBoxInProgressBar';
+
 export abstract class TimeLimitedGame extends LitElement {
   /** Number correct answers */
   @state()
@@ -31,11 +35,18 @@ export abstract class TimeLimitedGame extends LitElement {
   private gameTime: number;
   @state()
   protected welcomeDialogImageUrl = `images/Mompitz Otto.png`;
+  @state()
+  integrateScoreInProgressBar = false;
 
   /** Constructor, parse URL parameters */
-  constructor() {
+  constructor(
+    scoreLocation: ScoreLocationBoxEnum = 'separateScoreBoxInProgressBar'
+  ) {
     super();
     this.gameTime = ParseGametimeFromUrl(60);
+    if (scoreLocation === 'separateScoreBoxInProgressBar')
+      this.integrateScoreInProgressBar = false;
+    else this.integrateScoreInProgressBar = true;
   }
 
   /** Helper function to easily query for an element.
@@ -101,7 +112,7 @@ export abstract class TimeLimitedGame extends LitElement {
   override async getUpdateComplete(): Promise<boolean> {
     const result = await super.getUpdateComplete();
     await this.progressBar.updateComplete;
-    await this.scoreBox.updateComplete;
+    if (!this.integrateScoreInProgressBar) await this.scoreBox.updateComplete;
     await this.gameOverDialog.updateComplete;
     await this.messageDialog.updateComplete;
     return result;
@@ -123,20 +134,26 @@ export abstract class TimeLimitedGame extends LitElement {
           .gameTime}s; width:calc(100 * var(--vw));"
         id="progressBar"
         @timeUp="${() => this.handleTimeUp()}"
-      ></progress-bar>
-
-      <score-box
-        id="scoreBox"
+        ?integrateScoreBox=${this.integrateScoreInProgressBar}
         numberOk="${this.numberOk}"
         numberNok="${this.numberNok}"
-        style="width: 13vmin;--scoreBoxWidth: 13vmin; position: absolute; top: calc(1em + 22px); right: 1em;"
-      >
-      </score-box>
+      ></progress-bar>
+
+      ${this.integrateScoreInProgressBar === true
+        ? html``
+        : html` <score-box
+            id="scoreBox"
+            numberOk="${this.numberOk}"
+            numberNok="${this.numberNok}"
+            style="width: 13vmin;--scoreBoxWidth: 13vmin; position: absolute; top: calc(1em + 22px); right: 1em;"
+          >
+          </score-box>`}
 
       <message-dialog
         id="messageDialog"
         imageUrl="${this.welcomeDialogImageUrl}"
       ></message-dialog>
+
       <gameover-dialog id="gameOverDialog"></gameover-dialog>
     `;
   }

@@ -38,7 +38,7 @@ export class RecognizeGroupsApp extends TimeLimitedGame {
     | 'none' = 'numberGroups';
 
   constructor() {
-    super();
+    super('integrateScoreBoxInProgressBar');
     this.parseUrl();
   }
 
