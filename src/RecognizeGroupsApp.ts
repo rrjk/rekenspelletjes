@@ -45,20 +45,6 @@ export class RecognizeGroupsApp extends TimeLimitedGame {
 
   constructor() {
     super('integrateScoreBoxInProgressBar');
-    this.parseUrl();
-  }
-
-  protected parseUrl(): void {
-    const urlParams = new URLSearchParams(window.location.search);
-    /*
-    let numberBoxes = 4;
-    if (urlParams.has('numberBoxes')) {
-      numberBoxes = parseInt(urlParams.get('numberBoxes') || '', 10);
-      if (!numberBoxes || numberBoxes < 2 || numberBoxes > 4) {
-        numberBoxes = 4;
-      }
-    }
-*/
   }
 
   override async getUpdateComplete(): Promise<boolean> {
