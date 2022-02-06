@@ -11,4 +11,6 @@ Game codes
 <tr><td>Bc</td><td>Minsommen met hele tientallen</td/></tr>
 <tr><td>Bc</td><td>Plus- en minsommen met hele tientallen</td/></tr>
 <tr><td>C</td><td>Balonnenspel</td/></tr>
+<tr><td>E</td><td>Sorteerspel</td/></tr>
+<tr><td>F</td><td>Groepjes van herkennen</td/></tr>
 </table>

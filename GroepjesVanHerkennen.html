@@ -6,7 +6,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     />
-    <meta name="Description" content="Tets playing field" />
+    <meta name="Description" content="Groepjes van herkennen" />
     <style>
       body {
         margin: 0;
@@ -15,23 +15,14 @@
         background-color: #ededed;
         overflow: hidden; /* This ensures we won't get scrollbars.*/
         touch-action: none;
+        user-select: none;
       }
     </style>
-    <title>Test playing field</title>
+    <title>Groepjes van herkennen</title>
   </head>
 
   <body>
-    <group-of-images
-      numberInGroup="5"
-      image="balloon"
-      style="
-        position: absolute;
-        width: 90%;
-        height: 90%;
-        box-sizing: content-box;
-        border: 2px red solid;
-      "
-    ></group-of-images>
-    <script type="module" src="./src/GroupOfImages.ts"></script>
+    <recognize-groups-app></recognize-groups-app>
+    <script type="module" src="./src/RecognizeGroupsApp.ts"></script>
   </body>
 </html>

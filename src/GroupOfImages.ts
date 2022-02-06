@@ -1,7 +1,12 @@
 import { LitElement, html, css } from 'lit';
 import type { HTMLTemplateResult, CSSResultGroup } from 'lit';
 // eslint-disable-next-line import/extensions
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
+import type { ResizeObserverClientInterface } from './ResizeObserver';
+import {
+  removeResizeObserverClient,
+  addResizeObserverClient,
+} from './ResizeObserver';
 
 export type ImageEnum = 'box' | 'balloon';
 
@@ -33,79 +38,137 @@ function getImageInfo(name: ImageEnum) {
 }
 
 @customElement('group-of-images')
-export class GroupOfImages extends LitElement {
+export class GroupOfImages
+  extends LitElement
+  implements ResizeObserverClientInterface
+{
   @property({ type: String })
   image: ImageEnum = 'box';
   @property({ type: Number })
   numberInGroup = 1;
+  @state()
+  perRow = 0;
+  @state()
+  perColumn = 0;
+  @state()
+  tallWideFlexItem: 'tall' | 'wide' = 'tall';
 
   static get styles(): CSSResultGroup {
     return css`
-      #group {
+      :host {
         display: flex;
         flex-wrap: wrap;
         justify-content: space-around;
         align-content: space-around;
-        width: 100%;
-        height: 100%;
       }
 
       .flexItem {
-        flex-basis: var(--flexBasis);
+        display: flex;
+        flex-wrap: wrap;
+        width: calc(100% / var(--perRow));
+        height: calc(100% / var(--perColumn));
+        align-content: center;
+        justify-content: center;
         text-align: center;
       }
 
-      img {
-        height: var(--imgHeight);
-        width: var(--imgWidth);
+      img.tall {
+        height: auto;
+        width: 90%;
+        aspect-ratio: var(--aspect-ratio);
+      }
+
+      img.wide {
+        height: 90%;
+        width: auto;
+        aspect-ratio: var(--aspectRatio);
       }
     `;
   }
 
-  protected render(): HTMLTemplateResult {
-    const width = this.clientWidth;
-    const height = this.clientHeight;
-    const imageAspectRatio = getImageInfo(this.image).aspectRatio;
-    const boxAspectRatio = width / height;
+  connectedCallback(): void {
+    super.connectedCallback();
+    addResizeObserverClient(this);
+  }
 
-    let desiredImageWidth = 'auto';
-    let desiredImageHeight = 'auto';
+  disconnectedCallback(): void {
+    super.disconnectedCallback();
+    removeResizeObserverClient(this);
+  }
+
+  willUpdate(_changedProperties: Map<string | number | symbol, unknown>): void {
+    if (_changedProperties.has('numberInGroup')) {
+      this.determineNumberRowsAndColumns();
+    }
+  }
+
+  handleResize() {
+    this.determineNumberRowsAndColumns();
+  }
+
+  determineNumberRowsAndColumns() {
+    const imageAspectRatio = getImageInfo(this.image).aspectRatio;
+    const boxAspectRatio = this.clientWidth / this.clientHeight;
 
     const ratioPerRowPerColumn = boxAspectRatio / imageAspectRatio;
-    const perColumn = Math.ceil(
+
+    const perColumnCeiled = Math.ceil(
       Math.sqrt(this.numberInGroup / ratioPerRowPerColumn)
     );
-    const perRow = Math.ceil(this.numberInGroup / perColumn);
-    if (boxAspectRatio > imageAspectRatio) {
-      desiredImageHeight = `${(height / perColumn) * 0.9}px`;
-    } else {
-      desiredImageWidth = `${(width / perRow) * 0.9}px`;
-    }
-
-    console.log(
-      `ratioPerRowPerColumn=${ratioPerRowPerColumn}, numberInGroup = ${this.numberInGroup}, perColumn = ${perColumn}, perRow = ${perRow}, desiredWidth = ${desiredImageWidth}, desiredHeight = ${desiredImageHeight}`
+    const perColumnFloored = Math.floor(
+      Math.sqrt(this.numberInGroup / ratioPerRowPerColumn)
     );
 
-    const images: ImageInfo[] = [];
-    for (let i = 0; i < this.numberInGroup; i++)
-      images.push(getImageInfo(this.image));
+    const resultingRatioRowPerColumnCeiled =
+      Math.ceil(this.numberInGroup / perColumnCeiled) / perColumnCeiled;
+    const resultingRatioRowPerColumnFloored =
+      Math.ceil(this.numberInGroup / perColumnFloored) / perColumnFloored;
+
+    if (
+      Math.abs(resultingRatioRowPerColumnCeiled - ratioPerRowPerColumn) >
+      Math.abs(resultingRatioRowPerColumnFloored - ratioPerRowPerColumn)
+    ) {
+      this.perColumn = perColumnFloored;
+    } else {
+      this.perColumn = perColumnCeiled;
+    }
+
+    this.perRow = Math.ceil(this.numberInGroup / this.perColumn);
+
+    const flexItemAspectRatio =
+      this.clientWidth / this.perRow / (this.clientHeight / this.perColumn);
+    if (flexItemAspectRatio > imageAspectRatio) this.tallWideFlexItem = 'wide';
+    else this.tallWideFlexItem = 'tall';
+  }
+
+  protected render(): HTMLTemplateResult {
+    const flexItems: HTMLTemplateResult[] = [];
+
+    /* Some design notes
+     * A div is put around the actual image to control the number of items in a row,
+     * using flex-basis on the div it's ensured we get the right number of images in a row,
+     * in stead of as many as could possibly fit.
+     */
+
+    for (let i = 0; i < this.numberInGroup; i++) {
+      flexItems.push(html`<div class="flexItem">
+        <img
+          class="${this.tallWideFlexItem}"
+          src="${getImageInfo(this.image).url}"
+          alt="${getImageInfo(this.image).name}"
+        />
+      </div>`);
+    }
 
     return html`
       <style>
         :host {
-          --flexBasis: ${100 / perRow}%;
-          --imgWidth: ${desiredImageWidth};
-          --imgHeight: ${desiredImageHeight};
+          --perRow: ${this.perRow};
+          --perColumn: ${this.perColumn};
+          --aspectRatio: ${getImageInfo(this.image).aspectRatio};
         }
       </style>
-      <div id="group">
-        ${images.map(
-          image =>
-            html`<div class="flexItem">
-              <img src="${image.url}" alt="${image.name}" />
-            </div>`
-        )}
-      </div>
+      ${flexItems}
     `;
   }
 }

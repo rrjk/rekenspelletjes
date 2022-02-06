@@ -33,6 +33,7 @@
       "eslint-config-prettier"
     ],
     "rules": {
+      "wc/guard-super-call": "off",
       "lines-between-class-members": "off",
       "no-plusplus": [
         "error",
