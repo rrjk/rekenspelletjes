@@ -10,14 +10,14 @@ import {
 
 export type ImageEnum = 'box' | 'balloon' | 'star' | 'tractor' | 'strawberry';
 
-type ImageInfo = { name: string; url: string; aspectRatio: number };
+type ImageInfo = { name: string; url: URL; aspectRatio: number };
 
 const imageInfo = new Map<ImageEnum, ImageInfo>([
   [
     'box',
     <ImageInfo>{
       name: 'box',
-      url: 'images/red-box.png',
+      url: new URL('../images/red-box.png', import.meta.url),
       aspectRatio: 674 / 671,
     },
   ],
@@ -25,7 +25,7 @@ const imageInfo = new Map<ImageEnum, ImageInfo>([
     'balloon',
     <ImageInfo>{
       name: 'balloon',
-      url: 'images/balloon-blue.png',
+      url: new URL('../images/balloon-blue.png', import.meta.url),
       aspectRatio: 110 / 150,
     },
   ],
@@ -33,7 +33,7 @@ const imageInfo = new Map<ImageEnum, ImageInfo>([
     'star',
     <ImageInfo>{
       name: 'star',
-      url: 'images/star-green.png',
+      url: new URL('../images/star-green.png', import.meta.url),
       aspectRatio: 213 / 181,
     },
   ],
@@ -41,7 +41,7 @@ const imageInfo = new Map<ImageEnum, ImageInfo>([
     'tractor',
     <ImageInfo>{
       name: 'cherries',
-      url: 'images/tractor.png',
+      url: new URL('../images/tractor.png', import.meta.url),
       aspectRatio: 250 / 183,
     },
   ],
@@ -49,7 +49,7 @@ const imageInfo = new Map<ImageEnum, ImageInfo>([
     'strawberry',
     <ImageInfo>{
       name: 'strawberry',
-      url: 'images/strawberry.png',
+      url: new URL('../images/strawberry.png', import.meta.url),
       aspectRatio: 227 / 242,
     },
   ],

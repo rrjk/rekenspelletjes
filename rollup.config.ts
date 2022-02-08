@@ -6,6 +6,7 @@ import { copy } from '@web/rollup-plugin-copy';
 // import minifyHTML from 'rollup-plugin-minify-html-literals';
 import { terser } from 'rollup-plugin-terser';
 import summary from 'rollup-plugin-summary';
+import { importMetaAssets } from '@web/rollup-plugin-import-meta-assets';
 
 export default {
   output: { dir: 'dist', entryFileNames: '[name]-[hash].js' },
@@ -16,6 +17,7 @@ export default {
     // minifyHTML(),
     babel({ babelHelpers: 'bundled', extensions: ['.ts'] }),
     nodeResolve({ extensions: ['.ts', 'mjs', 'js'] }),
+    importMetaAssets(),
     copy({ patterns: 'images/*.{svg,png}', exclude: '', rootDir: undefined }),
     terser({ ecma: 2020, module: true }),
     summary({}),
