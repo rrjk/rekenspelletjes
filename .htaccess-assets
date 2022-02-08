@@ -1,0 +1,4 @@
+Options -Indexes
+<FilesMatch "\.(ico|pdf|flv|jpg|jpeg|png|gif|js|css|swf)$">
+  Header set Cache-Control "public, max-age=31536000, immutable"
+</FilesMatch>
