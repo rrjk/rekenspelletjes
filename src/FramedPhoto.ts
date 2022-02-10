@@ -3,7 +3,7 @@ import { LitElement, html } from 'lit';
 import type { PropertyDeclarations, TemplateResult } from 'lit';
 
 interface PhotoMetaData {
-  fileName: string;
+  url: URL;
   width: number;
   height: number;
   color: string;
@@ -12,31 +12,31 @@ export type PhotoId = 'Jan' | 'Anne' | 'Johannes' | 'Frank' | 'Disabled';
 
 const photos: { [key: string]: PhotoMetaData } = {
   Anne: {
-    fileName: 'Mompitz Anne.png',
+    url: new URL('../images/Mompitz Anne.png', import.meta.url),
     width: 434,
     height: 449,
     color: '#97cdb4',
   },
   Jan: {
-    fileName: 'Mompitz Jan-500.png',
+    url: new URL('../images/Mompitz Jan-500.png', import.meta.url),
     width: 500,
     height: 479,
     color: '#f6d435',
   },
   Johannes: {
-    fileName: 'Mompitz Johannes.png',
+    url: new URL('../images/Mompitz Johannes.png', import.meta.url),
     width: 469,
     height: 556,
     color: '#f2444e',
   },
   Frank: {
-    fileName: 'Mompitz Frank.png',
+    url: new URL('../images/Mompitz Frank.png', import.meta.url),
     width: 584,
     height: 579,
     color: '#9c6ccf',
   },
   Disabled: {
-    fileName: 'cross-out-black-500.png',
+    url: new URL('../images/cross-out-black-500.png', import.meta.url),
     width: 500,
     height: 459,
     color: '#000000',
@@ -125,7 +125,7 @@ export class FramedPhoto extends LitElement {
               y="${(42 - photoHeight) / 2 + 1}"
               width="${photoWidth}"
               height="${photoHeight}"
-              href="images/${this.photoInfo.fileName}"
+              href="${this.photoInfo.url}"
             />
           </g>
         </svg>

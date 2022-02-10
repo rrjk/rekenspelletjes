@@ -41,18 +41,18 @@ export class IconHourglassButton extends LitElement {
   render(): HTMLTemplateResult {
     let timeText: string;
     let timeLabel: string;
-    let hourglassImage: string;
+    let hourglassImage: URL;
     let url: string;
 
     if (this.time === '1min') {
       timeText = '(1 minuut)';
       timeLabel = '';
-      hourglassImage = 'hourglass_1min.png';
+      hourglassImage = new URL('../images/hourglass_1min.png', import.meta.url);
       url = this.href.concat('&time=60');
     } else {
       timeText = '(3 minuten)';
       timeLabel = '';
-      hourglassImage = 'hourglass_3min.png';
+      hourglassImage = new URL('../images/hourglass_3min.png', import.meta.url);
       url = this.href.concat('&time=180');
     }
 
@@ -62,7 +62,7 @@ export class IconHourglassButton extends LitElement {
         <img
           class="hourglass"
           alt="${timeLabel}"
-          src="images/${hourglassImage}"
+          src="${hourglassImage}"
         />${timeLabel}
       </a>
     `;

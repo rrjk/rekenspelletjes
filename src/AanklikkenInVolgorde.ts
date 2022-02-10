@@ -104,7 +104,7 @@ class AanklikkenInVolgordeApp {
       )
       .then(result => {
         if (result === 'again') this.resetGame();
-        else window.location.href = '/Rekenspelletjes/index.html';
+        else window.location.href = 'index.html';
       });
   }
 

@@ -32,6 +32,11 @@ import { ParseGametimeFromUrl } from './GametimeParameters';
 
 @customElement('jump-on-numberline-app')
 export class JumpOnNumberLineApp extends LitElement {
+  static janImage = new URL(
+    '../images/Mompitz Jan_Ballon.png',
+    import.meta.url
+  );
+
   /** Number correct answers */
   @state()
   private numberOk = 0;
@@ -333,7 +338,7 @@ export class JumpOnNumberLineApp extends LitElement {
       )
       .then(result => {
         if (result === 'again') this.startNewGame();
-        else window.location.href = '/Rekenspelletjes/index.html';
+        else window.location.href = 'index.html';
       });
   }
 
@@ -493,7 +498,7 @@ export class JumpOnNumberLineApp extends LitElement {
       <img
         id="jan"
         alt="Mompitz"
-        src="images/Mompitz Jan_Ballon.png"
+        src="${JumpOnNumberLineApp.janImage}"
         style="display: ${this.hideJan ? 'none' : 'block'};"
         class="${this.renderJanClass()}"
       />

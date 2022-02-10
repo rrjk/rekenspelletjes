@@ -14,6 +14,8 @@ import { ChildNotFoundError } from './ChildNotFoundError';
 
 /** Game over dialog */
 export class GameOverDialog extends LitElement {
+  static gameOverImage = new URL('../images/Mompitz Anne.png', import.meta.url);
+
   text: HTMLTemplateResult;
 
   static get properties(): PropertyDeclarations {
@@ -75,7 +77,9 @@ export class GameOverDialog extends LitElement {
                         <div>
                             ${this.text}
                         </div>
-                        <img style="float: right; width: 200px; max-width: calc(25 * 1vmin); height: auto; " alt="Anne" src="images/Mompitz Anne.png"></img>
+                        <img style="float: right; width: 200px; max-width: calc(25 * 1vmin); height: auto; " alt="Anne" src="${
+                          GameOverDialog.gameOverImage
+                        }"></img>
                     </article>
                     <footer>
                         <button style="float: right;" @click="${() =>

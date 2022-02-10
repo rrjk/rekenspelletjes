@@ -34,7 +34,10 @@ export abstract class TimeLimitedGame extends LitElement {
   @state()
   private gameTime: number;
   @state()
-  protected welcomeDialogImageUrl = `images/Mompitz Otto.png`;
+  protected welcomeDialogImageUrl = new URL(
+    '../images/Mompitz Otto.png',
+    import.meta.url
+  );
   @state()
   integrateScoreInProgressBar = false;
 
@@ -90,7 +93,7 @@ export abstract class TimeLimitedGame extends LitElement {
       if (result === 'again') {
         this.resetTimerAndCounters();
         this.startNewGame();
-      } else window.location.href = '/Rekenspelletjes/index.html';
+      } else window.location.href = 'index.html';
     });
   }
 
@@ -151,7 +154,7 @@ export abstract class TimeLimitedGame extends LitElement {
 
       <message-dialog
         id="messageDialog"
-        imageUrl="${this.welcomeDialogImageUrl}"
+        .imageUrl=${this.welcomeDialogImageUrl}
       ></message-dialog>
 
       <gameover-dialog id="gameOverDialog"></gameover-dialog>

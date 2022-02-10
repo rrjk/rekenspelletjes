@@ -34,7 +34,10 @@ export class AdditionSubstractionWholeDecadeApp extends TimeLimitedGame {
 
   constructor() {
     super();
-    this.welcomeDialogImageUrl = 'images/Mompitz Elli star-yellow.png';
+    this.welcomeDialogImageUrl = new URL(
+      '../images/Mompitz Elli star-yellow.png',
+      import.meta.url
+    );
     this.parseUrl();
   }
 

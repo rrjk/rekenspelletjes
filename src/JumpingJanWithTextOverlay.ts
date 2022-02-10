@@ -1,4 +1,4 @@
-import { LitElement, html, css } from 'lit';
+import { LitElement, html, css, unsafeCSS } from 'lit';
 import type { HTMLTemplateResult, CSSResultGroup } from 'lit';
 // eslint-disable-next-line import/extensions
 import { customElement, property } from 'lit/decorators.js';
@@ -38,16 +38,33 @@ export class JumpingJanWithTextOverlay extends LitElement {
       }
 
       .numberlineNoTickMark {
-        background-image: url('images/numberline-icon-no-tickmarks.png');
+        background-image: url('${unsafeCSS(
+          new URL('../images/numberline-icon-no-tickmarks.png', import.meta.url)
+        )}');
       }
       .numberlineTickMark1 {
-        background-image: url('images/numberline-icon-one-five-ten-tickmarks.png');
+        background-image: url('${unsafeCSS(
+          new URL(
+            '../images/numberline-icon-one-five-ten-tickmarks.png',
+            import.meta.url
+          )
+        )}');
       }
       .numberlineTickMark5 {
-        background-image: url('images/numberline-icon-five-ten-tickmarks.png');
+        background-image: url('${unsafeCSS(
+          new URL(
+            '../images/numberline-icon-five-ten-tickmarks.png',
+            import.meta.url
+          )
+        )}');
       }
       .numberlineTickMark10 {
-        background-image: url('images/numberline-icon-ten-tickmarks.png');
+        background-image: url('${unsafeCSS(
+          new URL(
+            '../images/numberline-icon-ten-tickmarks.png',
+            import.meta.url
+          )
+        )}');
       }
 
       .jan {
@@ -64,7 +81,9 @@ export class JumpingJanWithTextOverlay extends LitElement {
         text-align: center;
         margin: 2px;
         padding: 0;
-        background-image: url('images/Mompitz Jan_Ballon.png');
+        background-image: url('${unsafeCSS(
+          new URL('../images/Mompitz Jan_Ballon.png', import.meta.url)
+        )}');
       }
 
       .text {

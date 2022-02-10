@@ -1,4 +1,4 @@
-import { LitElement, html, css } from 'lit';
+import { LitElement, html, css, unsafeCSS } from 'lit';
 import type { HTMLTemplateResult, CSSResultGroup } from 'lit';
 // eslint-disable-next-line import/extensions
 import { customElement, property } from 'lit/decorators.js';
@@ -37,15 +37,21 @@ export class BalloonIndex extends LitElement {
       }
 
       .image-blue {
-        background-image: url('images/Mompitz Elli star-blue.png');
+        background-image: url('${unsafeCSS(
+          new URL('../images/Mompitz Elli star-blue.png', import.meta.url)
+        )}');
       }
 
       .image-yellow {
-        background-image: url('images/Mompitz Elli star-yellow.png');
+        background-image: url('${unsafeCSS(
+          new URL('../images/Mompitz Elli star-yellow.png', import.meta.url)
+        )}');
       }
 
       .image-green {
-        background-image: url('images/Mompitz Elli star-green.png');
+        background-image: url('${unsafeCSS(
+          new URL('../images/Mompitz Elli star-green.png', import.meta.url)
+        )}');
       }
 
       .oneLineFont {

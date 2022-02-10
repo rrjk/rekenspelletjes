@@ -1,4 +1,4 @@
-import { LitElement, html, css } from 'lit';
+import { LitElement, html, css, unsafeCSS } from 'lit';
 import type { CSSResultGroup, HTMLTemplateResult } from 'lit';
 // eslint-disable-next-line import/extensions
 import { customElement, state } from 'lit/decorators.js';
@@ -75,7 +75,9 @@ export class DigitKeyboard
         width: calc(100% / 3);
         height: calc (100%);
         color: black;
-        background-image: url('images/ball-blue.svg');
+        background-image: url(${unsafeCSS(
+          new URL('../images/ball-blue.svg', import.meta.url)
+        )});
         padding: 0;
       }
 

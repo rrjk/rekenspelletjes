@@ -11,6 +11,24 @@ export class MompitzNumber extends LitElement {
   @property({ type: Number })
   minimumNumberDigitsForSize = 1;
 
+  static digitImagesNormal: URL[] = [
+    new URL('../images/Mompitz0.png', import.meta.url),
+    new URL('../images/Mompitz1.png', import.meta.url),
+    new URL('../images/Mompitz2.png', import.meta.url),
+    new URL('../images/Mompitz3.png', import.meta.url),
+    new URL('../images/Mompitz4.png', import.meta.url),
+    new URL('../images/Mompitz5.png', import.meta.url),
+    new URL('../images/Mompitz6.png', import.meta.url),
+    new URL('../images/Mompitz7.png', import.meta.url),
+    new URL('../images/Mompitz8.png', import.meta.url),
+    new URL('../images/Mompitz9.png', import.meta.url),
+  ];
+
+  static digit1NarrowImage: URL = new URL(
+    '../images/Mompitz1narrow.png',
+    import.meta.url
+  );
+
   static get styles(): CSSResultGroup {
     return css`
       .digit {
@@ -96,10 +114,9 @@ export class MompitzNumber extends LitElement {
               draggable="false"
               alt="${digitInfo.digit}"
               class="digit ${digitInfo.narrow}"
-              src="images/Mompitz${digitInfo.digit}${digitInfo.narrow ===
-              'narrow'
-                ? 'narrow'
-                : ''}.png"
+              src="${digitInfo.narrow === 'narrow'
+                ? MompitzNumber.digit1NarrowImage
+                : MompitzNumber.digitImagesNormal[digitInfo.digit]}"
             />
           `
         )}

@@ -18,7 +18,7 @@ interface BallInfo {
   factorX: number;
   factorY: number;
   cell: number;
-  image: string;
+  image: URL;
 }
 
 interface NotShownBallInfo {
@@ -91,7 +91,6 @@ export class BallFieldEntry extends LitElement {
         position: absolute;
         padding: 0;
         color: black;
-        background-image: url('../images/ball-blue.svg');
         font-size: calc(0.6 * var(--ballWidth));
         width: var(--ballWidth);
         height: var(--ballHeight);
@@ -178,10 +177,10 @@ export class BallFieldEntry extends LitElement {
       ];
     }
     const possibleColoredBackgroundImages = [
-      'ball-blue.svg',
-      'ball-red.svg',
-      'ball-green.svg',
-      'ball-yellow.svg',
+      new URL('../images/ball-blue.svg', import.meta.url),
+      new URL('../images/ball-red.svg', import.meta.url),
+      new URL('../images/ball-green.svg', import.meta.url),
+      new URL('../images/ball-yellow.svg', import.meta.url),
     ];
     for (let i = 0; i < this.labels.length; i++) {
       const selectedBallId = randomIntFromRange(0, possibleBalls.length - 1);
@@ -300,7 +299,7 @@ export class BallFieldEntry extends LitElement {
         style="position: relative;
                       top: calc(${ball.factorX} * (100% - var(--ballWidth)));
                       left: calc(${ball.factorY} * (100% - var(--ballHeight)));
-                      background-image: url('images/${ball.image}');"
+                      background-image: url('${ball.image}');"
         ?disabled=${ball.disabled}
         class="Ball ${ball.removed ? 'FadeOut' : ''}"
         id="Ball${ball.label}"

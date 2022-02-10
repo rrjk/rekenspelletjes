@@ -17,13 +17,13 @@ import { ChildNotFoundError } from './ChildNotFoundError';
 export class MessageDialog extends LitElement {
   dialogTitle: string;
   text: HTMLTemplateResult;
-  imageUrl: string;
+  imageUrl: URL;
 
   static get properties(): PropertyDeclarations {
     return {
       dialogTitle: { type: String },
       text: { attribute: false },
-      imageUrl: { type: String },
+      imageUrl: { attribute: false },
     };
   }
 
@@ -35,7 +35,7 @@ export class MessageDialog extends LitElement {
     super();
     this.text = html``;
     this.dialogTitle = '';
-    this.imageUrl = 'images/Mompitz Otto.png';
+    this.imageUrl = new URL('../images/Mompitz Otto.png', import.meta.url);
   }
 
   /** Get the dialog child

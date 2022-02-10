@@ -1,4 +1,4 @@
-import { LitElement, html, css } from 'lit';
+import { LitElement, html, css, unsafeCSS } from 'lit';
 import type { HTMLTemplateResult, CSSResultGroup } from 'lit';
 // eslint-disable-next-line import/extensions
 import { customElement, property, state } from 'lit/decorators.js';
@@ -34,7 +34,9 @@ export class DropTargetBox extends LitElement implements DropTargetElement {
     return css`
       .box {
         display: flex;
-        background-image: url('images/red-box.png');
+        background-image: url('${unsafeCSS(
+          new URL('../images/red-box.png', import.meta.url)
+        )}');
         background-repeat: no-repeat;
         background-position: center center;
         text-align: center;

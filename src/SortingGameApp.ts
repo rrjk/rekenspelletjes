@@ -68,7 +68,10 @@ export class SortingGameApp extends TimeLimitedGame {
 
   constructor() {
     super('integrateScoreBoxInProgressBar');
-    this.welcomeDialogImageUrl = 'images/Mompitz7.png';
+    this.welcomeDialogImageUrl = new URL(
+      '../images/Mompitz7.png',
+      import.meta.url
+    );
     this.parseUrl();
   }
 

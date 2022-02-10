@@ -3,6 +3,7 @@ import { LitElement, html, css } from 'lit';
 import { customElement, state, property } from 'lit/decorators.js';
 import type { CSSResultGroup, HTMLTemplateResult, PropertyValues } from 'lit';
 import { randomFromSetAndSplice } from './Randomizer';
+// import { BalloonIndex } from './BalloonWithTextOverlay';
 
 /** Interface definition for type storing the answers. */
 export interface Answers {
@@ -28,6 +29,30 @@ interface BalloonInfo {
  */
 @customElement('ascending-balloons')
 export class AscendingBalloons extends LitElement {
+  static ascendingImage: Map<ImageType, Map<BalloonColors, URL>> = new Map<
+    ImageType,
+    Map<BalloonColors, URL>
+  >([
+    [
+      'balloon',
+      new Map<BalloonColors, URL>([
+        ['blue', new URL('../images/balloon-blue.png', import.meta.url)],
+        ['yellow', new URL('../images/balloon-yellow.png', import.meta.url)],
+        ['purple', new URL('../images/balloon-purple.png', import.meta.url)],
+        ['green', new URL('../images/balloon-green.png', import.meta.url)],
+      ]),
+    ],
+    [
+      'star',
+      new Map<BalloonColors, URL>([
+        ['blue', new URL('../images/star-blue.png', import.meta.url)],
+        ['yellow', new URL('../images/star-yellow.png', import.meta.url)],
+        ['purple', new URL('../images/star-purple.png', import.meta.url)],
+        ['green', new URL('../images/star-green.png', import.meta.url)],
+      ]),
+    ],
+  ]);
+
   /** Answers for the balloons, 1 correct answer and 3 incorrect answers. */
   @property({ attribute: false })
   answers: Answers = { correct: 12, incorrect: [1, 3, 74] };
@@ -226,8 +251,9 @@ export class AscendingBalloons extends LitElement {
               <button
                 type="button"
                 class="${this.imageType}"
-                style="background-image: url('images/${this
-                  .imageType}-${balloonInfo.color}.png');"
+                style="background-image: url('${AscendingBalloons.ascendingImage
+                  .get(this.imageType)
+                  ?.get(balloonInfo.color)}');"
                 @click="${() => this.balloonClicked(balloonInfo.label)}"
                 ?disabled="${balloonInfo.disabled || this.disabled}"
               >

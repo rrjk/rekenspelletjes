@@ -1,4 +1,4 @@
-import { LitElement, html, css } from 'lit';
+import { LitElement, html, css, unsafeCSS } from 'lit';
 import type { HTMLTemplateResult, CSSResultGroup } from 'lit';
 // eslint-disable-next-line import/extensions
 import { customElement, property } from 'lit/decorators.js';
@@ -58,23 +58,33 @@ export class BalloonIndex extends LitElement {
       }
 
       .balloonBlue {
-        background-image: url('images/balloon-blue.png');
+        background-image: url('${unsafeCSS(
+          new URL('../images/balloon-blue.png', import.meta.url)
+        )}');
       }
 
       .balloonPurple {
-        background-image: url('images/balloon-purple.png');
+        background-image: url('${unsafeCSS(
+          new URL('../images/balloon-purple.png', import.meta.url)
+        )}');
       }
 
       .balloonGreen {
-        background-image: url('images/balloon-green.png');
+        background-image: url('${unsafeCSS(
+          new URL('../images/balloon-green.png', import.meta.url)
+        )}');
       }
 
       .balloonYellow {
-        background-image: url('images/balloon-yellow.png');
+        background-image: url('${unsafeCSS(
+          new URL('../images/balloon-yellow.png', import.meta.url)
+        )}');
       }
 
       .balloonYellowPurple {
-        background-image: url('images/balloon-yellow-purple.png');
+        background-image: url('${unsafeCSS(
+          new URL('../images/balloon-yellow-purple.png', import.meta.url)
+        )}');
       }
 
       .text {

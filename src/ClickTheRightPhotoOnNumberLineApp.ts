@@ -256,7 +256,7 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
       )
       .then(result => {
         if (result === 'again') this.startNewGame();
-        else window.location.href = '/Rekenspelletjes/index.html';
+        else window.location.href = 'index.html';
       });
   }
 

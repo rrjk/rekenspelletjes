@@ -9,16 +9,20 @@ import summary from 'rollup-plugin-summary';
 import { importMetaAssets } from '@web/rollup-plugin-import-meta-assets';
 
 export default {
-  output: { dir: 'dist', entryFileNames: '[name]-[hash].js' },
+  output: {
+    dir: 'dist',
+    entryFileNames: 'src/[name]-[hash].js',
+    chunkFileNames: 'src/[name]-[hash].js',
+  },
   input: '*.html',
   plugins: [
     html({ minify: true }),
     // MinifyHTML removed because it caused in some cases ; to be removed while it shouldn't be removed.
     // minifyHTML(),
     babel({ babelHelpers: 'bundled', extensions: ['.ts'] }),
-    nodeResolve({ extensions: ['.ts', 'mjs', 'js'] }),
     importMetaAssets(),
-    copy({ patterns: 'images/*.{svg,png}', exclude: '', rootDir: undefined }),
+    nodeResolve({ extensions: ['.ts', 'mjs', 'js'] }),
+    // copy({ patterns: 'images/*.{svg,png}', exclude: '', rootDir: undefined }),
     terser({ ecma: 2020, module: true }),
     summary({}),
   ],
