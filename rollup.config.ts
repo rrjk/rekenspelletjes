@@ -1,7 +1,7 @@
 import html from '@web/rollup-plugin-html';
 import { babel } from '@rollup/plugin-babel';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
-// import { copy } from '@web/rollup-plugin-copy';
+import copy from 'rollup-plugin-copy';
 // MinifyHTML removed because it caused in some cases ; to be removed while it shouldn't be removed.
 // import minifyHTML from 'rollup-plugin-minify-html-literals';
 import { terser } from 'rollup-plugin-terser';
@@ -22,7 +22,14 @@ export default {
     babel({ babelHelpers: 'bundled', extensions: ['.ts'] }),
     importMetaAssets(),
     nodeResolve({ extensions: ['.ts', 'mjs', 'js'] }),
-    // copy({ patterns: 'images/*.{svg,png}', exclude: '', rootDir: undefined }),
+    copy({
+      targets: [
+        { src: '.htaccess-root', dest: 'dist', rename: '.htaccess' },
+        { src: '.htaccess-assets', dest: 'dist/assets', rename: '.htaccess' },
+        { src: '.htaccess-src', dest: 'dist/src', rename: '.htaccess' },
+        { src: 'asdflog.php', dest: 'dist' },
+      ],
+    }),
     terser({ ecma: 2020, module: true }),
     summary({}),
   ],
