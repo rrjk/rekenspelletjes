@@ -66,6 +66,19 @@ export abstract class TimeLimitedGame extends LitElement {
     return ret;
   }
 
+  /** Get the gametime in whole minuten (rounded down) */
+  protected getGameTimeString() {
+    const minutes = Math.floor(this.gameTime / 60);
+    const seconds = this.gameTime % 60;
+
+    let ret: string;
+    if (seconds === 0)
+      ret = `${minutes} ${minutes === 1 ? 'minuut' : 'minuten'}`;
+    else ret = `${minutes}:${seconds.toString().padStart(2, '0')} minuten`;
+
+    return ret;
+  }
+
   /** Get the game over dialog */
   private get gameOverDialog(): GameOverDialog {
     return this.getElement<GameOverDialog>('#gameOverDialog');
@@ -161,12 +174,7 @@ export abstract class TimeLimitedGame extends LitElement {
     `;
   }
 
-  /* Function to be overriden in the extending class */
-
-  /** Get the text to show in the game over dialog
-   *  This function may be overriden, but need not to. In the latter case a standard text will be shown.
-   */
-  get gameOverText(): HTMLTemplateResult {
+  get resultsForGameOverText(): HTMLTemplateResult {
     return html` <p>
         Je hebt ${this.numberOk === 0 ? 'geen' : `${this.numberOk}`}
         ${this.numberOk === 1 ? 'goed antwoord' : 'goede antwoorden'} gegeven.
@@ -175,6 +183,15 @@ export abstract class TimeLimitedGame extends LitElement {
         Je hebt ${this.numberNok === 0 ? 'geen' : this.numberNok}
         ${this.numberNok === 1 ? 'fout' : 'fouten'} gemaakt.
       </p>`;
+  }
+
+  /* Function to be overriden in the extending class */
+
+  /** Get the text to show in the game over dialog
+   *  This function may be overriden, but need not to. In the latter case a standard text will be shown.
+   */
+  get gameOverText(): HTMLTemplateResult {
+    return this.resultsForGameOverText;
   }
 
   /** Start a new game.

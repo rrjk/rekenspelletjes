@@ -79,8 +79,7 @@ export class MultiplicationTablesBalloonGameApp extends TimeLimitedGame {
     this.newRound();
   }
 
-  /** Get the text to show in the game over dialog */
-  get welcomeMessage(): HTMLTemplateResult {
+  get tablesAsScentence(): HTMLTemplateResult {
     let tablesAsScentence = '';
 
     this.tablesToUse.forEach((value, index) => {
@@ -91,16 +90,33 @@ export class MultiplicationTablesBalloonGameApp extends TimeLimitedGame {
     });
     tablesAsScentence = tablesAsScentence.concat('.');
 
-    return html`<p>
-        De tafel${this.tablesToUse.length === 1 ? '' : 's'} van
-        ${tablesAsScentence}
-      </p>
-      <p>Klik op de ballon met het juiste antwoord.</p> `;
+    return html`tafel${this.tablesToUse.length === 1 ? '' : 's'} van
+    ${tablesAsScentence}`;
+  }
+
+  /** Get the text to show in the game over dialog */
+  get welcomeMessage(): HTMLTemplateResult {
+    return html`
+      <p>De ${this.tablesAsScentence}</p>
+      <p>Klik op de ballon met het juiste antwoord.</p>
+    `;
   }
 
   /** Get the title for the welcome dialog. */
   get welcomeDialogTitle(): string {
     return `Tafeltjes oefenen`;
+  }
+
+  /** Get the text to show in the game over dialog
+   */
+  get gameOverText(): HTMLTemplateResult {
+    return html`
+      <p>
+        Je hebt ${this.getGameTimeString()} gespeeld met de
+        ${this.tablesAsScentence}
+      </p>
+      ${this.resultsForGameOverText}
+    `;
   }
 
   private handleCorrectAnswer(): void {
