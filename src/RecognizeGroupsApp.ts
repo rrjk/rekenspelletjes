@@ -42,9 +42,20 @@ export class RecognizeGroupsApp extends TimeLimitedGame {
 
   private groupsSize1Seen = false;
   private numberOfGroups1Seen = false;
+  @state()
+  private includeAnswer = true;
 
   constructor() {
     super('integrateScoreBoxInProgressBar');
+    this.parseUrl();
+  }
+
+  private parseUrl(): void {
+    const urlParams = new URLSearchParams(window.location.search);
+
+    this.includeAnswer = true; // If nothing is specified in the, the answer will be included.
+    if (urlParams.has('excludeAnswer')) this.includeAnswer = false;
+    if (urlParams.has('includeAnswer')) this.includeAnswer = true;
   }
 
   override async getUpdateComplete(): Promise<boolean> {
@@ -259,7 +270,9 @@ export class RecognizeGroupsApp extends TimeLimitedGame {
     ) {
       this.groupSizeText = `${digit}`;
       this.getElement<DigitKeyboard>('digit-keyboard').enableAllDigits();
-      if (resultDigit1 === 0) {
+      if (!this.includeAnswer) {
+        this.handleCorrectAnswer();
+      } else if (resultDigit1 === 0) {
         this.activeFillIn = 'resultDigit2';
       } else {
         this.activeFillIn = 'resultDigit1';
@@ -321,13 +334,27 @@ export class RecognizeGroupsApp extends TimeLimitedGame {
           <div class="text fillInSingleDigit ${
             this.activeFillIn === 'groupSize' ? 'fillInActive' : ''
           }">${this.groupSizeText}</div>
-          <div class="text">=</div>
-          <div class="text fillInDoubleDigitLeft ${
-            this.activeFillIn === 'resultDigit1' ? 'fillInActive' : ''
-          }">${this.resultDigit1Text}</div>
-          <div class="text fillInDoubleDigitRight ${
-            this.activeFillIn === 'resultDigit2' ? 'fillInActive' : ''
-          }">${this.resultDigit2Text}</div>
+          ${
+            this.includeAnswer === true
+              ? html`<div class="text">=</div>
+                  <div
+                    class="text fillInDoubleDigitLeft ${this.activeFillIn ===
+                    'resultDigit1'
+                      ? 'fillInActive'
+                      : ''}"
+                  >
+                    ${this.resultDigit1Text}
+                  </div>
+                  <div
+                    class="text fillInDoubleDigitRight ${this.activeFillIn ===
+                    'resultDigit2'
+                      ? 'fillInActive'
+                      : ''}"
+                  >
+                    ${this.resultDigit2Text}
+                  </div>`
+              : html``
+          }
         </div>
         <div id="keyboard">
           <digit-keyboard
