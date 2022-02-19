@@ -13,6 +13,9 @@ import { GroupOfImages } from './GroupOfImages';
 import type { Digit, DigitKeyboard } from './DigitKeyboard';
 import './DigitKeyboard';
 
+import type { DigitFillin } from './DigitFillin';
+import './DigitFillin';
+
 import './RealHeight';
 
 @customElement('recognize-groups-app')
@@ -25,20 +28,9 @@ export class RecognizeGroupsApp extends TimeLimitedGame {
   @state()
   private image: ImageEnum = GroupOfImages.possibleImages[0];
   @state()
-  private numberOfGroupsText = '';
+  private activeFillIn = 0;
   @state()
-  private groupSizeText = '';
-  @state()
-  private resultDigit1Text = '';
-  @state()
-  private resultDigit2Text = '';
-  @state()
-  private activeFillIn:
-    | 'numberGroups'
-    | 'groupSize'
-    | 'resultDigit1'
-    | 'resultDigit2'
-    | 'none' = 'numberGroups';
+  private usedFillIns: string[] = [];
 
   private groupsSize1Seen = false;
   private numberOfGroups1Seen = false;
@@ -53,9 +45,15 @@ export class RecognizeGroupsApp extends TimeLimitedGame {
   private parseUrl(): void {
     const urlParams = new URLSearchParams(window.location.search);
 
-    this.includeAnswer = true; // If nothing is specified in the, the answer will be included.
-    if (urlParams.has('excludeAnswer')) this.includeAnswer = false;
-    if (urlParams.has('includeAnswer')) this.includeAnswer = true;
+    this.includeAnswer = true; // If nothing is specified in the url, the answer will be included.
+    this.usedFillIns = ['numberGroups', 'groupSize', 'result'];
+    if (urlParams.has('excludeAnswer')) {
+      this.includeAnswer = false;
+      this.usedFillIns = ['numberGroups', 'groupSize'];
+    }
+    if (urlParams.has('includeAnswer')) {
+      // Nothing needs to be done
+    }
   }
 
   override async getUpdateComplete(): Promise<boolean> {
@@ -128,11 +126,10 @@ export class RecognizeGroupsApp extends TimeLimitedGame {
     }
     this.image = proposedImage;
 
-    this.numberOfGroupsText = '';
-    this.groupSizeText = '';
-    this.resultDigit1Text = '';
-    this.resultDigit2Text = '';
-    this.activeFillIn = 'numberGroups';
+    this.activeFillIn = 0;
+    for (const fillIn of this.usedFillIns) {
+      this.getElement<DigitFillin>(`#${fillIn}`).resetVisible();
+    }
     this.getElement<DigitKeyboard>('digit-keyboard').enableAllDigits();
   }
 
@@ -211,6 +208,12 @@ export class RecognizeGroupsApp extends TimeLimitedGame {
         font-size: min(5vw, 9vh);
       }
 
+      digit-fillin {
+        font-size: min(5vw, 9vh);
+        margin-top: auto;
+        margin-bottom: auto;
+      }
+
       .larger {
         font-size: 150%;
       }
@@ -251,34 +254,49 @@ export class RecognizeGroupsApp extends TimeLimitedGame {
     `;
   }
 
-  handleDigit(digit: Digit) {
-    const resultDigit1 = Math.floor(
-      (this.numberOfGroups * this.groupSize) / 10
+  getActiveFillin(): DigitFillin {
+    return this.getElement<DigitFillin>(
+      `#${this.usedFillIns[this.activeFillIn]}`
     );
-    const resultDigit2 = (this.numberOfGroups * this.groupSize) % 10;
+  }
 
+  handleDigit(digit: Digit) {
+    const processResult = this.getActiveFillin().processInput(digit);
+
+    if (processResult === 'inputNok') {
+      this.getElement<DigitKeyboard>('digit-keyboard').disable(digit);
+      this.handleWrongAnswer();
+    } else if (processResult === 'inputOk') {
+      this.getElement<DigitKeyboard>('digit-keyboard').enableAllDigits();
+    } else if (processResult === 'fillinComplete') {
+      if (this.activeFillIn === this.usedFillIns.length - 1) {
+        this.handleCorrectAnswer();
+      } else {
+        this.getElement<DigitKeyboard>('digit-keyboard').enableAllDigits();
+        this.activeFillIn += 1;
+      }
+    }
+    /*
     if (
       this.activeFillIn === 'numberGroups' &&
-      `${digit}` === `${this.numberOfGroups}`
+      this.getElement<DigitFillin>('#numberGroups').processInput(digit) ===
+        'fillinComplete'
     ) {
-      this.numberOfGroupsText = `${digit}`;
       this.activeFillIn = 'groupSize';
       this.getElement<DigitKeyboard>('digit-keyboard').enableAllDigits();
     } else if (
       this.activeFillIn === 'groupSize' &&
-      `${digit}` === `${this.groupSize}`
+      this.getElement<DigitFillin>('#groupSize').processInput(digit) ===
+        'fillinComplete'
     ) {
-      this.groupSizeText = `${digit}`;
       this.getElement<DigitKeyboard>('digit-keyboard').enableAllDigits();
       if (!this.includeAnswer) {
         this.handleCorrectAnswer();
-      } else if (resultDigit1 === 0) {
-        this.activeFillIn = 'resultDigit2';
       } else {
-        this.activeFillIn = 'resultDigit1';
+        this.activeFillIn = 'result';
       }
     } else if (
-      this.activeFillIn === 'resultDigit1' &&
+      this.activeFillIn === 'result' &&
       `${digit}` === `${resultDigit1}`
     ) {
       this.resultDigit1Text = `${digit}`;
@@ -296,6 +314,7 @@ export class RecognizeGroupsApp extends TimeLimitedGame {
       this.getElement<DigitKeyboard>('digit-keyboard').disable(digit);
       this.handleWrongAnswer();
     }
+    */
   }
 
   /** Render the application */
@@ -314,47 +333,43 @@ export class RecognizeGroupsApp extends TimeLimitedGame {
 
     return html`
       <style>
-        #groups{
+        #groups {
           --groupsPerRow: ${groupsPerRow[this.numberOfGroups]};
           --numberRows: ${Math.ceil(
             this.numberOfGroups / groupsPerRow[this.numberOfGroups]
-          )} 
+          )};
         }
       </style>
       ${this.renderTimedGameApp()}
       <div id="totalGame">
-        <div id="groups">
-          ${groups}
-        </div>
+        <div id="groups">${groups}</div>
         <div id="excersize">
-          <div class="text fillInSingleDigit ${
-            this.activeFillIn === 'numberGroups' ? 'fillInActive' : ''
-          }">${this.numberOfGroupsText}</div>
-          <div class="text">groepjes van </br> <span class="larger">x </span> </div>
-          <div class="text fillInSingleDigit ${
-            this.activeFillIn === 'groupSize' ? 'fillInActive' : ''
-          }">${this.groupSizeText}</div>
-          ${
-            this.includeAnswer === true
-              ? html`<div class="text">=</div>
-                  <div
-                    class="text fillInDoubleDigitLeft ${this.activeFillIn ===
-                    'resultDigit1'
-                      ? 'fillInActive'
-                      : ''}"
-                  >
-                    ${this.resultDigit1Text}
-                  </div>
-                  <div
-                    class="text fillInDoubleDigitRight ${this.activeFillIn ===
-                    'resultDigit2'
-                      ? 'fillInActive'
-                      : ''}"
-                  >
-                    ${this.resultDigit2Text}
-                  </div>`
-              : html``
-          }
+          <digit-fillin
+            id="numberGroups"
+            desiredNumber="${this.numberOfGroups}"
+            numberDigits="1"
+            ?fillinActive=${this.usedFillIns[this.activeFillIn] ===
+            'numberGroups'}
+          ></digit-fillin>
+          <div class="text">
+            groepjes van <br />
+            <span class="larger">x </span>
+          </div>
+          <digit-fillin
+            id="groupSize"
+            desiredNumber="${this.groupSize}"
+            numberDigits="1"
+            ?fillinActive=${this.usedFillIns[this.activeFillIn] === 'groupSize'}
+          ></digit-fillin>
+          ${this.includeAnswer === true
+            ? html` <digit-fillin
+                id="result"
+                desiredNumber="${this.groupSize * this.numberOfGroups}"
+                numberDigits="2"
+                ?fillinActive=${this.usedFillIns[this.activeFillIn] ===
+                'result'}
+              ></digit-fillin>`
+            : html``}
         </div>
         <div id="keyboard">
           <digit-keyboard
