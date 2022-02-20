@@ -5,7 +5,7 @@ import { customElement, property } from 'lit/decorators.js';
 import './BalloonWithTextOverlay';
 
 /** Possible balloon colors */
-type TimeEnum = '1min' | '3min';
+type TimeEnum = '1min' | '3min' | '5min';
 
 @customElement('icon-hourglass-button')
 export class IconHourglassButton extends LitElement {
@@ -49,11 +49,16 @@ export class IconHourglassButton extends LitElement {
       timeLabel = '';
       hourglassImage = new URL('../images/hourglass_1min.png', import.meta.url);
       url = this.href.concat('&time=60');
-    } else {
+    } else if (this.time === '3min') {
       timeText = '(3 minuten)';
       timeLabel = '';
       hourglassImage = new URL('../images/hourglass_3min.png', import.meta.url);
       url = this.href.concat('&time=180');
+    } else {
+      timeText = '(5 minuten)';
+      timeLabel = '';
+      hourglassImage = new URL('../images/hourglass_5min.png', import.meta.url);
+      url = this.href.concat('&time=300');
     }
 
     return html`
