@@ -62,6 +62,15 @@ export class RecognizeGroupsApp extends TimeLimitedGame {
     if (urlParams.has('excludeLongAddition')) {
       // Nothing needs to be done
     }
+
+    if (!this.includeAnswer && this.includeLongAddition)
+      this.gameLogger.setSubCode('a');
+    if (!this.includeAnswer && !this.includeLongAddition)
+      this.gameLogger.setSubCode('b');
+    if (this.includeAnswer && !this.includeLongAddition)
+      this.gameLogger.setSubCode('c');
+    if (this.includeAnswer && this.includeLongAddition)
+      this.gameLogger.setSubCode('d');
   }
 
   override async getUpdateComplete(): Promise<boolean> {
