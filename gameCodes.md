@@ -13,4 +13,5 @@ Game codes
 <tr><td>C</td><td>Balonnenspel</td/></tr>
 <tr><td>E</td><td>Sorteerspel</td/></tr>
 <tr><td>F</td><td>Groepjes van herkennen</td/></tr>
+<tr><td>G</td><td>Sommen met splisen</td></tr>
 </table>
