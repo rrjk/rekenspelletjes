@@ -21,7 +21,8 @@
     <script type="module" src="./src/IconHourglassButton.ts"></script>
     <script type="module" src="./src/ElliStarWithTextOverlay.ts"></script>
 
-    <h2>Sterrenspel - Plus en min sommen met hele tientallen.</h2>
+    <h1>Sterrenspel</h1>
+    <h2>Plus en min sommen met hele tientallen erbij of eraf.</h2>
     <div class="buttonTable">
       <icon-hourglass-button
         title="Sommen als 34+40"
@@ -68,7 +69,7 @@
       <icon-hourglass-button
         title="Sommen als 34+40 en 58−30"
         time="1min"
-        href="PlusMinHeleTientallen.html?operator=minus"
+        href="PlusMinHeleTientallen.html?operator=minus&operator=plus"
       >
         <elli-star-with-text-overlay
           imagecolor="blue"
@@ -79,7 +80,7 @@
       <icon-hourglass-button
         title="Sommen als 34+40 en 58−30"
         time="3min"
-        href="PlusMinHeleTientallen.html?operator=minus"
+        href="PlusMinHeleTientallen.html?operator=minus&operator=plus"
       >
         <elli-star-with-text-overlay
           imagecolor="blue"
@@ -88,6 +89,75 @@
         ></elli-star-with-text-overlay>
       </icon-hourglass-button>
     </div>
+
+    <h2>Plus en min sommen vanuit een heel tiental</h2>
+    <div class="buttonTable">
+      <icon-hourglass-button
+        title="Sommen als 50+8"
+        time="1min"
+        href="PlusMinHeleTientallen.html?operator=plus&decadeFirst"
+      >
+        <elli-star-with-text-overlay
+          imagecolor="yellow"
+          text1="50+"
+        ></elli-star-with-text-overlay>
+      </icon-hourglass-button>
+      <icon-hourglass-button
+        title="Sommen als 50+8"
+        time="3min"
+        href="PlusMinHeleTientallen.html?operator=plus&decadeFirst"
+      >
+        <elli-star-with-text-overlay
+          imagecolor="yellow"
+          text1="50+"
+        ></elli-star-with-text-overlay>
+      </icon-hourglass-button>
+
+      <icon-hourglass-button
+        title="Sommen als 70-5"
+        time="1min"
+        href="PlusMinHeleTientallen.html?operator=minus&decadeFirst"
+      >
+        <elli-star-with-text-overlay
+          imagecolor="green"
+          text1="70-"
+        ></elli-star-with-text-overlay>
+      </icon-hourglass-button>
+      <icon-hourglass-button
+        title="Sommen als 70-5"
+        time="3min"
+        href="PlusMinHeleTientallen.html?operator=minus&decadeFirst"
+      >
+        <elli-star-with-text-overlay
+          imagecolor="green"
+          text1="70-"
+        ></elli-star-with-text-overlay>
+      </icon-hourglass-button>
+
+      <icon-hourglass-button
+        title="Sommen als 50+8 en 70-5"
+        time="1min"
+        href="PlusMinHeleTientallen.html?operator=minus&operator=plus&decadeFirst"
+      >
+        <elli-star-with-text-overlay
+          imagecolor="blue"
+          text1="50+"
+          text2="70-"
+        ></elli-star-with-text-overlay>
+      </icon-hourglass-button>
+      <icon-hourglass-button
+        title="Sommen als 50+8 en 70-5"
+        time="3min"
+        href="PlusMinHeleTientallen.html?operator=minus&operator=plus&decadeFirst"
+      >
+        <elli-star-with-text-overlay
+          imagecolor="blue"
+          text1="50+"
+          text2="70-"
+        ></elli-star-with-text-overlay>
+      </icon-hourglass-button>
+    </div>
+
     <p>
       <a href="index.html">Terug naar het hoofdmenu</a>
     </p>

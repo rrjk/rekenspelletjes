@@ -29,6 +29,7 @@ export class AdditionSubstractionWholeDecadeApp extends TimeLimitedGame {
   private gameElementsDisabled = true;
 
   private operators: Operator[] = [];
+  private decadeFirst = false;
 
   private gameLogger = new GameLogger('B', '');
 
@@ -56,12 +57,25 @@ export class AdditionSubstractionWholeDecadeApp extends TimeLimitedGame {
     });
     if (this.operators.length === 0) this.operators.push('+');
 
-    if (this.operators.length === 2) {
-      this.gameLogger.setSubCode('c');
-    } else if (this.operators[0] === '+') {
-      this.gameLogger.setSubCode('a');
-    } else if (this.operators[1] === '-') {
-      this.gameLogger.setSubCode('b');
+    if (urlParams.has('decadeFirst')) this.decadeFirst = true;
+    else this.decadeFirst = false;
+
+    if (!this.decadeFirst) {
+      if (this.operators.length === 2) {
+        this.gameLogger.setSubCode('c');
+      } else if (this.operators[0] === '+') {
+        this.gameLogger.setSubCode('a');
+      } else if (this.operators[1] === '-') {
+        this.gameLogger.setSubCode('b');
+      }
+    } else if (this.decadeFirst) {
+      if (this.operators.length === 2) {
+        this.gameLogger.setSubCode('f');
+      } else if (this.operators[0] === '+') {
+        this.gameLogger.setSubCode('d');
+      } else if (this.operators[1] === '-') {
+        this.gameLogger.setSubCode('e');
+      }
     }
   }
 
@@ -97,11 +111,20 @@ export class AdditionSubstractionWholeDecadeApp extends TimeLimitedGame {
     const exerciseExamples: string[] = [];
     let exerciseExamplesAsScentence = '';
 
-    if (this.operators.find(value => value === '+')) {
-      exerciseExamples.push('33+20');
-    }
-    if (this.operators.find(value => value === '-')) {
-      exerciseExamples.push(`56-30`);
+    if (!this.decadeFirst) {
+      if (this.operators.find(value => value === '+')) {
+        exerciseExamples.push('33+20');
+      }
+      if (this.operators.find(value => value === '-')) {
+        exerciseExamples.push(`56-30`);
+      }
+    } else if (this.decadeFirst) {
+      if (this.operators.find(value => value === '+')) {
+        exerciseExamples.push('50+8');
+      }
+      if (this.operators.find(value => value === '-')) {
+        exerciseExamples.push(`70-5`);
+      }
     }
 
     if (exerciseExamples.length <= 0 || exerciseExamples.length > 2)
@@ -138,18 +161,30 @@ export class AdditionSubstractionWholeDecadeApp extends TimeLimitedGame {
     this.operator = randomFromSet(this.operators);
     let answer: number;
 
-    if (this.operator === '+') {
-      this.firstNumber = randomIntFromRange(1, 89);
-      this.secondNumber =
-        10 * randomIntFromRange(1, 9 - Math.floor(this.firstNumber / 10));
-      answer = this.firstNumber + this.secondNumber;
-    } else if (this.operator === '-') {
-      this.firstNumber = randomIntFromRange(11, 99);
-      this.secondNumber =
-        10 * randomIntFromRange(1, Math.floor(this.firstNumber / 10));
-      answer = this.firstNumber - this.secondNumber;
+    if (!this.decadeFirst) {
+      if (this.operator === '+') {
+        this.firstNumber = randomIntFromRange(1, 89);
+        this.secondNumber =
+          10 * randomIntFromRange(1, 9 - Math.floor(this.firstNumber / 10));
+        answer = this.firstNumber + this.secondNumber;
+      } else if (this.operator === '-') {
+        this.firstNumber = randomIntFromRange(11, 99);
+        this.secondNumber =
+          10 * randomIntFromRange(1, Math.floor(this.firstNumber / 10));
+        answer = this.firstNumber - this.secondNumber;
+      } else {
+        throw new Error('Unsupported operator found');
+      }
     } else {
-      throw new Error('Unsupported operator found');
+      this.firstNumber = randomIntFromRange(1, 9) * 10;
+      this.secondNumber = randomIntFromRange(1, 9);
+      if (this.operator === '+') {
+        answer = this.firstNumber + this.secondNumber;
+      } else if (this.operator === '-') {
+        answer = this.firstNumber - this.secondNumber;
+      } else {
+        throw new Error('Unsupported operator found');
+      }
     }
 
     let fullyRandomAnswer = randomIntFromRange(1, 99);
