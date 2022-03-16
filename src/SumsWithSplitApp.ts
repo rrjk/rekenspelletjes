@@ -22,7 +22,7 @@ export class SumsWithSplitApp extends TimeLimitedGame {
   @state()
   private activeFillIn = 0;
   @state()
-  private usedFillIns: string[] = [];
+  private usedFillIns = ['splitLeft', 'splitRight', 'result'];
 
   constructor() {
     super('integrateScoreBoxInProgressBar');
@@ -141,6 +141,7 @@ export class SumsWithSplitApp extends TimeLimitedGame {
   }
 
   handleDigit(digit: Digit) {
+    console.log(`handleDigit ${digit}`);
     const processResult = this.getActiveFillin().processInput(digit);
 
     if (processResult === 'inputNok') {
@@ -162,6 +163,21 @@ export class SumsWithSplitApp extends TimeLimitedGame {
   static get styles(): CSSResultGroup {
     return css`
       :host {
+        --singleDigitWidth: 0.6em;
+        --operatorWidth: 0.8em;
+        --fillInWidth: 1em;
+        --fillInMargin: 0.2em;
+        box-sizing: border-box;
+      }
+
+      *,
+      *:before,
+      *:after {
+        box-sizing: inherit;
+      }
+
+      digit-fillin {
+        box-sizing: border-box;
       }
 
       #totalGame {
@@ -169,7 +185,6 @@ export class SumsWithSplitApp extends TimeLimitedGame {
         width: calc(var(--vw) * 100);
         height: calc(var(--vh) * 100 - 20px);
         box-sizing: border-box;
-        border: 2px solid purple;
         font-size: calc(1em + 4vmin);
         display: grid;
         grid-template-rows: [sum-row]1.4em [split1-lines-row] 1.4em [split1-answers-row] 1.4em [keyboard-row] 1fr;
@@ -191,32 +206,60 @@ export class SumsWithSplitApp extends TimeLimitedGame {
         position: relative;
         width: 100%;
         height: 1.4em;
-        border: 2px solid blue;
         display: flex;
         justify-content: center;
         align-items: flex-end;
       }
+
       .excersize {
         position: relative;
-        width: 6.7em;
-        border: orange 2px solid;
+        width: calc(
+          3 * var(--singleDigitWidth) + 2 * var(--operatorWidth) + 2 *
+            var(--fillInWidth) + 2 * var(--fillInMargin) + 10px
+        );
       }
 
       span {
+        box-sizing: border-box;
+      }
+
+      .leftOperand {
         display: inline-block;
         text-align: right;
+        min-width: calc(2 * var(--singleDigitWidth));
+      }
+
+      .rightOperand1Digit {
+        display: inline-block;
+        text-align: left;
+        min-width: var(--singleDigitWidth);
+      }
+
+      .firstSplit {
+        display: inline-block;
+        text-align: center;
+        width: calc(2 * (2.5 * var(--singleDigitWidth) + var(--operatorWidth)));
+      }
+
+      .operator {
+        display: inline-block;
+        text-align: center;
+        min-width: var(--operatorWidth);
       }
 
       .keyboardArea {
         grid-row-start: keyboard-row;
-        border: 2px solid red;
         min-height: 0;
+        width: 100%;
+        min-width: 100%;
         display: flex;
         align-items: center;
+        justify-content: center;
       }
 
       digit-keyboard {
-        height: min(45vh, 90%);
+        height: min(calc(45 * var(--vh)), 90%);
+        aspect-ratio: 3/4;
       }
     `;
   }
@@ -229,43 +272,50 @@ export class SumsWithSplitApp extends TimeLimitedGame {
       <div id="totalGame">
         <div class="row" id="sum-row">
           <div class="excersize">
-            <span style="min-width:1.112em">3</span><span>+</span>8 =
-            <digit-fillin
+            <span class="leftOperand">23</span><span class="operator">+</span
+            ><span class="rightOperand1Digit">8</span
+            ><span class="operator">=</span
+            ><digit-fillin
               id="result"
               desiredNumber="31"
               numberDigits="2"
-              ?fillinActive=${true}
+              ?fillinActive=${this.usedFillIns[this.activeFillIn] === `result`}
             ></digit-fillin>
           </div>
         </div>
 
         <div class="row">
           <div class="excersize">
-            <span style="min-width: 1.2em;"></span>
-            <span style="min-width: 1em;">╱ ╲</span>
+            <span class="firstSplit">/ &#92;</span>
           </div>
         </div>
 
         <div class="row">
           <div class="excersize">
-            <span style="min-width: 0.4em;"></span>
-            <digit-fillin
-              id="result"
-              desiredNumber="7"
-              numberDigits="1"
-              ?fillinActive=${true}
-            ></digit-fillin>
-            <span style="min-width: 0.4em;"></span>
-            <digit-fillin
-              id="result"
-              desiredNumber="1"
-              numberDigits="1"
-              ?fillinActive=${true}
-            ></digit-fillin>
+            <span class="firstSplit">
+              <digit-fillin
+                id="splitLeft"
+                desiredNumber="7"
+                numberDigits="1"
+                ?fillinActive=${this.usedFillIns[this.activeFillIn] ===
+                `splitLeft`}
+              ></digit-fillin
+              ><digit-fillin
+                id="splitRight"
+                desiredNumber="1"
+                numberDigits="1"
+                ?fillinActive=${this.usedFillIns[this.activeFillIn] ===
+                `splitRight`}
+              ></digit-fillin>
+            </span>
           </div>
         </div>
         <div class="keyboardArea">
-          <digit-keyboard></digit-keyboard>
+          <digit-keyboard
+            @digit-entered="${(evt: CustomEvent<Digit>) =>
+              this.handleDigit(evt.detail)}"
+          >
+          </digit-keyboard>
         </div>
       </div>
     `;
