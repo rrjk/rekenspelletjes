@@ -16,6 +16,9 @@ import './DigitFillin';
 
 import './RealHeight';
 
+type OperatorType = '+' | '-';
+type GameRangeType = 'till20' | 'till100';
+
 @customElement('sums-with-split-app')
 export class SumsWithSplitApp extends TimeLimitedGame {
   private gameLogger = new GameLogger('G', '');
@@ -23,6 +26,24 @@ export class SumsWithSplitApp extends TimeLimitedGame {
   private activeFillIn = 0;
   @state()
   private usedFillIns = ['splitLeft', 'splitRight', 'result'];
+  @state()
+  private leftOperand = 0;
+  @state()
+  private rightOperand = 0;
+  @state()
+  private result = 23;
+  @state()
+  private leftSplit = 5;
+  @state()
+  private rightSplit = 3;
+  @state()
+  private operators: OperatorType[] = [];
+  @state()
+  private selectedOperator: OperatorType = '+';
+  @state()
+  private gameRange: GameRangeType = 'till20';
+  @state()
+  private gameEnabled = false;
 
   constructor() {
     super('integrateScoreBoxInProgressBar');
@@ -31,7 +52,12 @@ export class SumsWithSplitApp extends TimeLimitedGame {
 
   private parseUrl(): void {
     const urlParams = new URLSearchParams(window.location.search);
-    // Nothing to do for now
+    if (urlParams.has('till20')) this.gameRange = 'till20';
+    if (urlParams.has('till100')) this.gameRange = 'till100';
+    this.operators = [];
+    if (urlParams.has('plus')) this.operators.push('+');
+    if (urlParams.has('minus')) this.operators.push('-');
+    if (this.operators.length === 0) this.operators.push('+');
   }
 
   override async getUpdateComplete(): Promise<boolean> {
@@ -51,11 +77,33 @@ export class SumsWithSplitApp extends TimeLimitedGame {
    */
   startNewGame(): void {
     this.newRound();
+    this.gameEnabled = true;
   }
 
   /** Get the text to show in the game over dialog */
   get welcomeMessage(): HTMLTemplateResult {
-    return html`<p>Maak sommen zoals 8+3</p>`;
+    const possibleSums = [];
+
+    if (this.gameRange === 'till20') {
+      if (this.operators.includes('+')) possibleSums.push('7+5');
+      if (this.operators.includes('-')) possibleSums.push('12-6');
+    }
+
+    if (this.gameRange === 'till100') {
+      if (this.operators.includes('+')) possibleSums.push('36+8');
+      if (this.operators.includes('-')) possibleSums.push('53-7');
+    }
+
+    let message: HTMLTemplateResult;
+
+    if (possibleSums.length === 1)
+      message = html`<p>Maak sommen zoals ${possibleSums[0]}</p>`;
+    else
+      message = html`<p>
+        Maak sommen zoals ${possibleSums[0]} en ${possibleSums[1]}
+      </p>`;
+
+    return message;
   }
 
   /** Get the title for the welcome dialog. */
@@ -73,65 +121,41 @@ export class SumsWithSplitApp extends TimeLimitedGame {
   }
 
   private newRound() {
-    /*
-    let proposedNumberOfGroups = this.numberOfGroups;
-    while (proposedNumberOfGroups === this.numberOfGroups) {
-      proposedNumberOfGroups = randomIntFromRange(
-        this.numberOfGroups1Seen ? 2 : 1,
-        9
-      );
-    }
-    if (proposedNumberOfGroups === 1) this.numberOfGroups1Seen = true;
-    this.numberOfGroups = proposedNumberOfGroups;
+    this.selectedOperator = randomFromSet(this.operators);
+    if (this.selectedOperator === '+') {
+      const leftOperandUnits = randomIntFromRange(2, 9);
+      const leftOperandTens =
+        this.gameRange === 'till20' ? 0 : randomIntFromRange(0, 8);
+      this.leftOperand = 10 * leftOperandTens + leftOperandUnits;
 
-    let proposedGroupsSize = this.groupSize;
-    while (proposedGroupsSize === this.groupSize) {
-      proposedGroupsSize = randomIntFromRange(this.groupsSize1Seen ? 2 : 1, 9);
+      this.rightOperand = randomIntFromRange(11 - leftOperandUnits, 9);
+      this.result = this.leftOperand + this.rightOperand;
+      this.leftSplit = 10 - leftOperandUnits;
+      this.rightSplit = this.rightOperand - this.leftSplit;
     }
-    if (proposedGroupsSize === 1) this.groupsSize1Seen = true;
-    this.groupSize = proposedGroupsSize;
 
-    let proposedImage = this.image;
-    while (proposedImage === this.image) {
-      proposedImage = randomFromSet(GroupOfImages.possibleImages);
-    }
-    this.image = proposedImage;
+    if (this.selectedOperator === '-') {
+      const leftOperandUnits = randomIntFromRange(1, 8);
+      const leftOperandTens =
+        this.gameRange === 'till20' ? 1 : randomIntFromRange(1, 9);
+      this.leftOperand = 10 * leftOperandTens + leftOperandUnits;
 
-    this.usedFillIns = [];
-    if (this.includeLongAddition) {
-      for (let i = 0; i < this.numberOfGroups; i++) {
-        this.usedFillIns.push(`longAddition${i}`);
-      }
+      this.rightOperand = randomIntFromRange(leftOperandUnits + 1, 9);
+      this.result = this.leftOperand - this.rightOperand;
+      this.leftSplit = leftOperandUnits;
+      this.rightSplit = this.rightOperand - this.leftSplit;
     }
-    this.usedFillIns.push('numberGroups');
-    this.usedFillIns.push('groupSize');
-    if (this.includeAnswer) this.usedFillIns.push('result');
 
     this.activeFillIn = 0;
     for (const fillIn of this.usedFillIns) {
       this.getElement<DigitFillin>(`#${fillIn}`).resetVisible();
     }
-    */
     this.getElement<DigitKeyboard>('digit-keyboard').enableAllDigits();
   }
 
   executeGameOverActions(): void {
+    this.gameEnabled = false;
     this.gameLogger.logGameOver();
-  }
-
-  async firstUpdated(): Promise<void> {
-    await this.getUpdateComplete();
-
-    /* Workaround for bug found in firefox where draggable=false is ignored in case user-select is set to none.
-     * Please note that this expression cannot pierce into webcomponent's shadowroms.
-     * The img in slots are found though.
-     */
-    if (window.navigator.userAgent.toLowerCase().includes('firefox')) {
-      this.renderRoot.querySelectorAll('img[draggable=false]').forEach(el => {
-        el.addEventListener('mousedown', event => event.preventDefault());
-      });
-    }
-    return super.firstUpdated();
   }
 
   getActiveFillin(): DigitFillin {
@@ -141,20 +165,21 @@ export class SumsWithSplitApp extends TimeLimitedGame {
   }
 
   handleDigit(digit: Digit) {
-    console.log(`handleDigit ${digit}`);
-    const processResult = this.getActiveFillin().processInput(digit);
+    if (this.gameEnabled) {
+      const processResult = this.getActiveFillin().processInput(digit);
 
-    if (processResult === 'inputNok') {
-      this.getElement<DigitKeyboard>('digit-keyboard').disable(digit);
-      this.handleWrongAnswer();
-    } else if (processResult === 'inputOk') {
-      this.getElement<DigitKeyboard>('digit-keyboard').enableAllDigits();
-    } else if (processResult === 'fillinComplete') {
-      if (this.activeFillIn === this.usedFillIns.length - 1) {
-        this.handleCorrectAnswer();
-      } else {
+      if (processResult === 'inputNok') {
+        this.getElement<DigitKeyboard>('digit-keyboard').disable(digit);
+        this.handleWrongAnswer();
+      } else if (processResult === 'inputOk') {
         this.getElement<DigitKeyboard>('digit-keyboard').enableAllDigits();
-        this.activeFillIn += 1;
+      } else if (processResult === 'fillinComplete') {
+        if (this.activeFillIn === this.usedFillIns.length - 1) {
+          this.handleCorrectAnswer();
+        } else {
+          this.getElement<DigitKeyboard>('digit-keyboard').enableAllDigits();
+          this.activeFillIn += 1;
+        }
       }
     }
   }
@@ -167,13 +192,6 @@ export class SumsWithSplitApp extends TimeLimitedGame {
         --operatorWidth: 0.8em;
         --fillInWidth: 1em;
         --fillInMargin: 0.2em;
-        box-sizing: border-box;
-      }
-
-      *,
-      *:before,
-      *:after {
-        box-sizing: inherit;
       }
 
       digit-fillin {
@@ -261,23 +279,27 @@ export class SumsWithSplitApp extends TimeLimitedGame {
         height: min(calc(45 * var(--vh)), 90%);
         aspect-ratio: 3/4;
       }
+
+      .hidden {
+        visibility: hidden;
+      }
     `;
   }
 
   /** Render the application */
   render(): HTMLTemplateResult {
     return html`
-      <style></style>
       ${this.renderTimedGameApp()}
-      <div id="totalGame">
+      <div class="${this.gameEnabled ? '' : 'hidden'}" id="totalGame">
         <div class="row" id="sum-row">
           <div class="excersize">
-            <span class="leftOperand">23</span><span class="operator">+</span
-            ><span class="rightOperand1Digit">8</span
+            <span class="leftOperand">${this.leftOperand}</span
+            ><span class="operator">${this.selectedOperator}</span
+            ><span class="rightOperand1Digit">${this.rightOperand}</span
             ><span class="operator">=</span
             ><digit-fillin
               id="result"
-              desiredNumber="31"
+              desiredNumber="${this.result}"
               numberDigits="2"
               ?fillinActive=${this.usedFillIns[this.activeFillIn] === `result`}
             ></digit-fillin>
@@ -295,14 +317,14 @@ export class SumsWithSplitApp extends TimeLimitedGame {
             <span class="firstSplit">
               <digit-fillin
                 id="splitLeft"
-                desiredNumber="7"
+                desiredNumber="${this.leftSplit}"
                 numberDigits="1"
                 ?fillinActive=${this.usedFillIns[this.activeFillIn] ===
                 `splitLeft`}
               ></digit-fillin
               ><digit-fillin
                 id="splitRight"
-                desiredNumber="1"
+                desiredNumber="${this.rightSplit}"
                 numberDigits="1"
                 ?fillinActive=${this.usedFillIns[this.activeFillIn] ===
                 `splitRight`}

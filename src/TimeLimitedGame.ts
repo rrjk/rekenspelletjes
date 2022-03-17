@@ -66,7 +66,7 @@ export abstract class TimeLimitedGame extends LitElement {
     return ret;
   }
 
-  /** Get the gametime in whole minuten (rounded down) */
+  /** Get the gametime in minutes */
   protected getGameTimeString() {
     const minutes = Math.floor(this.gameTime / 60);
     const seconds = this.gameTime % 60;
@@ -175,7 +175,8 @@ export abstract class TimeLimitedGame extends LitElement {
   }
 
   get resultsForGameOverText(): HTMLTemplateResult {
-    return html` <p>
+    return html` <p>Je hebt ${this.getGameTimeString()} gespeeld.</p>
+      <p>
         Je hebt ${this.numberOk === 0 ? 'geen' : `${this.numberOk}`}
         ${this.numberOk === 1 ? 'goed antwoord' : 'goede antwoorden'} gegeven.
       </p>
