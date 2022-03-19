@@ -85,8 +85,8 @@ export class SumsWithSplitApp extends TimeLimitedGame {
     const possibleSums = [];
 
     if (this.gameRange === 'till20') {
-      if (this.operators.includes('+')) possibleSums.push('7+5');
-      if (this.operators.includes('-')) possibleSums.push('12-6');
+      if (this.operators.includes('+')) possibleSums.push('6+8');
+      if (this.operators.includes('-')) possibleSums.push('12-3');
     }
 
     if (this.gameRange === 'till100') {
