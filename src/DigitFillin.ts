@@ -32,6 +32,7 @@ export class DigitFillin extends LitElement {
   static get styles(): CSSResultGroup {
     return css`
       .fillinDigit {
+        box-sizing: border-box;
         display: inline-block;
         margin-top: auto;
         margin-bottom: auto;

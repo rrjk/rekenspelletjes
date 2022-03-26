@@ -13,5 +13,13 @@ Game codes
 <tr><td>C</td><td>Balonnenspel</td/></tr>
 <tr><td>E</td><td>Sorteerspel</td/></tr>
 <tr><td>F</td><td>Groepjes van herkennen</td/></tr>
-<tr><td>G</td><td>Sommen met splisen</td></tr>
+<tr><td>Ga</td><td>Sommen met enkel splitsen tot 20 +</td></tr>
+<tr><td>Gb</td><td>Sommen met enkel splitsen tot 20 -</td></tr>
+<tr><td>Gc</td><td>Sommen met enkel splitsen tot 20 +-</td></tr>
+<tr><td>Gd</td><td>Sommen met enkel splitsen tot 100 +</td></tr>
+<tr><td>Ge</td><td>Sommen met enkel splitsen tot 100 -</td></tr>
+<tr><td>Gf</td><td>Sommen met enkel splitsen tot 100 +-</td></tr>
+<tr><td>Gg</td><td>Sommen met dubbel splitsen tot 100 +</td></tr>
+<tr><td>Gh</td><td>Sommen met dubbel splitsen tot 100 -</td></tr>
+<tr><td>Gi</td><td>Sommen met dubbel splitsen tot 100 +-</td></tr>
 </table>

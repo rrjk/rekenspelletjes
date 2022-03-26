@@ -117,9 +117,15 @@ export abstract class TimeLimitedGame extends LitElement {
     this.numberOk = 0;
   }
 
+  /** Additional first update actions, can be overriden in child classes */
+  additionalFirstUpdatedActions() {
+    // Do nothing
+  }
+
   /** Actions performed after the first update is complete. */
   async firstUpdated(): Promise<void> {
     await this.updateComplete;
+    this.additionalFirstUpdatedActions();
     await this.showWelcomeMessage();
     this.resetTimerAndCounters();
     this.startNewGame();
