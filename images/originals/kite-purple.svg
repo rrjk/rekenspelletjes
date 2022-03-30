@@ -1,0 +1,44 @@
+<?xml version="1.0" standalone="no"?>
+
+ <svg xmlns="http://www.w3.org/2000/svg" width="600" height="900">
+    <defs>
+       <g id="triangle">
+           <polygon points="0,0 -10,-20 10,-20" style="stroke:grey;stroke-width:1" />
+           <polygon points="0,0 -10,20 10,20" style="stroke:grey;stroke-width:1" />
+       </g>
+       <radialGradient id="GradientLT" cx="1" cy="1" r="1" >
+        <stop offset="0%" stop-color="#f1c3fe"/>
+        <stop offset="40%" stop-color="#e799fe"/>
+        <stop offset="100%" stop-color="#aa0adb"/>
+      </radialGradient>
+      <radialGradient id="GradientLB" cx="1" cy="0" r="1" >
+        <stop offset="0%" stop-color="#f1c3fe"/>
+        <stop offset="40%" stop-color="#e799fe"/>
+        <stop offset="100%" stop-color="#aa0adb"/>
+      </radialGradient>
+      <radialGradient id="GradientRT" cx="0" cy="1" r="1" >
+        <stop offset="0%" stop-color="#f1c3fe"/>
+        <stop offset="40%" stop-color="#e799fe"/>
+        <stop offset="100%" stop-color="#aa0adb"/>
+      </radialGradient>
+      <radialGradient id="GradientRB" cx="0" cy="0" r="1" >
+        <stop offset="0%" stop-color="#f1c3fe"/>
+        <stop offset="40%" stop-color="#e799fe"/>
+        <stop offset="100%" stop-color="#aa0adb"/>
+      </radialGradient>
+    </defs>
+
+
+    <polygon points="300,0 300,280 0,280" style="fill:url(#GradientLT);stroke:grey;stroke-width:1" />
+    <polygon points="300,0 300,280 600,280" style="fill:url(#GradientRT);stroke:grey;stroke-width:1" />
+    <polygon points="300,800 300,280 0,280" style="fill:url(#GradientLB);stroke:grey;stroke-width:1" />
+    <polygon points="300,800 300,280 600,280" style="fill:url(#GradientRB);stroke:grey;stroke-width:1" />
+
+    <use href="#triangle" x="350" y="850" transform="rotate(35, 350, 850)" style="fill:#fff333"/>
+    <use href="#triangle" x="400" y="875" transform="rotate(30, 400, 875)" style="fill:#ff1a1a"/>
+
+    <path d="M300,800 C300,820 340,843 350,850 360,857 390,869 400,875 410,881 447,887 450,900" style="stroke:black; stroke-width:2;fill:none"/>
+
+ </svg>
+ 
+ 

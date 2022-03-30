@@ -13,7 +13,7 @@ export interface Answers {
 
 /** Possible balloon colors */
 type BalloonColors = 'blue' | 'green' | 'yellow' | 'purple';
-type ImageType = 'balloon' | 'star';
+type ImageType = 'balloon' | 'star' | 'kite';
 
 /** Interface definition for the ballooninfo */
 interface BalloonInfo {
@@ -49,6 +49,15 @@ export class AscendingBalloons extends LitElement {
         ['yellow', new URL('../images/star-yellow.png', import.meta.url)],
         ['purple', new URL('../images/star-purple.png', import.meta.url)],
         ['green', new URL('../images/star-green.png', import.meta.url)],
+      ]),
+    ],
+    [
+      'kite',
+      new Map<BalloonColors, URL>([
+        ['blue', new URL('../images/kite-blue.svg', import.meta.url)],
+        ['yellow', new URL('../images/kite-yellow.svg', import.meta.url)],
+        ['purple', new URL('../images/kite-purple.svg', import.meta.url)],
+        ['green', new URL('../images/kite-green.svg', import.meta.url)],
       ]),
     ],
   ]);
@@ -150,6 +159,25 @@ export class AscendingBalloons extends LitElement {
         padding: 0;
       }
 
+      .kite {
+        display: inline-block;
+        background-size: 2em 3em;
+        background-color: Transparent;
+        font-size: calc(0.9em + 4vmin);
+        border: none;
+        outline: none;
+        width: 2em;
+        height: 3em;
+        color: black;
+        text-align: center;
+        padding: 0;
+      }
+
+      .kite span {
+        position: relative;
+        top: -0.4em;
+      }
+
       .balloon {
         background-size: 1.76em 2em;
         background-color: Transparent;
@@ -161,6 +189,11 @@ export class AscendingBalloons extends LitElement {
         color: black;
         text-align: center;
         padding: 0;
+      }
+
+      .balloon span {
+        position: relative;
+        top: -0.15em;
       }
 
       #balloons {
@@ -233,7 +266,6 @@ export class AscendingBalloons extends LitElement {
     if (this.disabled) ret = '';
     else if (balloonInfo.disabled) ret = '✗';
     else ret = `${balloonInfo.label}`;
-
     return ret;
   }
 
@@ -257,7 +289,7 @@ export class AscendingBalloons extends LitElement {
                 @click="${() => this.balloonClicked(balloonInfo.label)}"
                 ?disabled="${balloonInfo.disabled || this.disabled}"
               >
-                ${this.renderTextBalloon(balloonInfo)}
+                <span>${this.renderTextBalloon(balloonInfo)}</span>
               </button>
             `
         )}

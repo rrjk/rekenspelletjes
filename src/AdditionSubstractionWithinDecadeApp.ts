@@ -202,6 +202,7 @@ export class AdditionSubstractionWithinDecadeApp extends TimeLimitedGame {
         @ascension-complete="${() => this.handleAscensionComplete()}"
         .answers=${this.answers}
         ?disabled=${this.gameElementsDisabled}
+        imageType="kite"
       ></ascending-balloons>
       <div
         class="exercise"

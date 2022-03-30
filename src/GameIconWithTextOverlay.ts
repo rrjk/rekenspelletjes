@@ -4,17 +4,21 @@ import type { HTMLTemplateResult, CSSResultGroup } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
 /** Possible balloon colors */
-export type BalloonColors =
+export type IconColors =
   | 'yellow'
   | 'purple'
   | 'yellowPurple'
   | 'green'
   | 'blue';
 
-@customElement('balloon-with-text-overlay')
+export type ImageTypes = 'balloon' | 'kite';
+
+@customElement('game-icon-with-text-overlay')
 export class BalloonIndex extends LitElement {
   @property()
-  ballooncolor: BalloonColors = 'yellow';
+  iconcolor: IconColors = 'yellow';
+  @property()
+  image: ImageTypes = 'balloon';
   @property()
   text1 = '';
   @property()
@@ -26,12 +30,9 @@ export class BalloonIndex extends LitElement {
 
   static get styles(): CSSResultGroup {
     return css`
-      .balloon {
+      .balloon,
+      .kite {
         display: inline-block;
-        background-size: 75px 90px;
-        width: 75px;
-        height: 90px;
-        line-height: 78px;
         background-color: transparent;
         border: none;
         outline: none;
@@ -41,12 +42,26 @@ export class BalloonIndex extends LitElement {
         padding: 0;
       }
 
+      .balloon {
+        background-size: 75px 90px;
+        width: 75px;
+        height: 90px;
+        line-height: 78px;
+      }
+
+      .kite {
+        background-size: 70px 105px;
+        width: 70px;
+        height: 105px;
+        line-height: 80px;
+      }
+
       .oneLineFont {
         font-size: 23px;
       }
 
       .twoLineFont {
-        font-size: 23px;
+        font-size: 21px;
       }
 
       .threeLineFont {
@@ -55,6 +70,30 @@ export class BalloonIndex extends LitElement {
 
       .fourLineFont {
         font-size: 15px;
+      }
+
+      .kiteBlue {
+        background-image: url('${unsafeCSS(
+          new URL('../images/kite-blue.svg', import.meta.url)
+        )}');
+      }
+
+      .kitePurple {
+        background-image: url('${unsafeCSS(
+          new URL('../images/kite-purple.svg', import.meta.url)
+        )}');
+      }
+
+      .kiteGreen {
+        background-image: url('${unsafeCSS(
+          new URL('../images/kite-green.svg', import.meta.url)
+        )}');
+      }
+
+      .kiteYellow {
+        background-image: url('${unsafeCSS(
+          new URL('../images/kite-yellow.svg', import.meta.url)
+        )}');
       }
 
       .balloonBlue {
@@ -127,10 +166,10 @@ export class BalloonIndex extends LitElement {
 
     // Determine balloon color class based on ballooncolor
     const balloonColorClass =
-      this.ballooncolor.charAt(0).toUpperCase() + this.ballooncolor.slice(1);
+      this.iconcolor.charAt(0).toUpperCase() + this.iconcolor.slice(1);
 
     return html`
-      <div class="balloon balloon${balloonColorClass} ${fontClass}">
+      <div class="${this.image} ${this.image}${balloonColorClass} ${fontClass}">
         <span class="text">${text}</span>
       </div>
     `;
