@@ -13,7 +13,7 @@ export interface Answers {
 
 /** Possible balloon colors */
 type BalloonColors = 'blue' | 'green' | 'yellow' | 'purple';
-type ImageType = 'balloon' | 'star' | 'kite';
+export type ImageType = 'balloon' | 'star' | 'kite' | 'rocket';
 
 /** Interface definition for the ballooninfo */
 interface BalloonInfo {
@@ -58,6 +58,15 @@ export class AscendingBalloons extends LitElement {
         ['yellow', new URL('../images/kite-yellow.svg', import.meta.url)],
         ['purple', new URL('../images/kite-purple.svg', import.meta.url)],
         ['green', new URL('../images/kite-green.svg', import.meta.url)],
+      ]),
+    ],
+    [
+      'rocket',
+      new Map<BalloonColors, URL>([
+        ['blue', new URL('../images/rocket-blue.svg', import.meta.url)],
+        ['yellow', new URL('../images/rocket-yellow.svg', import.meta.url)],
+        ['purple', new URL('../images/rocket-purple.svg', import.meta.url)],
+        ['green', new URL('../images/rocket-green.svg', import.meta.url)],
       ]),
     ],
   ]);
@@ -145,18 +154,24 @@ export class AscendingBalloons extends LitElement {
         }
       }
 
+      .star,
+      .kite,
+      .balloon,
+      .rocket {
+        border: none;
+        outline: none;
+        color: black;
+        text-align: center;
+        padding: 0;
+      }
+
       .star {
         background-size: 3.5em 3.5em;
         background-color: Transparent;
         font-size: calc(0.9em + 2vmin);
-        border: none;
-        outline: none;
         width: 3.5em;
         height: 3.5em;
         line-height: 3.8em;
-        color: black;
-        text-align: center;
-        padding: 0;
       }
 
       .kite {
@@ -164,13 +179,8 @@ export class AscendingBalloons extends LitElement {
         background-size: 2em 3em;
         background-color: Transparent;
         font-size: calc(0.9em + 4vmin);
-        border: none;
-        outline: none;
         width: 2em;
         height: 3em;
-        color: black;
-        text-align: center;
-        padding: 0;
       }
 
       .kite span {
@@ -178,17 +188,26 @@ export class AscendingBalloons extends LitElement {
         top: -0.4em;
       }
 
+      .rocket {
+        display: inline-block;
+        background-size: 3.5em 3.5em;
+        background-color: Transparent;
+        font-size: calc(0.9em + 3vmin);
+        width: 3.5em;
+        height: 3.5em;
+      }
+
+      .rocket span {
+        position: relative;
+        top: -0.2em;
+      }
+
       .balloon {
         background-size: 1.76em 2em;
         background-color: Transparent;
         font-size: calc(1em + 4vmin);
-        border: none;
-        outline: none;
         width: 1.76em;
         height: 2em;
-        color: black;
-        text-align: center;
-        padding: 0;
       }
 
       .balloon span {
