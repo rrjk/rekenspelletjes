@@ -10,9 +10,15 @@ Game codes
 <tr><td>Ba</td><td>Plus en minsommen met hele tientallen</td/></tr>
 <tr><td>Bc</td><td>Minsommen met hele tientallen</td/></tr>
 <tr><td>Bc</td><td>Plus- en minsommen met hele tientallen</td/></tr>
-<tr><td>C</td><td>Balonnenspel</td/></tr>
+<tr><td>Ca</td><td>Balonnenspel</td/></tr>
+<tr><td>Cb</td><td>Raketspel - keer</td/></tr>
+<tr><td>Cc</td><td>Raketspel - gedeeld door</td/></tr>
+<tr><td>Cc</td><td>Raketspel - keer en gedeeld door</td/></tr>
 <tr><td>E</td><td>Sorteerspel</td/></tr>
-<tr><td>F</td><td>Groepjes van herkennen</td/></tr>
+<tr><td>Fa</td><td>Groepjes van herkennen zonder antwoord met lange optelling</td/></tr>
+<tr><td>Fb</td><td>Groepjes van herkennen zonder antwoord en zonder lange optelling</td/></tr>
+<tr><td>Fc</td><td>Groepjes van herkennen met antwoord en zonder lange optelling</td/></tr>
+<tr><td>Fd</td><td>Groepjes van herkennen met antwoord en met lange optelling</td/></tr>
 <tr><td>Ga</td><td>Sommen met enkel splitsen tot 20 +</td></tr>
 <tr><td>Gb</td><td>Sommen met enkel splitsen tot 20 -</td></tr>
 <tr><td>Gc</td><td>Sommen met enkel splitsen tot 20 +-</td></tr>
