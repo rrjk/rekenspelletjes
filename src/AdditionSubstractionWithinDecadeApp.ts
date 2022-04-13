@@ -197,6 +197,7 @@ export class AdditionSubstractionWithinDecadeApp extends TimeLimitedGame {
       <ascending-balloons
         id="ascendingBalloons"
         style="position: absolute; top: 0; left: 0; height: 100%; width:100%;"
+        imageType="kite"
         @correct-balloon-clicked="${() => this.handleCorrectAnswer()}"
         @wrong-balloon-clicked="${() => this.handleWrongAnswer()}"
         @ascension-complete="${() => this.handleAscensionComplete()}"
