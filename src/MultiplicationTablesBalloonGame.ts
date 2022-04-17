@@ -1,7 +1,7 @@
 import { html, css } from 'lit';
 // eslint-disable-next-line import/extensions
 import { customElement, state } from 'lit/decorators.js';
-import type { CSSResultGroup, HTMLTemplateResult } from 'lit';
+import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
 import { TimeLimitedGame2 } from './TimeLimitedGame2';
 import {
@@ -113,12 +113,15 @@ export class MultiplicationTablesBalloonGameApp extends TimeLimitedGame2 {
   }
 
   /** Get all static styles */
-  static get styles(): CSSResultGroup {
-    return css`
-      .exercise {
-        font-size: calc(1em + 4vmin);
-      }
-    `;
+  static get styles(): CSSResultArray {
+    return [
+      ...super.styles,
+      css`
+        .exercise {
+          font-size: calc(1em + 4vmin);
+        }
+      `,
+    ];
   }
 
   override async getUpdateComplete(): Promise<boolean> {
@@ -273,10 +276,8 @@ export class MultiplicationTablesBalloonGameApp extends TimeLimitedGame2 {
     this.gameLogger.logGameOver();
   }
 
-  /** Render the application */
-  render(): HTMLTemplateResult {
+  renderGameContent(): HTMLTemplateResult {
     return html`
-      ${this.renderTimedGameApp()}
       <ascending-balloons
         id="ascendingBalloons"
         style="position: absolute; top: 0; left: 0; height: 100%; width:100%;"

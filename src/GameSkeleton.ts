@@ -1,7 +1,7 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, css } from 'lit';
 // eslint-disable-next-line import/extensions
 import { state } from 'lit/decorators.js';
-import type { HTMLTemplateResult } from 'lit';
+import type { HTMLTemplateResult, CSSResultArray } from 'lit';
 
 import './MessageDialog';
 import type { MessageDialog } from './MessageDialog';
@@ -83,7 +83,6 @@ export abstract class GameSkeleton extends LitElement {
     await this.updateComplete;
     this.additionalFirstUpdatedActions();
     await this.showWelcomeMessage();
-    console.log('GameSkeleton - firstUpdated - welcomeMessage shown');
     this.startNewGame();
   }
 
@@ -102,8 +101,29 @@ export abstract class GameSkeleton extends LitElement {
     );
   }
 
-  /** Render the game skeleton */
-  renderGameSkeleton(): HTMLTemplateResult {
+  /** Render the actual game
+   * Is empty for this game skeleton, should be overridden in children.
+   */
+  renderGame(): HTMLTemplateResult {
+    return html``;
+  }
+
+  static get styles(): CSSResultArray {
+    return [
+      css`
+        .wholeScreen {
+          position: absolute;
+          top: 0;
+          left: 0;
+          height: 100%;
+          width: 100%;
+        }
+      `,
+    ];
+  }
+
+  /** Render the application */
+  render(): HTMLTemplateResult {
     return html`
       <message-dialog
         id="messageDialog"
@@ -111,6 +131,7 @@ export abstract class GameSkeleton extends LitElement {
       ></message-dialog>
 
       <gameover-dialog id="gameOverDialog"></gameover-dialog>
+      <div class="wholeScreen">${this.renderGame()}</div>
     `;
   }
 
@@ -151,7 +172,6 @@ export abstract class GameSkeleton extends LitElement {
    * When overruled by a child, the super needs to be called
    */
   startNewGame(): void {
-    console.log('GameSkeleton - startNewGame');
     this.resetCounters();
   }
 

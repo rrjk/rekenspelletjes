@@ -1,10 +1,9 @@
-import { html } from 'lit';
+import { html, css } from 'lit';
 
 // eslint-disable-next-line import/extensions
-import type { HTMLTemplateResult } from 'lit';
+import type { HTMLTemplateResult, CSSResultArray } from 'lit';
 
-import './ProgressBar';
-import type { ProgressBar } from './ProgressBar';
+import { ProgressBar } from './ProgressBar';
 
 import { ParseGametimeFromUrl } from './GametimeParameters';
 
@@ -37,34 +36,51 @@ export abstract class TimeLimitedGame2 extends GameSkeleton {
     super.additionalFirstUpdatedActions();
   }
 
-  /*
-   Actions performed after the first update is complete. 
-  async firstUpdated(): Promise<void> {
-    await this.updateComplete;
-    this.additionalFirstUpdatedActions();
-    await this.showWelcomeMessage();
-    this.startNewGame();
-  }
-*/
   override async getUpdateComplete(): Promise<boolean> {
     const result = await super.getUpdateComplete();
     await this.progressBar.updateComplete;
     return result;
   }
 
-  /** Render the application */
-  renderTimedGameApp(): HTMLTemplateResult {
+  static get styles(): CSSResultArray {
+    return [
+      ...super.styles,
+      css`
+        .fullGame {
+          display: grid;
+          top: 0;
+          left: 0;
+          height: 100%;
+          width: 100%;
+          box-sizing: border-box;
+          grid-template-rows: ${ProgressBar.height}px 1fr;
+        }
+      `,
+    ];
+  }
+
+  /** Render the actual game content within the game area of the the game
+   * Is empty for the TimeLimitedGame, should be overridden in children.
+   */
+  renderGameContent(): HTMLTemplateResult {
+    return html``;
+  }
+
+  /** Render the actual game within the gameskeleton */
+  renderGame(): HTMLTemplateResult {
     return html`
-      ${this.renderGameSkeleton()}
-      <progress-bar
-        style="--progress-bar-gametime: ${this
-          .gameTime}s; width:calc(100 * var(--vw));"
-        id="progressBar"
-        @timeUp="${() => this.handleTimeUp()}"
-        integrateScoreBox
-        numberOk="${this.numberOk}"
-        numberNok="${this.numberNok}"
-      ></progress-bar>
+      <div class="fullGame">
+        <progress-bar
+          style="--progress-bar-gametime: ${this
+            .gameTime}s; width:calc(100 * var(--vw));"
+          id="progressBar"
+          @timeUp="${() => this.handleTimeUp()}"
+          integrateScoreBox
+          numberOk="${this.numberOk}"
+          numberNok="${this.numberNok}"
+        ></progress-bar>
+        <div class="gameContent">${this.renderGameContent()}</div>
+      </div>
     `;
   }
 
@@ -72,7 +88,6 @@ export abstract class TimeLimitedGame2 extends GameSkeleton {
    * Overruled from parent to also reset the progress bar.
    */
   startNewGame(): void {
-    console.log('TimeLimitedGame2 - startNewGame');
     super.startNewGame();
     this.progressBar.restart();
   }

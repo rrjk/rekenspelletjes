@@ -20,6 +20,8 @@ export class ProgressBar extends LitElement {
   @property({ type: Boolean })
   integrateScoreBox = false;
 
+  static height = 20;
+
   static get styles(): CSSResultGroup {
     return css`
       .GreenText {
@@ -34,7 +36,7 @@ export class ProgressBar extends LitElement {
         margin: 0;
         padding: 0;
         width: 100%;
-        height: 20px;
+        height: ${ProgressBar.height}px;
         border-style: none;
         background-color: lightgrey;
         text-align: right;
