@@ -1,9 +1,9 @@
 import { html, css } from 'lit';
 // eslint-disable-next-line import/extensions
 import { customElement, state } from 'lit/decorators.js';
-import type { CSSResultGroup, HTMLTemplateResult } from 'lit';
+import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
-import { TimeLimitedGame } from './TimeLimitedGame';
+import { TimeLimitedGame2 } from './TimeLimitedGame2';
 import {
   randomFromSet,
   randomFromSetAndSplice,
@@ -15,7 +15,7 @@ import type { Answers, AscendingBalloons } from './AscendingBalloons';
 type Operator = '+' | '-';
 
 @customElement('addition-substraction-within-decade-app')
-export class AdditionSubstractionWithinDecadeApp extends TimeLimitedGame {
+export class AdditionSubstractionWithinDecadeApp extends TimeLimitedGame2 {
   @state()
   private firstNumber = 1;
   @state()
@@ -72,12 +72,15 @@ export class AdditionSubstractionWithinDecadeApp extends TimeLimitedGame {
   }
 
   /** Get all static styles */
-  static get styles(): CSSResultGroup {
-    return css`
-      .exercise {
-        font-size: calc(1em + 4vmin);
-      }
-    `;
+  static get styles(): CSSResultArray {
+    return [
+      ...super.styles,
+      css`
+        .exercise {
+          font-size: calc(1em + 4vmin);
+        }
+      `,
+    ];
   }
 
   override async getUpdateComplete(): Promise<boolean> {
@@ -90,12 +93,14 @@ export class AdditionSubstractionWithinDecadeApp extends TimeLimitedGame {
    * Progress bar and counters are automatically reset.
    */
   startNewGame(): void {
+    super.startNewGame();
     this.newRound();
   }
 
-  /** Get the text to show in the game over dialog */
-  get welcomeMessage(): HTMLTemplateResult {
+  /** Get the game description as a text string */
+  get exerciseExamplesAsScentence(): string {
     const exerciseExamples: string[] = [];
+
     let exerciseExamplesAsScentence = '';
 
     if (this.operators.find(value => value === '+')) {
@@ -127,8 +132,25 @@ export class AdditionSubstractionWithinDecadeApp extends TimeLimitedGame {
       });
     }
 
-    return html`<p>Sommen als ${exerciseExamplesAsScentence}</p>
+    return exerciseExamplesAsScentence;
+  }
+
+  /** Get the text to show in the game over dialog */
+  get welcomeMessage(): HTMLTemplateResult {
+    return html`<p>Sommen als ${this.exerciseExamplesAsScentence}</p>
       <p>Klik op de ballon met het juiste antwoord.</p> `;
+  }
+
+  /** Get the text to show in the game over dialog
+   */
+  get gameOverText(): HTMLTemplateResult {
+    return html`
+      <p>
+        Je hebt ${this.getGameTimeString()} gespeeld met sommen als
+        ${this.exerciseExamplesAsScentence}
+      </p>
+      ${this.numberOkForGameOverText} ${this.numberNokForGameOverText}
+    `;
   }
 
   /** Get the title for the welcome dialog. */
@@ -191,9 +213,8 @@ export class AdditionSubstractionWithinDecadeApp extends TimeLimitedGame {
   }
 
   /** Render the application */
-  render(): HTMLTemplateResult {
+  renderGameContent(): HTMLTemplateResult {
     return html`
-      ${this.renderTimedGameApp()}
       <ascending-balloons
         id="ascendingBalloons"
         style="position: absolute; top: 0; left: 0; height: 100%; width:100%;"
