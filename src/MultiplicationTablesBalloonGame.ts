@@ -3,7 +3,7 @@ import { html, css } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import type { CSSResultGroup, HTMLTemplateResult } from 'lit';
 
-import { TimeLimitedGame } from './TimeLimitedGame';
+import { TimeLimitedGame2 } from './TimeLimitedGame2';
 import {
   randomFromSet,
   randomFromSetAndSplice,
@@ -20,7 +20,7 @@ import { GameLogger } from './GameLogger';
 type Operator = '×' | ':';
 
 @customElement('mutiplication-tables-balloon-game-app')
-export class MultiplicationTablesBalloonGameApp extends TimeLimitedGame {
+export class MultiplicationTablesBalloonGameApp extends TimeLimitedGame2 {
   @state()
   private firstNumber = 1;
   @state()
@@ -128,9 +128,9 @@ export class MultiplicationTablesBalloonGameApp extends TimeLimitedGame {
   }
 
   /** Start a new game.
-   * Progress bar and counters are automatically reset.
    */
   startNewGame(): void {
+    super.startNewGame();
     this.newRound();
   }
 
@@ -193,7 +193,7 @@ export class MultiplicationTablesBalloonGameApp extends TimeLimitedGame {
         Je hebt ${this.getGameTimeString()} gespeeld met de
         ${this.tablesAsScentence}
       </p>
-      ${this.resultsForGameOverText}
+      ${this.numberOkForGameOverText} ${this.numberNokForGameOverText}
     `;
   }
 
