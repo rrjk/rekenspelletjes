@@ -21,16 +21,6 @@ export abstract class TimeLimitedGame2 extends GameSkeleton {
     return this.getElement<ProgressBar>('#progressBar');
   }
 
-  /** Handle the time up, when the game is over. */
-  handleTimeUp(): void {
-    this.executeGameOverActions();
-    this.gameOverDialog.show(this.gameOverText).then(result => {
-      if (result === 'again') {
-        this.startNewGame();
-      } else window.location.href = 'index.html';
-    });
-  }
-
   /** Additional first update actions, can be overriden in child classes */
   additionalFirstUpdatedActions() {
     super.additionalFirstUpdatedActions();
@@ -74,7 +64,7 @@ export abstract class TimeLimitedGame2 extends GameSkeleton {
           style="--progress-bar-gametime: ${this
             .gameTime}s; width:calc(100 * var(--vw));"
           id="progressBar"
-          @timeUp="${() => this.handleTimeUp()}"
+          @timeUp="${() => this.handleGameOver()}"
           integrateScoreBox
           numberOk="${this.numberOk}"
           numberNok="${this.numberNok}"

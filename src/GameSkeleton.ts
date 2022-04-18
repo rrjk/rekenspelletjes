@@ -181,6 +181,16 @@ export abstract class GameSkeleton extends LitElement {
   /** Get the title for the welcome dialog. */
   abstract get welcomeDialogTitle(): string;
 
+  /** Handle game over */
+  handleGameOver(): void {
+    this.executeGameOverActions();
+    this.gameOverDialog.show(this.gameOverText).then(result => {
+      if (result === 'again') {
+        this.startNewGame();
+      } else window.location.href = 'index.html';
+    });
+  }
+
   /** Actions to perform before the game over dialog is shown.
    * Need not be overriden in the derived class, in that case nothing is done.
    */
