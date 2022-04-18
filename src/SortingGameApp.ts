@@ -1,9 +1,9 @@
 import { html, css } from 'lit';
 // eslint-disable-next-line import/extensions
 import { customElement, state } from 'lit/decorators.js';
-import type { CSSResultGroup, HTMLTemplateResult } from 'lit';
+import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
-import { TimeLimitedGame } from './TimeLimitedGame';
+import { TimeLimitedGame2 } from './TimeLimitedGame2';
 
 import type { DropTargetBox } from './DropTargetBox';
 import './DropTargetBox';
@@ -35,7 +35,7 @@ type BoxInformation = {
 };
 
 @customElement('sorting-game-app')
-export class SortingGameApp extends TimeLimitedGame {
+export class SortingGameApp extends TimeLimitedGame2 {
   private static boxSizes: Map<number, BoxSize[]> = new Map<number, BoxSize[]>([
     [4, ['Smallest', 'Small', 'Big', 'Biggest']],
     [3, ['Small', 'Big', 'Biggest']],
@@ -67,7 +67,7 @@ export class SortingGameApp extends TimeLimitedGame {
   }
 
   constructor() {
-    super('integrateScoreBoxInProgressBar');
+    super();
     this.welcomeDialogImageUrl = new URL(
       '../images/Mompitz7.png',
       import.meta.url
@@ -118,41 +118,44 @@ export class SortingGameApp extends TimeLimitedGame {
   }
 
   /** Get all static styles */
-  static get styles(): CSSResultGroup {
-    return css`
-      .hidden {
-        visibility: hidden;
-      }
-      .numbersAndBoxes {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-evenly;
-        align-items: center;
-        height: calc(100 * var(--vh));
-        width: calc(100 * var(--vw));
-      }
+  static get styles(): CSSResultArray {
+    return [
+      ...super.styles,
+      css`
+        .hidden {
+          visibility: hidden;
+        }
+        .numbersAndBoxes {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-evenly;
+          align-items: center;
+          height: calc(100 * var(--vh));
+          width: calc(100 * var(--vw));
+        }
 
-      .numbers,
-      .boxes {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-evenly;
-        align-items: center;
-        width: 100%;
-      }
+        .numbers,
+        .boxes {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-evenly;
+          align-items: center;
+          width: 100%;
+        }
 
-      .number {
-        display: inline-block;
-        width: calc(80 / var(--numberNumbers) * var(--vw));
-        height: calc(30 * var(--vh));
-      }
+        .number {
+          display: inline-block;
+          width: calc(80 / var(--numberNumbers) * var(--vw));
+          height: calc(30 * var(--vh));
+        }
 
-      .box {
-        display: inline-block;
-        width: calc(80 / var(--numberNumbers) * var(--vw));
-        height: calc(60 * var(--vh));
-      }
-    `;
+        .box {
+          display: inline-block;
+          width: calc(80 / var(--numberNumbers) * var(--vw));
+          height: calc(60 * var(--vh));
+        }
+      `,
+    ];
   }
 
   override async getUpdateComplete(): Promise<boolean> {
@@ -171,9 +174,9 @@ export class SortingGameApp extends TimeLimitedGame {
   }
 
   /** Start a new game.
-   * Progress bar and counters are automatically reset.
    */
   startNewGame(): void {
+    super.startNewGame();
     this.newRound();
   }
 
@@ -305,10 +308,8 @@ export class SortingGameApp extends TimeLimitedGame {
   }
 
   /** Render the application */
-  render(): HTMLTemplateResult {
+  renderGameContent(): HTMLTemplateResult {
     return html`
-      ${this.renderTimedGameApp()}
-
       <style>
         :host {
           --numberNumbers: ${this.numbers.length};
