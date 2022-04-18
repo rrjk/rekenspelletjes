@@ -341,193 +341,205 @@ export class SumsWithDoubleSplitApp extends TimeLimitedGame2 {
     return [
       ...super.styles,
       css`
-      :host {
-        --spaceBetweenSlashesWidth: 0.4em;
-        --operatorWidth: 0.8em;
-        --fillInWidth: 1em;
-        --fillInMargin: 0.2em;
+        :host {
+          --spaceBetweenSlashesWidth: 0.4em;
+          --operatorWidth: 0.8em;
+          --fillInWidth: 1em;
+          --fillInMargin: 0.2em;
 
-        --fontMagnification: calc(
-          (16 + (4 * min(var(--vhWithoutUnit), var(--vwWithoutUnit)))) / 16
-        );
+          --fontMagnification: calc(
+            (16 + (4 * min(var(--vhWithoutUnit), var(--vwWithoutUnit)))) / 16
+          );
 
+          --preSplit1Slashes1DigitWidth: calc(
+            (2.5 * var(--singleDigitWidth) + var(--operatorWidth)) -
+              var(--slashWidth) - (0.5 * var(--spaceBetweenSlashesWidth))
+          );
 
-        --preSplit1Slashes1DigitWidth: calc(
-          (2.5 * var(--singleDigitWidth) + var(--operatorWidth)) -
-            var(--slashWidth) - (0.5 * var(--spaceBetweenSlashesWidth)));
-        
-        --preSplit1DigitEntry1DigitWidthBackup: calc((2.5 * var(--singleDigitWidth) + var(--operatorWidth)) -
-          var(--slashWidth) - (0.5 * var(--spaceBetweenSlashesWidth)) - var(--fillInWidth));
+          --preSplit1DigitEntry1DigitWidthBackup: calc(
+            (2.5 * var(--singleDigitWidth) + var(--operatorWidth)) -
+              var(--slashWidth) - (0.5 * var(--spaceBetweenSlashesWidth)) -
+              var(--fillInWidth)
+          );
 
-        --preSplit1DigitEntry1DigitWidth: calc(var(--preSplit1Slashes1DigitWidth) + var(--slashWidth)  - 
-          (1 * var(--fillInWidth)) - var(--fillInMargin));
+          --preSplit1DigitEntry1DigitWidth: calc(
+            var(--preSplit1Slashes1DigitWidth) + var(--slashWidth) -
+              (1 * var(--fillInWidth)) - var(--fillInMargin)
+          );
 
-        --preSplit1Slashes2DigitWidth: calc(
-          (3 * var(--singleDigitWidth) + var(--operatorWidth)) -
-            var(--slashWidth) - (0.5 * var(--spaceBetweenSlashesWidth)));
-        
-        --preSplit1DigitEntry2DigitWidth: calc(var(--preSplit1Slashes2DigitWidth) + var(--slashWidth)  - 
-          (2 * var(--fillInWidth)) - var(--fillInMargin)););
-               
-        --preSplit2SlashesWidth: calc((2.5 * var(--fillInWidth)) + (3 * var(--fillInMargin)) -
-          var(--slashWidth) - (0.5 * var(--spaceBetweenSlashesWidth)) + var(--preSplit1DigitEntry2DigitWidth));
+          --preSplit1Slashes2DigitWidth: calc(
+            (3 * var(--singleDigitWidth) + var(--operatorWidth)) -
+              var(--slashWidth) - (0.5 * var(--spaceBetweenSlashesWidth))
+          );
 
-        --preSplit2DigitEntryWidth: calc(var(--preSplit2SlashesWidth) + var(--slashWidth)  - 
-          (1 * var(--fillInWidth)) - var(--fillInMargin));
+          --preSplit1DigitEntry2DigitWidth: calc(
+            var(--preSplit1Slashes2DigitWidth) + var(--slashWidth) -
+              (2 * var(--fillInWidth)) - var(--fillInMargin)
+          );
+
+          --preSplit2SlashesWidth: calc(
+            (2.5 * var(--fillInWidth)) + (3 * var(--fillInMargin)) -
+              var(--slashWidth) - (0.5 * var(--spaceBetweenSlashesWidth)) +
+              var(--preSplit1DigitEntry2DigitWidth)
+          );
+
+          --preSplit2DigitEntryWidth: calc(
+            var(--preSplit2SlashesWidth) + var(--slashWidth) -
+              (1 * var(--fillInWidth)) - var(--fillInMargin)
+          );
+        }
+        digit-fillin {
+          box-sizing: border-box;
         }
 
-      digit-fillin {
-        box-sizing: border-box;
-      }
+        .totalGame {
+          position: absolute;
+          width: calc(var(--vw) * 100);
+          height: calc(var(--vh) * 100 - 20px);
+          box-sizing: border-box;
+          font-size: calc(16px * var(--fontMagnification));
+          display: grid;
+        }
 
-      .totalGame {
-        position: absolute;
-        width: calc(var(--vw) * 100);
-        height: calc(var(--vh) * 100 - 20px);
-        box-sizing: border-box;
-        font-size: calc(16px * var(--fontMagnification));
-        display: grid;
-      }
+        .totalGame1Split {
+          grid-template-rows: [sum-row]1.2em [split1-lines-row] 1.2em [split1-answers-row] 1.2em [keyboard-row] 1fr;
+        }
 
-      .totalGame1Split {
-        grid-template-rows: [sum-row]1.2em [split1-lines-row] 1.2em [split1-answers-row] 1.2em [keyboard-row] 1fr;
-      }
+        .totalGame2Split {
+          grid-template-rows: [sum-row]1.2em [split1-lines-row] 1.2em [split1-answers-row] 1.2em [split2-lines-row] 1.2em [split2-answers-row] 1.2em [keyboard-row] 1fr;
+        }
 
-      .totalGame2Split {
-        grid-template-rows: [sum-row]1.2em [split1-lines-row] 1.2em [split1-answers-row] 1.2em [split2-lines-row] 1.2em [split2-answers-row] 1.2em [keyboard-row] 1fr;
-      }
+        #sum-row {
+          grid-row-start: sum-row;
+        }
 
-      #sum-row {
-        grid-row-start: sum-row;
-      }
+        #split1-lines-row {
+          grid-row-start: split1-lines-row;
+        }
 
-      #split1-lines-row {
-        grid-row-start: split1-lines-row;
-      }
+        #split1-answers-row {
+          grid-row-start: split1-answers-row;
+        }
 
-      #split1-answers-row {
-        grid-row-start: split1-answers-row;
-      }
+        #split2-lines-row {
+          grid-row-start: split2-lines-row;
+        }
 
-      #split2-lines-row {
-        grid-row-start: split2-lines-row;
-      }
+        #split2-answers-row {
+          grid-row-start: split2-answers-row;
+        }
 
-      #split2-answers-row {
-        grid-row-start: split2-answers-row;
-      }
+        .row {
+          position: relative;
+          width: 100%;
+          height: 1.4em;
+          display: flex;
+          justify-content: center;
+          align-items: flex-end;
+        }
 
-      .row {
-        position: relative;
-        width: 100%;
-        height: 1.4em;
-        display: flex;
-        justify-content: center;
-        align-items: flex-end;
-      }
+        .excersize {
+          position: relative;
+          width: calc(
+            4 * var(--singleDigitWidth) + 2 * var(--operatorWidth) + 2 *
+              var(--fillInWidth) + 2 * var(--fillInMargin) + 10px
+          );
+        }
 
-      .excersize {
-        position: relative;
-        width: calc(
-          4 * var(--singleDigitWidth) + 2 * var(--operatorWidth) + 2 *
-            var(--fillInWidth) + 2 * var(--fillInMargin) + 10px
-        );
-      }
+        span {
+          box-sizing: border-box;
+        }
 
-      span {
-        box-sizing: border-box;
-      }
+        .leftOperand {
+          display: inline-block;
+          text-align: right;
+          min-width: calc(2 * var(--singleDigitWidth));
+        }
 
-      .leftOperand {
-        display: inline-block;
-        text-align: right;
-        min-width: calc(2 * var(--singleDigitWidth));
-      }
+        .rightOperand1Digit {
+          display: inline-block;
+          text-align: left;
+          min-width: var(--singleDigitWidth);
+        }
 
-      .rightOperand1Digit {
-        display: inline-block;
-        text-align: left;
-        min-width: var(--singleDigitWidth);
-      }
+        .rightOperand2Digit {
+          display: inline-block;
+          text-align: left;
+          min-width: calc(2 * var(--singleDigitWidth));
+        }
 
-      .rightOperand2Digit {
-        display: inline-block;
-        text-align: left;
-        min-width: calc(2 * var(--singleDigitWidth));
-      }
+        .preSplit1Slashes1Digit {
+          display: inline-block;
+          width: var(--preSplit1Slashes1DigitWidth);
+        }
 
-      .preSplit1Slashes1Digit {
-        display: inline-block;
-        width: var(--preSplit1Slashes1DigitWidth);
-      }
+        .preSplit1DigitEntry1Digit {
+          display: inline-block;
+          width: var(--preSplit1DigitEntry1DigitWidth);
+        }
 
-      .preSplit1DigitEntry1Digit{
-        display: inline-block;
-        width: var(--preSplit1DigitEntry1DigitWidth);
-      }
+        .preSplit1Slashes2Digit {
+          display: inline-block;
+          width: var(--preSplit1Slashes2DigitWidth);
+        }
 
-      .preSplit1Slashes2Digit {
-        display: inline-block;
-        width: var(--preSplit1Slashes2DigitWidth);
-      }
+        .preSplit1DigitEntry2Digit {
+          display: inline-block;
+          width: var(--preSplit1DigitEntry2DigitWidth);
+        }
 
-      .preSplit1DigitEntry2Digit{
-        display: inline-block;
-        width: var(--preSplit1DigitEntry2DigitWidth);
-      }
+        .spaceBetweenSlashes {
+          display: inline-block;
+          width: var(--spaceBetweenSlashesWidth);
+        }
 
-      .spaceBetweenSlashes {
-        display: inline-block;
-        width: var(--spaceBetweenSlashesWidth);
-        );
-      }
+        .preSplit2Slashes {
+          display: inline-block;
+          width: var(--preSplit2SlashesWidth);
+        }
 
-      .preSplit2Slashes {
-        display: inline-block;
-        width: var(--preSplit2SlashesWidth);
-      }
+        .preSplit2DigitEntry {
+          display: inline-block;
+          width: var(--preSplit2DigitEntryWidth);
+        }
 
-      .preSplit2DigitEntry{
-        display: inline-block;
-        width: var(--preSplit2DigitEntryWidth);
-      }
+        .split2 {
+          display: inline-block;
+          text-align: center;
+          width: calc(
+            2 * (2.5 * var(--singleDigitWidth) + var(--operatorWidth))
+          );
+        }
 
+        .operator {
+          display: inline-block;
+          text-align: center;
+          min-width: var(--operatorWidth);
+        }
 
-      .split2 {
-        display: inline-block;
-        text-align: center;
-        width: calc(2 * (2.5 * var(--singleDigitWidth) + var(--operatorWidth)));
-      }
+        .keyboardArea {
+          grid-row-start: keyboard-row;
+          min-height: 0;
+          width: 100%;
+          min-width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
 
-      .operator {
-        display: inline-block;
-        text-align: center;
-        min-width: var(--operatorWidth);
-      }
+        digit-keyboard {
+          height: min(calc(45 * var(--vh)), 90%);
+          aspect-ratio: 3/4;
+        }
 
-      .keyboardArea {
-        grid-row-start: keyboard-row;
-        min-height: 0;
-        width: 100%;
-        min-width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      digit-keyboard {
-        height: min(calc(45 * var(--vh)), 90%);
-        aspect-ratio: 3/4;
-      }
-
-      .hidden {
-        visibility: hidden;
-      }
-    `,
+        .hidden {
+          visibility: hidden;
+        }
+      `,
     ];
   }
 
-  /** Render the application */
+  /** Render the game content */
   renderGameContent(): HTMLTemplateResult {
     let totalGameClass = 'totalGame1Split';
     if (this.game === 'split2Till100') totalGameClass = 'totalGame2Split';
