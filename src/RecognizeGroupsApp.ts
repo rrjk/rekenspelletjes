@@ -1,9 +1,9 @@
 import { html, css } from 'lit';
 // eslint-disable-next-line import/extensions
 import { customElement, state } from 'lit/decorators.js';
-import type { CSSResultGroup, HTMLTemplateResult } from 'lit';
+import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
-import { TimeLimitedGame } from './TimeLimitedGame';
+import { TimeLimitedGame2 } from './TimeLimitedGame2';
 
 import { randomFromSet, randomIntFromRange } from './Randomizer';
 import { GameLogger } from './GameLogger';
@@ -19,7 +19,7 @@ import './DigitFillin';
 import './RealHeight';
 
 @customElement('recognize-groups-app')
-export class RecognizeGroupsApp extends TimeLimitedGame {
+export class RecognizeGroupsApp extends TimeLimitedGame2 {
   private gameLogger = new GameLogger('F', '');
   @state()
   private numberOfGroups = 0;
@@ -40,7 +40,7 @@ export class RecognizeGroupsApp extends TimeLimitedGame {
   private includeLongAddition = true;
 
   constructor() {
-    super('integrateScoreBoxInProgressBar');
+    super();
     this.parseUrl();
   }
 
@@ -86,11 +86,11 @@ export class RecognizeGroupsApp extends TimeLimitedGame {
   }
 
   /** Start a new game.
-   * Progress bar and counters are automatically reset.
    */
   startNewGame(): void {
     this.groupsSize1Seen = false;
     this.numberOfGroups1Seen = false;
+    super.startNewGame();
     this.newRound();
   }
 
@@ -176,118 +176,121 @@ export class RecognizeGroupsApp extends TimeLimitedGame {
   }
 
   /** Get all static styles */
-  static get styles(): CSSResultGroup {
-    return css`
-      #totalGame {
-        position: absolute;
-        width: calc(var(--vw) * 100);
-        height: calc(var(--vh) * 100 - 20px);
-        box-sizing: border-box;
-        display: grid;
-        grid-template-columns: 65% 35%;
-        grid-template-rows: 75% 25%;
-      }
+  static get styles(): CSSResultArray {
+    return [
+      ...super.styles,
+      css`
+        #totalGame {
+          position: absolute;
+          width: calc(var(--vw) * 100);
+          height: calc(var(--vh) * 100 - 20px);
+          box-sizing: border-box;
+          display: grid;
+          grid-template-columns: 65% 35%;
+          grid-template-rows: 75% 25%;
+        }
 
-      #groups {
-        grid-column: 1 / span 2;
-        grid-row: 1 / span 1;
-        box-sizing: border-box;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-around;
-        align-content: space-around;
-      }
+        #groups {
+          grid-column: 1 / span 2;
+          grid-row: 1 / span 1;
+          box-sizing: border-box;
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: space-around;
+          align-content: space-around;
+        }
 
-      group-of-images {
-        width: calc(90% / var(--groupsPerRow));
-        height: calc(90% / var(--numberRows));
-        border: 4px dotted orange;
-      }
+        group-of-images {
+          width: calc(90% / var(--groupsPerRow));
+          height: calc(90% / var(--numberRows));
+          border: 4px dotted orange;
+        }
 
-      #excersize {
-        grid-column: 1 / span 1;
-        grid-row: 2 / span 1;
-        box-sizing: border-box;
-        display: flex;
-        flex-direction: column;
-        align-content: center;
-        justify-content: space-evenly;
-      }
+        #excersize {
+          grid-column: 1 / span 1;
+          grid-row: 2 / span 1;
+          box-sizing: border-box;
+          display: flex;
+          flex-direction: column;
+          align-content: center;
+          justify-content: space-evenly;
+        }
 
-      .subexcersize {
-        display: flex;
-        align-content: center;
-        justify-content: center;
-      }
+        .subexcersize {
+          display: flex;
+          align-content: center;
+          justify-content: center;
+        }
 
-      .smallText {
-        font-size: calc(0.5 * min(5vw, 9vh));
-      }
+        .smallText {
+          font-size: calc(0.5 * min(5vw, 9vh));
+        }
 
-      .largeText {
-        font-size: min(5vw, 9vh);
-      }
+        .largeText {
+          font-size: min(5vw, 9vh);
+        }
 
-      #keyboard {
-        grid-column: 2 / span 1;
-        grid-row: 2 / span 1;
-        box-sizing: border-box;
-      }
+        #keyboard {
+          grid-column: 2 / span 1;
+          grid-row: 2 / span 1;
+          box-sizing: border-box;
+        }
 
-      digit-keyboard {
-        width: 100%;
-        height: 100%;
-      }
+        digit-keyboard {
+          width: 100%;
+          height: 100%;
+        }
 
-      .text {
-        margin-top: auto;
-        margin-bottom: auto;
-        text-align: center;
-      }
+        .text {
+          margin-top: auto;
+          margin-bottom: auto;
+          text-align: center;
+        }
 
-      digit-fillin {
-        margin-top: auto;
-        margin-bottom: auto;
-      }
+        digit-fillin {
+          margin-top: auto;
+          margin-bottom: auto;
+        }
 
-      .larger {
-        font-size: 150%;
-      }
+        .larger {
+          font-size: 150%;
+        }
 
-      .fillInSingleDigit {
-        border: 2px solid black;
-        height: 2ex;
-        width: 1em;
-        margin-left: 0.2em;
-        margin-right: 0.2em;
-      }
+        .fillInSingleDigit {
+          border: 2px solid black;
+          height: 2ex;
+          width: 1em;
+          margin-left: 0.2em;
+          margin-right: 0.2em;
+        }
 
-      .fillInDoubleDigitLeft {
-        width: 1em;
-        height: 2ex;
-        border-left: 2px solid black;
-        border-bottom: 2px solid black;
-        border-top: 2px solid black;
-        border-right: 1px solid lightgrey;
-        margin-left: 0.2em;
-        margin-right: 0;
-      }
+        .fillInDoubleDigitLeft {
+          width: 1em;
+          height: 2ex;
+          border-left: 2px solid black;
+          border-bottom: 2px solid black;
+          border-top: 2px solid black;
+          border-right: 1px solid lightgrey;
+          margin-left: 0.2em;
+          margin-right: 0;
+        }
 
-      .fillInDoubleDigitRight {
-        width: 1em;
-        height: 2ex;
-        border-right: 2px solid black;
-        border-bottom: 2px solid black;
-        border-top: 2px solid black;
-        border-left: 1px solid lightgrey;
-        margin-left: 0;
-        margin-right: 0.2em;
-      }
+        .fillInDoubleDigitRight {
+          width: 1em;
+          height: 2ex;
+          border-right: 2px solid black;
+          border-bottom: 2px solid black;
+          border-top: 2px solid black;
+          border-left: 1px solid lightgrey;
+          margin-left: 0;
+          margin-right: 0.2em;
+        }
 
-      .fillInActive {
-        border-color: blue;
-      }
-    `;
+        .fillInActive {
+          border-color: blue;
+        }
+      `,
+    ];
   }
 
   getActiveFillin(): DigitFillin {
@@ -314,8 +317,8 @@ export class RecognizeGroupsApp extends TimeLimitedGame {
     }
   }
 
-  /** Render the application */
-  render(): HTMLTemplateResult {
+  /** Render the game content */
+  renderGameContent(): HTMLTemplateResult {
     const groupsPerRow: number[] = [0, 1, 2, 2, 2, 3, 2, 3, 3, 3];
 
     const groups: HTMLTemplateResult[] = [];
@@ -393,7 +396,6 @@ export class RecognizeGroupsApp extends TimeLimitedGame {
           )};
         }
       </style>
-      ${this.renderTimedGameApp()}
       <div id="totalGame">
         <div id="groups">${groups}</div>
         <div
