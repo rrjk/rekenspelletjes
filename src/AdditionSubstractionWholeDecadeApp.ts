@@ -1,9 +1,9 @@
 import { html, css } from 'lit';
 // eslint-disable-next-line import/extensions
 import { customElement, state } from 'lit/decorators.js';
-import type { CSSResultGroup, HTMLTemplateResult } from 'lit';
+import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
-import { TimeLimitedGame } from './TimeLimitedGame';
+import { TimeLimitedGame2 } from './TimeLimitedGame2';
 import {
   randomFromSet,
   randomFromSetAndSplice,
@@ -16,7 +16,7 @@ import { GameLogger } from './GameLogger';
 type Operator = '+' | '-';
 
 @customElement('addition-substraction-whole-decade-app')
-export class AdditionSubstractionWholeDecadeApp extends TimeLimitedGame {
+export class AdditionSubstractionWholeDecadeApp extends TimeLimitedGame2 {
   @state()
   private firstNumber = 1;
   @state()
@@ -85,12 +85,15 @@ export class AdditionSubstractionWholeDecadeApp extends TimeLimitedGame {
   }
 
   /** Get all static styles */
-  static get styles(): CSSResultGroup {
-    return css`
-      .exercise {
-        font-size: calc(1em + 4vmin);
-      }
-    `;
+  static get styles(): CSSResultArray {
+    return [
+      ...super.styles,
+      css`
+        .exercise {
+          font-size: calc(1em + 4vmin);
+        }
+      `,
+    ];
   }
 
   override async getUpdateComplete(): Promise<boolean> {
@@ -103,6 +106,7 @@ export class AdditionSubstractionWholeDecadeApp extends TimeLimitedGame {
    * Progress bar and counters are automatically reset.
    */
   startNewGame(): void {
+    super.startNewGame();
     this.newRound();
   }
 
@@ -226,10 +230,9 @@ export class AdditionSubstractionWholeDecadeApp extends TimeLimitedGame {
     });
   }
 
-  /** Render the application */
-  render(): HTMLTemplateResult {
+  /** Render the game content */
+  renderGameContent(): HTMLTemplateResult {
     return html`
-      ${this.renderTimedGameApp()}
       <ascending-balloons
         id="ascendingBalloons"
         style="position: absolute; top: 0; left: 0; height: 100%; width:100%;"
