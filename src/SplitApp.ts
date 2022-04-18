@@ -1,9 +1,9 @@
 import { html, css } from 'lit';
 // eslint-disable-next-line import/extensions
 import { customElement, state } from 'lit/decorators.js';
-import type { CSSResultGroup, HTMLTemplateResult } from 'lit';
+import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
-import { TimeLimitedGame } from './TimeLimitedGame';
+import { TimeLimitedGame2 } from './TimeLimitedGame2';
 import { randomFromSet, randomFromSetAndSplice } from './Randomizer';
 
 import './AscendingBalloons';
@@ -13,7 +13,7 @@ import './SplitDigit';
 import type { SplittableNumber } from './SplitDigit';
 
 @customElement('split-app')
-export class SplitApp extends TimeLimitedGame {
+export class SplitApp extends TimeLimitedGame2 {
   numbersToSplit: SplittableNumber[] = [];
   @state()
   private numberToSplit: SplittableNumber = 7;
@@ -60,8 +60,8 @@ export class SplitApp extends TimeLimitedGame {
   }
 
   /** Get all static styles */
-  static get styles(): CSSResultGroup {
-    return css``;
+  static get styles(): CSSResultArray {
+    return [...super.styles];
   }
 
   override async getUpdateComplete(): Promise<boolean> {
@@ -74,6 +74,7 @@ export class SplitApp extends TimeLimitedGame {
    * Progress bar and counters are automatically reset.
    */
   startNewGame(): void {
+    super.startNewGame();
     this.newRound();
   }
 
@@ -163,10 +164,9 @@ export class SplitApp extends TimeLimitedGame {
     this.gameElementsDisabled = true;
   }
 
-  /** Render the application */
-  render(): HTMLTemplateResult {
+  /** Render the game content */
+  renderGameContent(): HTMLTemplateResult {
     return html`
-      ${this.renderTimedGameApp()}
       <ascending-balloons
         id="ascendingBalloons"
         style="position: absolute; top: 0; left: 0; height: 100%; width:100%;"
