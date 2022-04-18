@@ -1,9 +1,9 @@
 import { html, css } from 'lit';
 // eslint-disable-next-line import/extensions
 import { customElement, state } from 'lit/decorators.js';
-import type { CSSResultGroup, HTMLTemplateResult } from 'lit';
+import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
-import { TimeLimitedGame } from './TimeLimitedGame';
+import { TimeLimitedGame2 } from './TimeLimitedGame2';
 
 import { randomFromSet, randomIntFromRange } from './Randomizer';
 import { GameLogger } from './GameLogger';
@@ -35,7 +35,7 @@ export function getTextWidth(text: string, font?: string) {
 }
 
 @customElement('sums-with-split-app')
-export class SumsWithDoubleSplitApp extends TimeLimitedGame {
+export class SumsWithDoubleSplitApp extends TimeLimitedGame2 {
   private gameLogger = new GameLogger('G', '');
   @state()
   private activeFillIn = 0;
@@ -75,7 +75,7 @@ export class SumsWithDoubleSplitApp extends TimeLimitedGame {
   private digitWidth = 0;
 
   constructor() {
-    super('integrateScoreBoxInProgressBar');
+    super();
     this.slashWidth = getTextWidth('/');
     this.digitWidth = getTextWidth('0');
     this.parseUrl();
@@ -177,6 +177,7 @@ export class SumsWithDoubleSplitApp extends TimeLimitedGame {
    * Progress bar and counters are automatically reset.
    */
   startNewGame(): void {
+    super.startNewGame();
     this.newRound();
     this.gameEnabled = true;
   }
@@ -336,8 +337,10 @@ export class SumsWithDoubleSplitApp extends TimeLimitedGame {
   }
 
   /** Get all static styles */
-  static get styles(): CSSResultGroup {
-    return css`
+  static get styles(): CSSResultArray {
+    return [
+      ...super.styles,
+      css`
       :host {
         --spaceBetweenSlashesWidth: 0.4em;
         --operatorWidth: 0.8em;
@@ -520,11 +523,12 @@ export class SumsWithDoubleSplitApp extends TimeLimitedGame {
       .hidden {
         visibility: hidden;
       }
-    `;
+    `,
+    ];
   }
 
   /** Render the application */
-  render(): HTMLTemplateResult {
+  renderGameContent(): HTMLTemplateResult {
     let totalGameClass = 'totalGame1Split';
     if (this.game === 'split2Till100') totalGameClass = 'totalGame2Split';
 
@@ -624,7 +628,6 @@ export class SumsWithDoubleSplitApp extends TimeLimitedGame {
           );
         }
       </style>
-      ${this.renderTimedGameApp()}
       <div
         class="totalGame ${totalGameClass} ${this.gameEnabled ? '' : 'hidden'}"
         id="totalGame"
