@@ -28,5 +28,8 @@ Game codes
 <tr><td>Gg</td><td>Sommen met dubbel splitsen tot 100 +</td></tr>
 <tr><td>Gh</td><td>Sommen met dubbel splitsen tot 100 -</td></tr>
 <tr><td>Gi</td><td>Sommen met dubbel splitsen tot 100 +-</td></tr>
-<tr><td>H</td><td>Aanklikken in volgorde</td></tr>
+<tr><td>Hb</td><td>Aanklikken in volgorde van laag naar hoog</td></tr>
+<tr><td>Hb</td><td>Aanklikken in volgorde van hoog naar laag</td></tr>
+<tr><td>Hc</td><td>Aanklikken in volgorde van laag naar hoog vanaf een random getal</td></tr>
+<tr><td>Hb</td><td>Aanklikken in volgorde van een tafel (vvan laag naar hoog)</td></tr>
 </table>

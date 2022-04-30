@@ -38,45 +38,47 @@ export class ClickInOrderApp extends TimeCountingGame {
   private parseUrl(): void {
     const urlParams = new URLSearchParams(window.location.search);
     this.labelsInOrder = [];
-    if (urlParams.has('tableOfMultiplication')) {
-      const tableAsInt = parseInt(
+
+    let nmbrBallsAsInt = parseInt(urlParams.get('nmbrBalls') || '', 10);
+    if (Number.isNaN(nmbrBallsAsInt)) nmbrBallsAsInt = 10;
+
+    if (urlParams.has('start')) {
+      let startAsInt = parseInt(urlParams.get('start') || '', 10);
+      if (Number.isNaN(startAsInt)) startAsInt = 1;
+      if (urlParams.has('descending')) {
+        for (let i = startAsInt; i > startAsInt - nmbrBallsAsInt; i--) {
+          this.labelsInOrder.push(`${i}`);
+          this.welcomeMessageString = `Klik de getallen aan, van groot naar klein, begin bij ${startAsInt}.`;
+        }
+        this.gameLogger.setSubCode('b');
+      } else {
+        for (let i = startAsInt; i < startAsInt + nmbrBallsAsInt; i++) {
+          this.labelsInOrder.push(`${i}`);
+          this.welcomeMessageString = `Klik de getallen aan, van klein naar groot, begin bij ${startAsInt}.`;
+        }
+        this.gameLogger.setSubCode('b');
+      }
+    } else if (urlParams.has('tableOfMultiplication')) {
+      let tableAsInt = parseInt(
         urlParams.get('tableOfMultiplication') || '',
         10
       );
-      if (!Number.isNaN(tableAsInt)) {
-        for (let i = 1; i <= 10; i++) {
-          this.labelsInOrder.push(`${i * tableAsInt}`);
-        }
-        this.welcomeMessageString = `Klik de getallen aan, van klein naar groot,
+      if (Number.isNaN(tableAsInt)) tableAsInt = 10;
+      for (let i = 1; i <= nmbrBallsAsInt; i++) {
+        this.labelsInOrder.push(`${i * tableAsInt}`);
+      }
+      this.welcomeMessageString = `Klik de getallen aan, van klein naar groot,
         met sprongen van ${tableAsInt}.`;
-      }
+      this.gameLogger.setSubCode('d');
     } else if (urlParams.has('random')) {
-      const random = parseInt(urlParams.get('random') || '', 10);
-      let startNumber = randomIntFromRange(20, 80);
-      if (!Number.isNaN(random)) {
-        startNumber = random;
-      }
-      for (let i = startNumber; i < startNumber + 20; i++) {
+      const startNumber = randomIntFromRange(20, 80);
+
+      for (let i = startNumber; i < startNumber + nmbrBallsAsInt; i++) {
         this.labelsInOrder.push(`${i}`);
       }
       this.welcomeMessageString = `Klik de getallen aan, van klein naar groot,
       begin bij ${startNumber}.`;
-    } else {
-      const numbersToSplitFromUrl = urlParams.getAll('number');
-      for (let i = 0; i < numbersToSplitFromUrl.length; i++) {
-        const numberAsInt = parseInt(numbersToSplitFromUrl[i], 10);
-        if (!Number.isNaN(numberAsInt)) {
-          this.labelsInOrder.push(`${numberAsInt}`);
-        }
-      }
-      this.welcomeMessageString = `Klik de getallen aan van klein naar groot.`;
-    }
-    if (this.labelsInOrder.length === 0) {
-      this.labelsInOrder = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
-      this.welcomeMessageString = `Klik de getallen aan van klein naar groot.`;
-    }
-    if (urlParams.has('introText')) {
-      this.welcomeMessageString = `${urlParams.get('introText')}`;
+      this.gameLogger.setSubCode('c');
     }
   }
 

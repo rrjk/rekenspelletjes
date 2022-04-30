@@ -1,27 +1,254 @@
 <!DOCTYPE html>
-<html lang="nl">  
-    <style>
-        html {
-            font-size: xx-large;
-        }
-    </style>  
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width">
-        <title>Wegklikken op volgorde</title>
-    </head>
-    <body>
-        <h1>Wegklikken op volgorde</h1>
-        <ul>
-            <li><a href="AanklikkenInVolgorde.html?number=1&number=2&number=3&number=4&number=5&number=6&number=7&number=8&number=9&number=10">Getallenrij van 1 t/m 10</a></li>
-            <li><a href="AanklikkenInVolgorde.html?number=11&number=12&number=13&number=14&number=15&number=16&number=17&number=18&number=19&number=20">Getallenrij van 11 t/m 20</a></li>
-            <li><a href="AanklikkenInVolgorde.html?number=1&number=2&number=3&number=4&number=5&number=6&number=7&number=8&number=9&number=10&number=11&number=12&number=13&number=14&number=15&number=16&number=17&number=18&number=19&number=20">Getallenrij van 1 t/m 20</a></li>
-            <li><a href="AanklikkenInVolgorde.html?number=11&number=12&number=13&number=14&number=15&number=16&number=17&number=18&number=19&number=20&number=21&number=22&number=23&number=24&number=25&number=26&number=27&number=28&number=29&number=30">Getallenrij van 11 t/m 30</a></li>
-            <li><a href="AanklikkenInVolgorde.html?number=21&number=22&number=23&number=24&number=25&number=26&number=27&number=28&number=29&number=30&number=31&number=32&number=33&number=34&number=35&number=36&number=37&number=38&number=39&number=40">Getallenrij van 21 t/m 40</a></li>
-            <li><a href="AanklikkenInVolgorde.html?number=31&number=32&number=33&number=34&number=35&number=36&number=37&number=38&number=39&number=40&number=41&number=42&number=43&number=44&number=45&number=46&number=47&number=48&number=49&number=50">Getallenrij van 31 t/m 50</a></li>
-            <li><a href="AanklikkenInVolgorde.html?number=20&number=19&number=18&number=17&number=16&number=15&number=14&number=13&number=12&number=11&number=10&number=9&number=8&number=7&number=6&number=5&number=4&number=3&number=2&number=1&introText=Klik+de+getallen+aan+van+groot+naar+klein.">Getallenrij van 1 t/m 20 van groot naar klein</a>
-            <li><a href="AanklikkenInVolgorde.html?random">Getallenrij vanaf een willekeurig getal groter of gelijk aan 20</a></li>
-        </ul>
-        <a href="index.html">Terug naar het hoofdmenu</a>
-    </body
+<html lang="nl">
+  <style>
+    html {
+      font-size: x-large;
+    }
+    a {
+      display: block;
+    }
+  </style>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Wegklikken op volgorde</title>
+  </head>
+  <body>
+    <h1>Wegklikken op volgorde</h1>
+    <a href="AanklikkenInVolgorde.html?start=1&nmbrBalls=10">
+      <svg viewBox="0 0 250 90" style="width: 300px">
+        <title>Getallenrij van 1 t/m 10</title>
+        <rect
+          x="12"
+          y="5"
+          width="225"
+          height="80"
+          ry="20"
+          rx="20"
+          fill="white"
+          stroke="purple"
+          stroke-width="5"
+        ></rect>
+        <text
+          font-size="45px"
+          font-style="italic"
+          x="50%"
+          y="50%"
+          dominant-baseline="central"
+          text-anchor="middle"
+        >
+          1 2 ... 10
+        </text>
+      </svg></a
+    >
+    <a href="AanklikkenInVolgorde.html?start=11&nmbrBalls=10">
+      <svg viewBox="0 0 250 90" style="width: 300px">
+        <title>Getallenrij van 11 t/m 20</title>
+        <rect
+          x="12"
+          y="5"
+          width="225"
+          height="80"
+          ry="20"
+          rx="20"
+          fill="white"
+          stroke="purple"
+          stroke-width="5"
+        ></rect>
+        <text
+          font-size="45px"
+          font-style="italic"
+          x="50%"
+          y="50%"
+          dominant-baseline="central"
+          text-anchor="middle"
+        >
+          11 12 ... 20
+        </text>
+      </svg></a
+    >
+    <a href="AanklikkenInVolgorde.html?start=1&nmbrBalls=20">
+      <svg viewBox="0 0 250 90" style="width: 300px">
+        <title>Getallenrij van 1 t/m 20</title>
+        <rect
+          x="12"
+          y="5"
+          width="225"
+          height="80"
+          ry="20"
+          rx="20"
+          fill="white"
+          stroke="purple"
+          stroke-width="5"
+        ></rect>
+        <text
+          font-size="45px"
+          font-style="italic"
+          x="50%"
+          y="50%"
+          dominant-baseline="central"
+          text-anchor="middle"
+        >
+          1 2 ... 20
+        </text>
+      </svg></a
+    >
+    <a href="AanklikkenInVolgorde.html?start=11&nmbrBalls=20">
+      <svg viewBox="0 0 250 90" style="width: 300px">
+        <title>Getallenrij van 11 t/m 30</title>
+        <rect
+          x="12"
+          y="5"
+          width="225"
+          height="80"
+          ry="20"
+          rx="20"
+          fill="white"
+          stroke="purple"
+          stroke-width="5"
+        ></rect>
+        <text
+          font-size="45px"
+          font-style="italic"
+          x="50%"
+          y="50%"
+          dominant-baseline="central"
+          text-anchor="middle"
+        >
+          11 12 ... 30
+        </text>
+      </svg></a
+    >
+    <a href="AanklikkenInVolgorde.html?start=21&nmbrBalls=20">
+      <svg viewBox="0 0 250 90" style="width: 300px">
+        <title>Getallenrij van 21 t/m 40</title>
+        <rect
+          x="12"
+          y="5"
+          width="225"
+          height="80"
+          ry="20"
+          rx="20"
+          fill="white"
+          stroke="purple"
+          stroke-width="5"
+        ></rect>
+        <text
+          font-size="45px"
+          font-style="italic"
+          x="50%"
+          y="50%"
+          dominant-baseline="central"
+          text-anchor="middle"
+        >
+          21 22 ... 40
+        </text>
+      </svg></a
+    >
+    <a href="AanklikkenInVolgorde.html?start=31&nmbrBalls=20">
+      <svg viewBox="0 0 250 90" style="width: 300px">
+        <title>Getallenrij van 31 t/m 50</title>
+        <rect
+          x="12"
+          y="5"
+          width="225"
+          height="80"
+          ry="20"
+          rx="20"
+          fill="white"
+          stroke="purple"
+          stroke-width="5"
+        ></rect>
+        <text
+          font-size="45px"
+          font-style="italic"
+          x="50%"
+          y="50%"
+          dominant-baseline="central"
+          text-anchor="middle"
+        >
+          31 32 ... 40
+        </text>
+      </svg></a
+    >
+    <a href="AanklikkenInVolgorde.html?start=1&nmbrBalls=50">
+      <svg viewBox="0 0 250 90" style="width: 300px">
+        <title>Getallenrij van 1 t/m 50</title>
+        <rect
+          x="12"
+          y="5"
+          width="225"
+          height="80"
+          ry="20"
+          rx="20"
+          fill="white"
+          stroke="purple"
+          stroke-width="5"
+        ></rect>
+        <text
+          font-size="45px"
+          font-style="italic"
+          x="50%"
+          y="50%"
+          dominant-baseline="central"
+          text-anchor="middle"
+        >
+          1 2 ... 50
+        </text>
+      </svg></a
+    >
+
+    <a href="AanklikkenInVolgorde.html?start=20&nmbrBalls=20&descending">
+      <svg viewBox="0 0 250 90" style="width: 300px">
+        <title>Aflopende getallenrij van 20 t/m 1</title>
+        <rect
+          x="12"
+          y="5"
+          width="225"
+          height="80"
+          ry="20"
+          rx="20"
+          fill="white"
+          stroke="purple"
+          stroke-width="5"
+        ></rect>
+        <text
+          font-size="45px"
+          font-style="italic"
+          x="50%"
+          y="50%"
+          dominant-baseline="central"
+          text-anchor="middle"
+        >
+          20 19 ... 1
+        </text>
+      </svg></a
+    >
+
+    <a href="AanklikkenInVolgorde.html?random&nmbrBalls=20">
+      <svg viewBox="0 0 250 90" style="width: 300px">
+        <title>
+          Getallenrij vanaf een willekeurig getal groter of gelijk aan 20 van
+          klein naar groot.
+        </title>
+        <rect
+          x="12"
+          y="5"
+          width="225"
+          height="80"
+          ry="20"
+          rx="20"
+          fill="white"
+          stroke="purple"
+          stroke-width="5"
+        ></rect>
+        <image
+          x="90"
+          y="10"
+          height="70"
+          xlink:href="images/die200.png"
+        ></image></svg
+    ></a>
+    <a href="index.html">Terug naar het hoofdmenu</a>
+  </body>
 </html>
