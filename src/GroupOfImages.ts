@@ -107,7 +107,7 @@ export class GroupOfImages
       img.tall {
         height: auto;
         width: 90%;
-        aspect-ratio: var(--aspect-ratio);
+        aspect-ratio: var(--aspectRatio);
       }
 
       img.wide {
