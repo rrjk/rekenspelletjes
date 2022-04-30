@@ -143,7 +143,7 @@ export class DigitKeyboard
 
   // We use SVG to render to digits to ensure the digits scale nicely along with the buttons.
   renderDigitAsSvg(digit: Digit | 'disabled') {
-    const symbolToUse = digit === 'disabled' ? 'X' : digit;
+    const symbolToUse = digit === 'disabled' ? '✗' : digit;
     return html`
       <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
         <text x="30" y="73">${symbolToUse}</text>
