@@ -1,7 +1,8 @@
 import { html, css } from 'lit';
+import type { HTMLTemplateResult, CSSResultArray } from 'lit';
 
 // eslint-disable-next-line import/extensions
-import type { HTMLTemplateResult, CSSResultArray } from 'lit';
+import { state } from 'lit/decorators.js';
 
 import { ProgressBar } from './ProgressBar';
 
@@ -10,6 +11,12 @@ import { ParseGametimeFromUrl } from './GametimeParameters';
 import { GameSkeleton } from './GameSkeleton';
 
 export abstract class TimeLimitedGame2 extends GameSkeleton {
+  /** Gametime in number of seconds.
+   * Number of seconds the game was played, correct at the end of the game.
+   */
+  @state()
+  protected gameTime = 0;
+
   /** Constructor, parse URL parameters */
   constructor() {
     super();
@@ -24,6 +31,19 @@ export abstract class TimeLimitedGame2 extends GameSkeleton {
   /** Additional first update actions, can be overriden in child classes */
   additionalFirstUpdatedActions() {
     super.additionalFirstUpdatedActions();
+  }
+
+  /** Get the gametime in minutes as string for display */
+  protected getGameTimeString() {
+    const minutes = Math.floor(this.gameTime / 60);
+    const seconds = this.gameTime % 60;
+
+    let ret: string;
+    if (seconds === 0)
+      ret = `${minutes} ${minutes === 1 ? 'minuut' : 'minuten'}`;
+    else ret = `${minutes}:${seconds.toString().padStart(2, '0')} minuten`;
+
+    return ret;
   }
 
   override async getUpdateComplete(): Promise<boolean> {

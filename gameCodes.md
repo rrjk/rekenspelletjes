@@ -28,4 +28,5 @@ Game codes
 <tr><td>Gg</td><td>Sommen met dubbel splitsen tot 100 +</td></tr>
 <tr><td>Gh</td><td>Sommen met dubbel splitsen tot 100 -</td></tr>
 <tr><td>Gi</td><td>Sommen met dubbel splitsen tot 100 +-</td></tr>
+<tr><td>H</td><td>Aanklikken in volgorde</td></tr>
 </table>

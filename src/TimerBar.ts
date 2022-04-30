@@ -1,6 +1,6 @@
 import { LitElement, html, css } from 'lit';
 // eslint-disable-next-line import/extensions
-import { customElement, state } from 'lit/decorators.js';
+import { customElement, state, property } from 'lit/decorators.js';
 
 import type { CSSResultGroup, HTMLTemplateResult } from 'lit';
 
@@ -10,12 +10,14 @@ import type { CSSResultGroup, HTMLTemplateResult } from 'lit';
  */
 @customElement('timer-bar')
 export class TimerBar extends LitElement {
-  @state()
+  static height = 20;
+  @property({ type: Number })
   numberOk = 0;
-  @state()
+  @property({ type: Number })
   numberNok = 0;
-  @state()
+  @property({ type: Boolean })
   paused = false;
+
   @state()
   minutes = 0;
   @state()
@@ -24,14 +26,6 @@ export class TimerBar extends LitElement {
   constructor() {
     super();
     setInterval(() => this.increaseTime(), 1000);
-  }
-
-  increaseNok(): void {
-    this.numberNok += 1;
-  }
-
-  increaseOk(): void {
-    this.numberNok += 1;
   }
 
   increaseTime(): void {
@@ -48,17 +42,7 @@ export class TimerBar extends LitElement {
     return `${this.minutes}:${this.seconds.toString().padStart(2, '0')}`;
   }
 
-  pause(): void {
-    this.paused = true;
-  }
-
-  resume(): void {
-    this.paused = false;
-  }
-
-  resetScore(): void {
-    this.numberNok = 0;
-    this.numberOk = 0;
+  resetTime(): void {
     this.minutes = 0;
     this.seconds = 0;
     this.paused = false;
@@ -78,7 +62,7 @@ export class TimerBar extends LitElement {
         margin: 0;
         padding: 0;
         width: 100%;
-        height: 20px;
+        height: ${TimerBar.height}px;
         border-style: none;
         background-color: lightgrey;
         text-align: right;

@@ -12,11 +12,6 @@ import type { GameOverDialog } from './GameOverDialog';
 import { ChildNotFoundError } from './ChildNotFoundError';
 
 export abstract class GameSkeleton extends LitElement {
-  /** Gametime in number of seconds.
-   * Number of seconds the game was played, correct at the end of the game.
-   */
-  @state()
-  protected gameTime = 0;
   /** Number correct answers */
   @state()
   protected numberOk = 0;
@@ -54,18 +49,10 @@ export abstract class GameSkeleton extends LitElement {
     return this.getElement<MessageDialog>('#messageDialog');
   }
 
-  /** Get the gametime in minutes */
-  protected getGameTimeString() {
-    const minutes = Math.floor(this.gameTime / 60);
-    const seconds = this.gameTime % 60;
-
-    let ret: string;
-    if (seconds === 0)
-      ret = `${minutes} ${minutes === 1 ? 'minuut' : 'minuten'}`;
-    else ret = `${minutes}:${seconds.toString().padStart(2, '0')} minuten`;
-
-    return ret;
-  }
+  /** Get the gametime in minutes as string for display
+   * To be implemented by the children, should contain the time the game was played as mm:ss
+   */
+  protected abstract getGameTimeString(): string;
 
   /** Reset the number of correct and incorrect answers. */
   private resetCounters(): void {
