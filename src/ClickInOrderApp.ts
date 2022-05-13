@@ -6,10 +6,28 @@ import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 import { TimeCountingGame } from './TimeCountingGame';
 import './BallFieldEntry';
 
-import { randomIntFromRange } from './Randomizer';
+import { randomFromSet, randomIntFromRange } from './Randomizer';
 import { GameLogger } from './GameLogger';
 import { BallFieldEntry } from './BallenVeldInvoer';
 
+interface Sum {
+  multiplier: number;
+  table: number;
+}
+
+interface AnswerAndSums {
+  answer: number;
+  sums: Sum[];
+}
+
+/** Click in order application
+ * @url-parameter nmbrBalls: int - number of balls to show
+ * @url-parameter start:int - first number to show, balls will be selected increasing by 1 from the first number, except when also descending is specified.
+ * @url-parameter descending - use descending numbers when start is specified
+ * @url-parameter tableOfMultiplication: int - create balls from the tableOfMultiplication, if shownSum is not active, only the first table is selected.
+ * @url-parameter showSum: Show sum with the table of multiplication(s), in this case the balls need to be clicked in the order the sums are shown (random), multiple tables are allowed.
+ * @url-parameter random: Select number from a random start number, increasing by 1.
+ */
 @customElement('click-in-order-app')
 export class ClickInOrderApp extends TimeCountingGame {
   @state()
@@ -18,6 +36,17 @@ export class ClickInOrderApp extends TimeCountingGame {
   disabledBallLabels: string[] = [];
   @state()
   invisibleBallLabels: string[] = [];
+  @state()
+  showSum = false;
+  @state()
+  tables = [1];
+  @state()
+  multipliersInOrder: number[] = [];
+  @state()
+  tablesInOrder: number[] = [];
+
+  nmbrBalls = 10;
+
   welcomeMessageString = '';
 
   @state()
@@ -39,41 +68,50 @@ export class ClickInOrderApp extends TimeCountingGame {
     const urlParams = new URLSearchParams(window.location.search);
     this.labelsInOrder = [];
 
-    let nmbrBallsAsInt = parseInt(urlParams.get('nmbrBalls') || '', 10);
-    if (Number.isNaN(nmbrBallsAsInt)) nmbrBallsAsInt = 10;
+    this.nmbrBalls = parseInt(urlParams.get('nmbrBalls') || '', 10);
+    if (Number.isNaN(this.nmbrBalls)) this.nmbrBalls = 10;
 
     if (urlParams.has('start')) {
       let startAsInt = parseInt(urlParams.get('start') || '', 10);
       if (Number.isNaN(startAsInt)) startAsInt = 1;
       if (urlParams.has('descending')) {
-        for (let i = startAsInt; i > startAsInt - nmbrBallsAsInt; i--) {
+        for (let i = startAsInt; i > startAsInt - this.nmbrBalls; i--) {
           this.labelsInOrder.push(`${i}`);
           this.welcomeMessageString = `Klik de getallen aan, van groot naar klein, begin bij ${startAsInt}.`;
         }
         this.gameLogger.setSubCode('b');
       } else {
-        for (let i = startAsInt; i < startAsInt + nmbrBallsAsInt; i++) {
+        for (let i = startAsInt; i < startAsInt + this.nmbrBalls; i++) {
           this.labelsInOrder.push(`${i}`);
           this.welcomeMessageString = `Klik de getallen aan, van klein naar groot, begin bij ${startAsInt}.`;
         }
         this.gameLogger.setSubCode('b');
       }
     } else if (urlParams.has('tableOfMultiplication')) {
-      let tableAsInt = parseInt(
-        urlParams.get('tableOfMultiplication') || '',
-        10
-      );
-      if (Number.isNaN(tableAsInt)) tableAsInt = 10;
-      for (let i = 1; i <= nmbrBallsAsInt; i++) {
-        this.labelsInOrder.push(`${i * tableAsInt}`);
+      this.tables = [];
+      const tablesFromUrl = urlParams.getAll('tableOfMultiplication');
+      for (const table of tablesFromUrl) {
+        const tableAsInt = parseInt(table, 10);
+        if (!Number.isNaN(tableAsInt)) this.tables.push(tableAsInt);
       }
-      this.welcomeMessageString = `Klik de getallen aan, van klein naar groot,
-        met sprongen van ${tableAsInt}.`;
-      this.gameLogger.setSubCode('d');
+      if (this.tables.length === 0) this.tables.push(10);
+      if (urlParams.has('showSum')) {
+        // this.labelsInOrder will be set in StartNewGame
+        this.showSum = true;
+        this.welcomeMessageString = `Kies het juiste getal bij de keersommen.`;
+        this.gameLogger.setSubCode('e');
+      } else {
+        for (let i = 1; i <= this.nmbrBalls; i++) {
+          this.labelsInOrder.push(`${i * this.tables[0]}`);
+        }
+        this.welcomeMessageString = `Klik de getallen aan, van klein naar groot,
+          met sprongen van ${this.tables[0]}.`;
+        this.gameLogger.setSubCode('d');
+      }
     } else if (urlParams.has('random')) {
       const startNumber = randomIntFromRange(20, 80);
 
-      for (let i = startNumber; i < startNumber + nmbrBallsAsInt; i++) {
+      for (let i = startNumber; i < startNumber + this.nmbrBalls; i++) {
         this.labelsInOrder.push(`${i}`);
       }
       this.welcomeMessageString = `Klik de getallen aan, van klein naar groot,
@@ -104,6 +142,48 @@ export class ClickInOrderApp extends TimeCountingGame {
    */
   startNewGame(): void {
     super.startNewGame();
+    if (this.showSum) {
+      let possibleAnswersAndSums: AnswerAndSums[] = [];
+
+      for (
+        let multiplier = 1;
+        multiplier < 10 || possibleAnswersAndSums.length < this.nmbrBalls;
+        multiplier++
+      ) {
+        for (const table of this.tables) {
+          const answer = table * multiplier;
+          const answerAndSums = possibleAnswersAndSums.find(
+            answerAndSum => answerAndSum.answer === answer
+          );
+          if (answerAndSums === undefined)
+            possibleAnswersAndSums.push({
+              answer,
+              sums: [{ table, multiplier }],
+            });
+          else answerAndSums.sums.push({ table, multiplier });
+        }
+      }
+
+      this.multipliersInOrder = [];
+      this.tablesInOrder = [];
+      this.labelsInOrder = [];
+
+      for (let i = 0; i < this.nmbrBalls; i++) {
+        const answerAndSum = randomFromSet(possibleAnswersAndSums);
+        const sum = randomFromSet(answerAndSum.sums);
+        this.multipliersInOrder.push(sum.multiplier);
+        this.tablesInOrder.push(sum.table);
+        this.labelsInOrder.push(`${answerAndSum.answer}`);
+
+        possibleAnswersAndSums = possibleAnswersAndSums.filter(
+          item => item.answer !== answerAndSum.answer
+        );
+      }
+    } else {
+      this.labelsInOrder = [...this.labelsInOrder]; // We create a new array with labels in order, such that a shuffle is triggered in ball-field entry
+    }
+    this.disabledBallLabels = [];
+    this.invisibleBallLabels = [];
     this.nextBallToClick = 0;
     this.gameElementsDisabled = false;
   }
@@ -142,13 +222,17 @@ export class ClickInOrderApp extends TimeCountingGame {
   executeGameOverActions(): void {
     super.executeGameOverActions();
     this.gameElementsDisabled = true;
-    this.disabledBallLabels = [];
-    this.invisibleBallLabels = [];
-    this.labelsInOrder = [...this.labelsInOrder]; // We create a new array with labels in order, such that a shuffle is triggerd in ball-field entry
     this.gameLogger.logGameOver();
   }
 
   renderGameContent(): HTMLTemplateResult {
+    let excercise = '';
+    if (this.showSum) {
+      excercise = `${this.multipliersInOrder[this.nextBallToClick]}×${
+        this.tablesInOrder[this.nextBallToClick]
+      }`;
+    }
+
     return html`
       <ball-field-entry
           id="ballFieldEntry"
@@ -156,6 +240,7 @@ export class ClickInOrderApp extends TimeCountingGame {
           .ballLabels=${this.labelsInOrder}
           .disabledBallLabels=${this.disabledBallLabels}
           .invisibleBallLabels=${this.invisibleBallLabels}
+          exercise="${excercise}"
           @ball-clicked=${(evt: CustomEvent) =>
             this.handleBallClick(evt.detail.label)}
         ></ball-field-entry>

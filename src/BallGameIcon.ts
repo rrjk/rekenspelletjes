@@ -10,6 +10,12 @@ import { customElement, property } from 'lit/decorators.js';
 /** Possible balloon colors */
 export type BallColors = 'blue' | 'red' | 'yellow' | 'green';
 
+/** XY vector  */
+interface XYvector {
+  x: number;
+  y: number;
+}
+
 /** All permutations of four ball color */
 const ballColorPermutations = [
   ['yellow', 'blue', 'green', 'red'],
@@ -48,8 +54,12 @@ export class BalloonIndex extends LitElement {
   colorPermutation = 0;
   @property({ type: String })
   alt = '';
-  @property({ type: Array })
+  @property({ type: String })
   text = '';
+  @property({ type: Boolean })
+  twoBalls = false;
+  @property({ type: Boolean })
+  smallFont = false;
 
   static get styles(): CSSResultGroup {
     return css``;
@@ -58,13 +68,22 @@ export class BalloonIndex extends LitElement {
   render(): HTMLTemplateResult {
     const ballTemplates: SVGTemplateResult[] = [];
 
-    const positions = [
-      { x: 5, y: 5 },
-      { x: 86, y: 5 },
-      { x: 167, y: 5 },
-    ];
+    let positions: XYvector[];
 
-    for (let i = 0; i < 3; i++) {
+    if (!this.twoBalls) {
+      positions = [
+        { x: 5, y: 5 },
+        { x: 86, y: 5 },
+        { x: 167, y: 5 },
+      ];
+    } else {
+      positions = [
+        { x: 5, y: 5 },
+        { x: 167, y: 5 },
+      ];
+    }
+
+    for (let i = 0; i < positions.length; i++) {
       const ballTemplate = svg`
         <image
           height="78"
@@ -78,7 +97,7 @@ export class BalloonIndex extends LitElement {
     }
     const textTemplate = svg`
         <text
-          font-size = "57"
+          font-size = "${this.smallFont ? 40 : 57}"
           x="50%"
           y="50%"
           dominant-baseline="central"

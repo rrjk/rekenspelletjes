@@ -1,30 +1,124 @@
 <!DOCTYPE html>
-<html lang="nl">    
-    <style>
-        html {
-            font-size: xx-large;
-        }
-    </style>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width">
-        <title>Keersommen: Ballen knallen met som</title>
-    </head>
-    <body>
-        <h1>Keersommen: Ballen knallen met som</h1>
-        <ul>
-            <li><a href="BallenKnallenKeerSom.html?table=2">Tafel van 2</a></li>
-            <li><a href="BallenKnallenKeerSom.html?table=5">Tafel van 5</a></li>
-            <li><a href="BallenKnallenKeerSom.html?table=10">Tafel van 10</a></li>
-            <li><a href="BallenKnallenKeerSom.html?table=3">Tafel van 3</a></li>
-            <li><a href="BallenKnallenKeerSom.html?table=4">Tafel van 4</a></li>
-            <li><a href="BallenKnallenKeerSom.html?table=2&table=3&table=4&table=5&table=10&time=3">Tafels van 2, 3, 4, 5 en 10 door elkaar</a></li>
-            <li><a href="BallenKnallenKeerSom.html?table=6">Tafel van 6</a></li>
-            <li><a href="BallenKnallenKeerSom.html?table=7">Tafel van 7</a></li>
-            <li><a href="BallenKnallenKeerSom.html?table=8">Tafel van 8</a></li>
-            <li><a href="BallenKnallenKeerSom.html?table=9">Tafel van 9</a></li>
-            <li><a href="BallenKnallenKeerSom.html?table=2&table=3&table=4&table=5&table=6&table=7&table=8&table=9&table=10">Alle tafels van 2 tot en met 10 door elkaar</a></li>
-        </ul>
-        <a href="index.html">Terug naar het hoofdmenu</a>
-    </body>
+<html lang="nl">
+  <style>
+    html {
+      font-size: x-large;
+    }
+    .buttonTable {
+      position: relative;
+      display: flex;
+      gap: 10px 10px;
+      flex-wrap: wrap;
+      width: 150px;
+    }
+
+    ballgame-icon {
+      display: block;
+      width: 125px;
+    }
+  </style>
+  <head>
+    <script type="module" src="./src/BallGameIcon.ts"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Ballen knallen met keersom</title>
+  </head>
+  <body>
+    <h1>Ballen knallen met keersom</h1>
+    <div class="buttonTable">
+      <a href="AanklikkenInVolgorde.html?tableOfMultiplication=2&showSum"
+        ><ballgame-icon
+          colorPermutation="1"
+          alt="Tafel van 2"
+          text="×2"
+          twoBalls
+        ></ballgame-icon
+      ></a>
+      <a href="AanklikkenInVolgorde.html?tableOfMultiplication=5&showSum"
+        ><ballgame-icon
+          colorPermutation="6"
+          alt="Tafel van 5"
+          text="×5"
+          twoBalls
+        ></ballgame-icon
+      ></a>
+      <a href="AanklikkenInVolgorde.html?tableOfMultiplication=10&showSum"
+        ><ballgame-icon
+          colorPermutation="13"
+          alt="Tafel van 10"
+          text="×10"
+          twoBalls
+        ></ballgame-icon
+      ></a>
+      <a href="AanklikkenInVolgorde.html?tableOfMultiplication=3&showSum"
+        ><ballgame-icon
+          colorPermutation="20"
+          alt="Tafel van 10"
+          text="×3"
+          twoBalls
+        ></ballgame-icon
+      ></a>
+      <a href="AanklikkenInVolgorde.html?tableOfMultiplication=4&showSum"
+        ><ballgame-icon
+          colorPermutation="3"
+          alt="Tafel van 4"
+          text="×4"
+          twoBalls
+        ></ballgame-icon
+      ></a>
+      <a
+        href="AanklikkenInVolgorde.html?showSum&tableOfMultiplication=2&tableOfMultiplication=3&tableOfMultiplication=4&tableOfMultiplication=5&tableOfMultiplication=10"
+        ><ballgame-icon
+          colorPermutation="11"
+          alt="Tafel van 2, 3, 4, 5 en 10"
+          text="×2,3,4,5,10"
+          twoBalls
+          smallFont
+        ></ballgame-icon
+      ></a>
+      <a href="AanklikkenInVolgorde.html?showSum&tableOfMultiplication=6"
+        ><ballgame-icon
+          colorPermutation="13"
+          alt="Tafel van 6"
+          text="×6"
+          twoBalls
+        ></ballgame-icon
+      ></a>
+      <a href="AanklikkenInVolgorde.html?showSum&tableOfMultiplication=7"
+        ><ballgame-icon
+          colorPermutation="20"
+          alt="Tafel van 7"
+          text="×7"
+          twoBalls
+        ></ballgame-icon
+      ></a>
+      <a href="AanklikkenInVolgorde.html?showSum&tableOfMultiplication=8"
+        ><ballgame-icon
+          colorPermutation="5"
+          alt="Tafel van 8"
+          text="×8"
+          twoBalls
+        ></ballgame-icon
+      ></a>
+      <a href="AanklikkenInVolgorde.html?showSum&tableOfMultiplication=9"
+        ><ballgame-icon
+          colorPermutation="19"
+          alt="Tafel van 9"
+          text="×9"
+          twoBalls
+        ></ballgame-icon
+      ></a>
+      <a
+        href="AanklikkenInVolgorde.html?showSum&tableOfMultiplication=2&tableOfMultiplication=3&tableOfMultiplication=4&tableOfMultiplication=5&tableOfMultiplication=6&tableOfMultiplication=7&tableOfMultiplication=8&tableOfMultiplication=9&tableOfMultiplication=10"
+        ><ballgame-icon
+          colorPermutation="14"
+          alt="Tafels van 1 tot en met 10"
+          text="alle tafels"
+          twoBalls
+          smallFont
+        ></ballgame-icon
+      ></a>
+    </div>
+    <a href="index.html">Terug naar het hoofdmenu</a>
+  </body>
 </html>

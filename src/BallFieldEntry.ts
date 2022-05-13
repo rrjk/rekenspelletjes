@@ -71,7 +71,7 @@ export class BallFieldEntry
         flex-wrap: wrap;
         justify-content: space-around;
         align-content: space-around;
-        background-color: purple;
+        background-color: #cd86e3;
       }
 
       .fadeOut {
