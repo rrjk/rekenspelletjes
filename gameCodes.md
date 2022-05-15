@@ -13,7 +13,7 @@ Game codes
 <tr><td>Ca</td><td>Balonnenspel</td/></tr>
 <tr><td>Cb</td><td>Raketspel - keer</td/></tr>
 <tr><td>Cc</td><td>Raketspel - gedeeld door</td/></tr>
-<tr><td>Cc</td><td>Raketspel - keer en gedeeld door</td/></tr>
+<tr><td>Cd</td><td>Raketspel - keer en gedeeld door</td/></tr>
 <tr><td>E</td><td>Sorteerspel</td/></tr>
 <tr><td>Fa</td><td>Groepjes van herkennen zonder antwoord met lange optelling</td/></tr>
 <tr><td>Fb</td><td>Groepjes van herkennen zonder antwoord en zonder lange optelling</td/></tr>
