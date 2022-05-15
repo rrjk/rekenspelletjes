@@ -7,44 +7,46 @@ import type {
 // eslint-disable-next-line import/extensions
 import { customElement, property } from 'lit/decorators.js';
 
-/** Possible balloon colors */
-export type BallColors = 'blue' | 'red' | 'yellow' | 'green';
-
 /** XY vector  */
 interface XYvector {
   x: number;
   y: number;
 }
 
+const yellowBallUrl = new URL('../images/ball-yellow.svg', import.meta.url);
+const blueBallUrl = new URL('../images/ball-blue.svg', import.meta.url);
+const greenBallUrl = new URL('../images/ball-green.svg', import.meta.url);
+const redBallUrl = new URL('../images/ball-red.svg', import.meta.url);
+
 /** All permutations of four ball color */
 const ballColorPermutations = [
-  ['yellow', 'blue', 'green', 'red'],
-  ['yellow', 'blue', 'red', 'green'],
-  ['yellow', 'red', 'green', 'blue'],
-  ['yellow', 'red', 'blue', 'green'],
-  ['yellow', 'green', 'red', 'blue'],
-  ['yellow', 'green', 'blue', 'red'],
+  [yellowBallUrl, blueBallUrl, greenBallUrl, redBallUrl],
+  [yellowBallUrl, blueBallUrl, redBallUrl, greenBallUrl],
+  [yellowBallUrl, redBallUrl, greenBallUrl, blueBallUrl],
+  [yellowBallUrl, redBallUrl, blueBallUrl, greenBallUrl],
+  [yellowBallUrl, greenBallUrl, redBallUrl, blueBallUrl],
+  [yellowBallUrl, greenBallUrl, blueBallUrl, redBallUrl],
 
-  ['blue', 'yellow', 'green', 'red'],
-  ['blue', 'yellow', 'red', 'green'],
-  ['blue', 'red', 'green', 'yellow'],
-  ['blue', 'red', 'yellow', 'green'],
-  ['blue', 'green', 'red', 'yellow'],
-  ['blue', 'green', 'yellow', 'red'],
+  [blueBallUrl, yellowBallUrl, greenBallUrl, redBallUrl],
+  [blueBallUrl, yellowBallUrl, redBallUrl, greenBallUrl],
+  [blueBallUrl, redBallUrl, greenBallUrl, yellowBallUrl],
+  [blueBallUrl, redBallUrl, yellowBallUrl, greenBallUrl],
+  [blueBallUrl, greenBallUrl, redBallUrl, yellowBallUrl],
+  [blueBallUrl, greenBallUrl, yellowBallUrl, redBallUrl],
 
-  ['green', 'blue', 'yellow', 'red'],
-  ['green', 'blue', 'red', 'yellow'],
-  ['green', 'red', 'yellow', 'blue'],
-  ['green', 'red', 'blue', 'yellow'],
-  ['green', 'yellow', 'red', 'blue'],
-  ['green', 'yellow', 'blue', 'red'],
+  [greenBallUrl, blueBallUrl, yellowBallUrl, redBallUrl],
+  [greenBallUrl, blueBallUrl, redBallUrl, yellowBallUrl],
+  [greenBallUrl, redBallUrl, yellowBallUrl, blueBallUrl],
+  [greenBallUrl, redBallUrl, blueBallUrl, yellowBallUrl],
+  [greenBallUrl, yellowBallUrl, redBallUrl, blueBallUrl],
+  [greenBallUrl, yellowBallUrl, blueBallUrl, redBallUrl],
 
-  ['red', 'blue', 'green', 'yellow'],
-  ['red', 'blue', 'yellow', 'green'],
-  ['red', 'yellow', 'green', 'blue'],
-  ['red', 'yellow', 'blue', 'green'],
-  ['red', 'green', 'yellow', 'blue'],
-  ['red', 'green', 'blue', 'yellow'],
+  [redBallUrl, blueBallUrl, greenBallUrl, yellowBallUrl],
+  [redBallUrl, blueBallUrl, yellowBallUrl, greenBallUrl],
+  [redBallUrl, yellowBallUrl, greenBallUrl, blueBallUrl],
+  [redBallUrl, yellowBallUrl, blueBallUrl, greenBallUrl],
+  [redBallUrl, greenBallUrl, yellowBallUrl, blueBallUrl],
+  [redBallUrl, greenBallUrl, blueBallUrl, yellowBallUrl],
 ];
 
 @customElement('ballgame-icon')
@@ -87,9 +89,7 @@ export class BalloonIndex extends LitElement {
       const ballTemplate = svg`
         <image
           height="78"
-          href="../images/ball-${
-            ballColorPermutations[this.colorPermutation][i]
-          }.svg"
+          href="${ballColorPermutations[this.colorPermutation][i]}"
           x="${positions[i].x}"
           y="${positions[i].y}"
         ></image>`;
