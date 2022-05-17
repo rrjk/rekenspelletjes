@@ -1,4 +1,4 @@
-import { LitElement, html, css } from 'lit';
+import { LitElement, html, css, unsafeCSS } from 'lit';
 import type { HTMLTemplateResult, CSSResultGroup } from 'lit';
 // eslint-disable-next-line import/extensions
 import { customElement, property, state } from 'lit/decorators.js';
@@ -123,19 +123,27 @@ export class BallFieldEntry
       }
 
       .ballBlue {
-        background-image: url('images/ball-blue.svg');
+        background-image: url('${unsafeCSS(
+          new URL('../images/ball-blue.svg', import.meta.url)
+        )}');
       }
 
       .ballRed {
-        background-image: url('images/ball-red.svg');
+        background-image: url('${unsafeCSS(
+          new URL('../images/ball-red.svg', import.meta.url)
+        )}');
       }
 
       .ballGreen {
-        background-image: url('images/ball-green.svg');
+        background-image: url('${unsafeCSS(
+          new URL('../images/ball-green.svg', import.meta.url)
+        )}');
       }
 
       .ballYellow {
-        background-image: url('images/ball-yellow.svg');
+        background-image: url('${unsafeCSS(
+          new URL('../images/ball-yellow.svg', import.meta.url)
+        )}');
       }
     `;
   }
