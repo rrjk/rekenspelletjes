@@ -11,6 +11,7 @@ import {
 } from './Randomizer';
 import './AscendingBalloons';
 import type { Answers, AscendingBalloons } from './AscendingBalloons';
+import { GameLogger } from './GameLogger';
 
 type Operator = '+' | '-';
 
@@ -29,6 +30,7 @@ export class AdditionSubstractionWithinDecadeApp extends TimeLimitedGame2 {
 
   private decades: number[] = [];
   private operators: Operator[] = [];
+  private gameLogger = new GameLogger('B', '');
 
   constructor() {
     super();
@@ -64,6 +66,12 @@ export class AdditionSubstractionWithinDecadeApp extends TimeLimitedGame2 {
         this.operators.push('-');
     });
     if (this.operators.length === 0) this.operators.push('+');
+
+    if (this.operators.length === 2) this.gameLogger.setSubCode('c');
+    else if (this.operators.length === 1 && this.operators[0] === '+')
+      this.gameLogger.setSubCode('a');
+    else if (this.operators.length === 1 && this.operators[0] === '-')
+      this.gameLogger.setSubCode('b');
   }
 
   /** Get the ascending balloons child */
@@ -210,6 +218,7 @@ export class AdditionSubstractionWithinDecadeApp extends TimeLimitedGame2 {
 
   executeGameOverActions(): void {
     this.gameElementsDisabled = true;
+    this.gameLogger.logGameOver();
   }
 
   /** Render the application */

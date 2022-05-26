@@ -225,9 +225,7 @@ export class AdditionSubstractionWholeDecadeApp extends TimeLimitedGame2 {
 
   executeGameOverActions(): void {
     this.gameElementsDisabled = true;
-    fetch('asdflog.php?game=B', {
-      method: 'POST',
-    });
+    this.gameLogger.logGameOver();
   }
 
   /** Render the game content */

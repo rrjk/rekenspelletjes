@@ -31,5 +31,8 @@ Game codes
 <tr><td>Hb</td><td>Aanklikken in volgorde van laag naar hoog</td></tr>
 <tr><td>Hb</td><td>Aanklikken in volgorde van hoog naar laag</td></tr>
 <tr><td>Hc</td><td>Aanklikken in volgorde van laag naar hoog vanaf een random getal</td></tr>
-<tr><td>Hb</td><td>Aanklikken in volgorde van een tafel (vvan laag naar hoog)</td></tr>
+<tr><td>Hb</td><td>Aanklikken in volgorde van een tafel (van laag naar hoog)</td></tr>
+<tr><td>Ia</td><td>Plussommen binnen het tiental</td></tr>
+<tr><td>Ib</td><td>Minsommen binnen het tiental</td></tr>
+<tr><td>Ic</td><td>Plus- en minsommen binnen het tiental</td></tr>
 </table>
