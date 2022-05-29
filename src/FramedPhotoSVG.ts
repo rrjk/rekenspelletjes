@@ -8,6 +8,7 @@ interface PhotoMetaData {
   height: number;
   color: string;
 }
+
 export type PhotoId = 'Jan' | 'Anne' | 'Johannes' | 'Frank' | 'Disabled';
 
 const photos: { [key: string]: PhotoMetaData } = {

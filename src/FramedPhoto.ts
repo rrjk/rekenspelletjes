@@ -3,7 +3,10 @@ import { LitElement, html } from 'lit';
 import type { TemplateResult } from 'lit';
 // eslint-disable-next-line import/extensions
 import { customElement, property, state } from 'lit/decorators.js';
-import { FramedPhotoSVG, PhotoId } from './FramedPhotoSVG';
+import { FramedPhotoSVG } from './FramedPhotoSVG';
+import type { PhotoId } from './FramedPhotoSVG';
+
+export type { PhotoId };
 
 @customElement('framed-photo')
 export class FramedPhoto extends LitElement {
