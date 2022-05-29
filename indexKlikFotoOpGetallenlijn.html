@@ -2,65 +2,265 @@
 <html lang="nl">
   <style>
     html {
-      font-size: xx-large;
+      font-size: x-large;
+    }
+    .buttonTable {
+      position: relative;
+      display: flex;
+      gap: 10px 10px;
+      flex-wrap: wrap;
+      width: 400px;
     }
   </style>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
+    <script type="module" src="./src/IconHourglassButton.ts"></script>
+    <script
+      type="module"
+      src="./src/HangingPhotoIconWithTextOverlay.ts"
+    ></script>
     <title>Klik de juiste foto aan op de getallenlijn</title>
   </head>
   <body>
     <h1>Getallenlijn van 0 tot 20</h1>
-    <ul>
-      <li>
-        <a
-          href="KlikFotoOpGetallenlijn.html?minimum=0&maximum=20&show1TickMarks&show5TickMarks&showAll10Numbers"
-          >Met alle tientallen, vijf- en een-streepjes</a
-        >
-      </li>
-      <li>
-        <a
-          href="KlikFotoOpGetallenlijn.html?minimum=0&maximum=20&show5TickMarks&showAll10Numbers"
-          >Met alle tientallen en vijf-streepjes</a
-        >
-      </li>
-      <li>
-        <a
-          href="KlikFotoOpGetallenlijn.html?minimum=0&maximum=20&showAll10Numbers"
-          >Met alle tientallen, maar geen andere streepjes</a
-        >
-      </li>
-      <li>
-        <a href="KlikFotoOpGetallenlijn.html?minimum=0&maximum=20"
-          >Met alleen streepjes op de tientallen</a
-        >
-      </li>
-    </ul>
+    <div class="buttonTable">
+      <icon-hourglass-button
+        title="Met alle tientallen, vijf- en een-streepjes"
+        time="1min"
+        href="KlikFotoOpGetallenlijn.html?minimum=0&maximum=20&show1TickMarks&show5TickMarks&showAll10Numbers"
+      >
+        <hanging-photo-icon-with-text-overlay
+          smallestTickmark="tickMark1"
+          showNumberMiddle
+          numberLeft="0"
+          numberMiddle="10"
+          numberRight="20"
+          photoId="Anne"
+        ></hanging-photo-icon-with-text-overlay>
+      </icon-hourglass-button>
+      <icon-hourglass-button
+        title="Met alle tientallen, vijf- en een-streepjes"
+        time="3min"
+        href="KlikFotoOpGetallenlijn.html?minimum=0&maximum=20&show1TickMarks&show5TickMarks&showAll10Numbers"
+      >
+        <hanging-photo-icon-with-text-overlay
+          smallestTickmark="tickMark1"
+          showNumberMiddle
+          numberLeft="0"
+          numberMiddle="10"
+          numberRight="20"
+          photoId="Anne"
+        ></hanging-photo-icon-with-text-overlay>
+      </icon-hourglass-button>
+
+      <icon-hourglass-button
+        title="Met alle tientallen, vijfstreepjes"
+        time="1min"
+        href="KlikFotoOpGetallenlijn.html?minimum=0&maximum=20&show5TickMarks&showAll10Numbers"
+      >
+        <hanging-photo-icon-with-text-overlay
+          smallestTickmark="tickMark5"
+          showNumberMiddle
+          numberLeft="0"
+          numberMiddle="10"
+          numberRight="20"
+          photoId="Anne"
+        ></hanging-photo-icon-with-text-overlay>
+      </icon-hourglass-button>
+      <icon-hourglass-button
+        title="Met alle tientallen, vijfstreepjes"
+        time="3min"
+        href="KlikFotoOpGetallenlijn.html?minimum=0&maximum=20&show5TickMarks&showAll10Numbers"
+      >
+        <hanging-photo-icon-with-text-overlay
+          smallestTickmark="tickMark5"
+          showNumberMiddle
+          numberLeft="0"
+          numberMiddle="10"
+          numberRight="20"
+          photoId="Anne"
+        ></hanging-photo-icon-with-text-overlay>
+      </icon-hourglass-button>
+      <icon-hourglass-button
+        title="Met alle tientallen, maar geen andere streepjes"
+        time="1min"
+        href="KlikFotoOpGetallenlijn.html?minimum=0&maximum=20&showAll10Numbers"
+      >
+        <hanging-photo-icon-with-text-overlay
+          smallestTickmark="tickMark10"
+          showNumberMiddle
+          numberLeft="0"
+          numberMiddle="10"
+          numberRight="20"
+          photoId="Anne"
+        ></hanging-photo-icon-with-text-overlay>
+      </icon-hourglass-button>
+      <icon-hourglass-button
+        title="Met alle tientallen, maar geen andere streepjes"
+        time="3min"
+        href="KlikFotoOpGetallenlijn.html?minimum=0&maximum=20&showAll10Numbers"
+      >
+        <hanging-photo-icon-with-text-overlay
+          smallestTickmark="tickMark10"
+          showNumberMiddle
+          numberLeft="0"
+          numberMiddle="10"
+          numberRight="20"
+          photoId="Anne"
+        ></hanging-photo-icon-with-text-overlay>
+      </icon-hourglass-button>
+      <icon-hourglass-button
+        title="Met alleen streepjes op de tientallen"
+        time="1min"
+        href="KlikFotoOpGetallenlijn.html?minimum=0&maximum=20"
+      >
+        <hanging-photo-icon-with-text-overlay
+          smallestTickmark="tickMark10"
+          numberLeft="0"
+          numberMiddle="10"
+          numberRight="20"
+          photoId="Anne"
+        ></hanging-photo-icon-with-text-overlay>
+      </icon-hourglass-button>
+      <icon-hourglass-button
+        title="Met alleen streepjes op de tientallen"
+        time="3min"
+        href="KlikFotoOpGetallenlijn.html?minimum=0&maximum=20"
+      >
+        <hanging-photo-icon-with-text-overlay
+          smallestTickmark="tickMark10"
+          numberLeft="0"
+          numberMiddle="10"
+          numberRight="20"
+          photoId="Anne"
+        ></hanging-photo-icon-with-text-overlay>
+      </icon-hourglass-button>
+    </div>
+
     <h1>Getallenlijn van 0 tot 100</h1>
-    <ul>
-      <li>
-        <a
-          href="KlikFotoOpGetallenlijn.html?show1TickMarks&show5TickMarks&showAll10Numbers"
-          >Met alle tientallen, vijf- en een-streepjes</a
-        >
-      </li>
-      <li>
-        <a href="KlikFotoOpGetallenlijn.html?show5TickMarks&showAll10Numbers"
-          >Met alle tientallen en vijf-streepjes</a
-        >
-      </li>
-      <li>
-        <a href="KlikFotoOpGetallenlijn.html?showAll10Numbers"
-          >Met alle tientallen, maar geen andere streepjes</a
-        >
-      </li>
-      <li>
-        <a href="KlikFotoOpGetallenlijn.html"
-          >Met alleen streepjes op de tientallen</a
-        >
-      </li>
-    </ul>
+
+    <div class="buttonTable">
+      <icon-hourglass-button
+        title="Met alle tientallen, vijf- en een-streepjes"
+        time="1min"
+        href="KlikFotoOpGetallenlijn.html?minimum=0&maximum=100&show1TickMarks&show5TickMarks&showAll10Numbers"
+      >
+        <hanging-photo-icon-with-text-overlay
+          smallestTickmark="tickMark1"
+          showNumberMiddle
+          brokenLine
+          numberLeft="0"
+          numberMiddle="90"
+          numberRight="100"
+          photoId="Frank"
+        ></hanging-photo-icon-with-text-overlay>
+      </icon-hourglass-button>
+      <icon-hourglass-button
+        title="Met alle tientallen, vijf- en een-streepjes"
+        time="3min"
+        href="KlikFotoOpGetallenlijn.html?minimum=0&maximum=100&show1TickMarks&show5TickMarks&showAll10Numbers"
+      >
+        <hanging-photo-icon-with-text-overlay
+          smallestTickmark="tickMark1"
+          showNumberMiddle
+          brokenLine
+          numberLeft="0"
+          numberMiddle="90"
+          numberRight="100"
+          photoId="Frank"
+        ></hanging-photo-icon-with-text-overlay>
+      </icon-hourglass-button>
+
+      <icon-hourglass-button
+        title="Met alle tientallen, vijfstreepjes"
+        time="1min"
+        href="KlikFotoOpGetallenlijn.html?minimum=0&maximum=100&show5TickMarks&showAll10Numbers"
+      >
+        <hanging-photo-icon-with-text-overlay
+          smallestTickmark="tickMark5"
+          showNumberMiddle
+          brokenLine
+          numberLeft="0"
+          numberMiddle="90"
+          numberRight="100"
+          photoId="Frank"
+        ></hanging-photo-icon-with-text-overlay>
+      </icon-hourglass-button>
+      <icon-hourglass-button
+        title="Met alle tientallen, vijfstreepjes"
+        time="3min"
+        href="KlikFotoOpGetallenlijn.html?minimum=0&maximum=100&show5TickMarks&showAll10Numbers"
+      >
+        <hanging-photo-icon-with-text-overlay
+          smallestTickmark="tickMark5"
+          showNumberMiddle
+          brokenLine
+          numberLeft="0"
+          numberMiddle="90"
+          numberRight="100"
+          photoId="Frank"
+        ></hanging-photo-icon-with-text-overlay>
+      </icon-hourglass-button>
+      <icon-hourglass-button
+        title="Met alle tientallen, maar geen andere streepjes"
+        time="1min"
+        href="KlikFotoOpGetallenlijn.html?minimum=0&maximum=100&showAll10Numbers"
+      >
+        <hanging-photo-icon-with-text-overlay
+          smallestTickmark="tickMark10"
+          showNumberMiddle
+          brokenLine
+          numberLeft="0"
+          numberMiddle="90"
+          numberRight="100"
+          photoId="Frank"
+        ></hanging-photo-icon-with-text-overlay>
+      </icon-hourglass-button>
+      <icon-hourglass-button
+        title="Met alle tientallen, maar geen andere streepjes"
+        time="3min"
+        href="KlikFotoOpGetallenlijn.html?minimum=0&maximum=100&showAll10Numbers"
+      >
+        <hanging-photo-icon-with-text-overlay
+          smallestTickmark="tickMark10"
+          showNumberMiddle
+          brokenLine
+          numberLeft="0"
+          numberMiddle="90"
+          numberRight="100"
+          photoId="Frank"
+        ></hanging-photo-icon-with-text-overlay>
+      </icon-hourglass-button>
+      <icon-hourglass-button
+        title="Met alleen streepjes op de tientallen"
+        time="1min"
+        href="KlikFotoOpGetallenlijn.html?minimum=0&maximum=100"
+      >
+        <hanging-photo-icon-with-text-overlay
+          smallestTickmark="tickMark10"
+          brokenLine
+          numberLeft="0"
+          numberMiddle="90"
+          numberRight="100"
+          photoId="Frank"
+        ></hanging-photo-icon-with-text-overlay>
+      </icon-hourglass-button>
+      <icon-hourglass-button
+        title="Met alleen streepjes op de tientallen"
+        time="3min"
+        href="KlikFotoOpGetallenlijn.html?minimum=0&maximum=100"
+      >
+        <hanging-photo-icon-with-text-overlay
+          smallestTickmark="tickMark10"
+          brokenLine
+          numberLeft="0"
+          numberMiddle="90"
+          numberRight="100"
+          photoId="Frank"
+        ></hanging-photo-icon-with-text-overlay>
+      </icon-hourglass-button>
+    </div>
     <a href="index.html">Terug naar het hoofdmenu</a>
   </body>
 </html>
