@@ -50,8 +50,8 @@ export class FramedPhotoSVG {
   y = 1;
   disabled: boolean;
 
-  static getFrameColor(photo: PhotoId): string {
-    return photos[photo].color;
+  static getFrameColor(photoId: PhotoId): string {
+    return photos[photoId].color;
   }
 
   /** Construct a hanging photo

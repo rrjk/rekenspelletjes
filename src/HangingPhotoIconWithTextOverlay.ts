@@ -38,53 +38,6 @@ export class HangingPhotoIconWithTextOverlay extends LitElement {
 
   static get styles(): CSSResultGroup {
     return css`
-      .container {
-        display: grid;
-        grid-template-columns: 40px 60px;
-      }
-      .numberline {
-        display: inline-block;
-        background-size: 55px 90px;
-        width: 55px;
-        height: 90px;
-        background-color: transparent;
-        border: none;
-        outline: none;
-        margin: 2px;
-        padding: 0;
-        color: black;
-        font-size: 20px;
-        line-height: 78px;
-        text-align: center;
-      }
-
-      .numberlineNoTickMark {
-        background-image: url('${unsafeCSS(
-          new URL('../images/HangingPhotoNoTickMarks.png', import.meta.url)
-        )}');
-      }
-      .numberlineTickMark1 {
-        background-image: url('${unsafeCSS(
-          new URL('../images/HangingPhoto1TickMarks.png', import.meta.url)
-        )}');
-      }
-      .numberlineTickMark5 {
-        background-image: url('${unsafeCSS(
-          new URL('../images/HangingPhoto5TickMarks.png', import.meta.url)
-        )}');
-      }
-      .numberlineTickMark10 {
-        background-image: url('${unsafeCSS(
-          new URL('../images/HangingPhoto10TickMarks.png', import.meta.url)
-        )}');
-      }
-
-      .text {
-        display: inline-block;
-        vertical-align: middle;
-        line-height: normal;
-      }
-
       .digits {
         font: 10px sans-serif;
       }
