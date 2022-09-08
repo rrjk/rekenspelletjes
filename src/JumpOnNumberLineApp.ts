@@ -363,6 +363,9 @@ export class JumpOnNumberLineApp extends LitElement {
 
   /** Ceck the answer the student has selected and make Jan jump. */
   async checkAnswer(): Promise<void> {
+    if (this.hideJan === false)
+      // If Jan is visible, a check is already going on
+      return;
     this.dragDisabled = true;
     this.desiredPosition =
       JumpOnNumberLineApp.numberLineLeft +
