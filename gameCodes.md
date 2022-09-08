@@ -35,4 +35,8 @@ Game codes
 <tr><td>Ia</td><td>Plussommen binnen het tiental</td></tr>
 <tr><td>Ib</td><td>Minsommen binnen het tiental</td></tr>
 <tr><td>Ic</td><td>Plus- en minsommen binnen het tiental</td></tr>
+<tr><td>Ja</td><td>Klik foto op de getallenlijn, 1-streepjes</td></tr>
+<tr><td>Jb</td><td>Klik foto op de getallenlijn, 5-streepjes</td></tr>
+<tr><td>Jc</td><td>Klik foto op de getallenlijn, 10-streepjes</td></tr>
+<tr><td>Jd</td><td>Klik foto op de getallenlijn, 10-streepjes, geen getallen</td></tr>
 </table>
