@@ -44,4 +44,5 @@ Game codes
 <tr><td>Jb</td><td>Klik foto op de getallenlijn, 5-streepjes</td></tr>
 <tr><td>Jc</td><td>Klik foto op de getallenlijn, 10-streepjes</td></tr>
 <tr><td>Jd</td><td>Klik foto op de getallenlijn, 10-streepjes, geen getallen</td></tr>
+<tr><td>L</td><td>Klik paren klokken (analoog, tekst, digitaal) aan</td></tr>
 </table>
