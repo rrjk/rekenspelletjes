@@ -110,20 +110,23 @@ export class ClockPairingApp extends TimeLimitedGame2 {
 
   /** Render the game content */
   renderGameContent(): HTMLTemplateResult {
+    const hours = 1;
+    const minutes = 50;
+
     return html`
       <div id="totalGame">
         <analog-clock
-          hours="22"
-          minutes="55"
+          hours="${hours}"
+          minutes="${minutes}"
           showQuarterNumbers
           showAllTickMarks
           style="display:block; position: absolute; width: 350px; left:250px; top:250px;"
         ></analog-clock>
 
         <digital-clock
-          hours="22"
-          minutes="55"
-          style="display:block; position: absolute; width: 750px; left:250px; top:700px;"
+          hours="${hours}"
+          minutes="${minutes}"
+          style="display:block; position: absolute; width: 150px; left:250px; top:700px;"
         ></digital-clock>
       </div>
     `;

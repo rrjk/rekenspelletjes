@@ -7,12 +7,134 @@ import type {
 // eslint-disable-next-line import/extensions
 import { customElement, property } from 'lit/decorators.js';
 
-type segmentLocation = 'lt' | 'lb' | 'rt' | 'rb' | 'top' | 'middle' | 'bottom';
-type svgLinePositions = 'x1' | 'x2' | 'y1' | 'y2';
+/** The names of the 7 segments to create digits */
+const segmentNames = [
+  'lt',
+  'lb',
+  'rt',
+  'rb',
+  'top',
+  'middle',
+  'bottom',
+] as const;
+/** A type for the segment names */
+type SegmentNamesType = typeof segmentNames[number];
+/** The names of the coordinates for an SVG line */
+const svgLineCoordinates = ['x1', 'x2', 'y1', 'y2'];
+/** A type for the names of the coordinates for an SVG line */
+type SvgLineCoordinatesType = typeof svgLineCoordinates[number];
+
+/** A type to describe the SVG coordinates for the SVG line making up a segment. */
 type segmentXYOffsetsType = {
-  [location in segmentLocation]: { [positions in svgLinePositions]: number };
+  [segment in SegmentNamesType]: {
+    [coordinate in SvgLineCoordinatesType]: number;
+  };
 };
-type digitsToSegments = { [location in segmentLocation]: boolean }[];
+
+/** A type for an array that maps a digit that whether the different segments should be shown or not.  */
+type DigitsToSegmentsType = { [location in SegmentNamesType]: boolean }[];
+
+/** Table translating digits (position within list) into what segments should be lit. */
+const digitsToSegments: Readonly<DigitsToSegmentsType> = [
+  {
+    lt: true,
+    lb: true,
+    rt: true,
+    rb: true,
+    top: true,
+    middle: false,
+    bottom: true,
+  },
+  {
+    lt: false,
+    lb: false,
+    rt: true,
+    rb: true,
+    top: false,
+    middle: false,
+    bottom: false,
+  },
+  {
+    lt: false,
+    lb: true,
+    rt: true,
+    rb: false,
+    top: true,
+    middle: true,
+    bottom: true,
+  },
+  {
+    lt: false,
+    lb: false,
+    rt: true,
+    rb: true,
+    top: true,
+    middle: true,
+    bottom: true,
+  },
+  {
+    lt: true,
+    lb: false,
+    rt: true,
+    rb: true,
+    top: false,
+    middle: true,
+    bottom: false,
+  },
+  {
+    lt: true,
+    lb: false,
+    rt: false,
+    rb: true,
+    top: true,
+    middle: true,
+    bottom: true,
+  },
+  {
+    lt: true,
+    lb: true,
+    rt: false,
+    rb: true,
+    top: true,
+    middle: true,
+    bottom: true,
+  },
+  {
+    lt: false,
+    lb: false,
+    rt: true,
+    rb: true,
+    top: true,
+    middle: false,
+    bottom: false,
+  },
+  {
+    lt: true,
+    lb: true,
+    rt: true,
+    rb: true,
+    top: true,
+    middle: true,
+    bottom: true,
+  },
+  {
+    lt: true,
+    lb: false,
+    rt: true,
+    rb: true,
+    top: true,
+    middle: true,
+    bottom: true,
+  },
+] as const;
+
+/** Table providing the x position within the viewport per digit location */
+const positionToBasePosition = [
+  { x: 25 },
+  { x: 65 },
+  { x: 125 },
+  { x: 165 },
+] as const;
 
 @customElement('digital-clock')
 export class DigitalClock extends LitElement {
@@ -32,108 +154,6 @@ export class DigitalClock extends LitElement {
     bottom: { x1: 4, x2: 21, y1: 75, y2: 75 },
   };
 
-  /** Table translating digits (position within list) into what segments shoudl be lit. */
-  static digitToSegments: digitsToSegments = [
-    {
-      lt: true,
-      lb: true,
-      rt: true,
-      rb: true,
-      top: true,
-      middle: false,
-      bottom: true,
-    },
-    {
-      lt: false,
-      lb: false,
-      rt: true,
-      rb: true,
-      top: false,
-      middle: false,
-      bottom: false,
-    },
-    {
-      lt: false,
-      lb: true,
-      rt: true,
-      rb: false,
-      top: true,
-      middle: true,
-      bottom: true,
-    },
-    {
-      lt: false,
-      lb: false,
-      rt: true,
-      rb: true,
-      top: true,
-      middle: true,
-      bottom: true,
-    },
-    {
-      lt: true,
-      lb: false,
-      rt: true,
-      rb: true,
-      top: false,
-      middle: true,
-      bottom: false,
-    },
-    {
-      lt: true,
-      lb: false,
-      rt: false,
-      rb: true,
-      top: true,
-      middle: true,
-      bottom: true,
-    },
-    {
-      lt: true,
-      lb: true,
-      rt: false,
-      rb: true,
-      top: true,
-      middle: true,
-      bottom: true,
-    },
-    {
-      lt: false,
-      lb: false,
-      rt: true,
-      rb: true,
-      top: true,
-      middle: false,
-      bottom: false,
-    },
-    {
-      lt: true,
-      lb: true,
-      rt: true,
-      rb: true,
-      top: true,
-      middle: true,
-      bottom: true,
-    },
-    {
-      lt: true,
-      lb: false,
-      rt: true,
-      rb: true,
-      top: true,
-      middle: true,
-      bottom: true,
-    },
-  ];
-
-  /** Table providing the x position within the viewport per digit location */
-  static positionToBasePosition = [
-    { x: 25 },
-    { x: 65 },
-    { x: 125 },
-    { x: 165 },
-  ];
-
   static get styles(): CSSResultGroup {
     return css`
       line.segment {
@@ -144,7 +164,7 @@ export class DigitalClock extends LitElement {
     `;
   }
 
-  renderSegment(segment: segmentLocation, baseX: number): SVGTemplateResult {
+  renderSegment(segment: SegmentNamesType, baseX: number): SVGTemplateResult {
     return svg`<line
       class="segment"
       x1="${baseX + DigitalClock.segmentXYOffsets[segment].x1}"
@@ -155,23 +175,13 @@ export class DigitalClock extends LitElement {
   }
 
   renderDigit(digit: number, position: number): SVGTemplateResult {
-    const basePos = DigitalClock.positionToBasePosition[position].x;
+    const basePos = positionToBasePosition[position].x;
     const segments: SVGTemplateResult[] = [];
 
-    if (DigitalClock.digitToSegments[digit].lt)
-      segments.push(this.renderSegment('lt', basePos));
-    if (DigitalClock.digitToSegments[digit].lb)
-      segments.push(this.renderSegment('lb', basePos));
-    if (DigitalClock.digitToSegments[digit].rt)
-      segments.push(this.renderSegment('rt', basePos));
-    if (DigitalClock.digitToSegments[digit].rb)
-      segments.push(this.renderSegment('rb', basePos));
-    if (DigitalClock.digitToSegments[digit].top)
-      segments.push(this.renderSegment('top', basePos));
-    if (DigitalClock.digitToSegments[digit].middle)
-      segments.push(this.renderSegment('middle', basePos));
-    if (DigitalClock.digitToSegments[digit].bottom)
-      segments.push(this.renderSegment('bottom', basePos));
+    for (const segmentName of segmentNames) {
+      if (digitsToSegments[digit][segmentName])
+        segments.push(this.renderSegment(segmentName, basePos));
+    }
 
     return svg`
       ${segments}
