@@ -9,6 +9,7 @@ import { randomFromSet, randomIntFromRange } from './Randomizer';
 import { GameLogger } from './GameLogger';
 
 import './AnalogClock';
+import './DigitalClock';
 
 import './RealHeight';
 
@@ -112,13 +113,18 @@ export class ClockPairingApp extends TimeLimitedGame2 {
     return html`
       <div id="totalGame">
         <analog-clock
-          hours="20"
-          minutes="45"
-          seconds="0"
+          hours="22"
+          minutes="55"
           showQuarterNumbers
-          showQuarterTickMarks
-          style="display:block; width: 350px; left:250; top:250px;"
+          showAllTickMarks
+          style="display:block; position: absolute; width: 350px; left:250px; top:250px;"
         ></analog-clock>
+
+        <digital-clock
+          hours="22"
+          minutes="55"
+          style="display:block; position: absolute; width: 750px; left:250px; top:700px;"
+        ></digital-clock>
       </div>
     `;
   }
