@@ -10,6 +10,7 @@ import { GameLogger } from './GameLogger';
 
 import './AnalogClock';
 import './DigitalClock';
+import './SentenceClock';
 
 import './RealHeight';
 
@@ -110,24 +111,38 @@ export class ClockPairingApp extends TimeLimitedGame2 {
 
   /** Render the game content */
   renderGameContent(): HTMLTemplateResult {
-    const hours = 1;
-    const minutes = 50;
+    const hours = 11;
+    const minutes = 16;
 
     return html`
       <div id="totalGame">
         <analog-clock
+          id="analog"
           hours="${hours}"
           minutes="${minutes}"
           showQuarterNumbers
           showAllTickMarks
-          style="display:block; position: absolute; width: 350px; left:250px; top:250px;"
+          style="display:block; position: absolute; width: 200px; left:250px; top:250px;"
         ></analog-clock>
 
         <digital-clock
           hours="${hours}"
           minutes="${minutes}"
-          style="display:block; position: absolute; width: 150px; left:250px; top:700px;"
+          style="display:block; position: absolute; width: 250px; left:250px; top:700px;"
         ></digital-clock>
+
+        <sentence-clock
+          hours="${hours}"
+          minutes="${minutes}"
+          useWords
+          style="display:block; position: absolute; width: 300px; left:550px; top:100px;"
+        ></word-clock>
+
+        <sentence-clock
+          hours="${hours}"
+          minutes="${minutes}"
+          style="display:block; position: absolute; width: 300px; left:550px; top:250px;"
+        ></word-clock>
       </div>
     `;
   }
