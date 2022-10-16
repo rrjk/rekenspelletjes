@@ -128,20 +128,20 @@ export class ClockPairingApp extends TimeLimitedGame2 {
         <digital-clock
           hours="${hours}"
           minutes="${minutes}"
-          style="display:block; position: absolute; width: 250px; left:250px; top:700px;"
+          style="display:block; position: absolute; width: 200px; left:250px; top:700px;"
         ></digital-clock>
 
         <sentence-clock
           hours="${hours}"
           minutes="${minutes}"
           useWords
-          style="display:block; position: absolute; width: 300px; left:550px; top:100px;"
+          style="display:block; position: absolute; width: 200px; left:550px; top:100px;"
         ></word-clock>
 
         <sentence-clock
           hours="${hours}"
           minutes="${minutes}"
-          style="display:block; position: absolute; width: 300px; left:550px; top:250px;"
+          style="display:block; position: absolute; width: 200px; left:550px; top:250px;"
         ></word-clock>
       </div>
     `;

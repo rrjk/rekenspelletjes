@@ -23,6 +23,8 @@ const numbersasWords = [
 
 @customElement('sentence-clock')
 export class SentenceClock extends LitElement {
+  static widthHeightRatio = 1.5;
+
   @property({ type: Number })
   hours = 0;
   @property({ type: Number })
@@ -60,48 +62,59 @@ export class SentenceClock extends LitElement {
     let nextHour = (hoursNormalized + 1) % 12;
     if (nextHour === 0) nextHour = 12;
 
-    let clockText = 'onbekend';
+    let clockTextLine1 = 'onbekend';
+    let clockTextLine2 = '';
 
     if (minutesBounded === 0) {
-      clockText = `${this.numberAsStringOrDigits(hoursNormalized)} uur`;
+      clockTextLine1 = `${this.numberAsStringOrDigits(hoursNormalized)} uur`;
     } else if (minutesBounded === 15) {
-      clockText = `Kwart over ${this.numberAsStringOrDigits(hoursNormalized)}`;
+      clockTextLine1 = `Kwart over`;
+      clockTextLine2 = `${this.numberAsStringOrDigits(hoursNormalized)}`;
     } else if (minutesBounded === 30) {
-      clockText = `Half ${this.numberAsStringOrDigits(nextHour)}`;
+      clockTextLine1 = `Half ${this.numberAsStringOrDigits(nextHour)}`;
     } else if (minutesBounded === 45) {
-      clockText = `Kwart voor ${this.numberAsStringOrDigits(nextHour)}`;
+      clockTextLine1 = `Kwart voor`;
+      clockTextLine2 = `${this.numberAsStringOrDigits(nextHour)}`;
     } else if (minutesBounded > 0 && minutesBounded < 15) {
-      clockText = `${this.numberAsStringOrDigits(
-        minutesBounded
-      )} over ${this.numberAsStringOrDigits(hoursNormalized)}`;
+      clockTextLine1 = `${this.numberAsStringOrDigits(minutesBounded)} over`;
+      clockTextLine2 = `${this.numberAsStringOrDigits(hoursNormalized)}`;
     } else if (minutesBounded > 15 && minutesBounded < 30) {
-      clockText = `${this.numberAsStringOrDigits(
+      clockTextLine1 = `${this.numberAsStringOrDigits(
         30 - minutesBounded
-      )} voor half ${this.numberAsStringOrDigits(nextHour)}`;
+      )} voor`;
+      clockTextLine2 = `half ${this.numberAsStringOrDigits(nextHour)}`;
     } else if (minutesBounded > 30 && minutesBounded < 45) {
-      clockText = `${this.numberAsStringOrDigits(
+      clockTextLine1 = `${this.numberAsStringOrDigits(
         minutesBounded - 30
-      )} over half ${this.numberAsStringOrDigits(nextHour)}`;
+      )} over`;
+      clockTextLine2 = `half ${this.numberAsStringOrDigits(nextHour)}`;
     } else if (minutesBounded > 45 && minutesBounded < 60) {
-      clockText = `${this.numberAsStringOrDigits(
+      clockTextLine1 = `${this.numberAsStringOrDigits(
         60 - minutesBounded
-      )} voor half ${this.numberAsStringOrDigits(nextHour)}`;
+      )} voor`;
+      clockTextLine2 = `${this.numberAsStringOrDigits(nextHour)}`;
     }
 
-    clockText = this.capitalize(clockText);
+    clockTextLine1 = this.capitalize(clockTextLine1);
 
     return html`
-      <svg viewBox="0 0 600 100" style="width: 100%">
+      <svg
+        viewBox="0 0 ${200 * SentenceClock.widthHeightRatio} 200"
+        style="width: 100%"
+      >
         <rect
-          stroke="black"
-          stroke-width="2"
+          stroke="grey"
+          stroke-width="1"
           fill="lightgrey"
           x="10"
           y="10"
-          width="580"
-          height="80"
+          width="280"
+          height="140"
         ></rect>
-        <text x="20" y="67" font-size="50">${clockText}</text>
+        <text x="20" y="67" font-size="40">
+          <tspan x="20" dy="0">${clockTextLine1}<tspan>
+          <tspan x="20" dy="50">${clockTextLine2}<tspan>
+        </text>
       </svg>
     `;
   }
