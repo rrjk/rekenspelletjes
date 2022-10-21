@@ -10,6 +10,8 @@ import { ParseGametimeFromUrl } from './GametimeParameters';
 
 import { GameSkeleton } from './GameSkeleton';
 
+import './RealHeight';
+
 export abstract class TimeLimitedGame2 extends GameSkeleton {
   /** Gametime in number of seconds.
    * Number of seconds the game was played, correct at the end of the game.
@@ -64,6 +66,11 @@ export abstract class TimeLimitedGame2 extends GameSkeleton {
           width: 100%;
           box-sizing: border-box;
           grid-template-rows: ${ProgressBar.height}px 1fr;
+        }
+        .gameContent {
+          width: calc(var(--vw) * 100);
+          height: calc(var(--vh) * 100 - 20px);
+          box-sizing: border-box;
         }
       `,
     ];
