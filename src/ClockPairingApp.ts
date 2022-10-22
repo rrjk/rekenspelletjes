@@ -11,6 +11,8 @@ import { GameLogger } from './GameLogger';
 import './AnalogClock';
 import './DigitalClock';
 import './SentenceClock';
+import './DynamicGrid';
+import './GroupOfImages';
 
 import './RealHeight';
 
@@ -115,35 +117,90 @@ export class ClockPairingApp extends TimeLimitedGame2 {
     const minutes = 16;
 
     return html`
-      <div id="totalGame">
+      <dynamic-grid
+        numberInGroup="11"
+        contentAspectRatio="1"
+        style="width: 100%; height: 100%; top: 0;"
+      >
         <analog-clock
           id="analog"
           hours="${hours}"
           minutes="${minutes}"
           showQuarterNumbers
           showAllTickMarks
-          style="display:block; position: absolute; width: 200px; left:250px; top:250px;"
+          style="width: 100%; height: 100%;"
         ></analog-clock>
-
         <digital-clock
           hours="${hours}"
           minutes="${minutes}"
-          style="display:block; position: absolute; width: 200px; left:250px; top:700px;"
+          style="width: 100%; height: 100%;"
         ></digital-clock>
-
         <sentence-clock
           hours="${hours}"
           minutes="${minutes}"
           useWords
-          style="display:block; position: absolute; width: 200px; left:550px; top:100px;"
-        ></word-clock>
-
+          style="width: 100%; height: 100%;"
+        ></sentence-clock>
         <sentence-clock
           hours="${hours}"
           minutes="${minutes}"
-          style="display:block; position: absolute; width: 200px; left:550px; top:250px;"
-        ></word-clock>
-      </div>
+          style="width: 100%; height: 100%;"
+        ></sentence-clock>
+        <analog-clock
+          id="analog"
+          hours="${hours}"
+          minutes="${minutes}"
+          showQuarterNumbers
+          showAllTickMarks
+          style="width: 100%; height: 100%;"
+        ></analog-clock>
+
+        <analog-clock
+          id="analog"
+          hours="${hours}"
+          minutes="${minutes}"
+          showQuarterNumbers
+          showAllTickMarks
+          style="width: 100%; height: 100%;"
+        ></analog-clock>
+
+        <analog-clock
+          id="analog"
+          hours="${hours}"
+          minutes="${minutes}"
+          showQuarterNumbers
+          showAllTickMarks
+          style="width: 100%; height: 100%;"
+        ></analog-clock>
+
+        <analog-clock
+          id="analog"
+          hours="${hours}"
+          minutes="${minutes}"
+          showQuarterNumbers
+          showAllTickMarks
+          style="width: 100%; height: 100%;"
+        ></analog-clock>
+
+        <analog-clock
+          id="analog"
+          hours="${hours}"
+          minutes="${minutes}"
+          showQuarterNumbers
+          showAllTickMarks
+          style="width: 100%; height: 100%;"
+        ></analog-clock>
+        <digital-clock
+          hours="${hours}"
+          minutes="${minutes}"
+          style="width: 100%; height: 100%;"
+        ></digital-clock>
+        <digital-clock
+          hours="${hours}"
+          minutes="${minutes}"
+          style="width: 100%; height: 100%;"
+        ></digital-clock>
+      </dynamic-grid>
     `;
   }
 }
