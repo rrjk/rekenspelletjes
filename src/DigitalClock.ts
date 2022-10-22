@@ -136,6 +136,10 @@ const positionToBasePosition = [
   { x: 165 },
 ] as const;
 
+/** Analog clock.
+ *  - Takes the height and width of the surrounding block when used as an inline element.
+ *  - Takes set width and height when used as an block element.
+ */
 @customElement('digital-clock')
 export class DigitalClock extends LitElement {
   @property({ type: Number })
@@ -206,7 +210,12 @@ export class DigitalClock extends LitElement {
     const minutesSingle = minutesBounded % 10;
 
     return html`
-      <svg viewBox="0 0 220 100" style="width: 100%">
+      <svg
+        viewBox="0 0 220 100"
+        width="100%"
+        height="100%"
+        preserveAspectRatio="xMidYMid meet"
+      >
         <rect
           stroke="black"
           stroke-width="10"

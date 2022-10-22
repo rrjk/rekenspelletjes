@@ -7,6 +7,10 @@ import type {
 // eslint-disable-next-line import/extensions
 import { customElement, property } from 'lit/decorators.js';
 
+/** Analog clock.
+ *   - Takes the height and width of the surrounding block when used as an inline element.
+ *   - Takes set width and height when used as an block element.
+ */
 @customElement('analog-clock')
 export class AnalogClock extends LitElement {
   /** Color permutation to use, index into ballColorPermutations */
@@ -123,7 +127,12 @@ export class AnalogClock extends LitElement {
     else if (this.showQuarterNumbers) hourNumbers = [3, 6, 9, 12];
 
     return html`
-      <svg viewBox="0 0 250 250" style="width: 100%">
+      <svg
+        viewBox="0 0 250 250"
+        width="100%"
+        height="100%"
+        preserveAspectRatio="xMidYMid meet"
+      >
         <circle
           stroke="black"
           stroke-width="10"

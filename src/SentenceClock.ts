@@ -21,6 +21,10 @@ const numbersasWords = [
   'veertien',
 ] as const;
 
+/** Analog clock.
+ *   - Takes the height and width of the surrounding block when used as an inline element.
+ *   - Takes set width and height when used as an block element.
+ */
 @customElement('sentence-clock')
 export class SentenceClock extends LitElement {
   static widthHeightRatio = 1.5;
@@ -100,7 +104,9 @@ export class SentenceClock extends LitElement {
     return html`
       <svg
         viewBox="0 0 ${200 * SentenceClock.widthHeightRatio} 200"
-        style="width: 100%"
+        width="100%"
+        height="100%"
+        preserveAspectRatio="xMidYMid meet"
       >
         <rect
           stroke="grey"
