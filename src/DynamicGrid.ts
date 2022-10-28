@@ -8,19 +8,32 @@ import {
   addResizeObserverClient,
 } from './ResizeObserver';
 
+/** A custom element that places it's children in a dynamic grid. Based on the provided
+ * contentAspectRatio the optimal number of rows and columns is determined based on the
+ * number of children.
+ *
+ * The children will be sized by the dynamic grid and hence should not have a size set.
+ *
+ 
+ * @property contentAspectRatio: the aspect ratio for the grid elements. If different children have a different aspect ratio
+ * take the one closest to 1.
+ */
 @customElement('dynamic-grid')
 export class DynamicGrid
   extends LitElement
   implements ResizeObserverClientInterface
 {
+  /** Padding applied to the children, as percentage of the width of the dynamic grid. */
   @property({ type: Number })
-  numberInGroup = 1;
-
+  padding = 2;
   /** The aspect ratio of the elements that are placed inside the grid. */
   @property({ type: Number })
   contentAspectRatio = 1;
+
+  /** Number of cells per row, calculated automatically */
   @state()
   perRow = 0;
+  /** Number of cells per column, calculated automatically */
   @state()
   perColumn = 0;
 
@@ -33,14 +46,11 @@ export class DynamicGrid
         align-content: space-around;
       }
 
-      .flexItem {
-        display: flex;
-        flex-wrap: wrap;
-        width: calc(90% / var(--perRow));
-        height: calc(90% / var(--perColumn));
-        align-content: center;
-        justify-content: center;
-        text-align: center;
+      ::slotted(*) {
+        width: calc(100% / var(--perRow));
+        height: calc(100% / var(--perColumn));
+        box-sizing: border-box;
+        padding: var(--padding);
       }
     `;
   }
@@ -55,33 +65,35 @@ export class DynamicGrid
     removeResizeObserverClient(this);
   }
 
-  willUpdate(_changedProperties: Map<string | number | symbol, unknown>): void {
-    if (_changedProperties.has('numberInGroup')) {
-      this.determineNumberRowsAndColumns();
-    }
-  }
-
   handleResize() {
     this.determineNumberRowsAndColumns();
   }
 
+  handleSlottedElementsChange() {
+    this.determineNumberRowsAndColumns();
+  }
+
   determineNumberRowsAndColumns() {
+    console.log(
+      `determine number rows anc columns, number of slot elements = ${this.numberSlottedChildren}`
+    );
     // const imageAspectRatio = getImageInfo(this.image).aspectRatio;
     const boxAspectRatio = this.clientWidth / this.clientHeight;
 
     const ratioPerRowPerColumn = boxAspectRatio / this.contentAspectRatio;
 
     const perColumnCeiled = Math.ceil(
-      Math.sqrt(this.numberInGroup / ratioPerRowPerColumn)
+      Math.sqrt(this.numberSlottedChildren / ratioPerRowPerColumn)
     );
     const perColumnFloored = Math.floor(
-      Math.sqrt(this.numberInGroup / ratioPerRowPerColumn)
+      Math.sqrt(this.numberSlottedChildren / ratioPerRowPerColumn)
     );
 
     const resultingRatioRowPerColumnCeiled =
-      Math.ceil(this.numberInGroup / perColumnCeiled) / perColumnCeiled;
+      Math.ceil(this.numberSlottedChildren / perColumnCeiled) / perColumnCeiled;
     const resultingRatioRowPerColumnFloored =
-      Math.ceil(this.numberInGroup / perColumnFloored) / perColumnFloored;
+      Math.ceil(this.numberSlottedChildren / perColumnFloored) /
+      perColumnFloored;
 
     if (
       Math.abs(resultingRatioRowPerColumnCeiled - ratioPerRowPerColumn) >
@@ -92,37 +104,32 @@ export class DynamicGrid
       this.perColumn = perColumnCeiled;
     }
 
-    this.perRow = Math.ceil(this.numberInGroup / this.perColumn);
+    this.perRow = Math.ceil(this.numberSlottedChildren / this.perColumn);
   }
 
-  get _slottedChildren() {
+  get numberSlottedChildren() {
     const slot = this.shadowRoot?.querySelector('slot');
-
-    return slot?.assignedElements({ flatten: true });
+    let numberSlottedElements = 0;
+    if (slot)
+      numberSlottedElements = slot.assignedElements({ flatten: true }).length;
+    return numberSlottedElements;
   }
 
   protected render(): HTMLTemplateResult {
-    /* Some design notes
-     * A div is put around the actual content to control the number of items in a row,
-     * using flex-basis on the div it's ensured we get the right number of images in a row,
-     * in stead of as many as could possibly fit.
+    /* The slotted elements are given a size based on the number of rows and columns calculated.
+     * This size is set in the styles static getter.
+     * The slotted elements are given a padding based on the padding property.
+     * If the slots change, we need to determine the number of rows and columns as the number of slotted elements might have changed.
      */
-
     return html`
       <style>
         :host {
           --perRow: ${this.perRow};
           --perColumn: ${this.perColumn};
-          --aspectRatio: ${this.contentAspectRatio};
+          --padding: ${this.padding}%;
         }
       </style>
-      <slot></slot>
-      ${this._slottedChildren?.map(
-        slotElm => html`<div class="flexItem">${slotElm}</div>`
-      )}
-      ${Array.from(this.children).map(
-        slotElm => html`<div class="flexItem">${slotElm}</div>`
-      )}
+      <slot @slotchange=${this.handleSlottedElementsChange}></slot>
     `;
   }
 }

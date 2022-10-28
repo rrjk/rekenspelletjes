@@ -120,6 +120,7 @@ export class ClockPairingApp extends TimeLimitedGame2 {
       <dynamic-grid
         numberInGroup="11"
         contentAspectRatio="1"
+        padding="2"
         style="width: 100%; height: 100%; top: 0;"
       >
         <analog-clock
@@ -128,31 +129,20 @@ export class ClockPairingApp extends TimeLimitedGame2 {
           minutes="${minutes}"
           showQuarterNumbers
           showAllTickMarks
-          style="width: 100%; height: 100%;"
         ></analog-clock>
-        <digital-clock
-          hours="${hours}"
-          minutes="${minutes}"
-          style="width: 100%; height: 100%;"
-        ></digital-clock>
+        <digital-clock hours="${hours}" minutes="${minutes}"></digital-clock>
         <sentence-clock
           hours="${hours}"
           minutes="${minutes}"
           useWords
-          style="width: 100%; height: 100%;"
         ></sentence-clock>
-        <sentence-clock
-          hours="${hours}"
-          minutes="${minutes}"
-          style="width: 100%; height: 100%;"
-        ></sentence-clock>
+        <sentence-clock hours="${hours}" minutes="${minutes}"></sentence-clock>
         <analog-clock
           id="analog"
           hours="${hours}"
           minutes="${minutes}"
           showQuarterNumbers
           showAllTickMarks
-          style="width: 100%; height: 100%;"
         ></analog-clock>
 
         <analog-clock
@@ -161,7 +151,6 @@ export class ClockPairingApp extends TimeLimitedGame2 {
           minutes="${minutes}"
           showQuarterNumbers
           showAllTickMarks
-          style="width: 100%; height: 100%;"
         ></analog-clock>
 
         <analog-clock
@@ -170,7 +159,6 @@ export class ClockPairingApp extends TimeLimitedGame2 {
           minutes="${minutes}"
           showQuarterNumbers
           showAllTickMarks
-          style="width: 100%; height: 100%;"
         ></analog-clock>
 
         <analog-clock
@@ -179,7 +167,6 @@ export class ClockPairingApp extends TimeLimitedGame2 {
           minutes="${minutes}"
           showQuarterNumbers
           showAllTickMarks
-          style="width: 100%; height: 100%;"
         ></analog-clock>
 
         <analog-clock
@@ -188,18 +175,9 @@ export class ClockPairingApp extends TimeLimitedGame2 {
           minutes="${minutes}"
           showQuarterNumbers
           showAllTickMarks
-          style="width: 100%; height: 100%;"
         ></analog-clock>
-        <digital-clock
-          hours="${hours}"
-          minutes="${minutes}"
-          style="width: 100%; height: 100%;"
-        ></digital-clock>
-        <digital-clock
-          hours="${hours}"
-          minutes="${minutes}"
-          style="width: 100%; height: 100%;"
-        ></digital-clock>
+        <digital-clock hours="${hours}" minutes="${minutes}"></digital-clock>
+        <digital-clock hours="${hours}" minutes="${minutes}"></digital-clock>
       </dynamic-grid>
     `;
   }
