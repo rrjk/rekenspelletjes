@@ -28,10 +28,15 @@ Game codes
 <tr><td>Gg</td><td>Sommen met dubbel splitsen tot 100 +</td></tr>
 <tr><td>Gh</td><td>Sommen met dubbel splitsen tot 100 -</td></tr>
 <tr><td>Gi</td><td>Sommen met dubbel splitsen tot 100 +-</td></tr>
-<tr><td>Hb</td><td>Aanklikken in volgorde van laag naar hoog</td></tr>
-<tr><td>Hb</td><td>Aanklikken in volgorde van hoog naar laag</td></tr>
+<tr><td>Hba</td><td>Aanklikken in volgorde van laag naar hoog</td></tr>
+<tr><td>Hbd</td><td>Aanklikken in volgorde van hoog naar laag</td></tr>
 <tr><td>Hc</td><td>Aanklikken in volgorde van laag naar hoog vanaf een random getal</td></tr>
-<tr><td>Hb</td><td>Aanklikken in volgorde van een tafel (van laag naar hoog)</td></tr>
+<tr><td>Hd</td><td>Aanklikken in volgorde van een tafel (van laag naar hoog)</td></tr>
+<tr><td>He</td><td>Aanklikken naar aanleiding van een som</td></tr>
+<tr><td>Hfa</td><td>Aanklikken in volgorde van laag naar hoog, alleen even</td></tr>
+<tr><td>Hfd</td><td>Aanklikken in volgorde van hoog naar laag, alleen even</td></tr>
+<tr><td>Hga</td><td>Aanklikken in volgorde van laag naar hoog, alleen oneven</td></tr>
+<tr><td>Hgd</td><td>Aanklikken in volgorde van hoog naar laag, alleen oneven</td></tr>
 <tr><td>Ia</td><td>Plussommen binnen het tiental</td></tr>
 <tr><td>Ib</td><td>Minsommen binnen het tiental</td></tr>
 <tr><td>Ic</td><td>Plus- en minsommen binnen het tiental</td></tr>

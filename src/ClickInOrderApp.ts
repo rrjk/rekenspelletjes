@@ -27,6 +27,8 @@ interface AnswerAndSums {
  * @url-parameter tableOfMultiplication: int - create balls from the tableOfMultiplication, if shownSum is not active, only the first table is selected.
  * @url-parameter showSum: Show sum with the table of multiplication(s), in this case the balls need to be clicked in the order the sums are shown (random), multiple tables are allowed.
  * @url-parameter random: Select number from a random start number, increasing by 1.
+ * @url-parameter even: Only show even numbers. If Start is not an even number, this first higher even number is selected.
+ * @url-parameter odd: Only show odd numbers. If Start is not an odd number, this first higher odd number is selected.
  */
 @customElement('click-in-order-app')
 export class ClickInOrderApp extends TimeCountingGame {
@@ -73,19 +75,50 @@ export class ClickInOrderApp extends TimeCountingGame {
 
     if (urlParams.has('start')) {
       let startAsInt = parseInt(urlParams.get('start') || '', 10);
+      let stepSize = 1;
+      let subCodeInitial = ``;
+
       if (Number.isNaN(startAsInt)) startAsInt = 1;
-      if (urlParams.has('descending')) {
-        for (let i = startAsInt; i > startAsInt - this.nmbrBalls; i--) {
-          this.labelsInOrder.push(`${i}`);
-          this.welcomeMessageString = `Klik de getallen aan, van groot naar klein, begin bij ${startAsInt}.`;
-        }
-        this.gameLogger.setSubCode('b');
+      if (urlParams.has('even')) {
+        stepSize = 2;
+        if (startAsInt % 2 === 1) startAsInt += 1; // We have to start at an even number, so we increase until the next even number.
+        this.welcomeMessageString = `Klik de even getallen aan`;
+        subCodeInitial = subCodeInitial.concat('f');
+      } else if (urlParams.has('odd')) {
+        stepSize = 2;
+        if (startAsInt % 2 === 0) startAsInt += 1; // We have to start at an odd number, so we increase until the next odd number.
+        this.welcomeMessageString = `Klik de oneven getallen aan`;
+        subCodeInitial = subCodeInitial.concat('g');
       } else {
-        for (let i = startAsInt; i < startAsInt + this.nmbrBalls; i++) {
+        stepSize = 1;
+        this.welcomeMessageString = `Klik de getallen aan`;
+        subCodeInitial = subCodeInitial.concat('b');
+      }
+
+      if (urlParams.has('descending')) {
+        this.welcomeMessageString = this.welcomeMessageString.concat(
+          `, van groot naar klein, begin bij ${startAsInt}.`
+        );
+        this.gameLogger.setSubCode(`${subCodeInitial}d`);
+        for (
+          let i = startAsInt;
+          i > startAsInt - this.nmbrBalls * stepSize;
+          i -= stepSize
+        ) {
           this.labelsInOrder.push(`${i}`);
-          this.welcomeMessageString = `Klik de getallen aan, van klein naar groot, begin bij ${startAsInt}.`;
         }
-        this.gameLogger.setSubCode('b');
+      } else {
+        this.welcomeMessageString = this.welcomeMessageString.concat(
+          `, van klein naar groot, begin bij ${startAsInt}.`
+        );
+        this.gameLogger.setSubCode(`${subCodeInitial}a`);
+        for (
+          let i = startAsInt;
+          i < startAsInt + this.nmbrBalls * stepSize;
+          i += stepSize
+        ) {
+          this.labelsInOrder.push(`${i}`);
+        }
       }
     } else if (urlParams.has('tableOfMultiplication')) {
       this.tables = [];
