@@ -26,3 +26,13 @@ export function randomFromSetAndSplice<T>(arrayOfPossibleValues: T[]): T {
     1
   )[0];
 }
+
+/** Shuffle an array in place
+ * @param array Array to be shuffled in place
+ */
+export function shuffleArray<T>(array: T[]) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
