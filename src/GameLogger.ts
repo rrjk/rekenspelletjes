@@ -19,4 +19,8 @@ export class GameLogger {
   setSubCode(subCode: string): void {
     this.subCode = subCode;
   }
+
+  appendSubCode(subCode: string): void {
+    this.subCode = this.subCode.concat(subCode);
+  }
 }
