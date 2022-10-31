@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="nl">
+  <style>
+    html {
+      font-size: xx-large;
+    }
+    .buttonTable {
+      position: relative;
+      display: grid;
+      gap: 10px 10px;
+      flex-wrap: wrap;
+      width: 450px;
+    }
+  </style>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Klokspelletjes</title>
+  </head>
+  <body>
+    <script type="module" src="./src/IconLabelButton.ts"></script>
+    <script type="module" src="./src/AnalogClock.ts"></script>
+    <script type="module" src="./src/SentenceClock.ts"></script>
+    <script type="module" src="./src/DigitalClock.ts"></script>
+    <script type="module" src="./src/IconClockPair.ts"></script>
+
+    <h1>Klokspelletjes</h1>
+    <div class="buttonTable">
+      <icon-label-button
+        title="Combineer klokken met de juiste tijd"
+        href="indexKlokPaartjesAnaloogZin.html"
+      >
+        <icon-clock-pair
+          analog
+          sentence
+          hours="7"
+          minuts="10"
+        ></icon-clock-pair>
+      </icon-label-button>
+      <icon-label-button
+        title="Combineer digitale klokken met de juiste tijd"
+        href="indexKlokPaartjesDigitaalZin.html"
+      >
+        <icon-clock-pair
+          digital
+          sentence
+          hours="9"
+          minuts="20"
+        ></icon-clock-pair>
+      </icon-label-button>
+      <icon-label-button
+        title="Combineer klokken met digitale klokken"
+        href="indexKlokPaartjesAnaloogDigitaal.html"
+      >
+        <icon-clock-pair
+          analog
+          digital
+          hours="2"
+          minutes="45"
+        ></icon-clock-pair>
+      </icon-label-button>
+      <icon-label-button
+        title="Combineer allerlei verschillende klokken"
+        href="indexKlokPaartjesAnaloogDigitaalZin.html"
+      >
+        <icon-clock-pair
+          analog
+          sentence
+          digital
+          hours="5"
+          minuts="40"
+        ></icon-clock-pair>
+      </icon-label-button>
+    </div>
+  </body>
+</html>

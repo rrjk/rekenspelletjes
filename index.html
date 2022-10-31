@@ -1,112 +1,174 @@
 <!DOCTYPE html>
-<html lang="nl">    
-    <style>
-        html {
-            font-size: xx-large;
-        }
-        .buttonTable{
-            position: relative;
-            display: grid;
-            gap: 10px 10px;
-            flex-wrap: wrap;
-            width: 450px;
-        }
-    </style>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width">
-        <title>Rekenspelletjes</title>
-    </head>
-    <body>
-        <script type="module" src="./src/IconLabelButton.ts"></script>  
-        <script type="module" src="./src/GameIconWithTextOverlay.ts"></script>
-        <script type="module" src="./src/JumpingJanWithTextOverlay.ts"></script>
-        <script type="module" src="./src/ElliStarWithTextOverlay.ts"></script>  
+<html lang="nl">
+  <style>
+    html {
+      font-size: xx-large;
+    }
+    .buttonTable {
+      position: relative;
+      display: grid;
+      gap: 10px 10px;
+      flex-wrap: wrap;
+      width: 450px;
+    }
+  </style>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Rekenspelletjes</title>
+  </head>
+  <body>
+    <script type="module" src="./src/IconLabelButton.ts"></script>
+    <script type="module" src="./src/GameIconWithTextOverlay.ts"></script>
+    <script type="module" src="./src/JumpingJanWithTextOverlay.ts"></script>
+    <script type="module" src="./src/ElliStarWithTextOverlay.ts"></script>
+    <script type="module" src="./src/AnalogClock.ts"></script>
 
+    <h1>Rekenspelletjes</h1>
+    <div class="buttonTable">
+      <icon-label-button
+        title="Zet de getallen in de juiste volgorde"
+        href="indexSorteren.html"
+      >
+        <img src="images/red-box.png" height="95px" alt="Red box" />
+      </icon-label-button>
+      <icon-label-button
+        title="Getallenrijen"
+        href="indexAanklikkenInVolgorde.html"
+      >
+        <img src="./images/GetallenRijen.png" height="95px" alt="" />
+      </icon-label-button>
+      <icon-label-button
+        title="Splitsen van getallen"
+        href="indexSplitsen.html"
+      >
+        <game-icon-with-text-overlay
+          iconcolor="yellow"
+          text1="/ \"
+        ></game-icon-with-text-overlay>
+      </icon-label-button>
+      <icon-label-button
+        title="Plus- en minsommen zonder splitsen"
+        href="indexBinnenTiental.html"
+      >
+        <game-icon-with-text-overlay
+          image="kite"
+          iconcolor="green"
+          text1="+"
+          text2="−"
+        ></game-icon-with-text-overlay>
+      </icon-label-button>
+      <icon-label-button
+        title="Klik op de juiste foto aan de getallenlijn"
+        href="indexKlikFotoOpGetallenlijn.html"
+      >
+        <img src="./images/FotoOpGetallenlijn.png" height="95px" alt="" />
+      </icon-label-button>
+      <icon-label-button
+        title="Laat Jan op de juiste plek op de getallenlijn springen"
+        href="indexSpringOpGetallenlijn.html"
+      >
+        <jumping-jan-with-text-overlay
+          smallestTickmark="tickMark1"
+        ></jumping-jan-with-text-overlay>
+      </icon-label-button>
+      <icon-label-button
+        title="Sommen tot de 20 met één keer splitsen"
+        href="indexSommenTot20Splitsen.html"
+      >
+        <img
+          src="./images/Als6+8_12-3.png"
+          height="90px"
+          alt="Sommen als 6+8 en 12-3"
+        />
+      </icon-label-button>
+      <icon-label-button
+        title="Plus en min sommen met hele tientallen"
+        href="indexSterSpel.html"
+      >
+        <elli-star-with-text-overlay
+          imagecolor="yellow"
+          text1="+"
+          text2="−"
+        ></elli-star-with-text-overlay>
+      </icon-label-button>
+      <icon-label-button
+        title="Sommen tot de 100 met één keer splitsen"
+        href="indexSommenTot100EnkelSplitsen.html"
+      >
+        <img
+          src="./images/Als53-7en38+5.png"
+          height="90px"
+          alt="Sommen als 53-7 em 38+5"
+        />
+      </icon-label-button>
+      <icon-label-button
+        title="Sommen tot de 100 met twee keer splisten"
+        href="indexSommenTot100DubbelSplitsen.html"
+      >
+        <img
+          src="./images/Als47+38_65-49.png"
+          height="90px"
+          alt="Sommen als 47+38 en 65-49"
+        />
+      </icon-label-button>
+      <icon-label-button
+        title="Ballenknallen: wegklikken met sprongen"
+        href="indexBallenKnallen.html"
+      >
+        <img
+          src="./images/Ballenknallen95.png"
+          height="95px"
+          alt="Ballenknallen"
+        />
+      </icon-label-button>
+      <icon-label-button
+        title="Groepjes van herkennen"
+        href="indexGroepjesVanHerkennen.html"
+      >
+        <img
+          src="./images/RecognizeGroupsIcon.png"
+          height="95px"
+          alt="Groepjes van herkennen"
+        />
+      </icon-label-button>
 
-        <h1>Rekenspelletjes</h1>
-        <div class="buttonTable">
-            <icon-label-button
-                title="Zet de getallen in de juiste volgorde"
-                href="indexSorteren.html">
-                <img src="images/red-box.png" height="95px" alt="Red box"/>
-            </icon-label-button>
-            <icon-label-button 
-                title="Getallenrijen" 
-                href="indexAanklikkenInVolgorde.html">
-                <img src="./images/GetallenRijen.png" height="95px" alt=""></img>
-            </icon-label-button>
-            <icon-label-button 
-                title="Splitsen van getallen"
-                href="indexSplitsen.html">
-                <game-icon-with-text-overlay iconcolor="yellow" text1="/ \"></game-icon-with-text-overlay>
-            </icon-label-button>
-            <icon-label-button 
-                title="Plus- en minsommen zonder splitsen" 
-                href="indexBinnenTiental.html">
-                <game-icon-with-text-overlay image="kite" iconcolor="green" text1="+" text2="−"></game-icon-with-text-overlay>
-            </icon-label-button>
-            <icon-label-button 
-                title="Klik op de juiste foto aan de getallenlijn" 
-                href="indexKlikFotoOpGetallenlijn.html">
-                <img src="./images/FotoOpGetallenlijn.png" height="95px" alt=""></img>
-            </icon-label-button>
-            <icon-label-button 
-                title="Laat Jan op de juiste plek op de getallenlijn springen" 
-                href="indexSpringOpGetallenlijn.html">
-                <jumping-jan-with-text-overlay smallestTickmark="tickMark1"></jumping-jan-with-text-overlay>
-            </icon-label-button>
-            <icon-label-button 
-                title="Sommen tot de 20 met één keer splitsen" 
-                href="indexSommenTot20Splitsen.html">
-                <img src="./images/Als6+8_12-3.png" height="90px" alt="Sommen als 6+8 en 12-3"></img>
-            </icon-label-button>
-            <icon-label-button 
-                title="Plus en min sommen met hele tientallen" 
-                href="indexSterSpel.html">
-                <elli-star-with-text-overlay
-                    imagecolor="yellow"  
-                    text1="+"
-                    text2="−"
-                ></elli-star-with-text-overlay>
-            </icon-label-button>
-            <icon-label-button 
-                title="Sommen tot de 100 met één keer splitsen" 
-                href="indexSommenTot100EnkelSplitsen.html">
-                <img src="./images/Als53-7en38+5.png" height="90px" alt="Sommen als 53-7 em 38+5"></img>
-            </icon-label-button>
-            <icon-label-button 
-                title="Sommen tot de 100 met twee keer splisten" 
-                href="indexSommenTot100DubbelSplitsen.html">
-                <img src="./images/Als47+38_65-49.png" height="90px" alt="Sommen als 47+38 en 65-49"></img>
-            </icon-label-button>
-            <icon-label-button 
-                title="Ballenknallen: wegklikken met sprongen" 
-                href="indexBallenKnallen.html">
-                <img src="./images/Ballenknallen95.png" height="95px" alt="Ballenknallen"></img>
-            </icon-label-button>
-            <icon-label-button
-                title="Groepjes van herkennen"
-                href="indexGroepjesVanHerkennen.html">
-                <img src="./images/RecognizeGroupsIcon.png" height="95px" alt="Groepjes van herkennen"></img>
-            </icon-label-button>
-            </icon-label-button>
-            <icon-label-button 
-                title="Ballenknallen met keersom" 
-                href="indexBallenKnallenMetSom.html">
-                <img src="./images/BallenknallenMetSom95.png" height="95px" alt="Ballenknallen met som"></img>
-            </icon-label-button>
-            <icon-label-button 
-                title="Balonnenspel: oefen de tafeltjes" 
-                href="indexBallonnenSpel.html">
-                <game-icon-with-text-overlay iconcolor="purple" text1="×"></game-icon-with-text-overlay>
-            </icon-label-button>
-            <icon-label-button 
-               title="Raketspel: Oefen deel- en keersommen met de tafeltjes" 
-               href="indexRaketSpel.html">
-            <game-icon-with-text-overlay image="rocket" iconcolor="green"></game-icon-with-text-overlay>
-        </icon-label-button>
-
-        </div>
-    </body>
+      <icon-label-button
+        title="Ballenknallen met keersom"
+        href="indexBallenKnallenMetSom.html"
+      >
+        <img
+          src="./images/BallenknallenMetSom95.png"
+          height="95px"
+          alt="Ballenknallen met som"
+        />
+      </icon-label-button>
+      <icon-label-button
+        title="Balonnenspel: oefen de tafeltjes"
+        href="indexBallonnenSpel.html"
+      >
+        <game-icon-with-text-overlay
+          iconcolor="purple"
+          text1="×"
+        ></game-icon-with-text-overlay>
+      </icon-label-button>
+      <icon-label-button
+        title="Raketspel: Oefen deel- en keersommen met de tafeltjes"
+        href="indexRaketSpel.html"
+      >
+        <game-icon-with-text-overlay
+          image="rocket"
+          iconcolor="green"
+        ></game-icon-with-text-overlay>
+      </icon-label-button>
+      <icon-label-button title="Klokspelletjes" href="indexKlokSpelletjes.html">
+        <analog-clock
+          style="width: 80%"
+          hours="7"
+          minutes="15"
+          showHourTickMarks
+        ></analog-clock>
+      </icon-label-button>
+    </div>
+  </body>
 </html>
