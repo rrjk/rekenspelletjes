@@ -36,7 +36,7 @@ export class IconClockPair extends LitElement {
         height: 45%;
       }
       .triplet {
-        height: 35%;
+        height: 33%;
       }
 
       analog-clock sentence-clock digital-clock {
