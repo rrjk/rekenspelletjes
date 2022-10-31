@@ -20,8 +20,24 @@ import './DynamicGrid';
 
 import './RealHeight';
 
-type TimeTypes = 'Hour' | 'HalfHour' | 'QuarterHour' | '10Minutes' | 'Minutes';
+type TimeTypes = 'Hour' | 'HalfHour' | 'QuarterHour' | '10Minute' | 'Minute';
 type ClockTypes = 'Analog' | 'Digital' | 'Sentence';
+const AvailableImageUrls = [
+  new URL('../images/Mompitz Anne.png', import.meta.url),
+  new URL('../images/Mompitz Frank.png', import.meta.url),
+  new URL('../images/Mompitz Jan-500.png', import.meta.url),
+  new URL('../images/Mompitz Johannes.png', import.meta.url),
+  new URL('../images/Mompitz Otto.png', import.meta.url),
+];
+
+/** Information about an image that is inserted in the dynamic grid */
+interface ImageInfo {
+  url: URL;
+  posTop: number;
+  posLeft: number;
+  size: number;
+}
+
 interface ClockInformationType {
   clockNumber: number;
   pairNumber: number;
@@ -31,6 +47,7 @@ interface ClockInformationType {
   enabled: boolean;
   left: number;
   top: number;
+  addImage: ImageInfo | null;
 }
 
 @customElement('clock-pairing-app')
@@ -70,12 +87,12 @@ export class ClockPairingApp extends TimeLimitedGame2 {
       this.selectedTimeTypes.push('QuarterHour');
       this.gameLogger.appendSubCode('q');
     }
-    if (urlParams.has('10minutes')) {
-      this.selectedTimeTypes.push('10Minutes');
+    if (urlParams.has('10minute')) {
+      this.selectedTimeTypes.push('10Minute');
       this.gameLogger.appendSubCode('t');
     }
-    if (urlParams.has('minutes')) {
-      this.selectedTimeTypes.push('Minutes');
+    if (urlParams.has('minute')) {
+      this.selectedTimeTypes.push('Minute');
       this.gameLogger.appendSubCode('m');
     }
     // Fallback in case no timetypes are provided on URL.
@@ -152,11 +169,26 @@ export class ClockPairingApp extends TimeLimitedGame2 {
 
   private newRound() {
     this.clockInformation = [];
+    const possibleMompitzLocations = [
+      ...Array(this.numberOfClockPairs * 2).keys(),
+    ];
+    const chosenMompitzLocations = [];
+    chosenMompitzLocations.push(
+      randomFromSetAndSplice(possibleMompitzLocations)
+    );
+    chosenMompitzLocations.push(
+      randomFromSetAndSplice(possibleMompitzLocations)
+    );
+    chosenMompitzLocations.push(
+      randomFromSetAndSplice(possibleMompitzLocations)
+    );
+
+    const possibleMompitzs = [...AvailableImageUrls];
+
     for (let i = 0; i < this.numberOfClockPairs; i++) {
       let hours = 0;
       let minutes = 0;
       let timeAlreadyExists = false;
-      const possibleClockTypes = [...this.selectedClockTypes];
 
       do {
         hours = randomIntFromRange(0, 23);
@@ -168,9 +200,9 @@ export class ClockPairingApp extends TimeLimitedGame2 {
           minutes = 30;
         } else if (timeType === 'QuarterHour') {
           minutes = randomFromSet([15, 45]);
-        } else if (timeType === '10Minutes') {
+        } else if (timeType === '10Minute') {
           minutes = randomFromSet([10, 20, 40, 50]);
-        } else if (timeType === 'Minutes') {
+        } else if (timeType === 'Minute') {
           minutes = randomFromSet([
             1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 14, 16, 17, 18, 19, 21, 22,
             23, 24, 25, 26, 27, 28, 29, 31, 32, 33, 34, 35, 36, 37, 38, 39, 41,
@@ -179,6 +211,8 @@ export class ClockPairingApp extends TimeLimitedGame2 {
         }
         timeAlreadyExists = this.determineTimeAlreadyExists(hours, minutes);
       } while (timeAlreadyExists);
+
+      const possibleClockTypes = [...this.selectedClockTypes];
 
       this.clockInformation.push({
         hours,
@@ -189,6 +223,14 @@ export class ClockPairingApp extends TimeLimitedGame2 {
         enabled: true,
         left: randomIntFromRange(0, 20),
         top: randomIntFromRange(0, 20),
+        addImage: chosenMompitzLocations.includes(2 * i)
+          ? {
+              url: randomFromSetAndSplice(possibleMompitzs),
+              posLeft: randomIntFromRange(5, 25),
+              posTop: randomIntFromRange(5, 25),
+              size: 75,
+            }
+          : null,
       });
       this.clockInformation.push({
         hours,
@@ -199,6 +241,14 @@ export class ClockPairingApp extends TimeLimitedGame2 {
         enabled: true,
         left: randomIntFromRange(0, 20),
         top: randomIntFromRange(0, 20),
+        addImage: chosenMompitzLocations.includes(2 * i + 1)
+          ? {
+              url: randomFromSetAndSplice(possibleMompitzs),
+              posLeft: randomIntFromRange(5, 25),
+              posTop: randomIntFromRange(5, 25),
+              size: 75,
+            }
+          : null,
       });
     }
     shuffleArray(this.clockInformation);
@@ -240,7 +290,7 @@ export class ClockPairingApp extends TimeLimitedGame2 {
   }
 
   createClock(clockInformation: ClockInformationType) {
-    let clock: HTMLTemplateResult = html`test`;
+    let clock: HTMLTemplateResult = html`FOUT`;
 
     if (clockInformation.clockType === 'Analog') {
       clock = html`
@@ -263,6 +313,7 @@ export class ClockPairingApp extends TimeLimitedGame2 {
         id="clock${clockInformation.clockNumber}"
         hours="${clockInformation.hours}"
         minutes="${clockInformation.minutes}"
+        useWords
       ></sentence-clock>`;
     }
     return clock;
@@ -287,6 +338,7 @@ export class ClockPairingApp extends TimeLimitedGame2 {
     if (clockInformation === this.selectedClock) cls = 'selected';
 
     let divContent = html``;
+    let mompitzContent = html``;
 
     if (clockInformation.enabled) {
       divContent = html`
@@ -299,8 +351,24 @@ export class ClockPairingApp extends TimeLimitedGame2 {
         </button>
       `;
     }
+    if (clockInformation.addImage !== null) {
+      const imageUrl = clockInformation.addImage;
+      mompitzContent = html`<div>
+        <img
+          src="${imageUrl.url}"
+          alt="Mompitz figure"
+          style="width: ${imageUrl.size}%; 
+                 height: ${imageUrl.size}%; 
+                 object-fit: contain; 
+                 position:relative; 
+                 top: ${imageUrl.posTop}%; 
+                 left: ${imageUrl.posLeft}%;"
+        />
+      </div>`;
+    }
 
-    return html`<div>${divContent}</div>`;
+    return html`<div>${divContent}</div>
+      ${mompitzContent}`;
   }
 
   /** Render the game content */
