@@ -74,9 +74,6 @@ export class DynamicGrid
   }
 
   determineNumberRowsAndColumns() {
-    console.log(
-      `determine number rows anc columns, number of slot elements = ${this.numberSlottedChildren}`
-    );
     // const imageAspectRatio = getImageInfo(this.image).aspectRatio;
     const boxAspectRatio = this.clientWidth / this.clientHeight;
 
