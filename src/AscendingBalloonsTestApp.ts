@@ -46,9 +46,17 @@ export class AscendingBalloonsTestApp extends LitElement {
         style="position: absolute; height: 100%; width:100%; border: 1px black solid"
         @correct-balloon-clicked="${() =>
           this.ascendingBalloons.restartAscension()}"
-        @wrong-balloon-clicked="${() => console.log('wrong balloon clicked')}"
-        @ascension-complete="${() =>
-          console.log('ascension complete event received')}"
+        @wrong-balloon-clicked="${() => {
+          const logBox = this.getElement<HTMLParagraphElement>('#logBox');
+          logBox.insertAdjacentText('beforeend', 'Wrong balloon clicked == ');
+        }}"
+        @ascension-complete="${() => {
+          const logBox = this.getElement<HTMLParagraphElement>('#logBox');
+          logBox.insertAdjacentText(
+            'beforeend',
+            'Ascension complete event received == '
+          );
+        }}"
         .answers=${this.answers}
         ?disabled=${this.disabled}
       ></ascending-balloons>
@@ -82,6 +90,7 @@ export class AscendingBalloonsTestApp extends LitElement {
       >
         Toggle disabled
       </button>
+      <p id="logBox"></p>
     `;
   }
 }
