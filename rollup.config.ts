@@ -10,7 +10,7 @@ import { importMetaAssets } from '@web/rollup-plugin-import-meta-assets';
 
 export default {
   output: {
-    dir: 'dist',
+    dir: 'dist/Rekenspelletjes',
     entryFileNames: 'src/[name]-[hash].js',
     chunkFileNames: 'src/[name]-[hash].js',
   },
@@ -24,10 +24,23 @@ export default {
     nodeResolve({ extensions: ['.ts', 'mjs', 'js'] }),
     copy({
       targets: [
-        { src: '.htaccess-root', dest: 'dist', rename: '.htaccess' },
-        { src: '.htaccess-assets', dest: 'dist/assets', rename: '.htaccess' },
-        { src: '.htaccess-src', dest: 'dist/src', rename: '.htaccess' },
-        { src: 'asdflog.php', dest: 'dist' },
+        {
+          src: '.htaccess-root',
+          dest: 'dist/Rekenspelletjes',
+          rename: '.htaccess',
+        },
+        { src: 'index-root.html', dest: 'dist/', rename: 'index.html' },
+        {
+          src: '.htaccess-assets',
+          dest: 'dist/Rekenspelletjes/assets',
+          rename: '.htaccess',
+        },
+        {
+          src: '.htaccess-src',
+          dest: 'dist/Rekenspelletjes/src',
+          rename: '.htaccess',
+        },
+        { src: 'asdflog.php', dest: 'dist/Rekenspelletjes' },
       ],
     }),
     terser({ ecma: 2020, module: true }),
