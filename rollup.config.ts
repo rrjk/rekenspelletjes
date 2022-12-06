@@ -22,7 +22,7 @@ export default {
         h =>
           h.replace(
             '<head>',
-            '<head><link rel="apple-touch-icon" sizes="180x180" href="images/favicon-math-multicolor-180x180.png"/> <link rel="icon" sizes="16x16" href="images/favicon-math-multicolor-16x16.png"/>'
+            '<head><link rel="apple-touch-icon" sizes="180x180" href="images/favicon-math-multicolor-180x180.png"/> <link rel="icon" sizes="16x16" href="images/favicon-math-multicolor-16x16.png"/> <link rel="icon" sizes="32x32" href="images/favicon-math-multicolor-32x32.png"/>'
           ),
       ],
     }),
@@ -52,9 +52,9 @@ export default {
         { src: 'asdflog.php', dest: 'dist/Rekenspelletjes' },
         {
           src: [
-            'images/favicon-math-multicolor-16x16',
-            'images/favicon-math-multicolor-32x32',
-            'images/favicon-math-multicolor-180x180',
+            'images/favicon-math-multicolor-16x16.png',
+            'images/favicon-math-multicolor-32x32.png',
+            'images/favicon-math-multicolor-180x180.png',
           ],
           dest: 'dist/Rekenspelletjes/images',
         },
