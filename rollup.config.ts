@@ -16,7 +16,16 @@ export default {
   },
   input: '*.html',
   plugins: [
-    html({ minify: true }),
+    html({
+      minify: true,
+      transformHtml: [
+        h =>
+          h.replace(
+            '<head>',
+            '<head><link rel="apple-touch-icon" sizes="180x180" href="images/favicon-math-multicolor-180x180.png"/> <link rel="icon" sizes="16x16" href="images/favicon-math-multicolor-16x16.png"/>'
+          ),
+      ],
+    }),
     // MinifyHTML removed because it caused in some cases ; to be removed while it shouldn't be removed.
     // minifyHTML(),
     babel({ babelHelpers: 'bundled', extensions: ['.ts'] }),
@@ -41,6 +50,14 @@ export default {
           rename: '.htaccess',
         },
         { src: 'asdflog.php', dest: 'dist/Rekenspelletjes' },
+        {
+          src: [
+            'images/favicon-math-multicolor-16x16',
+            'images/favicon-math-multicolor-32x32',
+            'images/favicon-math-multicolor-180x180',
+          ],
+          dest: 'dist/images',
+        },
       ],
     }),
     terser({ ecma: 2020, module: true }),
