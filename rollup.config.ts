@@ -56,7 +56,7 @@ export default {
             'images/favicon-math-multicolor-32x32',
             'images/favicon-math-multicolor-180x180',
           ],
-          dest: 'dist/images',
+          dest: 'dist/Rekenspelletjes/images',
         },
       ],
     }),
