@@ -298,7 +298,7 @@ export class ClockPairingApp extends TimeLimitedGame2 {
           id="clock${clockInformation.clockNumber}"
           hours="${clockInformation.hours}"
           minutes="${clockInformation.minutes}"
-          showQuarterNumbers
+          showAllNumbers
           showAllTickMarks
         ></analog-clock>
       `;
