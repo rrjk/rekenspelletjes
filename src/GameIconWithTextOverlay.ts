@@ -69,14 +69,14 @@ export class BalloonIndex extends LitElement {
   @property()
   text4 = '';
 
-  static getBalloonStyles(): CSSResult[] {
+  static getIconStyles(icon: ImageTypes): CSSResult[] {
     const styles: CSSResult[] = [];
     for (const color of iconColorArray) {
-      const styleName = `.balloon${
+      const styleName = `.${icon}${
         color.iconColor.charAt(0).toUpperCase() + color.iconColor.slice(1)
       }`;
       const iconURL = new URL(
-        `../images/balloon-20-color-set-${color.iconColor}.png`,
+        `../images/${icon}-20-color-set-${color.iconColor}.png`,
         import.meta.url
       );
       styles.push(css`
@@ -90,7 +90,6 @@ export class BalloonIndex extends LitElement {
   }
 
   static get styles(): CSSResult[] {
-    BalloonIndex.getBalloonStyles();
     const styles: CSSResult[] = [
       css`
         .balloon,
@@ -143,30 +142,6 @@ export class BalloonIndex extends LitElement {
           font-size: 15px;
         }
 
-        .kiteBlue {
-          background-image: url('${unsafeCSS(
-            new URL('../images/kite-blue.svg', import.meta.url)
-          )}');
-        }
-
-        .kitePurple {
-          background-image: url('${unsafeCSS(
-            new URL('../images/kite-purple.svg', import.meta.url)
-          )}');
-        }
-
-        .kiteGreen {
-          background-image: url('${unsafeCSS(
-            new URL('../images/kite-green.svg', import.meta.url)
-          )}');
-        }
-
-        .kiteYellow {
-          background-image: url('${unsafeCSS(
-            new URL('../images/kite-yellow.svg', import.meta.url)
-          )}');
-        }
-
         .rocketBlue {
           background-image: url('${unsafeCSS(
             new URL('../images/rocket-blue.svg', import.meta.url)
@@ -203,7 +178,9 @@ export class BalloonIndex extends LitElement {
         }
       `,
     ];
-    return styles.concat(BalloonIndex.getBalloonStyles());
+    return styles
+      .concat(BalloonIndex.getIconStyles('balloon'))
+      .concat(BalloonIndex.getIconStyles('kite'));
   }
 
   render(): HTMLTemplateResult {
