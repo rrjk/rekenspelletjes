@@ -52,6 +52,50 @@ const iconColorArray = [
   { iconColor: 'grey', fontColor: 'white' },
 ];
 
+const dummyFileNameArray = [
+  new URL('../images/balloon-20-color-set-yellow.png', import.meta.url),
+  new URL('../images/balloon-20-color-set-purple.png', import.meta.url),
+  new URL('../images/balloon-20-color-set-green.png', import.meta.url),
+  new URL('../images/balloon-20-color-set-blue.png', import.meta.url),
+  new URL('../images/balloon-20-color-set-maroon.png', import.meta.url),
+  new URL('../images/balloon-20-color-set-red.png', import.meta.url),
+  new URL('../images/balloon-20-color-set-pink.png', import.meta.url),
+  new URL('../images/balloon-20-color-set-brown.png', import.meta.url),
+  new URL('../images/balloon-20-color-set-orange.png', import.meta.url),
+  new URL('../images/balloon-20-color-set-apricot.png', import.meta.url),
+  new URL('../images/balloon-20-color-set-beige.png', import.meta.url),
+  new URL('../images/balloon-20-color-set-lime.png', import.meta.url),
+  new URL('../images/balloon-20-color-set-mint.png', import.meta.url),
+  new URL('../images/balloon-20-color-set-teal.png', import.meta.url),
+  new URL('../images/balloon-20-color-set-cyan.png', import.meta.url),
+  new URL('../images/balloon-20-color-set-navy.png', import.meta.url),
+  new URL('../images/balloon-20-color-set-lavender.png', import.meta.url),
+  new URL('../images/balloon-20-color-set-magenta.png', import.meta.url),
+  new URL('../images/balloon-20-color-set-grey.png', import.meta.url),
+  new URL('../images/balloon-20-color-set-olive.png', import.meta.url),
+
+  new URL('../images/kite-20-color-set-yellow.png', import.meta.url),
+  new URL('../images/kite-20-color-set-purple.png', import.meta.url),
+  new URL('../images/kite-20-color-set-green.png', import.meta.url),
+  new URL('../images/kite-20-color-set-blue.png', import.meta.url),
+  new URL('../images/kite-20-color-set-maroon.png', import.meta.url),
+  new URL('../images/kite-20-color-set-red.png', import.meta.url),
+  new URL('../images/kite-20-color-set-pink.png', import.meta.url),
+  new URL('../images/kite-20-color-set-brown.png', import.meta.url),
+  new URL('../images/kite-20-color-set-orange.png', import.meta.url),
+  new URL('../images/kite-20-color-set-apricot.png', import.meta.url),
+  new URL('../images/kite-20-color-set-beige.png', import.meta.url),
+  new URL('../images/kite-20-color-set-lime.png', import.meta.url),
+  new URL('../images/kite-20-color-set-mint.png', import.meta.url),
+  new URL('../images/kite-20-color-set-teal.png', import.meta.url),
+  new URL('../images/kite-20-color-set-cyan.png', import.meta.url),
+  new URL('../images/kite-20-color-set-navy.png', import.meta.url),
+  new URL('../images/kite-20-color-set-lavender.png', import.meta.url),
+  new URL('../images/kite-20-color-set-magenta.png', import.meta.url),
+  new URL('../images/kite-20-color-set-grey.png', import.meta.url),
+  new URL('../images/kite-20-color-set-olive.png', import.meta.url),
+];
+
 export type ImageTypes = 'balloon' | 'kite' | 'rocket';
 
 @customElement('game-icon-with-text-overlay')
