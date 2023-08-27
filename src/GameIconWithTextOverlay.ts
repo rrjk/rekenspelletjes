@@ -1,15 +1,56 @@
 import { LitElement, html, css, unsafeCSS } from 'lit';
-import type { HTMLTemplateResult, CSSResultGroup } from 'lit';
+import type { HTMLTemplateResult, CSSResult } from 'lit';
 // eslint-disable-next-line import/extensions
 import { customElement, property } from 'lit/decorators.js';
 
 /** Possible balloon colors */
+/** Colors taken from https://sashamaps.net/docs/resources/20-colors/ */
 export type IconColors =
   | 'yellow'
   | 'purple'
   | 'yellowPurple'
   | 'green'
-  | 'blue';
+  | 'blue'
+  | 'maroon'
+  | 'red'
+  | 'pink'
+  | 'brown'
+  | 'orange'
+  | 'apricot'
+  | 'olive'
+  | 'beige'
+  | 'lime'
+  | 'mint'
+  | 'teal'
+  | 'cyan'
+  | 'navy'
+  | 'lavender'
+  | 'magenta'
+  | 'grey';
+
+const iconColorArray = [
+  { iconColor: 'yellow', fontColor: 'black' },
+  { iconColor: 'purple', fontColor: 'white' },
+  { iconColor: 'yellowPurple', fontColor: 'black' },
+  { iconColor: 'green', fontColor: 'white' },
+  { iconColor: 'blue', fontColor: 'white' },
+  { iconColor: 'maroon', fontColor: 'white' },
+  { iconColor: 'red', fontColor: 'white' },
+  { iconColor: 'pink', fontColor: 'black' },
+  { iconColor: 'brown', fontColor: 'white' },
+  { iconColor: 'orange', fontColor: 'white' },
+  { iconColor: 'apricot', fontColor: 'black' },
+  { iconColor: 'olive', fontColor: 'white' },
+  { iconColor: 'beige', fontColor: 'black' },
+  { iconColor: 'lime', fontColor: 'black' },
+  { iconColor: 'mint', fontColor: 'black' },
+  { iconColor: 'teal', fontColor: 'white' },
+  { iconColor: 'cyan', fontColor: 'black' },
+  { iconColor: 'navy', fontColor: 'white' },
+  { iconColor: 'lavender', fontColor: 'black' },
+  { iconColor: 'magenta', fontColor: 'white' },
+  { iconColor: 'grey', fontColor: 'white' },
+];
 
 export type ImageTypes = 'balloon' | 'kite' | 'rocket';
 
@@ -28,147 +69,141 @@ export class BalloonIndex extends LitElement {
   @property()
   text4 = '';
 
-  static get styles(): CSSResultGroup {
-    return css`
-      .balloon,
-      .kite,
-      .rocket {
-        display: inline-block;
-        background-color: transparent;
-        border: none;
-        outline: none;
-        color: black;
-        text-align: center;
-        margin: 2px;
-        padding: 0;
-      }
+  static getBalloonStyles(): CSSResult[] {
+    const styles: CSSResult[] = [];
+    for (const color of iconColorArray) {
+      const styleName = `.balloon${
+        color.iconColor.charAt(0).toUpperCase() + color.iconColor.slice(1)
+      }`;
+      const iconURL = new URL(
+        `../images/balloon-20-color-set-${color.iconColor}.png`,
+        import.meta.url
+      );
+      styles.push(css`
+        ${unsafeCSS(styleName)} {
+          background-image: url('${unsafeCSS(iconURL)}');
+          color: ${unsafeCSS(color.fontColor)};
+        }
+      `);
+    }
+    return styles;
+  }
 
-      .balloon {
-        background-size: 75px 90px;
-        width: 75px;
-        height: 90px;
-        line-height: 78px;
-      }
+  static get styles(): CSSResult[] {
+    BalloonIndex.getBalloonStyles();
+    const styles: CSSResult[] = [
+      css`
+        .balloon,
+        .kite,
+        .rocket {
+          display: inline-block;
+          background-color: transparent;
+          border: none;
+          outline: none;
+          color: black;
+          text-align: center;
+          margin: 2px;
+          padding: 0;
+        }
 
-      .kite {
-        background-size: 70px 105px;
-        width: 70px;
-        height: 105px;
-        line-height: 80px;
-      }
+        .balloon {
+          background-size: 75px 90px;
+          width: 75px;
+          height: 90px;
+          line-height: 78px;
+        }
 
-      .rocket {
-        background-size: 90px 90px;
-        width: 90px;
-        height: 90px;
-        line-height: 90px;
-      }
+        .kite {
+          background-size: 70px 105px;
+          width: 70px;
+          height: 105px;
+          line-height: 80px;
+        }
 
-      .oneLineFont {
-        font-size: 23px;
-      }
+        .rocket {
+          background-size: 90px 90px;
+          width: 90px;
+          height: 90px;
+          line-height: 90px;
+        }
 
-      .twoLineFont {
-        font-size: 21px;
-      }
+        .oneLineFont {
+          font-size: 23px;
+        }
 
-      .threeLineFont {
-        font-size: 18px;
-      }
+        .twoLineFont {
+          font-size: 21px;
+        }
 
-      .fourLineFont {
-        font-size: 15px;
-      }
+        .threeLineFont {
+          font-size: 18px;
+        }
 
-      .kiteBlue {
-        background-image: url('${unsafeCSS(
-          new URL('../images/kite-blue.svg', import.meta.url)
-        )}');
-      }
+        .fourLineFont {
+          font-size: 15px;
+        }
 
-      .kitePurple {
-        background-image: url('${unsafeCSS(
-          new URL('../images/kite-purple.svg', import.meta.url)
-        )}');
-      }
+        .kiteBlue {
+          background-image: url('${unsafeCSS(
+            new URL('../images/kite-blue.svg', import.meta.url)
+          )}');
+        }
 
-      .kiteGreen {
-        background-image: url('${unsafeCSS(
-          new URL('../images/kite-green.svg', import.meta.url)
-        )}');
-      }
+        .kitePurple {
+          background-image: url('${unsafeCSS(
+            new URL('../images/kite-purple.svg', import.meta.url)
+          )}');
+        }
 
-      .kiteYellow {
-        background-image: url('${unsafeCSS(
-          new URL('../images/kite-yellow.svg', import.meta.url)
-        )}');
-      }
+        .kiteGreen {
+          background-image: url('${unsafeCSS(
+            new URL('../images/kite-green.svg', import.meta.url)
+          )}');
+        }
 
-      .balloonBlue {
-        background-image: url('${unsafeCSS(
-          new URL('../images/balloon-blue.png', import.meta.url)
-        )}');
-      }
+        .kiteYellow {
+          background-image: url('${unsafeCSS(
+            new URL('../images/kite-yellow.svg', import.meta.url)
+          )}');
+        }
 
-      .balloonPurple {
-        background-image: url('${unsafeCSS(
-          new URL('../images/balloon-purple.png', import.meta.url)
-        )}');
-      }
+        .rocketBlue {
+          background-image: url('${unsafeCSS(
+            new URL('../images/rocket-blue.svg', import.meta.url)
+          )}');
+        }
 
-      .balloonGreen {
-        background-image: url('${unsafeCSS(
-          new URL('../images/balloon-green.png', import.meta.url)
-        )}');
-      }
+        .rocketPurple {
+          background-image: url('${unsafeCSS(
+            new URL('../images/rocket-purple.svg', import.meta.url)
+          )}');
+        }
 
-      .balloonYellow {
-        background-image: url('${unsafeCSS(
-          new URL('../images/balloon-yellow.png', import.meta.url)
-        )}');
-      }
+        .rocketGreen {
+          background-image: url('${unsafeCSS(
+            new URL('../images/rocket-green.svg', import.meta.url)
+          )}');
+        }
 
-      .balloonYellowPurple {
-        background-image: url('${unsafeCSS(
-          new URL('../images/balloon-yellow-purple.png', import.meta.url)
-        )}');
-      }
+        .rocketYellow {
+          background-image: url('${unsafeCSS(
+            new URL('../images/rocket-yellow.svg', import.meta.url)
+          )}');
+        }
 
-      .rocketBlue {
-        background-image: url('${unsafeCSS(
-          new URL('../images/rocket-blue.svg', import.meta.url)
-        )}');
-      }
+        .text {
+          display: inline-block;
+          vertical-align: middle;
+          line-height: normal;
+        }
 
-      .rocketPurple {
-        background-image: url('${unsafeCSS(
-          new URL('../images/rocket-purple.svg', import.meta.url)
-        )}');
-      }
-
-      .rocketGreen {
-        background-image: url('${unsafeCSS(
-          new URL('../images/rocket-green.svg', import.meta.url)
-        )}');
-      }
-
-      .rocketYellow {
-        background-image: url('${unsafeCSS(
-          new URL('../images/rocket-yellow.svg', import.meta.url)
-        )}');
-      }
-
-      .text {
-        display: inline-block;
-        vertical-align: middle;
-        line-height: normal;
-      }
-
-      .rocket .text {
-        position: relative;
-        top: -0.3em;
-      }
-    `;
+        .rocket .text {
+          position: relative;
+          top: -0.3em;
+        }
+      `,
+    ];
+    return styles.concat(BalloonIndex.getBalloonStyles());
   }
 
   render(): HTMLTemplateResult {
