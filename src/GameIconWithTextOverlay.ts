@@ -48,18 +48,6 @@ const iconColorArray = [
     kiteUrl: new URL('../images/kite-20-color-set-purple.png', import.meta.url),
   },
   {
-    iconColor: 'yellowPurple',
-    fontColor: 'black',
-    balloonUrl: new URL(
-      '../images/balloon-20-color-set-yellowPurple.png',
-      import.meta.url
-    ),
-    kiteUrl: new URL(
-      '../images/kite-20-color-set-yellowPurple.png',
-      import.meta.url
-    ),
-  },
-  {
     iconColor: 'green',
     fontColor: 'white',
     balloonUrl: new URL(
