@@ -4,37 +4,8 @@ import type { HTMLTemplateResult, CSSResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
 import type { Color, ColorInfo } from './Colors';
-import { colorArray, getColorInfo } from './Colors';
+import { getColorInfo } from './Colors';
 import { getRocketAsSvgUrl } from './RocketImage';
-
-/** Possible balloon colors
- * Colors taken from https://sashamaps.net/docs/resources/20-colors/
- * Other interesting side for more colors: http://phrogz.net/css/distinct-colors.html/
- * Get variations of colors via https://convertingcolors.com/hex-color-800000.html/
- * Info abotu how to do all this: https://www.svgbackgrounds.com/how-to-add-svgs-with-css-background-image/
- */
-export type IconColors =
-  | 'yellow'
-  | 'purple'
-  | 'yellowPurple'
-  | 'green'
-  | 'blue'
-  | 'maroon'
-  | 'red'
-  | 'pink'
-  | 'brown'
-  | 'orange'
-  | 'apricot'
-  | 'olive'
-  | 'beige'
-  | 'lime'
-  | 'mint'
-  | 'teal'
-  | 'cyan'
-  | 'navy'
-  | 'lavender'
-  | 'magenta'
-  | 'grey';
 
 const iconURLArray: { iconColor: Color; balloonUrl: URL; kiteUrl: URL }[] = [
   {
@@ -213,7 +184,7 @@ export type ImageTypes = 'balloon' | 'kite' | 'rocket';
 @customElement('game-icon-with-text-overlay')
 export class BalloonIndex extends LitElement {
   @property()
-  iconcolor: IconColors = 'yellow';
+  iconcolor: Color = 'yellow';
   @property()
   image: ImageTypes = 'balloon';
   @property()
@@ -228,7 +199,7 @@ export class BalloonIndex extends LitElement {
   static getIconStyles(icon: ImageTypes): CSSResult[] {
     const styles: CSSResult[] = [];
     for (const color of iconURLArray) {
-      const colorInfo = getColorInfo(color.iconColor);
+      const colorInfo: ColorInfo = getColorInfo(color.iconColor);
       const styleName = `.${icon}${
         color.iconColor.charAt(0).toUpperCase() + color.iconColor.slice(1)
       }`;
