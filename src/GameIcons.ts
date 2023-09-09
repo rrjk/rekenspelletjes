@@ -187,16 +187,23 @@ export function getIconStyles(icon: GameIcon): CSSResult[] {
       color.iconColor.charAt(0).toUpperCase() + color.iconColor.slice(1)
     }`;
     let iconURL;
-    if (icon === 'balloon') iconURL = color.balloonUrl;
-    else if (icon === 'kite') iconURL = color.kiteUrl;
-    else if (icon === 'rocket')
+    let fontColor;
+    if (icon === 'balloon') {
+      iconURL = color.balloonUrl;
+      fontColor = colorInfo.fontColor;
+    } else if (icon === 'kite') {
+      iconURL = color.kiteUrl;
+      fontColor = colorInfo.fontColor;
+    } else if (icon === 'rocket') {
       iconURL = `data:image/svg+xml,${unsafeCSS(
         getRocketAsSvgUrl(colorInfo.accentColorCode, colorInfo.mainColorCode)
       )}`;
+      fontColor = 'black;';
+    }
     styles.push(css`
       ${unsafeCSS(styleName)} {
         background-image: url('${unsafeCSS(iconURL)}');
-        color: ${unsafeCSS(colorInfo.fontColor)};
+        color: ${unsafeCSS(fontColor)};
       }
     `);
   }
