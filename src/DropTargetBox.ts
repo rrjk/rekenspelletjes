@@ -12,6 +12,9 @@ export class DropTargetBox extends LitElement implements DropTargetElement {
   @property({ type: String })
   size: BoxSize = 'Smallest';
 
+  @property({ type: String })
+  boxColor = 'red';
+
   @state()
   tallWide: 'Tall' | 'Wide' = 'Tall';
 
@@ -34,9 +37,6 @@ export class DropTargetBox extends LitElement implements DropTargetElement {
     return css`
       .box {
         display: flex;
-        background-image: url('${unsafeCSS(
-          new URL('../images/red-box.png', import.meta.url)
-        )}');
         background-repeat: no-repeat;
         background-position: center center;
         text-align: center;
@@ -44,6 +44,18 @@ export class DropTargetBox extends LitElement implements DropTargetElement {
         align-items: center;
         height: 100%;
         width: 100%;
+      }
+
+      .boxRed {
+        background-image: url('${unsafeCSS(
+          new URL('../images/red-box.png', import.meta.url)
+        )}');
+      }
+
+      .boxBlue {
+        background-image: url('${unsafeCSS(
+          new URL('../images/blue-box.png', import.meta.url)
+        )}');
       }
 
       .highlightDroppable {
@@ -99,11 +111,13 @@ export class DropTargetBox extends LitElement implements DropTargetElement {
   }
 
   render(): HTMLTemplateResult {
+    let boxColorClass = 'boxRed';
+    if (this.boxColor === 'blue') boxColorClass = 'boxBlue';
     return html`
       <div
         alt="smallest box"
-        class="box box${this.size}${this.tallWide} ${this.highlighted ===
-        'droppable'
+        class="box ${boxColorClass} box${this.size}${this.tallWide} ${this
+          .highlighted === 'droppable'
           ? 'highlightDroppable'
           : ''} ${this.highlighted === 'wrong' ? 'highlightWrong' : ''}"
       >

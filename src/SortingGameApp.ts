@@ -43,6 +43,9 @@ export class SortingGameApp extends TimeLimitedGame2 {
   ]);
 
   @state()
+  private boxColor = 'red';
+
+  @state()
   private numbers: NumberInformation[] = [];
 
   @state()
@@ -115,6 +118,13 @@ export class SortingGameApp extends TimeLimitedGame2 {
     else if (this.maximumValue === 100) this.maxNumberDigits = 2.5;
     else if (this.maximumValue < 1000) this.maxNumberDigits = 3;
     else if (this.maximumValue === 1000) this.maxNumberDigits = 3.5;
+
+    this.boxColor = 'red';
+    if (urlParams.has('boxColor')) {
+      if (urlParams.get('boxColor') === 'blue') {
+        this.boxColor = 'blue';
+      }
+    }
   }
 
   /** Get all static styles */
@@ -339,6 +349,7 @@ export class SortingGameApp extends TimeLimitedGame2 {
               class="box"
               id="${elt.id}"
               size="${elt.size}"
+              boxColor="${this.boxColor}"
             >
               <mompitz-number
                 number="${elt.intendedValue}"
