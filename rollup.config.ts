@@ -7,6 +7,7 @@ import copy from 'rollup-plugin-copy';
 import { terser } from 'rollup-plugin-terser';
 import summary from 'rollup-plugin-summary';
 import { importMetaAssets } from '@web/rollup-plugin-import-meta-assets';
+import commonjs from '@rollup/plugin-commonjs';
 
 export default {
   output: {
@@ -31,6 +32,8 @@ export default {
     babel({ babelHelpers: 'bundled', extensions: ['.ts'] }),
     importMetaAssets(),
     nodeResolve({ extensions: ['.ts', 'mjs', 'js'] }),
+    // The commonjs plugin allows to use npm packages that are still using the CommonJS packaging
+    commonjs(),
     copy({
       targets: [
         {
