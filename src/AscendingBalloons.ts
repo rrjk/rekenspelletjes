@@ -2,7 +2,12 @@ import { LitElement, html, css } from 'lit';
 // eslint-disable-next-line import/extensions
 import { customElement, state, property } from 'lit/decorators.js';
 import type { CSSResultGroup, HTMLTemplateResult, PropertyValues } from 'lit';
+import { darken, lighten } from 'color2k';
+
 import { randomFromSetAndSplice } from './Randomizer';
+import { getRocketAsSvgUrl } from './RocketImage';
+import { getZeppelinAsSvgUrl } from './ZeppelinImage';
+import { getColorInfo } from './Colors';
 // import { BalloonIndex } from './BalloonWithTextOverlay';
 
 /** Interface definition for type storing the answers. */
@@ -13,7 +18,7 @@ export interface Answers {
 
 /** Possible balloon colors */
 type BalloonColors = 'blue' | 'green' | 'yellow' | 'purple';
-export type ImageType = 'balloon' | 'star' | 'kite' | 'rocket';
+export type ImageType = 'balloon' | 'star' | 'kite' | 'rocket' | 'zeppelin';
 
 /** Interface definition for the ballooninfo */
 interface BalloonInfo {
@@ -67,6 +72,51 @@ export class AscendingBalloons extends LitElement {
         ['yellow', new URL('../images/rocket-yellow.svg', import.meta.url)],
         ['purple', new URL('../images/rocket-purple.svg', import.meta.url)],
         ['green', new URL('../images/rocket-green.svg', import.meta.url)],
+      ]),
+    ],
+    [
+      'zeppelin',
+      new Map<BalloonColors, URL>([
+        [
+          'purple',
+          new URL(
+            `data:image/svg+xml,${getZeppelinAsSvgUrl(
+              darken(getColorInfo('purple').mainColorCode, 0.2),
+              getColorInfo('purple').mainColorCode,
+              lighten(getColorInfo('purple').mainColorCode, 0.1)
+            )}`
+          ),
+        ],
+        [
+          'green',
+          new URL(
+            `data:image/svg+xml,${getZeppelinAsSvgUrl(
+              darken(getColorInfo('green').mainColorCode, 0.2),
+              getColorInfo('green').mainColorCode,
+              lighten(getColorInfo('green').mainColorCode, 0.1)
+            )}`
+          ),
+        ],
+        [
+          'yellow',
+          new URL(
+            `data:image/svg+xml,${getZeppelinAsSvgUrl(
+              darken(getColorInfo('orange').mainColorCode, 0.2),
+              getColorInfo('orange').mainColorCode,
+              lighten(getColorInfo('orange').mainColorCode, 0.2)
+            )}`
+          ),
+        ],
+        [
+          'blue',
+          new URL(
+            `data:image/svg+xml,${getZeppelinAsSvgUrl(
+              darken(getColorInfo('blue').mainColorCode, 0.2),
+              getColorInfo('blue').mainColorCode,
+              lighten(getColorInfo('blue').mainColorCode, 0.1)
+            )}`
+          ),
+        ],
       ]),
     ],
   ]);
@@ -157,7 +207,8 @@ export class AscendingBalloons extends LitElement {
       .star,
       .kite,
       .balloon,
-      .rocket {
+      .rocket,
+      .zeppelin {
         border: none;
         outline: none;
         color: black;
@@ -213,6 +264,21 @@ export class AscendingBalloons extends LitElement {
       .balloon span {
         position: relative;
         top: -0.15em;
+      }
+
+      .zeppelin {
+        background-size: 3.5em 2.5em;
+        background-color: Transparent;
+        font-size: calc(1em + 4vmin);
+        width: 3.5em;
+        height: 2.5em;
+        color: white;
+      }
+
+      .zeppelin span {
+        position: relative;
+        top: 0em;
+        left: 0.2em;
       }
 
       #balloons {
