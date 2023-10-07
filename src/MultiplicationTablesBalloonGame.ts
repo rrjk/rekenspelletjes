@@ -2,6 +2,7 @@ import { html, css } from 'lit';
 // eslint-disable-next-line import/extensions
 import { customElement, state } from 'lit/decorators.js';
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
+import { darken, lighten } from 'color2k';
 
 import { TimeLimitedGame2 } from './TimeLimitedGame2';
 import {
@@ -16,6 +17,7 @@ import type {
   ImageType,
 } from './AscendingBalloons';
 import { GameLogger } from './GameLogger';
+import { getZeppelinAsSvgUrl } from './ZeppelinImage';
 
 type Operator = '×' | ':';
 
@@ -53,7 +55,7 @@ export class MultiplicationTablesBalloonGameApp extends TimeLimitedGame2 {
       if (
         !Number.isNaN(table) &&
         table >= 1 &&
-        table <= 10 &&
+        table <= 100 &&
         !this.tablesToUse.find(value => value === table)
       ) {
         this.tablesToUse.push(table);
@@ -80,6 +82,15 @@ export class MultiplicationTablesBalloonGameApp extends TimeLimitedGame2 {
       this.welcomeDialogImageUrl = new URL(
         '../images/rocket-blue.svg',
         import.meta.url
+      );
+    } else if (imageInUrl === 'zeppelin') {
+      this.image = 'zeppelin';
+      this.welcomeDialogImageUrl = new URL(
+        `data:image/svg+xml,${getZeppelinAsSvgUrl(
+          darken('green', 0.2),
+          'green',
+          lighten('green', 0.1)
+        )}`
       );
     } else if (imageInUrl === 'balloon') this.image = 'balloon';
     else this.image = 'balloon';
@@ -162,11 +173,16 @@ export class MultiplicationTablesBalloonGameApp extends TimeLimitedGame2 {
 
   /** Get the text to show in the game over dialog */
   get welcomeMessage(): HTMLTemplateResult {
+    const translationTable = [
+      { id: 'balloon', text: 'ballon' },
+      { id: 'rocket', text: 'raket' },
+      { id: 'zeppelin', text: 'zeppelin' },
+    ];
     return html`
       <p>Oefenen met de ${this.tablesAsScentence}</p>
       <p>
-        Klik op de ${this.image === 'balloon' ? 'ballon' : 'raket'} met het
-        juiste antwoord.
+        Klik op de ${translationTable.find(el => el.id === this.image)?.text}
+        met het juiste antwoord.
       </p>
     `;
   }

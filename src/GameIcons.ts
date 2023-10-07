@@ -1,9 +1,11 @@
 import { CSSResult, unsafeCSS, css } from 'lit';
+import { lighten } from 'color2k';
 
 import type { Color, ColorInfo } from './Colors';
 import { getColorInfo } from './Colors';
 
 import { getRocketAsSvgUrl } from './RocketImage';
+import { getZeppelinAsSvgUrl } from './ZeppelinImage';
 
 const iconURLArray: { iconColor: Color; balloonUrl: URL; kiteUrl: URL }[] = [
   {
@@ -177,7 +179,7 @@ const iconURLArray: { iconColor: Color; balloonUrl: URL; kiteUrl: URL }[] = [
   },
 ];
 
-export type GameIcon = 'balloon' | 'kite' | 'rocket';
+export type GameIcon = 'balloon' | 'kite' | 'rocket' | 'zeppelin';
 
 export function getIconStyles(icon: GameIcon): CSSResult[] {
   const styles: CSSResult[] = [];
@@ -199,7 +201,17 @@ export function getIconStyles(icon: GameIcon): CSSResult[] {
         getRocketAsSvgUrl(colorInfo.accentColorCode, colorInfo.mainColorCode)
       )}`;
       fontColor = 'black;';
+    } else if (icon === 'zeppelin') {
+      iconURL = `data:image/svg+xml,${unsafeCSS(
+        getZeppelinAsSvgUrl(
+          colorInfo.accentColorCode,
+          colorInfo.mainColorCode,
+          lighten(colorInfo.mainColorCode, 0.2)
+        )
+      )}`;
+      fontColor = colorInfo.fontColor;
     }
+
     styles.push(css`
       ${unsafeCSS(styleName)} {
         background-image: url('${unsafeCSS(iconURL)}');
