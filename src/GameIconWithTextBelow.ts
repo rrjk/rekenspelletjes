@@ -1,4 +1,4 @@
-import { LitElement, html, css, unsafeCSS } from 'lit';
+import { LitElement, html, css } from 'lit';
 import type { HTMLTemplateResult, CSSResult } from 'lit';
 // eslint-disable-next-line import/extensions
 import { customElement, property } from 'lit/decorators.js';
@@ -24,7 +24,8 @@ export class GameIconWithTextOnBelow extends LitElement {
       css`
         .balloon,
         .kite,
-        .rocket {
+        .rocket,
+        .zeppelin {
           display: flex;
           justify-content: center;
           align-items: center;
@@ -48,6 +49,13 @@ export class GameIconWithTextOnBelow extends LitElement {
           background-size: 70px 105px;
           width: 70px;
           height: 105px;
+          line-height: 80px;
+        }
+
+        .zeppelin {
+          background-size: 120px 90px;
+          width: 120px;
+          height: 90px;
           line-height: 80px;
         }
 
@@ -81,7 +89,8 @@ export class GameIconWithTextOnBelow extends LitElement {
     return styles
       .concat(getIconStyles('balloon'))
       .concat(getIconStyles('kite'))
-      .concat(getIconStyles('rocket'));
+      .concat(getIconStyles('rocket'))
+      .concat(getIconStyles('zeppelin'));
   }
 
   render(): HTMLTemplateResult {

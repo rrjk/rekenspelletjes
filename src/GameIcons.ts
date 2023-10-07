@@ -1,4 +1,5 @@
 import { CSSResult, unsafeCSS, css } from 'lit';
+import { lighten } from 'color2k';
 
 import type { Color, ColorInfo } from './Colors';
 import { getColorInfo } from './Colors';
@@ -203,12 +204,12 @@ export function getIconStyles(icon: GameIcon): CSSResult[] {
     } else if (icon === 'zeppelin') {
       iconURL = `data:image/svg+xml,${unsafeCSS(
         getZeppelinAsSvgUrl(
-          'grey',
           colorInfo.accentColorCode,
-          colorInfo.mainColorCode
+          colorInfo.mainColorCode,
+          lighten(colorInfo.mainColorCode, 0.2)
         )
       )}`;
-      fontColor = 'black;';
+      fontColor = colorInfo.fontColor;
     }
 
     styles.push(css`

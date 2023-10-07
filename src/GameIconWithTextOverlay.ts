@@ -28,7 +28,8 @@ export class BalloonIndex extends LitElement {
       css`
         .balloon,
         .kite,
-        .rocket {
+        .rocket,
+        .zeppelin {
           display: inline-block;
           background-color: transparent;
           border: none;
@@ -58,6 +59,13 @@ export class BalloonIndex extends LitElement {
           width: 90px;
           height: 90px;
           line-height: 90px;
+        }
+
+        .zeppelin {
+          background-size: 120px 95px;
+          width: 120px;
+          height: 95px;
+          line-height: 85px;
         }
 
         .oneLineFont {
@@ -91,7 +99,8 @@ export class BalloonIndex extends LitElement {
     return styles
       .concat(getIconStyles('balloon'))
       .concat(getIconStyles('kite'))
-      .concat(getIconStyles('rocket'));
+      .concat(getIconStyles('rocket'))
+      .concat(getIconStyles('zeppelin'));
   }
 
   render(): HTMLTemplateResult {

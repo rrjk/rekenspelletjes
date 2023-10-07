@@ -5,7 +5,6 @@ import type { CSSResultGroup, HTMLTemplateResult, PropertyValues } from 'lit';
 import { darken, lighten } from 'color2k';
 
 import { randomFromSetAndSplice } from './Randomizer';
-import { getRocketAsSvgUrl } from './RocketImage';
 import { getZeppelinAsSvgUrl } from './ZeppelinImage';
 import { getColorInfo } from './Colors';
 // import { BalloonIndex } from './BalloonWithTextOverlay';
