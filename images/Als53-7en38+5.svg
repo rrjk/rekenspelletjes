@@ -1,13 +1,13 @@
 <svg width="300" height="300" xmlns="http://www.w3.org/2000/svg" version="1.1" class="svg-icon">
  <g id="Layer_1">
   <title>Layer 1</title>
-  <rect fill="#fffac8" stroke="#000" y="0" width="300" height="300" id="svg_7" rx="50" stroke-width="0"/>
-  <text fill="#000000" stroke="#000" x="25" y="54" id="svg_8" stroke-width="0" font-size="75" font-family="Noto Sans JP" text-anchor="start" xml:space="preserve">38 + 5 =</text>
-  <text fill="#000000" stroke="#000" x="25" y="114" id="svg_8" stroke-width="0" font-size="75" font-family="Noto Sans JP" text-anchor="start" xml:space="preserve">53 − 7 =</text>
-  <rect fill="#ffffff" stroke="#000" x="215" y="199" width="75" height="75" id="svg_11"/>
-  <rect fill="#ffffff" stroke="#000" x="102" y="199" width="75" height="75" id="svg_12"/>
-  <line fill="none" stroke="#000" x1="198" y1="128" x2="253" y2="193" id="svg_13" stroke-width="3"/>
-  <line fill="none" stroke="#000" x1="193" y1="128" x2="139" y2="193" id="svg_14" stroke-width="3"/>
+  <rect fill="#fffac8" stroke="#000" y="0" width="300" height="300"  rx="50" stroke-width="0"/>
+  <text fill="#000000" stroke="#000" x="25" y="54"  stroke-width="0" font-size="75" font-family="Noto Sans JP" text-anchor="start" xml:space="preserve">38 + 5 =</text>
+  <text fill="#000000" stroke="#000" x="25" y="114"  stroke-width="0" font-size="75" font-family="Noto Sans JP" text-anchor="start" xml:space="preserve">53 − 7 =</text>
+  <rect fill="#ffffff" stroke="#000" x="215" y="199" width="75" height="75" />
+  <rect fill="#ffffff" stroke="#000" x="102" y="199" width="75" height="75" />
+  <line fill="none" stroke="#000" x1="198" y1="128" x2="253" y2="193"  stroke-width="3"/>
+  <line fill="none" stroke="#000" x1="193" y1="128" x2="139" y2="193"  stroke-width="3"/>
  </g>
 
 </svg>

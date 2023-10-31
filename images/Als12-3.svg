@@ -1,11 +1,11 @@
 <svg width="300" height="300" xmlns="http://www.w3.org/2000/svg" class="svg-icon" version="1.1">
  <g id="Layer_1">
   <title>Layer 1</title>
-  <rect stroke-width="0" rx="50" id="svg_7" height="300" width="300" y="0" stroke="#000" fill="#f58231"/>
-  <text xml:space="preserve" text-anchor="start" font-family="Noto Sans JP" font-size="75" stroke-width="0" id="svg_8" y="109.23067" x="10.65359" stroke="#000" fill="#000000">12 - 3 =</text>
-  <rect id="svg_11" height="75" width="75" y="193.87094" x="196.38491" stroke="#000" fill="#ffffff"/>
-  <rect id="svg_12" height="75" width="75" y="193.87094" x="67.1539" stroke="#000" fill="#ffffff"/>
-  <line stroke-width="3" id="svg_13" y2="188" x2="223" y1="123" x1="168" stroke="#000" fill="none"/>
-  <line stroke-width="3" id="svg_14" y2="187.74191" x2="109.35488" y1="123.22584" x1="163.54837" stroke="#000" fill="none"/>
+  <rect stroke-width="0" rx="50" height="300" width="300" y="0" stroke="#000" fill="#f58231"/>
+  <text xml:space="preserve" text-anchor="start" font-family="Noto Sans JP" font-size="75" stroke-width="0" y="109" x="11" stroke="#000" fill="#000000">12 - 3 =</text>
+  <rect  height="75" width="75" y="194" x="196" stroke="#000" fill="#ffffff"/>
+  <rect  height="75" width="75" y="194" x="67" stroke="#000" fill="#ffffff"/>
+  <line stroke-width="3" y2="188" x2="223" y1="123" x1="168" stroke="#000" fill="none"/>
+  <line stroke-width="3" y2="188" x2="109" y1="123" x1="163" stroke="#000" fill="none"/>
  </g>
 </svg>
