@@ -111,7 +111,7 @@ export class SentenceClock extends LitElement {
         <rect
           stroke="grey"
           stroke-width="1"
-          fill="lightgrey"
+          fill="white"
           x="10"
           y="10"
           width="280"

@@ -1,0 +1,21 @@
+<svg width="300" height="300" xmlns="http://www.w3.org/2000/svg" version="1.1" class="svg-icon">
+ <g id="Layer_1">
+  <title>Layer 1</title>
+  <rect fill="#bfef45" stroke="#000" y="0" width="300" height="300" rx="50" stroke-width="0"/>
+  <text fill="#000000" stroke="#000" x="25" y="85"  stroke-width="0" font-size="60" font-family="Noto Sans JP" text-anchor="start" xml:space="preserve">47 + 38 =</text>
+  <rect fill="#ffffff" stroke="#000" x="200" y="140" width="50" height="50" />
+  <rect fill="#ffffff" stroke="#000" x="102" y="140" width="50" height="50" />
+  <rect fill="#ffffff" stroke="#000" x="52" y="140" width="50" height="50" />
+
+  <rect fill="#ffffff" stroke="#000" x="235" y="230" width="50" height="50" />
+  <rect fill="#ffffff" stroke="#000" x="165" y="230" width="50" height="50" />
+
+  <line fill="none" stroke="#000" x1="183" y1="100" x2="227" y2="135"  stroke-width="3"/>
+  <line fill="none" stroke="#000" x1="178" y1="100" x2="134" y2="135"  stroke-width="3"/>
+
+  <line fill="none" stroke="#000" x1="227" y1="195" x2="260" y2="225"  stroke-width="3"/>
+  <line fill="none" stroke="#000" x1="223" y1="195" x2="190" y2="225"  stroke-width="3"/>
+
+ </g>
+
+</svg>

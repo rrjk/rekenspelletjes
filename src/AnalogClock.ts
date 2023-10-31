@@ -136,7 +136,7 @@ export class AnalogClock extends LitElement {
         <circle
           stroke="black"
           stroke-width="10"
-          fill="none"
+          fill="white"
           cx="125"
           cy="125"
           r="120"
