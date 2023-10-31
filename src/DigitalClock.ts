@@ -219,7 +219,7 @@ export class DigitalClock extends LitElement {
         <rect
           stroke="black"
           stroke-width="10"
-          fill="none"
+          fill="white"
           x="10"
           y="10"
           rx="15"

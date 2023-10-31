@@ -157,6 +157,15 @@ export const colorArray: ColorInfo[] = [
   },
 ];
 
+/** Function to convert a string into a Color.
+ * If the provided string is not a valid color, grey is selected as color.
+ */
+export function stringToColor(color: string | null): Color {
+  const colorInfo = colorArray.find(ci => ci.colorName === color);
+  if (colorInfo !== undefined) return <Color>color;
+  return 'grey';
+}
+
 export function getColorInfo(color: Color): ColorInfo {
   const colorInfo = colorArray.find(ci => ci.colorName === color);
   if (colorInfo === undefined) {

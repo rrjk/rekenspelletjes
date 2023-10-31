@@ -5,6 +5,7 @@ import { customElement, property } from 'lit/decorators.js';
 import './AnalogClock';
 import './DigitalClock';
 import './SentenceClock';
+import { Color, getColorInfo, stringToColor } from './Colors';
 
 @customElement('icon-clock-pair')
 export class IconClockPair extends LitElement {
@@ -18,13 +19,15 @@ export class IconClockPair extends LitElement {
   private hours = 7;
   @property({ type: Number })
   private minutes = 10;
+  @property({ type: String, converter: stringToColor })
+  private color: Color = 'grey';
 
   static get styles(): CSSResultGroup {
     return css`
       div.icon {
         height: 95px;
         width: 95px;
-        background-color: white;
+        background-color: var(--icon-background-color, white);
         border-radius: 15px;
         display: flex;
         flex-wrap: wrap;
@@ -57,6 +60,11 @@ export class IconClockPair extends LitElement {
     if (numberClocks === 3) cls = 'triplet';
 
     return html`
+      <style>
+        :host {
+          --icon-background-color: ${getColorInfo(this.color).mainColorCode};
+        }
+      </style>
       <div class="icon">
         ${this.analog
           ? html`<analog-clock
