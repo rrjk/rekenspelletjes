@@ -66,6 +66,10 @@ export class DraggableElement extends LitElement {
     });
   }
 
+  clearDropElements(): void {
+    this.dropTargets.length = 0; // Setting the length of an array to 0 clears the array
+  }
+
   markAsWrongDrop(element: DropTargetElement): void {
     const targetToUpdate = this.dropTargets.find(
       target => element === target.element
@@ -202,6 +206,7 @@ export class DraggableElement extends LitElement {
             dropType: target.dropType,
           },
         });
+        console.log(event);
         this.dispatchEvent(event);
       }
     }

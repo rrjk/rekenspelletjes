@@ -1,5 +1,7 @@
 // Usefull web app about visualizing an svg path
 // https://svg-path-visualizer.netlify.app/
+// SVG editor
+// https://boxy-svg.com/
 
 import { HTMLTemplateResult, html } from 'lit';
 // eslint-disable-next-line import/extensions
