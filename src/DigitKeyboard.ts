@@ -171,7 +171,7 @@ export class DigitKeyboard
   }
 
   handleDigit(digit: Digit) {
-    if (!this.disabledDigits[digit]) {
+    if (!this.disabledDigits[digit] && !this.disabled) {
       const event = new CustomEvent<Digit>('digit-entered', {
         detail: digit,
       });
