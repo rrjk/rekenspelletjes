@@ -3,7 +3,7 @@ import { html, css, LitElement, unsafeCSS } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
-import { darken, lighten } from 'color2k';
+// import { darken, lighten } from 'color2k';
 import { getColorInfo } from './Colors';
 
 import { getHandAsSvgUrl } from './HandImage';
