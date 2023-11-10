@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="nl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Welke hand heeft meer stippen</title>
+  </head>
+  <style>
+    html {
+      font-size: x-large;
+    }
+    .buttonTable {
+      position: relative;
+      display: flex;
+      gap: 10px 10px;
+      flex-wrap: wrap;
+      width: 410px;
+    }
+    hand-with-dots {
+      width: 90%;
+    }
+    icon-hourglass-button {
+      width: 40%;
+    }
+  </style>
+  <body>
+    <script type="module" src="./src/IconHourglassButton.ts"></script>
+    <script type="module" src="./src/HandImage.ts"></script>
+
+    <h2>Welke hand heeft meer stippen</h2>
+    <div class="buttonTable">
+      <icon-hourglass-button
+        title="Welke hand heeft meer stippen"
+        time="1min"
+        href="./WelkeHandHeeftMeerStippen.html?"
+      >
+        <hand-with-dots> numberDots="5" </hand-with-dots>
+      </icon-hourglass-button>
+      <icon-hourglass-button
+        title="Welke hand heeft meer stippen"
+        time="3min"
+        href="WelkeHandHeeftMeerStippen.html?"
+      >
+        <hand-with-dots> numberDots="5" </hand-with-dots>
+      </icon-hourglass-button>
+    </div>
+
+    <p>
+      <a href="index.html">Terug naar het hoofdmenu</a>
+    </p>
+  </body>
+</html>
