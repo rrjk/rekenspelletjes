@@ -1,7 +1,7 @@
 import { LitElement, html, css, unsafeCSS } from 'lit';
 import type { CSSResultGroup, HTMLTemplateResult } from 'lit';
 // eslint-disable-next-line import/extensions
-import { customElement, state } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
 import {
   addResizeObserverClient,
   removeResizeObserverClient,
@@ -9,7 +9,7 @@ import {
 } from './ResizeObserver';
 
 // export type Digit = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9';
-export type Digit = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+export type Digit = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 
 @customElement('digit-keyboard')
 export class DigitKeyboard
@@ -19,7 +19,7 @@ export class DigitKeyboard
   @state()
   wideTallClass = 'WideContainer';
   @state()
-  disabled = [
+  disabledDigits = [
     false,
     false,
     false,
@@ -31,6 +31,10 @@ export class DigitKeyboard
     false,
     false,
   ];
+  @property({ type: Boolean })
+  disabled = false;
+  @property({ type: Boolean })
+  showTen = false;
 
   static get styles(): CSSResultGroup {
     return css`
@@ -65,6 +69,20 @@ export class DigitKeyboard
         padding: 0;
       }
 
+      .DigitKeyboardDisabled {
+        --digit-color: lightgrey;
+        background-image: url(${unsafeCSS(
+          new URL('../images/greyCircle.svg', import.meta.url)
+        )});
+      }
+
+      .DigitKeyboardEnabled {
+        --digit-color: black;
+        background-image: url(${unsafeCSS(
+          new URL('../images/ball-blue.svg', import.meta.url)
+        )});
+      }
+
       .Digit {
         background-size: contain;
         background-color: transparent;
@@ -74,11 +92,8 @@ export class DigitKeyboard
         outline: none;
         width: calc(100% / 3);
         height: calc (100%);
-        color: black;
-        background-image: url(${unsafeCSS(
-          new URL('../images/ball-blue.svg', import.meta.url)
-        )});
         padding: 0;
+        font-size: 0;
       }
 
       text {
@@ -110,6 +125,7 @@ export class DigitKeyboard
       ['7', 7],
       ['8', 8],
       ['9', 9],
+      ['10', 10],
     ]);
 
     const digit = digitMap.get(keyName);
@@ -132,12 +148,17 @@ export class DigitKeyboard
   }
 
   disable(digit: Digit) {
-    this.disabled[digit] = true;
+    this.disabledDigits[digit] = true;
     this.requestUpdate();
   }
 
   enableAllDigits() {
-    for (let i = 0; i < 10; i++) this.disabled[i] = false;
+    for (let i = 0; i < 10; i++) this.disabledDigits[i] = false;
+    this.requestUpdate();
+  }
+
+  disableAllDigits() {
+    for (let i = 0; i < 10; i++) this.disabledDigits[i] = true;
     this.requestUpdate();
   }
 
@@ -146,13 +167,21 @@ export class DigitKeyboard
     const symbolToUse = digit === 'disabled' ? '✗' : digit;
     return html`
       <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-        <text x="30" y="73">${symbolToUse}</text>
+        <text
+          x="50"
+          y="50"
+          dominant-baseline="middle"
+          text-anchor="middle"
+          style="fill: var(--digit-color)"
+        >
+          ${symbolToUse}
+        </text>
       </svg>
     `;
   }
 
   handleDigit(digit: Digit) {
-    if (!this.disabled[digit]) {
+    if (!this.disabledDigits[digit] && !this.disabled) {
       const event = new CustomEvent<Digit>('digit-entered', {
         detail: digit,
       });
@@ -162,12 +191,17 @@ export class DigitKeyboard
 
   render(): HTMLTemplateResult {
     const rows: HTMLTemplateResult[] = [];
-    const digits: Digit[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+    let digits: Digit[] = [];
+    if (this.showTen) digits = [10, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+    else digits = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
     for (let row = 0; row < 4; row++) {
       const buttons: HTMLTemplateResult[] = [];
       const firstDigitInRow = row === 3 ? 0 : row * 3 + 1;
       const lastDigitInRow = row === 3 ? 0 : row * 3 + 3;
+      let disableEnabledKeyboardClass = 'DigitKeyboardEnabled';
+      if (this.disabled) disableEnabledKeyboardClass = 'DigitKeyboardDisabled';
+
       for (
         let digitAsNumber = firstDigitInRow;
         digitAsNumber <= lastDigitInRow;
@@ -178,11 +212,11 @@ export class DigitKeyboard
           throw new Error('Out of bounds in determining digit');
         buttons.push(html`
           <button
-            class="Digit"
+            class="Digit ${disableEnabledKeyboardClass}"
             id="Digit${digit}"
             @click="${() => this.handleDigit(digit)}"
           >
-            ${this.disabled[digit]
+            ${this.disabledDigits[digit]
               ? this.renderDigitAsSvg('disabled')
               : this.renderDigitAsSvg(digit)}
           </button>

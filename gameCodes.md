@@ -46,4 +46,5 @@ Game codes
 <tr><td>Jd</td><td>Klik foto op de getallenlijn, 10-streepjes, geen getallen</td></tr>
 <tr><td>L</td><td>Klik paren klokken (a-analoog, s-zin, d-digitaal) aan met u-uren, h-halve uren, q-kwart uren, t-tien minuten, m-minuten</td></tr>
 <tr><td>M</td><td>Sommen in een cirkel</td></tr>
+<tr><td>O</td><td>Welke hand heeft meer stippen</td></tr>
 </table>
