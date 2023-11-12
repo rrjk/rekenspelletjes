@@ -9,7 +9,7 @@ import {
 } from './ResizeObserver';
 
 // export type Digit = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9';
-export type Digit = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+export type Digit = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 
 @customElement('digit-keyboard')
 export class DigitKeyboard
@@ -33,6 +33,8 @@ export class DigitKeyboard
   ];
   @property({ type: Boolean })
   disabled = false;
+  @property({ type: Boolean })
+  showTen = false;
 
   static get styles(): CSSResultGroup {
     return css`
@@ -91,6 +93,7 @@ export class DigitKeyboard
         width: calc(100% / 3);
         height: calc (100%);
         padding: 0;
+        font-size: 0;
       }
 
       text {
@@ -122,6 +125,7 @@ export class DigitKeyboard
       ['7', 7],
       ['8', 8],
       ['9', 9],
+      ['10', 10],
     ]);
 
     const digit = digitMap.get(keyName);
@@ -163,7 +167,13 @@ export class DigitKeyboard
     const symbolToUse = digit === 'disabled' ? '✗' : digit;
     return html`
       <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-        <text x="30" y="73" style="fill: var(--digit-color)">
+        <text
+          x="50"
+          y="50"
+          dominant-baseline="middle"
+          text-anchor="middle"
+          style="fill: var(--digit-color)"
+        >
           ${symbolToUse}
         </text>
       </svg>
@@ -181,7 +191,9 @@ export class DigitKeyboard
 
   render(): HTMLTemplateResult {
     const rows: HTMLTemplateResult[] = [];
-    const digits: Digit[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+    let digits: Digit[] = [];
+    if (this.showTen) digits = [10, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+    else digits = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
     for (let row = 0; row < 4; row++) {
       const buttons: HTMLTemplateResult[] = [];
