@@ -58,6 +58,87 @@ const dotLocations = [
   { cx: 714, cy: 860 },
 ];
 
+/** Dots (Montessori)  */
+const dotsMontessori = [
+  [],
+  [{ cx: 564, cy: 730 }],
+  [
+    { cx: 414, cy: 730 },
+    { cx: 714, cy: 730 },
+  ],
+  [
+    { cx: 564, cy: 620 },
+    { cx: 414, cy: 840 },
+    { cx: 714, cy: 840 },
+  ],
+  [
+    { cx: 564, cy: 600 },
+    { cx: 414, cy: 730 },
+    { cx: 714, cy: 730 },
+    { cx: 564, cy: 860 },
+  ],
+  [
+    { cx: 414, cy: 630 },
+    { cx: 564, cy: 630 },
+    { cx: 714, cy: 630 },
+    { cx: 489, cy: 830 },
+    { cx: 639, cy: 830 },
+  ],
+  [
+    { cx: 414, cy: 630 },
+    { cx: 564, cy: 630 },
+    { cx: 714, cy: 630 },
+    { cx: 414, cy: 830 },
+    { cx: 564, cy: 830 },
+    { cx: 714, cy: 830 },
+  ],
+  [
+    { cx: 489, cy: 610 },
+    { cx: 639, cy: 610 },
+    { cx: 414, cy: 730 },
+    { cx: 564, cy: 730 },
+    { cx: 714, cy: 730 },
+    { cx: 489, cy: 850 },
+    { cx: 639, cy: 850 },
+  ],
+  [
+    { cx: 414, cy: 610 },
+    { cx: 564, cy: 610 },
+    { cx: 714, cy: 610 },
+    { cx: 489, cy: 730 },
+    { cx: 639, cy: 730 },
+    { cx: 414, cy: 850 },
+    { cx: 564, cy: 850 },
+    { cx: 714, cy: 850 },
+  ],
+  [
+    { cx: 414, cy: 610 },
+    { cx: 564, cy: 610 },
+    { cx: 714, cy: 610 },
+    { cx: 414, cy: 730 },
+    { cx: 564, cy: 730 },
+    { cx: 714, cy: 730 },
+    { cx: 414, cy: 850 },
+    { cx: 564, cy: 850 },
+    { cx: 714, cy: 850 },
+  ],
+  [
+    { cx: 414, cy: 585 },
+    { cx: 564, cy: 585 },
+    { cx: 714, cy: 585 },
+
+    { cx: 489, cy: 685 },
+    { cx: 639, cy: 685 },
+
+    { cx: 489, cy: 805 },
+    { cx: 639, cy: 805 },
+
+    { cx: 414, cy: 905 },
+    { cx: 564, cy: 905 },
+    { cx: 714, cy: 905 },
+  ],
+];
+
 /** Horizontal viewbox size of the hand */
 const horSize = 1024;
 /** Vertical viewbox size of the hand */
@@ -79,6 +160,18 @@ function getDotsAsSvgString(numberDots: PossibleNumberDots) {
     if (numberDotMapping[numberDots][i]) {
       circles = `${circles} <circle class="dot" cx="${dotLocations[i].cx}" cy="${dotLocations[i].cy}" r="50"/>`;
     }
+  }
+  return circles;
+}
+
+/** Get the correct dots in Montessori style as an SVG string
+ *
+ * @param numberDots - number of dots to show
+ */
+function getDotsMontessoriAsSvgString(numberDots: PossibleNumberDots) {
+  let circles = '';
+  for (const dot of dotsMontessori[numberDots]) {
+    circles = `${circles} <circle class="dot" cx="${dot.cx}" cy="${dot.cy}" r="50"/>`;
   }
   return circles;
 }
@@ -184,7 +277,7 @@ export class HandWithDots extends LitElement {
       xmlns:xlink="http://www.w3.org/1999/xlink"
     >
       ${unsafeSVG(handPathSvgString)}
-      ${unsafeSVG(getDotsAsSvgString(this.numberDots))}
+      ${unsafeSVG(getDotsMontessoriAsSvgString(this.numberDots))}
     </svg>`;
   }
 }

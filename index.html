@@ -11,6 +11,12 @@
       flex-wrap: wrap;
       width: 450px;
     }
+    hand-with-dots {
+      height: 100px;
+      width: 100px;
+      --hand-stroke-color: #800000;
+      --dot-color: #800000;
+    }
   </style>
   <head>
     <meta charset="UTF-8" />
@@ -23,9 +29,16 @@
     <script type="module" src="./src/JumpingJanWithTextOverlay.ts"></script>
     <script type="module" src="./src/ElliStarWithTextOverlay.ts"></script>
     <script type="module" src="./src/AnalogClock.ts"></script>
+    <script type="module" src="./src/HandImage.ts"></script>
 
     <h1>Rekenspelletjes</h1>
     <div class="buttonTable">
+      <icon-label-button
+        title="Welke hand heeft de meeste stippen"
+        href="indexWelkeHandHeeftMeerstippen.html"
+      >
+        <hand-with-dots numberDots="7"></hand-with-dots>
+      </icon-label-button>
       <icon-label-button
         title="Zet de getallen in de juiste volgorde"
         href="indexSorteren.html"

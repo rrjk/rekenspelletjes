@@ -26,8 +26,13 @@ export class WhichIsBiggerApp extends TimeLimitedGame2 {
   private handDisabled = [false, false];
   @state()
   private keyboardDisabled = true;
+  @state()
+  private includeDifference = true;
+  @state()
+  private countOnly = false;
 
   private maxDifference = 9;
+  private wrongHandSelected = false;
 
   private gameLogger = new GameLogger('O', 'a');
 
@@ -39,6 +44,12 @@ export class WhichIsBiggerApp extends TimeLimitedGame2 {
   parseUrl() {
     const urlParams = new URLSearchParams(window.location.search);
 
+    if (urlParams.has('countOnly')) {
+      const countOnly = urlParams.get('countOnly');
+      if (countOnly && countOnly === 'true') this.countOnly = true;
+      else this.countOnly = false;
+    }
+
     if (urlParams.has('maxDifference')) {
       const maxDifference = parseInt(urlParams.get('maxDifference') || '', 10);
       if (!maxDifference || maxDifference < 3 || maxDifference > 9) {
@@ -47,6 +58,21 @@ export class WhichIsBiggerApp extends TimeLimitedGame2 {
         this.maxDifference = maxDifference;
       }
     }
+
+    if (urlParams.has('includeDifference')) {
+      const includeDifference = urlParams.get('includeDifference');
+      if (
+        includeDifference &&
+        includeDifference === 'false' &&
+        this.countOnly === false
+      )
+        this.includeDifference = false;
+      else this.includeDifference = true;
+    }
+
+    if (this.countOnly) this.gameLogger.setSubCode('a');
+    else if (!this.includeDifference) this.gameLogger.setSubCode('b');
+    else this.gameLogger.setSubCode('c');
   }
 
   static get styles(): CSSResultArray {
@@ -56,13 +82,13 @@ export class WhichIsBiggerApp extends TimeLimitedGame2 {
         button {
           display: block;
           width: 40%;
-          height: 40%;
+          height: 90%;
           border: none;
           background-color: transparent;
         }
         digit-keyboard {
           width: 80%;
-          height: 40%;
+          height: 90%;
         }
         .handCorrect {
           --hand-fill-color: green;
@@ -87,7 +113,7 @@ export class WhichIsBiggerApp extends TimeLimitedGame2 {
           justify-content: space-evenly;
           align-items: center;
           flex-wrap: wrap;
-          height: 100%;
+          height: 50%;
           width: 100%;
         }
       `,
@@ -102,9 +128,11 @@ export class WhichIsBiggerApp extends TimeLimitedGame2 {
   }
 
   newRound(): void {
-    let possibleNumberDots: PossibleNumberDots[] = [
-      0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-    ];
+    let possibleNumberDots: PossibleNumberDots[] = [];
+    if (this.countOnly) possibleNumberDots = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    // If we only count, we cannot handle 0 as it's not on the keyboard.
+    else possibleNumberDots = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
     let potentialNumberDots: PossibleNumberDots = 0;
 
     do {
@@ -112,31 +140,55 @@ export class WhichIsBiggerApp extends TimeLimitedGame2 {
     } while (this.numberDotsHands[0] === potentialNumberDots); // We want to prevent keeping the same number of dots on a hand.
     this.numberDotsHands[0] = potentialNumberDots;
 
-    possibleNumberDots = possibleNumberDots.filter(
-      x => Math.abs(x - this.numberDotsHands[0]) <= this.maxDifference
-    );
-
-    do {
-      potentialNumberDots = randomFromSetAndSplice(possibleNumberDots);
-    } while (this.numberDotsHands[1] === potentialNumberDots); // We want to prevent keeping the same number of dots on a hand.
-    this.numberDotsHands[1] = potentialNumberDots;
-
-    this.getElement<DigitKeyboard>('digit-keyboard').enableAllDigits();
-    this.keyboardDisabled = true;
     this.handStyle = ['', ''];
-    this.handDisabled = [false, false];
+    this.wrongHandSelected = false;
+
+    if (this.countOnly) {
+      /* If we only count the dots on one hand, we set the number of dots on the second hand to zero
+       * That way the difference will be exactly the number of dots on the first hand and we can keep all the logic the same
+       */
+      this.numberDotsHands[1] = 0;
+      this.handDisabled = [true, true];
+    } else {
+      possibleNumberDots = possibleNumberDots.filter(
+        x => Math.abs(x - this.numberDotsHands[0]) <= this.maxDifference
+      );
+
+      do {
+        potentialNumberDots = randomFromSetAndSplice(possibleNumberDots);
+      } while (this.numberDotsHands[1] === potentialNumberDots); // We want to prevent keeping the same number of dots on a hand.
+      this.numberDotsHands[1] = potentialNumberDots;
+      this.handDisabled = [false, false];
+    }
+
+    if (this.includeDifference) {
+      this.getElement<DigitKeyboard>('digit-keyboard').enableAllDigits();
+      if (this.countOnly) this.keyboardDisabled = false;
+      else this.keyboardDisabled = true;
+    }
     this.requestUpdate(); // As we are updating an array, we need to explicitely request an update
   }
 
   /** Get the text to show in the game over dialog */
   get welcomeMessage(): HTMLTemplateResult {
-    return html`<p>Wijs de hand aan met de meeste stippen.</p>
-      <p>Vertel daarna hoeveel meer stippen die hand heeft.</p>`;
+    let res = html``;
+    if (this.countOnly) {
+      res = html`<p>Tel het aantal stippen op de hand.</p>`;
+    } else if (this.includeDifference)
+      res = html`<p>Wijs de hand aan met de meeste stippen.</p>
+        <p>
+          Vertel daarna hoeveel stippen die hand er meer heeft dan de andere
+          hand.
+        </p>`;
+    else if (!this.includeDifference)
+      res = html`<p>Wijs de hand aan met de meeste stippen.</p>`;
+
+    return res;
   }
 
   /** Get the title for the welcome dialog. */
   get welcomeDialogTitle(): string {
-    return `Welke hand heeft meer stippen`;
+    return `Stippen tellen`;
   }
 
   handleHandClick(handId: HandIds) {
@@ -144,14 +196,22 @@ export class WhichIsBiggerApp extends TimeLimitedGame2 {
     for (const hand of this.numberDotsHands)
       if (hand > this.numberDotsHands[handId]) ok = false;
     if (ok) {
-      this.handStyle[handId] = 'handCorrect';
-      this.handDisabled = [true, true];
-      this.keyboardDisabled = false;
+      if (this.includeDifference) {
+        this.handStyle[handId] = 'handCorrect';
+        this.handDisabled = [true, true];
+        this.keyboardDisabled = false;
+      } else {
+        // Only when the hand is selected correctly immediately it will count if no difference needs to be provided
+        if (!this.wrongHandSelected) this.numberOk += 1;
+        this.newRound();
+      }
     } else {
       this.numberNok += 1;
       this.handStyle[handId] = 'handWrong';
       this.handDisabled[handId] = true;
+      this.wrongHandSelected = true;
     }
+
     this.requestUpdate();
   }
 
@@ -166,26 +226,55 @@ export class WhichIsBiggerApp extends TimeLimitedGame2 {
   }
 
   renderGameContent(): HTMLTemplateResult {
-    return html`
+    let keyboard = html``;
+    if (this.includeDifference) {
+      keyboard = html`
       <div class="bar">
-        <button @click=${() => this.handleHandClick(0)} ?disabled=${
-      this.handDisabled[0]
-    }>
-          <hand-with-dots class="${this.handStyle[0]}" numberDots=${
-      this.numberDotsHands[0]
-    } ></hand-with-dots>
+        <digit-keyboard showTen ?disabled=${
+          this.keyboardDisabled
+        } @digit-entered="${(evt: CustomEvent<Digit>) =>
+        this.handleDigit(evt.detail)}">
+        </digit-keyboad>
+      </div>`;
+    }
+
+    let hands = html``;
+    if (this.countOnly) {
+      hands = html`
+        <button
+          @click=${() => this.handleHandClick(0)}
+          ?disabled=${this.handDisabled[0]}
+        >
+          <hand-with-dots
+            class="${this.handStyle[0]}"
+            numberDots=${this.numberDotsHands[0]}
+          ></hand-with-dots>
         </button>
-        <button @click=${() => this.handleHandClick(1)} ?disabled=${
-      this.handDisabled[1]
-    }>
-          <hand-with-dots class="${this.handStyle[1]}" numberDots=${
-      this.numberDotsHands[1]
-    }></hand-with-dots>
+      `;
+    } else {
+      hands = html`
+        <button
+          @click=${() => this.handleHandClick(0)}
+          ?disabled=${this.handDisabled[0]}
+        >
+          <hand-with-dots
+            class="${this.handStyle[0]}"
+            numberDots=${this.numberDotsHands[0]}
+          ></hand-with-dots>
         </button>
-        <digit-keyboard ?disabled=${this.keyboardDisabled} @digit-entered="${(
-      evt: CustomEvent<Digit>
-    ) => this.handleDigit(evt.detail)}"></digit-keyboad>
-      </div>
-    `;
+        <button
+          @click=${() => this.handleHandClick(1)}
+          ?disabled=${this.handDisabled[1]}
+        >
+          <hand-with-dots
+            class="${this.handStyle[1]}"
+            numberDots=${this.numberDotsHands[1]}
+          ></hand-with-dots>
+        </button>
+      `;
+    }
+
+    return html` <div class="bar">${hands}</div>
+      ${keyboard}`;
   }
 }

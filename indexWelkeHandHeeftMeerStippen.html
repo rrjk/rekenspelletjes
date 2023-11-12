@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <title>Welke hand heeft meer stippen</title>
+    <title>Stippen tellen</title>
   </head>
   <style>
     html {
@@ -16,32 +16,128 @@
       flex-wrap: wrap;
       width: 410px;
     }
-    hand-with-dots {
-      width: 90%;
+
+    .iconCountOnly hand-with-dots {
+      --hand-fill-color: #e6194b;
+      --dot-color: black;
+      --hand-stroke-color: black;
     }
+
+    .iconNoDiff hand-with-dots {
+      --hand-fill-color: #f58231;
+      --dot-color: black;
+      --hand-stroke-color: black;
+    }
+
+    .iconWithDiff hand-with-dots {
+      --hand-fill-color: #ffe119;
+      --dot-color: black;
+      --hand-stroke-color: black;
+    }
+
     icon-hourglass-button {
       width: 40%;
+    }
+
+    .iconCountOnly,
+    .iconNoDiff,
+    .iconWithDiff {
+      width: 60%;
+      height: 90px;
+      display: grid;
+      grid-template-columns: 50% 50%;
+    }
+
+    .iconWithDiff {
+      grid-template-rows: 50% 50%;
+    }
+
+    .iconWithDiff digit-keyboard {
+      width: 100%;
+      height: 100%;
+      grid-column: 1 / span 2;
+    }
+
+    .iconCountOnly hand-with-dots {
+      width: 100%;
+      height: 100%;
+    }
+
+    .iconCountOnly digit-keyboard {
+      width: 100%;
+      height: 100%;
     }
   </style>
   <body>
     <script type="module" src="./src/IconHourglassButton.ts"></script>
     <script type="module" src="./src/HandImage.ts"></script>
+    <script type="module" src="./src/DigitKeyboard.ts"></script>
 
     <h2>Welke hand heeft meer stippen</h2>
     <div class="buttonTable">
       <icon-hourglass-button
-        title="Welke hand heeft meer stippen"
+        title="Tel de stippen"
         time="1min"
-        href="./WelkeHandHeeftMeerStippen.html?"
+        href="./WelkeHandHeeftMeerStippen.html?countOnly=true"
       >
-        <hand-with-dots> numberDots="5" </hand-with-dots>
+        <div class="iconCountOnly">
+          <hand-with-dots numberDots="3"> </hand-with-dots>
+          <digit-keyboard></digit-keyboard>
+        </div>
       </icon-hourglass-button>
       <icon-hourglass-button
-        title="Welke hand heeft meer stippen"
+        title="Tel de stippen"
         time="3min"
-        href="WelkeHandHeeftMeerStippen.html?"
+        href="WelkeHandHeeftMeerStippen.html?countOnly=true"
       >
-        <hand-with-dots> numberDots="5" </hand-with-dots>
+        <div class="iconCountOnly">
+          <hand-with-dots numberDots="3"> </hand-with-dots>
+          <digit-keyboard></digit-keyboard>
+        </div>
+      </icon-hourglass-button>
+
+      <icon-hourglass-button
+        title="Welke hand heeft meer stippen?"
+        time="1min"
+        href="./WelkeHandHeeftMeerStippen.html?includeDifference=false"
+      >
+        <div class="iconNoDiff">
+          <hand-with-dots numberDots="5"> </hand-with-dots
+          ><hand-with-dots numberDots="5"> </hand-with-dots>
+        </div>
+      </icon-hourglass-button>
+      <icon-hourglass-button
+        title="Welke hand heeft meer stippen?"
+        time="3min"
+        href="WelkeHandHeeftMeerStippen.html?includeDifference=false"
+      >
+        <div class="iconNoDiff">
+          <hand-with-dots numberDots="5"> </hand-with-dots
+          ><hand-with-dots numberDots="5"> </hand-with-dots>
+        </div>
+      </icon-hourglass-button>
+
+      <icon-hourglass-button
+        title="Hoeveel stippen meer?"
+        time="1min"
+        href="./WelkeHandHeeftMeerStippen.html?includeDifference=true"
+      >
+        <div class="iconWithDiff">
+          <hand-with-dots numberDots="7"> </hand-with-dots
+          ><hand-with-dots numberDots="7"> </hand-with-dots>
+          <digit-keyboard></digit-keyboard>
+        </div>
+      </icon-hourglass-button>
+      <icon-hourglass-button
+        title="Hoeveel stippen meer?"
+        time="3min"
+        href="WelkeHandHeeftMeerStippen.html?includeDifference=true"
+      >
+        <div class="iconWithDiff">
+          <hand-with-dots numberDots="7"> </hand-with-dots
+          ><hand-with-dots numberDots="7"> </hand-with-dots>
+          <digit-keyboard></digit-keyboard>
+        </div>
       </icon-hourglass-button>
     </div>
 
