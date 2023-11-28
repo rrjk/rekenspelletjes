@@ -9,6 +9,7 @@ export type DropType = 'dropOk' | 'dropWrong';
 
 export interface DropTargetElement extends HTMLElement {
   highlightForDrop(newState: HighlightType): void;
+  value?: string;
 }
 
 type DropTarget = {
@@ -20,6 +21,10 @@ type DropTarget = {
   maxDeltaY: number;
 };
 
+/** Draggable-element
+ * When a data-value is added as HTML attribute, this is reflected in the dropped event.
+ * When a data-value is added as HTML attribute to the droptarget, this is also reflected in the dropped event.
+ */
 @customElement('draggable-element')
 export class DraggableElement extends LitElement {
   @property({ type: Boolean })
@@ -30,6 +35,9 @@ export class DraggableElement extends LitElement {
   private cummulativeDeltaX = 0; // expressed as percentage of the viewport width
   @state()
   private cummulativeDeltaY = 0; // expressed as percentage of the viewport height
+
+  @property({ type: String })
+  value = '';
 
   private dragActive = false;
   private touchPreviousScreenX = 0;
@@ -191,7 +199,11 @@ export class DraggableElement extends LitElement {
   }
 
   private handleEndOfDrag(): void {
+    console.log(`hand end of drag`);
+    let cnt = 0;
     for (const target of this.dropTargets) {
+      cnt += 1;
+      console.log(`cnt = ${cnt}`);
       target.element.highlightForDrop('none');
       if (
         this.cummulativeDeltaX > target.minDeltaX &&
@@ -202,12 +214,16 @@ export class DraggableElement extends LitElement {
         const event = new CustomEvent('dropped', {
           detail: {
             draggableId: this.id,
+            draggableValue: this.value,
             dropTargetId: target.element.id,
+            dropTargetValue: target.element.value,
             dropType: target.dropType,
           },
         });
         console.log(event);
         this.dispatchEvent(event);
+        console.log('event fired');
+        break;
       }
     }
     if (this.resetDragAfterDrop) this.resetDrag();

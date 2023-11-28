@@ -1,6 +1,7 @@
-import { CSSResultArray, LitElement, css } from 'lit';
+import { CSSResultArray, LitElement, html, css } from 'lit';
 // eslint-disable-next-line import/extensions
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, state, property } from 'lit/decorators.js';
+import type { HTMLTemplateResult } from 'lit';
 import {
   DraggableElement,
   DropTargetElement,
@@ -12,19 +13,33 @@ export class DraggableTargetElement
   extends DraggableElement
   implements DropTargetElement
 {
+  @state()
+  private backgroundColor = 'transparent';
+
   /** Get all static styles */
   static get styles(): CSSResultArray {
     return [
       super.styles,
       css`
         :host {
-          background-color: #dddddd;
+          background-color: var(--background-color);
         }
       `,
     ];
   }
 
+  render(): HTMLTemplateResult {
+    return html` <style>
+        :host {
+          --background-color: ${this.backgroundColor};
+        }
+      </style>
+      ${super.render()}`;
+  }
+
   highlightForDrop(newState: HighlightType): void {
-    console.log(`Highlight for Drop: ${newState}`);
+    if (newState === 'none') this.backgroundColor = 'transparent';
+    else if (newState === 'droppable') this.backgroundColor = 'lightgrey';
+    else if (newState === 'wrong') this.backgroundColor = 'teal';
   }
 }

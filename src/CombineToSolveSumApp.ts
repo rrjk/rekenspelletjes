@@ -12,6 +12,7 @@ import { TimeCountingGame } from './TimeCountingGame';
 import './MompitzNumber';
 import './DynamicGrid';
 import './DraggableElement';
+import './DraggableTargetElement';
 
 import {
   randomFromSet,
@@ -24,18 +25,21 @@ import { GameLogger } from './GameLogger';
 
 import './RealHeight';
 import { getHeartasHTMLTemplateResult } from './HeartImage';
-import { DraggableTargetElement } from './DraggableTargetElement';
+import type { DraggableTargetElement } from './DraggableTargetElement';
+
+type CellType = { id: string; nmbr: number };
 
 @customElement('combine-to-solve-sum-app')
 export class CombineToSolveSumApp extends TimeCountingGame {
   private gameLogger = new GameLogger('N', '');
 
-  private initialNumberOfPairs = 13;
+  private initialNumberOfPairs = 2;
   private maxNumberOfPairs = 20;
+  private currentNumberOfPairs = 0;
   private sum = 10;
 
   @state()
-  cells: (number | null)[] = [];
+  cells: (CellType | null)[] = [];
 
   private mutationObserver = new MutationController(this, {
     config: { attributes: true, childList: true, subtree: true },
@@ -88,11 +92,11 @@ export class CombineToSolveSumApp extends TimeCountingGame {
 
   private newRound() {
     // To be filled in
-    const possibleCells: (number | null)[] = [];
+    const possibleCells: (CellType | null)[] = [];
     for (let i = 0; i < this.initialNumberOfPairs; i++) {
-      const randomNumber = randomIntFromRange(1, this.sum - 1);
-      possibleCells.push(randomNumber);
-      possibleCells.push(this.sum - randomNumber);
+      const cellPair = this.createPair(`${i * 2}`, `${i * 2 + 1}`);
+      possibleCells.push(cellPair[0]);
+      possibleCells.push(cellPair[1]);
     }
     for (
       let j = this.initialNumberOfPairs * 2;
@@ -111,6 +115,8 @@ export class CombineToSolveSumApp extends TimeCountingGame {
     console.log(`new Round cells`);
     console.log(this.cells);
 
+    this.currentNumberOfPairs = this.initialNumberOfPairs;
+
     this.requestUpdate();
   }
 
@@ -121,7 +127,7 @@ export class CombineToSolveSumApp extends TimeCountingGame {
   async updated(): Promise<void> {
     await this.getUpdateComplete();
     console.log('updated');
-    //    this.updateDropTargets();
+    this.updateDropTargets();
   }
 
   updateDropTargets(): void {
@@ -130,6 +136,7 @@ export class CombineToSolveSumApp extends TimeCountingGame {
     this.renderRoot
       .querySelectorAll('draggable-target-element')
       .forEach(draggable => {
+        console.log(draggable);
         (<DraggableTargetElement>draggable).clearDropElements();
         this.renderRoot
           .querySelectorAll('draggable-target-element')
@@ -141,10 +148,71 @@ export class CombineToSolveSumApp extends TimeCountingGame {
             }
           });
 
-        // draggable.addEventListener('dropped', event =>
-        //  this.handleDropped(<CustomEvent>event)
-        // );
+        // Todo: This line results in the same event being handled multiple times, resulting in repetitions - needs to be solved
+        /*
+        draggable.addEventListener('dropped', event =>
+          this.handleDropped(<CustomEvent>event)
+        ); */
       });
+  }
+
+  handleDropped(evt: CustomEvent) {
+    console.log('dropped in game');
+    console.log(evt);
+    if (
+      parseInt(evt.detail.draggableValue, 10) +
+        parseInt(evt.detail.dropTargetValue, 10) ===
+      10
+    ) {
+      console.log('Yes - correct drop');
+      this.numberOk += 1;
+      this.removePair(evt.detail.draggableId, evt.detail.dropTargetId);
+      if (this.currentNumberOfPairs === 0) this.handleGameOver();
+    } else {
+      console.log('No - wrong drop');
+      this.numberNok += 1;
+      this.addPair();
+    }
+  }
+
+  removePair(id1: string, id2: string) {
+    const cellIndex1 = this.cells.findIndex(
+      cell => cell !== null && cell.id === id1
+    );
+    this.cells[cellIndex1] = null;
+    const cellIndex2 = this.cells.findIndex(
+      cell => cell !== null && cell.id === id2
+    );
+    this.cells[cellIndex2] = null;
+    this.currentNumberOfPairs -= 1;
+    this.requestUpdate();
+  }
+
+  createPair(id1: string, id2: string): CellType[] {
+    const randomNumber = randomIntFromRange(1, this.sum - 1);
+    return [
+      { id: id1, nmbr: randomNumber },
+      { id: id2, nmbr: this.sum - randomNumber },
+    ];
+  }
+
+  addPair() {
+    console.log(`addPair`);
+    if (this.currentNumberOfPairs < this.maxNumberOfPairs) {
+      const potentialSlots: number[] = [];
+      for (let i = 0; i < this.cells.length; i++)
+        if (this.cells[i] === null) potentialSlots.push(i);
+      console.log(`empty slots`);
+      console.log(potentialSlots);
+      const slot1 = randomFromSetAndSplice(potentialSlots);
+      const slot2 = randomFromSetAndSplice(potentialSlots);
+      console.log(`${slot1} & ${slot2}`);
+      const cellPair = this.createPair(`${slot1}`, `${slot2}`);
+      console.log(cellPair);
+      [this.cells[slot1], this.cells[slot2]] = [cellPair[0], cellPair[1]];
+      this.currentNumberOfPairs += 1;
+      this.requestUpdate();
+    }
   }
 
   async firstUpdated(): Promise<void> {
@@ -179,11 +247,6 @@ export class CombineToSolveSumApp extends TimeCountingGame {
     ];
   }
 
-  blahClick() {
-    console.log('blah click');
-    this.numberHearts -= 1;
-  }
-
   /** Render the game content */
   renderGameContent(): HTMLTemplateResult {
     const cells: HTMLTemplateResult[] = [];
@@ -195,11 +258,14 @@ export class CombineToSolveSumApp extends TimeCountingGame {
         cells.push(
           html`<div class="gridElement">
             <draggable-target-element
+              id="${cell.id}"
+              value="${cell.nmbr}"
               resetDragAfterDrop
               style="height: 50%; aspect-ratio: 1; display:block; position: relative; left: 10%; top: 10%;"
+              @dropped="${this.handleDropped}"
               >${getHeartasHTMLTemplateResult(
-                'teal',
-                `${cell}`
+                'red',
+                `${cell.nmbr}`
               )}</draggable-target-element
             >
           </div>`
