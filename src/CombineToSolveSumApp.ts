@@ -12,7 +12,7 @@ import { TimeCountingGame } from './TimeCountingGame';
 import './MompitzNumber';
 import './DynamicGrid';
 import './DraggableElement';
-import './DraggableTargetElement';
+import './DraggableTargetHeart';
 
 import {
   randomFromSet,
@@ -24,10 +24,12 @@ import {
 import { GameLogger } from './GameLogger';
 
 import './RealHeight';
-import { getHeartasHTMLTemplateResult } from './HeartImage';
-import type { DraggableTargetElement } from './DraggableTargetElement';
+import type { DraggableTargetHeart } from './DraggableTargetHeart';
 
-type CellType = { id: string; nmbr: number };
+type CellType = {
+  id: string;
+  nmbr: number;
+};
 
 @customElement('combine-to-solve-sum-app')
 export class CombineToSolveSumApp extends TimeCountingGame {
@@ -54,6 +56,13 @@ export class CombineToSolveSumApp extends TimeCountingGame {
   private mutationObserved(mutationList: MutationRecord[]) {
     console.log('mutations observed');
     console.log(mutationList);
+  }
+
+  private getHeart(query: string): DraggableTargetHeart {
+    console.log(`get heart called: ${query}`);
+    const ret = this.getElement<DraggableTargetHeart>(query);
+    console.log(ret);
+    return ret;
   }
 
   private parseUrl(): void {
@@ -94,7 +103,7 @@ export class CombineToSolveSumApp extends TimeCountingGame {
     // To be filled in
     const possibleCells: (CellType | null)[] = [];
     for (let i = 0; i < this.initialNumberOfPairs; i++) {
-      const cellPair = this.createPair(`${i * 2}`, `${i * 2 + 1}`);
+      const cellPair = this.createPair(`h${i * 2}`, `h${i * 2 + 1}`);
       possibleCells.push(cellPair[0]);
       possibleCells.push(cellPair[1]);
     }
@@ -131,28 +140,24 @@ export class CombineToSolveSumApp extends TimeCountingGame {
   }
 
   updateDropTargets(): void {
-    // Add all draggable-target-elements as targets to all draggable-target-elements;
+    // Add all draggable-target-hearts as targets to all draggable-target-hearts;
     console.log('update drop targets');
     this.renderRoot
-      .querySelectorAll('draggable-target-element')
+      .querySelectorAll('draggable-target-heart')
       .forEach(draggable => {
         console.log(draggable);
-        (<DraggableTargetElement>draggable).clearDropElements();
+        (<DraggableTargetHeart>draggable).clearDropElements();
+        const draggableHeart = <DraggableTargetHeart>draggable;
         this.renderRoot
-          .querySelectorAll('draggable-target-element')
+          .querySelectorAll('draggable-target-heart')
           .forEach(dropTarget => {
+            const dropTargetHeart = <DraggableTargetHeart>dropTarget;
             if (draggable !== dropTarget) {
-              (<DraggableTargetElement>draggable).addDropElement(
-                <DraggableTargetElement>dropTarget
+              (<DraggableTargetHeart>draggable).addDropElement(
+                <DraggableTargetHeart>dropTarget
               );
             }
           });
-
-        // Todo: This line results in the same event being handled multiple times, resulting in repetitions - needs to be solved
-        /*
-        draggable.addEventListener('dropped', event =>
-          this.handleDropped(<CustomEvent>event)
-        ); */
       });
   }
 
@@ -171,18 +176,26 @@ export class CombineToSolveSumApp extends TimeCountingGame {
     } else {
       console.log('No - wrong drop');
       this.numberNok += 1;
+      this.getHeart(`#${evt.detail.draggableId}`).markAsWrongDrop(
+        this.getHeart(`#${evt.detail.dropTargetId}`)
+      );
       this.addPair();
     }
   }
 
   removePair(id1: string, id2: string) {
+    console.log(`removePair ${id1}, ${id2}`);
+    console.log(`cells`);
+    console.log(this.cells);
     const cellIndex1 = this.cells.findIndex(
       cell => cell !== null && cell.id === id1
     );
+    console.log(`cellIndex1 = ${cellIndex1}`);
     this.cells[cellIndex1] = null;
     const cellIndex2 = this.cells.findIndex(
       cell => cell !== null && cell.id === id2
     );
+    console.log(`cellIndex2 = ${cellIndex2}`);
     this.cells[cellIndex2] = null;
     this.currentNumberOfPairs -= 1;
     this.requestUpdate();
@@ -191,8 +204,14 @@ export class CombineToSolveSumApp extends TimeCountingGame {
   createPair(id1: string, id2: string): CellType[] {
     const randomNumber = randomIntFromRange(1, this.sum - 1);
     return [
-      { id: id1, nmbr: randomNumber },
-      { id: id2, nmbr: this.sum - randomNumber },
+      {
+        id: id1,
+        nmbr: randomNumber,
+      },
+      {
+        id: id2,
+        nmbr: this.sum - randomNumber,
+      },
     ];
   }
 
@@ -207,7 +226,7 @@ export class CombineToSolveSumApp extends TimeCountingGame {
       const slot1 = randomFromSetAndSplice(potentialSlots);
       const slot2 = randomFromSetAndSplice(potentialSlots);
       console.log(`${slot1} & ${slot2}`);
-      const cellPair = this.createPair(`${slot1}`, `${slot2}`);
+      const cellPair = this.createPair(`h${slot1}`, `h${slot2}`);
       console.log(cellPair);
       [this.cells[slot1], this.cells[slot2]] = [cellPair[0], cellPair[1]];
       this.currentNumberOfPairs += 1;
@@ -257,17 +276,13 @@ export class CombineToSolveSumApp extends TimeCountingGame {
       } else {
         cells.push(
           html`<div class="gridElement">
-            <draggable-target-element
+            <draggable-target-heart
               id="${cell.id}"
               value="${cell.nmbr}"
               resetDragAfterDrop
               style="height: 50%; aspect-ratio: 1; display:block; position: relative; left: 10%; top: 10%;"
               @dropped="${this.handleDropped}"
-              >${getHeartasHTMLTemplateResult(
-                'red',
-                `${cell.nmbr}`
-              )}</draggable-target-element
-            >
+            ></draggable-target-heart>
           </div>`
         );
       }

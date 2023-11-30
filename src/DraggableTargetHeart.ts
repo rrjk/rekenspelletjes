@@ -7,14 +7,19 @@ import {
   DropTargetElement,
   HighlightType,
 } from './DraggableElement';
+import { getHeartasHTMLTemplateResult } from './HeartImage';
+import { Color } from './Colors';
 
-@customElement('draggable-target-element')
-export class DraggableTargetElement
+@customElement('draggable-target-heart')
+export class DraggableTargetHeart
   extends DraggableElement
   implements DropTargetElement
 {
   @state()
   private backgroundColor = 'transparent';
+
+  @state()
+  private heartColor: Color = 'red';
 
   /** Get all static styles */
   static get styles(): CSSResultArray {
@@ -29,6 +34,10 @@ export class DraggableTargetElement
   }
 
   render(): HTMLTemplateResult {
+    this.content = html`${getHeartasHTMLTemplateResult(
+      this.heartColor,
+      `${this.value}`
+    )}`;
     return html` <style>
         :host {
           --background-color: ${this.backgroundColor};
@@ -38,8 +47,9 @@ export class DraggableTargetElement
   }
 
   highlightForDrop(newState: HighlightType): void {
-    if (newState === 'none') this.backgroundColor = 'transparent';
-    else if (newState === 'droppable') this.backgroundColor = 'lightgrey';
-    else if (newState === 'wrong') this.backgroundColor = 'teal';
+    console.log(newState);
+    if (newState === 'none') this.heartColor = 'red';
+    else if (newState === 'droppable') this.heartColor = 'maroon';
+    else if (newState === 'wrong') this.heartColor = 'grey';
   }
 }

@@ -39,6 +39,9 @@ export class DraggableElement extends LitElement {
   @property({ type: String })
   value = '';
 
+  @state()
+  protected content = html`<slot> </slot>`; // Content of the draggeble element, default a slot but can be overruled in derived classes
+
   private dragActive = false;
   private touchPreviousScreenX = 0;
   private touchPreviousScreenY = 0;
@@ -79,10 +82,15 @@ export class DraggableElement extends LitElement {
   }
 
   markAsWrongDrop(element: DropTargetElement): void {
+    console.log(`mark as wrong drop`);
+    console.log(element);
     const targetToUpdate = this.dropTargets.find(
       target => element === target.element
     );
+    console.log(`target to update`);
+    console.log(targetToUpdate);
     if (targetToUpdate !== undefined) targetToUpdate.dropType = 'dropWrong';
+    console.log(targetToUpdate);
   }
 
   markAllTargetsAsDropOk(): void {
@@ -290,7 +298,7 @@ export class DraggableElement extends LitElement {
           );
         }
       </style>
-      <slot> </slot>
+      ${this.content}
     `;
   }
 }
