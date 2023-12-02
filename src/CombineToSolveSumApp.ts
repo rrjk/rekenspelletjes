@@ -104,31 +104,28 @@ export class CombineToSolveSumApp extends TimeCountingGame {
 
   private newRound() {
     // To be filled in
-    const possibleCells: (CellType | null)[] = [];
+    this.cells.length = 0;
     for (let i = 0; i < this.initialNumberOfPairs; i++) {
       const cellPair = this.createPair();
-      possibleCells.push(cellPair[0]);
-      possibleCells.push(cellPair[1]);
+      this.cells.push(cellPair[0]);
+      this.cells.push(cellPair[1]);
     }
     for (
       let j = this.initialNumberOfPairs * 2;
       j < this.maxNumberOfPairs * 2;
       j++
     ) {
-      possibleCells.push(null);
+      this.cells.push(null);
     }
-    console.log(`newRound possibleCells`);
-    console.log(possibleCells);
+    console.log(`newRound this cells filled in order`);
+    console.log(this.cells);
 
-    this.cells.length = 0;
-    for (let j = 0; j < this.maxNumberOfPairs * 2; j++) {
-      this.cells.push(randomFromSetAndSplice(possibleCells));
-    }
-    console.log(`new Round cells`);
+    shuffleArray(this.cells);
+
+    console.log(`newRound this cells randomized`);
     console.log(this.cells);
 
     this.currentNumberOfPairs = this.initialNumberOfPairs;
-
     this.requestUpdate();
   }
 
