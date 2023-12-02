@@ -3,9 +3,15 @@
 // SVG editor
 // https://boxy-svg.com/
 
-import { HTMLTemplateResult, html } from 'lit';
+import { LitElement, html, css } from 'lit';
 // eslint-disable-next-line import/extensions
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
+
+import type { HTMLTemplateResult, CSSResultGroup } from 'lit';
+// eslint-disable-next-line import/extensions
+import { customElement, property } from 'lit/decorators.js';
+// eslint-disable-next-line import/extensions
+import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 
 import { Color, colorArray } from './Colors';
 
@@ -41,6 +47,42 @@ export function getHeartasHTMLTemplateResult(
   text: string
 ): HTMLTemplateResult {
   return html`${unsafeHTML(getHeartAsSvgString(`${color}`, `${text}`))}`;
+}
+
+@customElement('heart-image')
+export class HeartImage extends LitElement {
+  @property({ type: String })
+  value = '';
+
+  static get styles(): CSSResultGroup {
+    return css`
+      :host {
+        display: block;
+      }
+      svg {
+        height: 100%;
+        width: 100%;
+        max-height: 100%;
+        max-width: 100%;
+      }
+    `;
+  }
+
+  protected updated(): void {
+    /* Workaround for bug found in firefox where draggable=false is ignored in case user-select is set to none.
+     * Please note that this expression cannot pierce into webcomponent's shadowdoms.
+     * The img in slots are found though.
+     */
+    if (window.navigator.userAgent.toLowerCase().includes('firefox')) {
+      this.renderRoot.querySelectorAll('img[draggable=false]').forEach(el => {
+        el.addEventListener('mousedown', event => event.preventDefault());
+      });
+    }
+  }
+
+  render(): HTMLTemplateResult {
+    return html`${unsafeHTML(getHeartAsSvgString('red', this.value))}`;
+  }
 }
 
 // M140 20C73 20 20 74 20 140c0 135 136 170 228 303 88-132 229-173 229-303 0-66-54-120-120-120-48 0-90 28-109 69-19-41-60-69-108-69z

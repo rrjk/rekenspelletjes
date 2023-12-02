@@ -17,6 +17,21 @@
       --hand-stroke-color: #800000;
       --dot-color: #800000;
     }
+    .heartDiv {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      justify-items: center;
+      align-items: center;
+      height: 62px;
+      width: 125px;
+    }
+
+    heart-image {
+      height: 88%;
+      width: 88%;
+      max-height: 100%;
+      max-width: 100%;
+    }
   </style>
   <head>
     <meta charset="UTF-8" />
@@ -30,6 +45,7 @@
     <script type="module" src="./src/ElliStarWithTextOverlay.ts"></script>
     <script type="module" src="./src/AnalogClock.ts"></script>
     <script type="module" src="./src/HandImage.ts"></script>
+    <script type="module" src="./src/HeartImage.ts"></script>
 
     <h1>Rekenspelletjes</h1>
     <div class="buttonTable">
@@ -60,6 +76,16 @@
           text1="/ \"
         ></game-icon-with-text-overlay>
       </icon-label-button>
+      <icon-label-button
+        title="Verliefde harten"
+        href="indexVerliefdeharten.html"
+      >
+        <div class="heartDiv">
+          <heart-image value="2"></heart-image>
+          <heart-image value="8"></heart-image>
+        </div>
+      </icon-label-button>
+
       <icon-label-button
         title="Plus- en minsommen zonder splitsen"
         href="indexBinnenTiental.html"
@@ -93,7 +119,6 @@
           showHourTickMarks
         ></analog-clock>
       </icon-label-button>
-
       <icon-label-button
         title="Sommen tot de 20 met één keer splitsen"
         href="indexSommenTot20Splitsen.html"
