@@ -33,7 +33,7 @@ type CellType = {
 export class CombineToSolveSumApp extends TimeCountingGame {
   private gameLogger = new GameLogger('N', '');
 
-  private initialNumberOfPairs = 2;
+  private initialNumberOfPairs = 10;
   private maxNumberOfPairs = 20;
   private currentNumberOfPairs = 0;
   private sum = 10;
