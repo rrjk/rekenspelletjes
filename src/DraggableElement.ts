@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 import { LitElement, html, css } from 'lit';
 import type { HTMLTemplateResult, CSSResultGroup } from 'lit';
 // eslint-disable-next-line import/extensions
@@ -9,6 +10,19 @@ export type DropType = 'dropOk' | 'dropWrong';
 
 export interface DropTargetElement extends HTMLElement {
   highlightForDrop(newState: HighlightType): void;
+  value?: string;
+}
+
+export class DropEvent extends Event {
+  draggableId = '';
+  draggableValue = '';
+  dropTargetId = '';
+  dropTargetValue = '';
+  dropType: DropType = 'dropOk';
+
+  constructor() {
+    super('dropped');
+  }
 }
 
 type DropTarget = {
@@ -20,6 +34,10 @@ type DropTarget = {
   maxDeltaY: number;
 };
 
+/** Draggable-element
+ * When a data-value is added as HTML attribute, this is reflected in the dropped event.
+ * When a data-value is added as HTML attribute to the droptarget, this is also reflected in the dropped event.
+ */
 @customElement('draggable-element')
 export class DraggableElement extends LitElement {
   @property({ type: Boolean })
@@ -30,6 +48,12 @@ export class DraggableElement extends LitElement {
   private cummulativeDeltaX = 0; // expressed as percentage of the viewport width
   @state()
   private cummulativeDeltaY = 0; // expressed as percentage of the viewport height
+
+  @property({ type: String })
+  value = '';
+
+  @state()
+  protected content = html`<slot> </slot>`; // Content of the draggeble element, default a slot but can be overruled in derived classes
 
   private dragActive = false;
   private touchPreviousScreenX = 0;
@@ -64,6 +88,16 @@ export class DraggableElement extends LitElement {
       minDeltaY: 0,
       maxDeltaY: 0,
     });
+  }
+
+  removeDropElements(elementIds: string[]): void {
+    this.dropTargets = this.dropTargets.filter(
+      elm => !elementIds.includes(elm.element.id)
+    );
+  }
+
+  clearDropElements(): void {
+    this.dropTargets.length = 0; // Setting the length of an array to 0 clears the array
   }
 
   markAsWrongDrop(element: DropTargetElement): void {
@@ -195,14 +229,14 @@ export class DraggableElement extends LitElement {
         this.cummulativeDeltaY > target.minDeltaY &&
         this.cummulativeDeltaY < target.maxDeltaY
       ) {
-        const event = new CustomEvent('dropped', {
-          detail: {
-            draggableId: this.id,
-            dropTargetId: target.element.id,
-            dropType: target.dropType,
-          },
-        });
+        const event = new DropEvent();
+        event.draggableId = this.id;
+        event.draggableValue = this.value;
+        event.dropTargetId = target.element.id;
+        event.dropTargetValue = target.element.value || '';
+        event.dropType = target.dropType;
         this.dispatchEvent(event);
+        break;
       }
     }
     if (this.resetDragAfterDrop) this.resetDrag();
@@ -269,7 +303,7 @@ export class DraggableElement extends LitElement {
           );
         }
       </style>
-      <slot> </slot>
+      ${this.content}
     `;
   }
 }

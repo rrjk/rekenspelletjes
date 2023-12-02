@@ -5,7 +5,7 @@ import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
 // import { darken, lighten } from 'color2k';
 
-import './DigitKeyboard';
+import './HeartImage';
 
 // import './RealHeight';
 
@@ -14,10 +14,10 @@ export class TestApp extends LitElement {
   static get styles(): CSSResultArray {
     return [
       css`
-        digit-keyboard.a {
-          width: 100px;
+        heart-image {
+          width: 200px;
           height: 150px;
-          position: relative;
+          border: 1px solid blue;
         }
       `,
     ];
@@ -25,6 +25,6 @@ export class TestApp extends LitElement {
 
   protected render(): HTMLTemplateResult {
     return html`<p>Test</p>
-      <digit-keyboard class="a"></digit-keyboard> `;
+      <heart-image value="5"></heart-image>`;
   }
 }

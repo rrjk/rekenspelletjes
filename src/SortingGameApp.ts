@@ -12,7 +12,7 @@ import { randomIntFromRange } from './Randomizer';
 import './AscendingBalloons';
 import { GameLogger } from './GameLogger';
 
-import type { DraggableElement } from './DraggableElement';
+import type { DraggableElement, DropEvent } from './DraggableElement';
 import './DraggableElement';
 
 import './MompitzNumber';
@@ -269,7 +269,7 @@ export class SortingGameApp extends TimeLimitedGame2 {
         });
 
       draggable.addEventListener('dropped', event =>
-        this.handleDropped(<CustomEvent>event)
+        this.handleDropped(<DropEvent>event)
       );
     });
 
@@ -286,10 +286,10 @@ export class SortingGameApp extends TimeLimitedGame2 {
     return super.firstUpdated();
   }
 
-  handleDropped(evt: CustomEvent) {
-    const number = this.numbers.find(elt => elt.id === evt.detail.draggableId);
+  handleDropped(evt: DropEvent) {
+    const number = this.numbers.find(elt => elt.id === evt.draggableId);
     if (number !== undefined) {
-      const box = this.boxes.find(elt => elt.id === evt.detail.dropTargetId);
+      const box = this.boxes.find(elt => elt.id === evt.dropTargetId);
       if (box !== undefined) {
         if (number.value === box.intendedValue) {
           number.visible = false;
@@ -297,18 +297,18 @@ export class SortingGameApp extends TimeLimitedGame2 {
           // Mark this target as a wrong drop target for all numbers
           for (const numberToMark of this.numbers) {
             this.getNumber(`#${numberToMark.id}`).markAsWrongDrop(
-              this.getBox(`#${evt.detail.dropTargetId}`)
+              this.getBox(`#${evt.dropTargetId}`)
             );
           }
           this.handleCorrectDrag();
           // The content of this.numbers and this.boxes has changed, but the variables have not been assigned a different object, so we need to manually request an update
           this.requestUpdate();
-        } else if (evt.detail.dropType === 'dropOk') {
+        } else if (evt.dropType === 'dropOk') {
           this.handleWrongAnswer();
           this.getNumber(`#${number.id}`).resetDrag();
           // A wrong drop was done, this target is marked as a wrong drop to prevent repeated wrong drops.
           this.getNumber(`#${number.id}`).markAsWrongDrop(
-            this.getBox(`#${evt.detail.dropTargetId}`)
+            this.getBox(`#${evt.dropTargetId}`)
           );
         } else {
           this.getNumber(`#${number.id}`).resetDrag();

@@ -39,7 +39,10 @@ export abstract class TimeCountingGame extends GameSkeleton {
           box-sizing: border-box;
           grid-template-rows: ${TimerBar.height}px 1fr;
         }
-        div {
+        .gameContent {
+          width: calc(var(--vw) * 100);
+          height: calc(var(--vh) * 100 - 20px);
+          box-sizing: border-box;
         }
       `,
     ];
@@ -69,7 +72,7 @@ export abstract class TimeCountingGame extends GameSkeleton {
           numberNok="${this.numberNok}"
           ?paused="${this.timerPaused}"
         ></timer-bar>
-        <div>${this.renderGameContent()}</div>
+        <div class="gameContent">${this.renderGameContent()}</div>
       </div>
     `;
   }
