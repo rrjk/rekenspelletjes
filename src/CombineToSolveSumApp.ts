@@ -4,13 +4,8 @@ import { customElement, state } from 'lit/decorators.js';
 // eslint-disable-next-line import/extensions
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
-// eslint-disable-next-line import/extensions
-import { MutationController } from '@lit-labs/observers/mutation-controller.js';
-
 import { TimeCountingGame } from './TimeCountingGame';
-import './MompitzNumber';
 import './DynamicGrid';
-import './DraggableElement';
 import './DraggableTargetHeart';
 
 import {
@@ -24,9 +19,12 @@ import { GameLogger } from './GameLogger';
 import './RealHeight';
 import type { DraggableTargetHeart } from './DraggableTargetHeart';
 
+/* Type for cell information */
 type CellType = {
-  id: string;
-  nmbr: number;
+  id: string; // Element id for the heart
+  nmbr: number; // Number to show in the heart
+  left: number; // Left position within the cell as percentage (0-40%)
+  top: number; // Top position within the cell as percentage (0-40%)
 };
 
 @customElement('combine-to-solve-sum-app')
@@ -46,25 +44,13 @@ export class CombineToSolveSumApp extends TimeCountingGame {
   @state()
   cells: (CellType | null)[] = [];
 
-  private mutationObserver = new MutationController(this, {
-    config: { attributes: true, childList: true, subtree: true },
-    callback: this.mutationObserved,
-  });
-
   constructor() {
     super();
     this.parseUrl();
   }
 
-  private mutationObserved(mutationList: MutationRecord[]) {
-    console.log('mutations observed');
-    console.log(mutationList);
-  }
-
   private getHeart(query: string): DraggableTargetHeart {
-    console.log(`get heart called: ${query}`);
     const ret = this.getElement<DraggableTargetHeart>(query);
-    console.log(ret);
     return ret;
   }
 
@@ -72,7 +58,24 @@ export class CombineToSolveSumApp extends TimeCountingGame {
     const urlParams = new URLSearchParams(window.location.search);
 
     // Get sum from the url. If no sum is present in the url, use 10.
+
     this.sum = parseInt(urlParams.get('sum') || '10', 10);
+    if (Number.isNaN(this.sum)) this.sum = 10;
+
+    this.initialNumberOfPairs = parseInt(
+      urlParams.get('initialNumberOfPairs') || '10',
+      10
+    );
+    if (Number.isNaN(this.initialNumberOfPairs)) this.initialNumberOfPairs = 10;
+
+    this.maxNumberOfPairs = parseInt(
+      urlParams.get('maxNumberOfPairs') || '20',
+      10
+    );
+    if (Number.isNaN(this.maxNumberOfPairs)) this.initialNumberOfPairs = 10;
+
+    if (this.maxNumberOfPairs < this.initialNumberOfPairs)
+      this.maxNumberOfPairs = this.initialNumberOfPairs + 2;
   }
 
   /** Start a new game.
@@ -94,17 +97,11 @@ export class CombineToSolveSumApp extends TimeCountingGame {
     return `Verliefde harten`;
   }
 
-  private handleCorrectAnswer(): void {
-    this.numberOk += 1;
-  }
-
-  private handleWrongAnswer(): void {
-    this.numberNok += 1;
-  }
-
   private newRound() {
-    // To be filled in
+    // We clear the old cells
     this.cells.length = 0;
+
+    // We fill all the cells with the correct number of pairs
     for (let i = 0; i < this.initialNumberOfPairs; i++) {
       const cellPair = this.createPair();
       this.cells.push(cellPair[0]);
@@ -117,13 +114,9 @@ export class CombineToSolveSumApp extends TimeCountingGame {
     ) {
       this.cells.push(null);
     }
-    console.log(`newRound this cells filled in order`);
-    console.log(this.cells);
 
+    // We shuffle the cells
     shuffleArray(this.cells);
-
-    console.log(`newRound this cells randomized`);
-    console.log(this.cells);
 
     this.currentNumberOfPairs = this.initialNumberOfPairs;
     this.requestUpdate();
@@ -135,43 +128,13 @@ export class CombineToSolveSumApp extends TimeCountingGame {
 
   async updated(): Promise<void> {
     await this.getUpdateComplete();
-    console.log('updated');
+    // Whenever an update was done, we need to update the drop targets.
     this.updateDropTargets();
   }
-
-  /*
-  updateDropTargetsOldToBeRemoved(): void {
-    // Add all draggable-target-hearts as targets to all draggable-target-hearts;
-    console.log('update drop targets');
-    this.renderRoot
-      .querySelectorAll('draggable-target-heart')
-      .forEach(draggable => {
-        console.log(draggable);
-        (<DraggableTargetHeart>draggable).clearDropElements();
-        const draggableHeart = <DraggableTargetHeart>draggable;
-        this.renderRoot
-          .querySelectorAll('draggable-target-heart')
-          .forEach(dropTarget => {
-            const dropTargetHeart = <DraggableTargetHeart>dropTarget;
-            if (draggable !== dropTarget) {
-              (<DraggableTargetHeart>draggable).addDropElement(
-                <DraggableTargetHeart>dropTarget
-              );
-            }
-          });
-      });
-  }
-*/
 
   updateDropTargets(): void {
     this.addNewDropTargets();
     this.removeDropTargets();
-    console.log(`all draggable hearts`);
-    this.renderRoot
-      .querySelectorAll(`draggable-target-heart`)
-      .forEach(draggable => {
-        console.log(draggable);
-      });
   }
 
   removeDropTargets(): void {
@@ -189,8 +152,6 @@ export class CombineToSolveSumApp extends TimeCountingGame {
   }
 
   addNewDropTargets(): void {
-    console.log(`updateDropTargets`);
-
     if (this.newHearts.length === 0) return;
 
     // find the draggable-target-heart elements that correspond to the new hearts.
@@ -200,15 +161,12 @@ export class CombineToSolveSumApp extends TimeCountingGame {
       if (this.newHearts.includes(draggableTargetHeart.id))
         newDraggableHearts.push(draggableTargetHeart);
     });
-    console.log(`new DraggableTargetHeart`);
-    console.log(newDraggableHearts);
 
     // Add all new draggable-target-hearts as targets to all existing draggable-target-hearts
     this.renderRoot
       .querySelectorAll('draggable-target-heart')
       .forEach(draggable => {
         if (!this.newHearts.includes(draggable.id)) {
-          console.log(draggable);
           const draggableHeart = draggable as DraggableTargetHeart;
           newDraggableHearts.forEach(newDraggableHeart => {
             if (draggableHeart !== newDraggableHeart) {
@@ -233,19 +191,15 @@ export class CombineToSolveSumApp extends TimeCountingGame {
   }
 
   handleDropped(evt: CustomEvent) {
-    console.log('dropped in game');
-    console.log(evt);
     if (
       parseInt(evt.detail.draggableValue, 10) +
         parseInt(evt.detail.dropTargetValue, 10) ===
-      10
+      this.sum
     ) {
-      console.log('Yes - correct drop');
       this.numberOk += 1;
       this.removePair(evt.detail.draggableId, evt.detail.dropTargetId);
       if (this.currentNumberOfPairs === 0) this.handleGameOver();
-    } else {
-      console.log('No - wrong drop');
+    } else if (evt.detail.dropType === 'dropOk') {
       this.numberNok += 1;
       this.getHeart(`#${evt.detail.draggableId}`).markAsWrongDrop(
         this.getHeart(`#${evt.detail.dropTargetId}`)
@@ -255,18 +209,13 @@ export class CombineToSolveSumApp extends TimeCountingGame {
   }
 
   removePair(id1: string, id2: string) {
-    console.log(`removePair ${id1}, ${id2}`);
-    console.log(`cells`);
-    console.log(this.cells);
     const cellIndex1 = this.cells.findIndex(
       cell => cell !== null && cell.id === id1
     );
-    console.log(`cellIndex1 = ${cellIndex1}`);
     this.cells[cellIndex1] = null;
     const cellIndex2 = this.cells.findIndex(
       cell => cell !== null && cell.id === id2
     );
-    console.log(`cellIndex2 = ${cellIndex2}`);
     this.cells[cellIndex2] = null;
     this.currentNumberOfPairs -= 1;
     this.removedHearts.push(id1);
@@ -286,27 +235,26 @@ export class CombineToSolveSumApp extends TimeCountingGame {
       {
         id: id1,
         nmbr: randomNumber,
+        left: randomIntFromRange(0, 45),
+        top: randomIntFromRange(0, 45),
       },
       {
         id: id2,
         nmbr: this.sum - randomNumber,
+        left: randomIntFromRange(0, 45),
+        top: randomIntFromRange(0, 45),
       },
     ];
   }
 
   addPair() {
-    console.log(`addPair`);
     if (this.currentNumberOfPairs < this.maxNumberOfPairs) {
       const potentialSlots: number[] = [];
       for (let i = 0; i < this.cells.length; i++)
         if (this.cells[i] === null) potentialSlots.push(i);
-      console.log(`empty slots`);
-      console.log(potentialSlots);
       const slot1 = randomFromSetAndSplice(potentialSlots);
       const slot2 = randomFromSetAndSplice(potentialSlots);
-      console.log(`${slot1} & ${slot2}`);
       const cellPair = this.createPair();
-      console.log(cellPair);
       [this.cells[slot1], this.cells[slot2]] = [cellPair[0], cellPair[1]];
       this.currentNumberOfPairs += 1;
       this.requestUpdate();
@@ -330,35 +278,24 @@ export class CombineToSolveSumApp extends TimeCountingGame {
 
   /** Get all static styles */
   static get styles(): CSSResultArray {
-    return [
-      ...super.styles,
-      css`
-        button {
-          border: 0px;
-          background-color: transparent;
-        }
-        button.selected {
-          background-color: lightblue;
-        }
-      `,
-    ];
+    return [...super.styles];
   }
 
   /** Render the game content */
   renderGameContent(): HTMLTemplateResult {
-    const cells: HTMLTemplateResult[] = [];
+    const cellElements: HTMLTemplateResult[] = [];
 
     for (const cell of this.cells) {
       if (cell === null) {
-        cells.push(html`<div class="gridElement"></div>`);
+        cellElements.push(html`<div class="gridElement"></div>`);
       } else {
-        cells.push(
+        cellElements.push(
           html`<div class="gridElement">
             <draggable-target-heart
               id="${cell.id}"
               value="${cell.nmbr}"
               resetDragAfterDrop
-              style="height: 50%; aspect-ratio: 1; display:block; position: relative; left: 10%; top: 10%;"
+              style="height: 50%; aspect-ratio: 1; display:block; position: relative; left: ${cell.left}%; top: ${cell.top}%;"
               @dropped="${this.handleDropped}"
             ></draggable-target-heart>
           </div>`
@@ -372,7 +309,7 @@ export class CombineToSolveSumApp extends TimeCountingGame {
           padding="0"
           style="width: 100%; height: 100%; top: 0;"
         >
-          ${cells}
+          ${cellElements}
         </dynamic-grid>
       </button>
     `;

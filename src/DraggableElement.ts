@@ -78,8 +78,6 @@ export class DraggableElement extends LitElement {
   }
 
   removeDropElements(elementIds: string[]): void {
-    console.log(`removeDropElements`);
-    console.log(elementIds);
     this.dropTargets = this.dropTargets.filter(
       elm => !elementIds.includes(elm.element.id)
     );
@@ -90,15 +88,10 @@ export class DraggableElement extends LitElement {
   }
 
   markAsWrongDrop(element: DropTargetElement): void {
-    console.log(`mark as wrong drop`);
-    console.log(element);
     const targetToUpdate = this.dropTargets.find(
       target => element === target.element
     );
-    console.log(`target to update`);
-    console.log(targetToUpdate);
     if (targetToUpdate !== undefined) targetToUpdate.dropType = 'dropWrong';
-    console.log(targetToUpdate);
   }
 
   markAllTargetsAsDropOk(): void {
@@ -215,11 +208,7 @@ export class DraggableElement extends LitElement {
   }
 
   private handleEndOfDrag(): void {
-    console.log(`hand end of drag`);
-    let cnt = 0;
     for (const target of this.dropTargets) {
-      cnt += 1;
-      console.log(`cnt = ${cnt}`);
       target.element.highlightForDrop('none');
       if (
         this.cummulativeDeltaX > target.minDeltaX &&
@@ -236,9 +225,7 @@ export class DraggableElement extends LitElement {
             dropType: target.dropType,
           },
         });
-        console.log(event);
         this.dispatchEvent(event);
-        console.log('event fired');
         break;
       }
     }

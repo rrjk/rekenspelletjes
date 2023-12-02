@@ -1,6 +1,6 @@
-import { CSSResultArray, LitElement, html, css } from 'lit';
+import { CSSResultArray, html, css } from 'lit';
 // eslint-disable-next-line import/extensions
-import { customElement, state, property } from 'lit/decorators.js';
+import { customElement, state } from 'lit/decorators.js';
 import type { HTMLTemplateResult } from 'lit';
 import {
   DraggableElement,
@@ -47,7 +47,6 @@ export class DraggableTargetHeart
   }
 
   highlightForDrop(newState: HighlightType): void {
-    console.log(newState);
     if (newState === 'none') this.heartColor = 'red';
     else if (newState === 'droppable') this.heartColor = 'maroon';
     else if (newState === 'wrong') this.heartColor = 'grey';
