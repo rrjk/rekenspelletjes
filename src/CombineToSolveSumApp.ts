@@ -1,4 +1,4 @@
-import { html, css } from 'lit';
+import { html } from 'lit';
 // eslint-disable-next-line import/extensions
 import { customElement, state } from 'lit/decorators.js';
 // eslint-disable-next-line import/extensions
@@ -18,6 +18,7 @@ import { GameLogger } from './GameLogger';
 
 import './RealHeight';
 import type { DraggableTargetHeart } from './DraggableTargetHeart';
+import type { DropEvent } from './DraggableElement';
 
 /* Type for cell information */
 type CellType = {
@@ -190,19 +191,18 @@ export class CombineToSolveSumApp extends TimeCountingGame {
     this.newHearts.length = 0;
   }
 
-  handleDropped(evt: CustomEvent) {
+  handleDropped(evt: DropEvent) {
     if (
-      parseInt(evt.detail.draggableValue, 10) +
-        parseInt(evt.detail.dropTargetValue, 10) ===
+      parseInt(evt.draggableValue, 10) + parseInt(evt.dropTargetValue, 10) ===
       this.sum
     ) {
       this.numberOk += 1;
-      this.removePair(evt.detail.draggableId, evt.detail.dropTargetId);
+      this.removePair(evt.draggableId, evt.dropTargetId);
       if (this.currentNumberOfPairs === 0) this.handleGameOver();
-    } else if (evt.detail.dropType === 'dropOk') {
+    } else if (evt.dropType === 'dropOk') {
       this.numberNok += 1;
-      this.getHeart(`#${evt.detail.draggableId}`).markAsWrongDrop(
-        this.getHeart(`#${evt.detail.dropTargetId}`)
+      this.getHeart(`#${evt.draggableId}`).markAsWrongDrop(
+        this.getHeart(`#${evt.dropTargetId}`)
       );
       this.addPair();
     }

@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 import { LitElement, html, css } from 'lit';
 import type { HTMLTemplateResult, CSSResultGroup } from 'lit';
 // eslint-disable-next-line import/extensions
@@ -10,6 +11,18 @@ export type DropType = 'dropOk' | 'dropWrong';
 export interface DropTargetElement extends HTMLElement {
   highlightForDrop(newState: HighlightType): void;
   value?: string;
+}
+
+export class DropEvent extends Event {
+  draggableId = '';
+  draggableValue = '';
+  dropTargetId = '';
+  dropTargetValue = '';
+  dropType: DropType = 'dropOk';
+
+  constructor() {
+    super('dropped');
+  }
 }
 
 type DropTarget = {
@@ -216,15 +229,12 @@ export class DraggableElement extends LitElement {
         this.cummulativeDeltaY > target.minDeltaY &&
         this.cummulativeDeltaY < target.maxDeltaY
       ) {
-        const event = new CustomEvent('dropped', {
-          detail: {
-            draggableId: this.id,
-            draggableValue: this.value,
-            dropTargetId: target.element.id,
-            dropTargetValue: target.element.value,
-            dropType: target.dropType,
-          },
-        });
+        const event = new DropEvent();
+        event.draggableId = this.id;
+        event.draggableValue = this.value;
+        event.dropTargetId = target.element.id;
+        event.dropTargetValue = target.element.value || '';
+        event.dropType = target.dropType;
         this.dispatchEvent(event);
         break;
       }
