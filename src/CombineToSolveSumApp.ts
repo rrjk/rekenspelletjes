@@ -2,7 +2,6 @@ import { html, css } from 'lit';
 // eslint-disable-next-line import/extensions
 import { customElement, state } from 'lit/decorators.js';
 // eslint-disable-next-line import/extensions
-import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
 // eslint-disable-next-line import/extensions
@@ -15,7 +14,6 @@ import './DraggableElement';
 import './DraggableTargetHeart';
 
 import {
-  randomFromSet,
   randomFromSetAndSplice,
   randomIntFromRange,
   shuffleArray,
@@ -39,6 +37,11 @@ export class CombineToSolveSumApp extends TimeCountingGame {
   private maxNumberOfPairs = 20;
   private currentNumberOfPairs = 0;
   private sum = 10;
+
+  private newHearts: string[] = [];
+  private removedHearts: string[] = [];
+
+  private nextHeartId = 0;
 
   @state()
   cells: (CellType | null)[] = [];
@@ -103,7 +106,7 @@ export class CombineToSolveSumApp extends TimeCountingGame {
     // To be filled in
     const possibleCells: (CellType | null)[] = [];
     for (let i = 0; i < this.initialNumberOfPairs; i++) {
-      const cellPair = this.createPair(`h${i * 2}`, `h${i * 2 + 1}`);
+      const cellPair = this.createPair();
       possibleCells.push(cellPair[0]);
       possibleCells.push(cellPair[1]);
     }
@@ -139,7 +142,8 @@ export class CombineToSolveSumApp extends TimeCountingGame {
     this.updateDropTargets();
   }
 
-  updateDropTargets(): void {
+  /*
+  updateDropTargetsOldToBeRemoved(): void {
     // Add all draggable-target-hearts as targets to all draggable-target-hearts;
     console.log('update drop targets');
     this.renderRoot
@@ -159,6 +163,76 @@ export class CombineToSolveSumApp extends TimeCountingGame {
             }
           });
       });
+  }
+*/
+
+  updateDropTargets(): void {
+    this.addNewDropTargets();
+    this.removeDropTargets();
+    console.log(`all draggable hearts`);
+    this.renderRoot
+      .querySelectorAll(`draggable-target-heart`)
+      .forEach(draggable => {
+        console.log(draggable);
+      });
+  }
+
+  removeDropTargets(): void {
+    if (this.removedHearts.length === 0) return;
+
+    // Iterate over all visible draggable-target-hearts and remove the removed hearts from the drop target list
+    this.renderRoot
+      .querySelectorAll(`draggable-target-heart`)
+      .forEach(draggable => {
+        const draggableHeart = draggable as DraggableTargetHeart;
+        draggableHeart.removeDropElements(this.removedHearts);
+      });
+
+    this.removedHearts.length = 0;
+  }
+
+  addNewDropTargets(): void {
+    console.log(`updateDropTargets`);
+
+    if (this.newHearts.length === 0) return;
+
+    // find the draggable-target-heart elements that correspond to the new hearts.
+    const newDraggableHearts: DraggableTargetHeart[] = [];
+    this.renderRoot.querySelectorAll('draggable-target-heart').forEach(elm => {
+      const draggableTargetHeart = elm as DraggableTargetHeart;
+      if (this.newHearts.includes(draggableTargetHeart.id))
+        newDraggableHearts.push(draggableTargetHeart);
+    });
+    console.log(`new DraggableTargetHeart`);
+    console.log(newDraggableHearts);
+
+    // Add all new draggable-target-hearts as targets to all existing draggable-target-hearts
+    this.renderRoot
+      .querySelectorAll('draggable-target-heart')
+      .forEach(draggable => {
+        if (!this.newHearts.includes(draggable.id)) {
+          console.log(draggable);
+          const draggableHeart = draggable as DraggableTargetHeart;
+          newDraggableHearts.forEach(newDraggableHeart => {
+            if (draggableHeart !== newDraggableHeart) {
+              draggableHeart.addDropElement(newDraggableHeart);
+            }
+          });
+        }
+      });
+
+    // Add all draggable-target-hearts as targets to all new draggable-target-hearts
+    newDraggableHearts.forEach(newDraggableHeart => {
+      this.renderRoot
+        .querySelectorAll('draggable-target-heart')
+        .forEach(draggable => {
+          const draggableHeart = draggable as DraggableTargetHeart;
+          if (newDraggableHeart.id !== draggableHeart.id)
+            newDraggableHeart.addDropElement(draggableHeart);
+        });
+    });
+
+    this.newHearts.length = 0;
   }
 
   handleDropped(evt: CustomEvent) {
@@ -198,11 +272,19 @@ export class CombineToSolveSumApp extends TimeCountingGame {
     console.log(`cellIndex2 = ${cellIndex2}`);
     this.cells[cellIndex2] = null;
     this.currentNumberOfPairs -= 1;
+    this.removedHearts.push(id1);
+    this.removedHearts.push(id2);
     this.requestUpdate();
   }
 
-  createPair(id1: string, id2: string): CellType[] {
+  createPair(): CellType[] {
     const randomNumber = randomIntFromRange(1, this.sum - 1);
+    const id1 = `h${this.nextHeartId}`;
+    const id2 = `h${this.nextHeartId + 1}`;
+    this.newHearts.push(`h${this.nextHeartId}`);
+    this.newHearts.push(`h${this.nextHeartId + 1}`);
+    this.nextHeartId += 2;
+
     return [
       {
         id: id1,
@@ -226,7 +308,7 @@ export class CombineToSolveSumApp extends TimeCountingGame {
       const slot1 = randomFromSetAndSplice(potentialSlots);
       const slot2 = randomFromSetAndSplice(potentialSlots);
       console.log(`${slot1} & ${slot2}`);
-      const cellPair = this.createPair(`h${slot1}`, `h${slot2}`);
+      const cellPair = this.createPair();
       console.log(cellPair);
       [this.cells[slot1], this.cells[slot2]] = [cellPair[0], cellPair[1]];
       this.currentNumberOfPairs += 1;
@@ -236,7 +318,6 @@ export class CombineToSolveSumApp extends TimeCountingGame {
 
   async firstUpdated(): Promise<void> {
     await this.getUpdateComplete();
-    this.updateDropTargets();
 
     /* Workaround for bug found in firefox where draggable=false is ignored in case user-select is set to none.
      * Please note that this expression cannot pierce into webcomponent's shadowroms.

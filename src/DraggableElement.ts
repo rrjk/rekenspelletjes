@@ -77,6 +77,14 @@ export class DraggableElement extends LitElement {
     });
   }
 
+  removeDropElements(elementIds: string[]): void {
+    console.log(`removeDropElements`);
+    console.log(elementIds);
+    this.dropTargets = this.dropTargets.filter(
+      elm => !elementIds.includes(elm.element.id)
+    );
+  }
+
   clearDropElements(): void {
     this.dropTargets.length = 0; // Setting the length of an array to 0 clears the array
   }
