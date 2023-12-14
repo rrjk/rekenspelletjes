@@ -4,7 +4,16 @@ import type { HTMLTemplateResult, CSSResultGroup } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
 /** Possible balloon colors */
-export type ImageColors = 'yellow' | 'green' | 'blue';
+export type ImageColors =
+  | 'red'
+  | 'orange'
+  | 'yellow'
+  | 'lime'
+  | 'green'
+  | 'cyan'
+  | 'blue'
+  | 'purple'
+  | 'magenta';
 
 @customElement('elli-star-with-text-overlay')
 export class BalloonIndex extends LitElement {
@@ -36,9 +45,15 @@ export class BalloonIndex extends LitElement {
         padding: 0;
       }
 
-      .image-blue {
+      .image-red {
         background-image: url('${unsafeCSS(
-          new URL('../images/Mompitz Elli star-blue.png', import.meta.url)
+          new URL('../images/Mompitz Elli star-red.png', import.meta.url)
+        )}');
+      }
+
+      .image-orange {
+        background-image: url('${unsafeCSS(
+          new URL('../images/Mompitz Elli star-orange.png', import.meta.url)
         )}');
       }
 
@@ -48,9 +63,39 @@ export class BalloonIndex extends LitElement {
         )}');
       }
 
+      .image-lime {
+        background-image: url('${unsafeCSS(
+          new URL('../images/Mompitz Elli star-lime.png', import.meta.url)
+        )}');
+      }
+
       .image-green {
         background-image: url('${unsafeCSS(
           new URL('../images/Mompitz Elli star-green.png', import.meta.url)
+        )}');
+      }
+
+      .image-cyan {
+        background-image: url('${unsafeCSS(
+          new URL('../images/Mompitz Elli star-cyan.png', import.meta.url)
+        )}');
+      }
+
+      .image-blue {
+        background-image: url('${unsafeCSS(
+          new URL('../images/Mompitz Elli star-blue.png', import.meta.url)
+        )}');
+      }
+
+      .image-purple {
+        background-image: url('${unsafeCSS(
+          new URL('../images/Mompitz Elli star-purple.png', import.meta.url)
+        )}');
+      }
+
+      .image-magenta {
+        background-image: url('${unsafeCSS(
+          new URL('../images/Mompitz Elli star-magenta.png', import.meta.url)
         )}');
       }
 
