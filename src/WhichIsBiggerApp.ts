@@ -169,7 +169,6 @@ export class WhichIsBiggerApp extends TimeLimitedGame2 {
     this.requestUpdate(); // As we are updating an array, we need to explicitely request an update
   }
 
-  /** Get the text to show in the game over dialog */
   get welcomeMessage(): HTMLTemplateResult {
     let res = html``;
     if (this.countOnly) {
@@ -184,6 +183,10 @@ export class WhichIsBiggerApp extends TimeLimitedGame2 {
       res = html`<p>Wijs de hand aan met de meeste stippen.</p>`;
 
     return res;
+  }
+
+  executeGameOverActions(): void {
+    this.gameLogger.logGameOver();
   }
 
   /** Get the title for the welcome dialog. */

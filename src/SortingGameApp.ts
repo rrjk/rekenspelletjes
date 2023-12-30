@@ -123,6 +123,7 @@ export class SortingGameApp extends TimeLimitedGame2 {
     if (urlParams.has('boxColor')) {
       if (urlParams.get('boxColor') === 'blue') {
         this.boxColor = 'blue';
+        this.gameLogger.setMainCode('S');
       }
     }
   }

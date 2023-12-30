@@ -65,7 +65,7 @@ export class AdditionSubstractionWholeDecadeApp extends TimeLimitedGame2 {
         this.gameLogger.setSubCode('c');
       } else if (this.operators[0] === '+') {
         this.gameLogger.setSubCode('a');
-      } else if (this.operators[1] === '-') {
+      } else if (this.operators[0] === '-') {
         this.gameLogger.setSubCode('b');
       }
     } else if (this.decadeFirst) {
@@ -73,7 +73,7 @@ export class AdditionSubstractionWholeDecadeApp extends TimeLimitedGame2 {
         this.gameLogger.setSubCode('f');
       } else if (this.operators[0] === '+') {
         this.gameLogger.setSubCode('d');
-      } else if (this.operators[1] === '-') {
+      } else if (this.operators[0] === '-') {
         this.gameLogger.setSubCode('e');
       }
     }

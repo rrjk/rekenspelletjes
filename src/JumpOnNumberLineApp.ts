@@ -29,6 +29,7 @@ import { ParseNumberLineParameters } from './NumberLineParameters';
 import type { NumberLineParameters } from './NumberLineParameters';
 
 import { ParseGametimeFromUrl } from './GametimeParameters';
+import { GameLogger } from './GameLogger';
 
 @customElement('jump-on-numberline-app')
 export class JumpOnNumberLineApp extends LitElement {
@@ -108,6 +109,8 @@ export class JumpOnNumberLineApp extends LitElement {
   private static readonly janFootFraction = (214 - 80 - 125) / 214;
   /** Middle of the foot location as fraction of the width of Jan */
   private static readonly janMiddleOfFootFraction = 102 / 214;
+
+  private gameLogger = new GameLogger('U', 'a');
 
   /** Constructor, parse URL parameters */
   constructor() {
@@ -324,6 +327,7 @@ export class JumpOnNumberLineApp extends LitElement {
 
   /** Handle the time up, when the game is over. */
   handleTimeUp(): void {
+    this.gameLogger.logGameOver();
     this.showNumber = false;
     this.gameOverDialog
       .show(

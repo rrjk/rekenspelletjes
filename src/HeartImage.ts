@@ -10,8 +10,6 @@ import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import type { HTMLTemplateResult, CSSResultGroup } from 'lit';
 // eslint-disable-next-line import/extensions
 import { customElement, property } from 'lit/decorators.js';
-// eslint-disable-next-line import/extensions
-import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 
 import { Color, colorArray } from './Colors';
 

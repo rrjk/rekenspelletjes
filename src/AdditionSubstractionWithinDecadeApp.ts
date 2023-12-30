@@ -30,7 +30,7 @@ export class AdditionSubstractionWithinDecadeApp extends TimeLimitedGame2 {
 
   private decades: number[] = [];
   private operators: Operator[] = [];
-  private gameLogger = new GameLogger('B', '');
+  private gameLogger = new GameLogger('A', '');
 
   constructor() {
     super();
