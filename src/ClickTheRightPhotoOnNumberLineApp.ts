@@ -18,6 +18,7 @@ import './GameOverDialog';
 import type { GameOverDialog } from './GameOverDialog';
 
 import { ChildNotFoundError } from './ChildNotFoundError';
+import { GameLogger } from './GameLogger';
 
 class ClickTheRightPhotoOnNumberLineApp extends LitElement {
   numberToClick: number;
@@ -31,6 +32,8 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
   disabledPositions: number[];
   _numberOk: number;
   _numberNok: number;
+
+  private gameLogger = new GameLogger('T', 'a');
 
   static get properties() {
     return {
@@ -242,6 +245,7 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
   }
 
   handleTimeUp(): void {
+    this.gameLogger.logGameOver();
     this._gameOverDialog
       .show(
         html` <p>

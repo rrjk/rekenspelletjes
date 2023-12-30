@@ -9,11 +9,15 @@ export class GameLogger {
 
   logGameOver(): void {
     fetch(
-      `https://counter.jufankie.nl/asdflog.php?game=${this.mainCode}${this.subCode}`,
+      `https://counter.jufankie.nl/asdflog.php?game=${this.mainCode}&subgame=${this.subCode}`,
       {
         method: 'POST',
       }
     );
+  }
+
+  setMainCode(mainCode: string): void {
+    this.mainCode = mainCode;
   }
 
   setSubCode(subCode: string): void {

@@ -149,16 +149,20 @@ export class SumsWithDoubleSplitApp extends TimeLimitedGame2 {
       this.game === 'split2Till100' &&
       this.operators.length === 1 &&
       this.operators[0] === '+'
-    )
-      this.gameLogger.setSubCode('g');
-    else if (
+    ) {
+      this.gameLogger.setMainCode('V');
+      this.gameLogger.setSubCode('a');
+    } else if (
       this.game === 'split2Till100' &&
       this.operators.length === 1 &&
       this.operators[0] === '-'
-    )
-      this.gameLogger.setSubCode('h');
-    else if (this.game === 'split2Till100' && this.operators.length === 2)
-      this.gameLogger.setSubCode('i');
+    ) {
+      this.gameLogger.setMainCode('V');
+      this.gameLogger.setSubCode('b');
+    } else if (this.game === 'split2Till100' && this.operators.length === 2) {
+      this.gameLogger.setMainCode('V');
+      this.gameLogger.setSubCode('c');
+    }
   }
 
   override async getUpdateComplete(): Promise<boolean> {

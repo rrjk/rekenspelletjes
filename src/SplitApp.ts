@@ -11,6 +11,7 @@ import type { Answers, AscendingBalloons } from './AscendingBalloons';
 
 import './SplitDigit';
 import type { SplittableNumber } from './SplitDigit';
+import { GameLogger } from './GameLogger';
 
 @customElement('split-app')
 export class SplitApp extends TimeLimitedGame2 {
@@ -23,6 +24,8 @@ export class SplitApp extends TimeLimitedGame2 {
   private answers: Answers = { correct: 1, incorrect: [2, 3, 4] };
   @state()
   private gameElementsDisabled = true;
+
+  private gameLogger = new GameLogger('R', 'a');
 
   constructor() {
     super();
@@ -162,6 +165,7 @@ export class SplitApp extends TimeLimitedGame2 {
 
   executeGameOverActions(): void {
     this.gameElementsDisabled = true;
+    this.gameLogger.logGameOver();
   }
 
   /** Render the game content */

@@ -132,14 +132,16 @@ export class ClickInOrderApp extends TimeCountingGame {
         // this.labelsInOrder will be set in StartNewGame
         this.showSum = true;
         this.welcomeMessageString = `Kies het juiste getal bij de keersommen.`;
-        this.gameLogger.setSubCode('e');
+        this.gameLogger.setMainCode('Q');
+        this.gameLogger.setSubCode('a');
       } else {
         for (let i = 1; i <= this.nmbrBalls; i++) {
           this.labelsInOrder.push(`${i * this.tables[0]}`);
         }
         this.welcomeMessageString = `Klik de getallen aan, van klein naar groot,
           met sprongen van ${this.tables[0]}.`;
-        this.gameLogger.setSubCode('d');
+        this.gameLogger.setMainCode('P');
+        this.gameLogger.setSubCode('a');
       }
     } else if (urlParams.has('random')) {
       const startNumber = randomIntFromRange(20, 80);

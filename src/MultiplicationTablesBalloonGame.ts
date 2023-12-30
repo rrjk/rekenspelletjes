@@ -99,23 +99,30 @@ export class MultiplicationTablesBalloonGameApp extends TimeLimitedGame2 {
       this.operators.length === 1 &&
       this.operators[0] === '×' &&
       this.image === 'balloon'
-    )
+    ) {
       this.gameLogger.setSubCode('a');
-    else if (
+      this.gameLogger.setMainCode('D');
+    } else if (
       this.operators.length === 1 &&
       this.operators[0] === '×' &&
       this.image === 'rocket'
-    )
-      this.gameLogger.setSubCode('b');
-    else if (
+    ) {
+      this.gameLogger.setSubCode('a');
+      this.gameLogger.setMainCode('C');
+    } else if (
       this.operators.length === 1 &&
       this.operators[0] === ':' &&
       this.image === 'rocket'
-    )
+    ) {
+      this.gameLogger.setSubCode('b');
+      this.gameLogger.setMainCode('C');
+    } else if (this.operators.length === 2 && this.image === 'rocket') {
       this.gameLogger.setSubCode('c');
-    else if (this.operators.length === 2 && this.image === 'rocket')
-      this.gameLogger.setSubCode('d');
-    else this.gameLogger.setSubCode('z');
+      this.gameLogger.setMainCode('C');
+    } else if (this.image === 'zeppelin') {
+      this.gameLogger.setSubCode('a');
+      this.gameLogger.setMainCode('K');
+    } else this.gameLogger.setSubCode('z');
   }
 
   /** Get the ascending balloons child */
