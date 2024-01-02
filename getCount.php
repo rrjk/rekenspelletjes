@@ -8,10 +8,10 @@
     }
     else{
         http_response_code(400);  
-        array_push($errors, "No game code provided"); 
+        array_push($errors, "No game code(s) provided"); 
     }
 
-
+    $games = explode(',', $game);
 
     if (array_key_exists('year', $_GET)){
         $year = intval($_GET["year"]);
@@ -25,29 +25,29 @@
         $year = intval(date("Y"));
     }
 
-    if (array_key_exists('month', $_GET)){
-        $month = intval($_GET["month"]);
-        if ($month < 1 || $month > 12){
-            http_response_code(400);  
-            array_push($errors, "Invalid month provided (1-12 is allowed)"); 
-        }
-    }
-    else{
-        $month = intval(date("m"));
-    }
-
     if (count($errors) === 0){
-        $filename = "./count_".$game."_".$year.sprintf("%02d",$month).".txt";
 
-        if (file_exists($filename)){
-            $count = intval(file_get_contents($filename));
+        $data = [];
+        for ($i=0; $i < count($games); $i++){
+            $gameData = [];
+            
+            $monthlyCounts = [];
+
+            for ($month = 1; $month <= 12; $month++){
+                $filename = "./count_".$games[$i]."_".$year.sprintf("%02d",$month).".txt";
+
+                if (file_exists($filename)){
+                    $count = intval(file_get_contents($filename));
+                }
+                else{
+                    $count = 0;
+                }
+
+                array_push($monthlyCounts, ['month' =>  $month, 'count' => $count]);
+
+            }
+            array_push($data, [ 'game' => $games[$i], 'year' => $year, 'counts' => $monthlyCounts]);
         }
-        else{
-            $count = 0;
-        }
-
-
-        $data = [ 'game' => $game, 'year' => $year, 'month' =>  $month, 'count' => $count];
     }
     else{
         $data = [ 'errors' => $errors];
