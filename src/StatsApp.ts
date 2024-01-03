@@ -108,7 +108,7 @@ export class StatsApp extends LitElement {
           <th>Jul</th>
           <th>aug</th>
           <th>Sep</th>
-          <th>okt</th>
+          <th>Okt</th>
           <th>Nov</th>
           <th>Dec</th>
           <th>Totaal</th>
