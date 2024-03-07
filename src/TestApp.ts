@@ -27,6 +27,9 @@ export class TestApp extends LitElement {
   protected render(): HTMLTemplateResult {
     return html`<p>Test</p>
       <pixel-art-color-field></pixel-art-color-field>
-      <pixel-art-number-field></pixel-art-number-field> `;
+      <pixel-art-number-field
+        pixelSize="50"
+        style="width: 250px"
+      ></pixel-art-number-field> `;
   }
 }
