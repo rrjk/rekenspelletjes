@@ -5,7 +5,8 @@ import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
 // import { darken, lighten } from 'color2k';
 
-import './HeartImage';
+import './PixelArtColorField';
+import './PixelArtNumberField';
 
 // import './RealHeight';
 
@@ -16,7 +17,7 @@ export class TestApp extends LitElement {
       css`
         heart-image {
           width: 200px;
-          height: 150px;
+          height: 200px;
           border: 1px solid blue;
         }
       `,
@@ -25,6 +26,7 @@ export class TestApp extends LitElement {
 
   protected render(): HTMLTemplateResult {
     return html`<p>Test</p>
-      <heart-image value="5"></heart-image>`;
+      <pixel-art-color-field></pixel-art-color-field>
+      <pixel-art-number-field></pixel-art-number-field> `;
   }
 }
