@@ -36,7 +36,7 @@ export class PixelArtNumberField extends LitElement {
         max-width: 100%;
       }
       .heavy {
-        font: bold calc(var(--pixel-size, 25px) * 0.6) sans-serif;
+        font: calc(var(--pixel-size, 25px) * 0.6) sans-serif;
         fill: black;
         text-anchor: middle;
         alignment-baseline: central;
