@@ -1,3 +1,8 @@
+// Todo: Let PixelSize be in html units
+// Determine based on PixelSize size of box
+// Then I don't need PixelSize within the svg, there I can use a fixed number.
+// Or don't use PixelSize at all, as it's actually all about the size of the box.
+
 import {
   LitElement,
   html,
