@@ -14,21 +14,23 @@ import {
 } from 'lit';
 
 // eslint-disable-next-line import/extensions
-import { customElement, property, state } from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
 
 @customElement('pixel-art-number-field')
 export class PixelArtNumberField extends LitElement {
-  @property({ type: Number })
-  pixelSize = 35;
-
-  @state()
-  matrix: number[][] = [
+  @property()
+  matrix: number[][] = [[]];
+  /*
     [1, 2, 3, 4],
     [2, 3, 4, 5],
     [3, 4, 1, 6],
     [4, 1, 2, 7],
   ];
+*/
 
+  static blockSize = 100;
+
+  // For the .heavy style we specifiy alignment-baseline for most browsers, donimant-baseline for Firefox
   static get styles(): CSSResultGroup {
     return css`
       :host {
@@ -40,27 +42,36 @@ export class PixelArtNumberField extends LitElement {
         max-height: 100%;
         max-width: 100%;
       }
+      .block {
+        width: ${PixelArtNumberField.blockSize}px;
+        height: ${PixelArtNumberField.blockSize}px;
+        fill: none;
+        stroke: black;
+        stroke-width: 5px;
+      }
       .heavy {
-        font: calc(var(--pixel-size, 25px) * 0.6) sans-serif;
+        font: ${PixelArtNumberField.blockSize * 0.6}px sans-serif;
         fill: black;
         text-anchor: middle;
         alignment-baseline: central;
+        dominant-baseline: central;
       }
     `;
   }
 
   render(): HTMLTemplateResult {
-    const matrix: SVGTemplateResult[] = [];
+    const svgMatrix: SVGTemplateResult[] = [];
 
     for (let row = 0; row < this.matrix.length; row++) {
       for (let column = 0; column < this.matrix[row].length; column++) {
-        matrix.push(
-          svg`<rect width="${this.pixelSize}" height=${this.pixelSize} x="${
-            column * this.pixelSize
-          }" y="${row * this.pixelSize}" fill="none" stroke="black" />
-          <text class="heavy" x="${(column + 0.5) * this.pixelSize}" y="${
-            (row + 0.5) * this.pixelSize
-          }" >
+        const blockX = column * PixelArtNumberField.blockSize;
+        const blockY = row * PixelArtNumberField.blockSize;
+        const textX = (column + 0.5) * PixelArtNumberField.blockSize;
+        const textY = (row + 0.5) * PixelArtNumberField.blockSize;
+
+        svgMatrix.push(
+          svg`<rect class="block" x="${blockX}" y="${blockY}" />
+          <text class="heavy" x="${textX}" y="${textY}" >
             ${this.matrix[row][column]}
           </text>
           `
@@ -68,16 +79,11 @@ export class PixelArtNumberField extends LitElement {
       }
     }
 
-    return html` <style>
-        :host {
-          --pixel-size: ${this.pixelSize}px;
-        }
-      </style>
-      <svg
-        viewBox="0 0 ${this.matrix[0].length * this.pixelSize} ${this.matrix
-          .length * this.pixelSize}"
-      >
-        ${matrix}
-      </svg>`;
+    const fieldWidth = this.matrix[0].length * PixelArtNumberField.blockSize;
+    const fieldHeight = this.matrix.length * PixelArtNumberField.blockSize;
+
+    return html` <svg viewBox="0 0 ${fieldWidth} ${fieldHeight}">
+      ${svgMatrix}
+    </svg>`;
   }
 }
