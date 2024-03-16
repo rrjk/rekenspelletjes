@@ -7,6 +7,7 @@ import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
 import './PixelArtColorField';
 import './PixelArtNumberField';
+import { ColorAssigner } from './ColorAssigner';
 
 // import './RealHeight';
 
@@ -25,6 +26,15 @@ export class TestApp extends LitElement {
   }
 
   protected render(): HTMLTemplateResult {
+    const colorAssigner: ColorAssigner = new ColorAssigner();
+    colorAssigner.colorMatrix = [
+      ['red', 'blue', 'green', 'red'],
+      ['green', 'red', 'blue', 'green'],
+      ['blue', 'green', 'red', 'blue'],
+      ['red', 'blue', 'green', 'purple'],
+    ];
+    colorAssigner.calculateNumberAssignment();
+
     return html`<p>Test</p>
       <pixel-art-color-field
         style="width: 250px"
