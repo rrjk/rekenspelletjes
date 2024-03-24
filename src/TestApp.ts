@@ -7,6 +7,7 @@ import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
 import './PixelArtColorField';
 import './PixelArtNumberField';
+import './PixelArtColorSelector';
 import { Color } from './Colors';
 import { calculateQuestionAssignment } from './ColorAssigner';
 
@@ -54,6 +55,7 @@ export class TestApp extends LitElement {
           [3, 4, 1, 6],
           [4, 1, 2, 9],
         ]}
-      ></pixel-art-number-field> `;
+      ></pixel-art-number-field> 
+      <pixel-art-color-selector style="width: 200px; height: 200px;"></PixelArtColorSelector>`;
   }
 }
