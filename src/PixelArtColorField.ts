@@ -16,12 +16,7 @@ import { Color, getColorInfo } from './Colors';
 @customElement('pixel-art-color-field')
 export class PixelArtColorField extends LitElement {
   @property()
-  matrix: Color[][] = [
-    ['red', 'blue', 'green', 'red'],
-    ['green', 'red', 'blue', 'green'],
-    ['blue', 'green', 'red', 'blue'],
-    ['red', 'blue', 'green', 'red'],
-  ];
+  matrix: Color[][] = [[]];
 
   static blockSize = 100;
 

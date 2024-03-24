@@ -7,7 +7,8 @@ import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
 import './PixelArtColorField';
 import './PixelArtNumberField';
-import { ColorAssigner } from './ColorAssigner';
+import { Color } from './Colors';
+import { calculateQuestionAssignment } from './ColorAssigner';
 
 // import './RealHeight';
 
@@ -26,20 +27,20 @@ export class TestApp extends LitElement {
   }
 
   protected render(): HTMLTemplateResult {
-    const colorAssigner: ColorAssigner = new ColorAssigner();
-    colorAssigner.colorMatrix = [
-      ['red', 'blue', 'green', 'red'],
+    const colorMatrix: Color[][] = [
+      ['green', 'blue', 'green', 'red'],
       ['green', 'red', 'blue', 'green'],
       ['blue', 'green', 'red', 'blue'],
       ['red', 'blue', 'green', 'purple'],
     ];
-    colorAssigner.calculateNumberAssignment();
+    const questions = calculateQuestionAssignment(colorMatrix, 8);
+    console.log(questions);
 
     return html`<p>Test</p>
       <pixel-art-color-field
         style="width: 250px"
         .matrix=${[
-          ['red', 'blue', 'green', 'red'],
+          ['green', 'blue', 'green', 'red'],
           ['green', 'red', 'blue', 'green'],
           ['blue', 'green', 'red', 'blue'],
           ['red', 'blue', 'green', 'purple'],
