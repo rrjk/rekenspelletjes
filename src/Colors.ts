@@ -1,6 +1,6 @@
 /** Possible colors used the the games.
  * Colors taken from https://sashamaps.net/docs/resources/20-colors/
- * Other interesting side for more colors: http://phrogz.net/css/distinct-colors.html/
+ * Other interesting site for more colors: http://phrogz.net/css/distinct-colors.html/
  * Get variations of colors via https://convertingcolors.com/hex-color-f032e6.html
  * Info about how to do all this: https://www.svgbackgrounds.com/how-to-add-svgs-with-css-background-image/
  */
