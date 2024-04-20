@@ -36,11 +36,14 @@ export class PixelArtColorSelector extends LitElement {
       .buttonField {
         width: 100%;
         height: 100%;
+        display: grid;
+        grid-template-columns: repeat(calc(var(--numberColumns) + 1), 1fr);
+        grid-template-rows: repeat(calc(var(--numberRows) + 1), 1fr);
       }
 
       button {
-        width: calc(100% / var(--numberColumns));
-        height: calc(100% / var(--numberRows));
+        width: 100%;
+        height: 100%;
         margin: 0;
         padding: 0;
         border: 1px black solid;
