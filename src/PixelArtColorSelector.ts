@@ -1,5 +1,9 @@
-import { LitElement, html, css } from 'lit';
-import type { HTMLTemplateResult, CSSResultGroup } from 'lit';
+import { LitElement, html, css, svg } from 'lit';
+import type {
+  HTMLTemplateResult,
+  CSSResultGroup,
+  SVGTemplateResult,
+} from 'lit';
 // eslint-disable-next-line import/extensions
 import { customElement, property } from 'lit/decorators.js';
 
@@ -39,8 +43,11 @@ export class PixelArtColorSelector extends LitElement {
         width: 100%;
         height: 100%;
         display: grid;
-        grid-template-columns: repeat(calc(var(--numberColumns) + 1), 1fr);
-        grid-template-rows: repeat(calc(var(--numberRows) + 1), 1fr);
+        grid-template-columns: repeat(
+          calc((var(--numberColumns) * 3) + 1),
+          1fr
+        );
+        grid-template-rows: repeat(calc((var(--numberRows) * 3) + 1), 1fr);
       }
 
       button {
@@ -56,6 +63,7 @@ export class PixelArtColorSelector extends LitElement {
         border: 0px;
         color: transparent;
         text-align: center;
+        font-size: 10px;
       }
 
       div.deleteSign:hover {
@@ -77,6 +85,12 @@ export class PixelArtColorSelector extends LitElement {
   handeColorSelected(color: Color) {
     console.log(`handleColorSelected in PixelArtColorSelect, color = ${color}`);
     this.selectedColor = color;
+  }
+
+  svgPlusSign(): SVGTemplateResult {
+    return svg`
+      <line x1="0" y1="50" x2="100" y2="50" stroke="black" stroke-width="10" />
+    `;
   }
 
   renderHorPlusSign(
@@ -184,8 +198,8 @@ export class PixelArtColorSelector extends LitElement {
     return html`
       <style>
         :host {
-          --numberColumns: ${3 * this.matrix.length + 1};
-          --numberRows: ${3 * this.matrix[0].length + 1};
+          --numberColumns: ${numberColumns};
+          --numberRows: ${numberRows};
         }
       </style>
       <color-picker
