@@ -112,6 +112,29 @@ export class PixelArtColorSelector extends LitElement {
     </div>`;
   }
 
+  renderHorDeleteSign(column: number): HTMLTemplateResult {
+    return html` <div
+      class="deleteSign"
+      style="grid-column-start:${3 * column +
+      2}; grid-column-end: span 1; grid-row-start: 1; grid-row-end: span 1;"
+    >
+      ×
+    </div>`;
+  }
+
+  renderVerDeleteSign(
+    gridColumnOperator: number,
+    row: number
+  ): HTMLTemplateResult {
+    return html` <div
+      class="deleteSign"
+      style="grid-row-start:${3 * row +
+      3}; grid-row-end: span 1; grid-column-start: ${gridColumnOperator}; grid-column-end: span 1;"
+    >
+      ×
+    </div>`;
+  }
+
   render(): HTMLTemplateResult {
     const numberColumns = this.matrix[0].length;
     const numberRows = this.matrix.length;
@@ -136,23 +159,11 @@ export class PixelArtColorSelector extends LitElement {
     buttonArray.push(renderVerPlusSign(numberRows, 'last'));
 
     for (let row = 0; row < numberRows; row++) {
-      buttonArray.push(html` <div
-        class="deleteSign"
-        style="grid-row-start:${3 * row +
-        3}; grid-row-end: span 1; grid-column-start: ${gridColumnOperator}; grid-column-end: span 1;"
-      >
-        ×
-      </div>`);
+      buttonArray.push(this.renderVerDeleteSign(gridColumnOperator, row));
     }
 
     for (let column = 0; column < numberColumns; column++) {
-      buttonArray.push(html` <div
-        class="deleteSign"
-        style="grid-column-start:${3 * column +
-        2}; grid-column-end: span 1; grid-row-start: 1; grid-row-end: span 1;"
-      >
-        ×
-      </div>`);
+      buttonArray.push(this.renderHorDeleteSign(column));
     }
 
     for (let row = 0; row < this.matrix.length; row++) {
