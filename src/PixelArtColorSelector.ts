@@ -6,6 +6,8 @@ import { customElement, property } from 'lit/decorators.js';
 import type { Color, ColorSelectedEvent } from './ColorPicker';
 import './ColorPicker';
 
+type ColumnRowTypes = 'first' | 'middle' | 'last';
+
 @customElement('pixel-art-color-selector')
 export class PixelArtColorSelector extends LitElement {
   static initialColor = 'red';
@@ -49,18 +51,15 @@ export class PixelArtColorSelector extends LitElement {
         border: 1px black solid;
       }
 
-      div.deleteSign {
+      div.deleteSign,
+      div.addSign {
         border: 0px;
         color: transparent;
+        text-align: center;
       }
 
       div.deleteSign:hover {
         color: red;
-      }
-
-      div.addSign {
-        border: 0px;
-        color: transparent;
       }
 
       div.addSign:hover {
@@ -80,63 +79,61 @@ export class PixelArtColorSelector extends LitElement {
     this.selectedColor = color;
   }
 
+  renderHorPlusSign(
+    column: number,
+    columnType: ColumnRowTypes = 'middle'
+  ): HTMLTemplateResult {
+    const span = columnType === 'middle' ? 2 : 1;
+    const gridColumnShift = columnType === 'first' ? 1 : 0;
+
+    return html`<div
+      class="addSign"
+      style="grid-column-start:${3 * column +
+      gridColumnShift}; grid-column-end: span ${span}; grid-row-start: 1; grid-row-end: span 1;"
+    >
+      +
+    </div>`;
+  }
+
+  renderVerPlusSign(
+    gridColumnOperator: number,
+    row: number,
+    rowType: ColumnRowTypes = 'middle'
+  ): HTMLTemplateResult {
+    const span = rowType === 'middle' ? 2 : 1;
+    const gridColumnShift = rowType === 'first' ? 2 : 1;
+    return html`<div
+      class="addSign"
+      style="grid-column-start:${gridColumnOperator}; grid-column-end: span 1; grid-row-start: ${3 *
+        row +
+      gridColumnShift}; grid-row-end: span ${span};"
+    >
+      +
+    </div>`;
+  }
+
   render(): HTMLTemplateResult {
     const numberColumns = this.matrix[0].length;
     const numberRows = this.matrix.length;
 
     const buttonArray: HTMLTemplateResult[] = [];
-    buttonArray.push(html`<div
-      class="addSign"
-      style="grid-column-start:1; grid-column-end: span 1; grid-row-start: 1; grid-row-end: span 1;"
-    >
-      +
-    </div>`);
+    buttonArray.push(this.renderHorPlusSign(0, 'first'));
     for (let column = 1; column < this.matrix[0].length; column++) {
-      buttonArray.push(
-        html`<div
-          class="addSign"
-          style="grid-column-start:${3 * column +
-          0}; grid-column-end: span 2; grid-row-start: 1; grid-row-end: span 1;"
-        >
-          +
-        </div>`
-      );
+      buttonArray.push(this.renderHorPlusSign(column, 'middle'));
     }
-    buttonArray.push(html`<div
-      class="addSign"
-      style="grid-column-start:${3 * this.matrix[0].length +
-      0}; grid-column-end: span 1; grid-row-start: 1; grid-row-end: span 1;"
-    >
-      +
-    </div>`);
+    buttonArray.push(this.renderHorPlusSign(numberColumns, 'last'));
 
     const gridColumnOperator = 3 * numberColumns + 1;
-    buttonArray.push(html`<div
-      class="addSign"
-      style="grid-column-start:${gridColumnOperator}; grid-column-end: span 1; grid-row-start: 2; grid-row-end: span 1;"
-    >
-      +
-    </div>`);
+    const renderVerPlusSign = (
+      row: number,
+      rowType: ColumnRowTypes = 'middle'
+    ) => this.renderVerPlusSign(gridColumnOperator, row, rowType);
+
+    buttonArray.push(renderVerPlusSign(0, 'first'));
     for (let row = 1; row < numberRows; row++) {
-      buttonArray.push(
-        html`<div
-          class="addSign"
-          style="grid-column-start:${gridColumnOperator}; grid-column-end: span 1; grid-row-start: ${3 *
-            row +
-          1}; grid-row-end: span 2;"
-        >
-          +
-        </div>`
-      );
+      buttonArray.push(renderVerPlusSign(row, 'middle'));
     }
-    buttonArray.push(html`<div
-      class="addSign"
-      style="grid-column-start:${gridColumnOperator}; grid-column-end: span 1; grid-row-start: ${3 *
-        numberRows +
-      1}; grid-row-end: span 1;"
-    >
-      +
-    </div>`);
+    buttonArray.push(renderVerPlusSign(numberRows, 'last'));
 
     for (let row = 0; row < numberRows; row++) {
       buttonArray.push(html` <div
