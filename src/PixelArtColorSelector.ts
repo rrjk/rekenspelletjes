@@ -48,6 +48,24 @@ export class PixelArtColorSelector extends LitElement {
         padding: 0;
         border: 1px black solid;
       }
+
+      div.deleteSign {
+        border: 0px;
+        color: transparent;
+      }
+
+      div.deleteSign:hover {
+        color: red;
+      }
+
+      div.addSign {
+        border: 0px;
+        color: transparent;
+      }
+
+      div.addSign:hover {
+        color: green;
+      }
     `;
   }
 
@@ -63,12 +81,92 @@ export class PixelArtColorSelector extends LitElement {
   }
 
   render(): HTMLTemplateResult {
+    const numberColumns = this.matrix[0].length;
+    const numberRows = this.matrix.length;
+
     const buttonArray: HTMLTemplateResult[] = [];
+    buttonArray.push(html`<div
+      class="addSign"
+      style="grid-column-start:1; grid-column-end: span 1; grid-row-start: 1; grid-row-end: span 1;"
+    >
+      +
+    </div>`);
+    for (let column = 1; column < this.matrix[0].length; column++) {
+      buttonArray.push(
+        html`<div
+          class="addSign"
+          style="grid-column-start:${3 * column +
+          0}; grid-column-end: span 2; grid-row-start: 1; grid-row-end: span 1;"
+        >
+          +
+        </div>`
+      );
+    }
+    buttonArray.push(html`<div
+      class="addSign"
+      style="grid-column-start:${3 * this.matrix[0].length +
+      0}; grid-column-end: span 1; grid-row-start: 1; grid-row-end: span 1;"
+    >
+      +
+    </div>`);
+
+    const gridColumnOperator = 3 * numberColumns + 1;
+    buttonArray.push(html`<div
+      class="addSign"
+      style="grid-column-start:${gridColumnOperator}; grid-column-end: span 1; grid-row-start: 2; grid-row-end: span 1;"
+    >
+      +
+    </div>`);
+    for (let row = 1; row < numberRows; row++) {
+      buttonArray.push(
+        html`<div
+          class="addSign"
+          style="grid-column-start:${gridColumnOperator}; grid-column-end: span 1; grid-row-start: ${3 *
+            row +
+          1}; grid-row-end: span 2;"
+        >
+          +
+        </div>`
+      );
+    }
+    buttonArray.push(html`<div
+      class="addSign"
+      style="grid-column-start:${gridColumnOperator}; grid-column-end: span 1; grid-row-start: ${3 *
+        numberRows +
+      1}; grid-row-end: span 1;"
+    >
+      +
+    </div>`);
+
+    for (let row = 0; row < numberRows; row++) {
+      buttonArray.push(html` <div
+        class="deleteSign"
+        style="grid-row-start:${3 * row +
+        3}; grid-row-end: span 1; grid-column-start: ${gridColumnOperator}; grid-column-end: span 1;"
+      >
+        ×
+      </div>`);
+    }
+
+    for (let column = 0; column < numberColumns; column++) {
+      buttonArray.push(html` <div
+        class="deleteSign"
+        style="grid-column-start:${3 * column +
+        2}; grid-column-end: span 1; grid-row-start: 1; grid-row-end: span 1;"
+      >
+        ×
+      </div>`);
+    }
+
     for (let row = 0; row < this.matrix.length; row++) {
       for (let column = 0; column < this.matrix[row].length; column++) {
         buttonArray.push(
           html`<button
-            style="background-color: ${this.matrix[row][column]}"
+            style="background-color: ${this.matrix[row][
+              column
+            ]}; grid-column-start:${3 * column +
+            1}; grid-column-end: span 3; grid-row-start:${3 * row +
+            2}; grid-row-end: span 3;"
             @click="${() => this.handleButtonClick(row, column)}"
           ></button>`
         );
@@ -78,8 +176,8 @@ export class PixelArtColorSelector extends LitElement {
     return html`
       <style>
         :host {
-          --numberColumns: ${this.matrix.length};
-          --numberRows: ${this.matrix[0].length};
+          --numberColumns: ${3 * this.matrix.length + 1};
+          --numberRows: ${3 * this.matrix[0].length + 1};
         }
       </style>
       <color-picker
