@@ -37,6 +37,8 @@ export class PixelArtColorSelector extends LitElement {
     return css`
       :host {
         display: block;
+        --numberGridColumns: calc((var(--numberColumns) * 3) + 1);
+        --numberGridRows: calc((var(--numberRows) * 3) + 1);
       }
 
       .buttonField {
@@ -44,10 +46,13 @@ export class PixelArtColorSelector extends LitElement {
         height: 100%;
         display: grid;
         grid-template-columns: repeat(
-          calc((var(--numberColumns) * 3) + 1),
-          1fr
+          var(--numberGridColumns),
+          calc(100% / var(--numberGridColumns))
         );
-        grid-template-rows: repeat(calc((var(--numberRows) * 3) + 1), 1fr);
+        grid-template-rows: repeat(
+          var(--numberGridRows),
+          calc(100% / var(--numberGridRows))
+        );
       }
 
       button {
@@ -60,18 +65,19 @@ export class PixelArtColorSelector extends LitElement {
 
       div.deleteSign,
       div.addSign {
+        container-type: size;
+        width: 100%;
+        height: 100%;
         border: 0px;
-        color: transparent;
-        text-align: center;
-        font-size: 10px;
+        stroke: transparent;
       }
 
       div.deleteSign:hover {
-        color: red;
+        stroke: red;
       }
 
       div.addSign:hover {
-        color: green;
+        stroke: green;
       }
     `;
   }
@@ -87,9 +93,35 @@ export class PixelArtColorSelector extends LitElement {
     this.selectedColor = color;
   }
 
-  svgPlusSign(): SVGTemplateResult {
-    return svg`
-      <line x1="0" y1="50" x2="100" y2="50" stroke="black" stroke-width="10" />
+  svgPlusSign(horSpan: number, verSpan: number): HTMLTemplateResult {
+    if ((horSpan !== 1 && horSpan !== 2) || (verSpan !== 1 && verSpan !== 2))
+      throw new RangeError(
+        `horSpan (${horSpan}) and verSpan(${verSpan}) have to be either 1 or 2`
+      );
+
+    const horSize = horSpan === 1 ? 100 : 200;
+    const horStart = horSpan === 1 ? 0 : -50;
+
+    const verSize = verSpan === 1 ? 100 : 200;
+    const verStart = verSpan === 1 ? 0 : -50;
+
+    return html`
+      <svg
+        viewBox="${horStart} ${verStart} ${horSize} ${verSize}"
+        style="width: 100%; height: 100%"
+      >
+        <line x1="20" y1="50" x2="80" y2="50" stroke-width="10" />
+        <line x1="50" y1="20" x2="50" y2="80" stroke-width="10" />
+      </svg>
+    `;
+  }
+
+  svgCrossSign(): HTMLTemplateResult {
+    return html`
+      <svg viewBox="0 0 100 100" style="width: 100%; height: 100%">
+        <line x1="25" y1="25" x2="75" y2="75" stroke-width="10" />
+        <line x1="25" y1="75" x2="75" y2="25" stroke-width="10" />
+      </svg>
     `;
   }
 
@@ -105,7 +137,7 @@ export class PixelArtColorSelector extends LitElement {
       style="grid-column-start:${3 * column +
       gridColumnShift}; grid-column-end: span ${span}; grid-row-start: 1; grid-row-end: span 1;"
     >
-      +
+      ${this.svgPlusSign(span, 1)}
     </div>`;
   }
 
@@ -122,7 +154,7 @@ export class PixelArtColorSelector extends LitElement {
         row +
       gridColumnShift}; grid-row-end: span ${span};"
     >
-      +
+      ${this.svgPlusSign(1, span)}
     </div>`;
   }
 
@@ -132,7 +164,7 @@ export class PixelArtColorSelector extends LitElement {
       style="grid-column-start:${3 * column +
       2}; grid-column-end: span 1; grid-row-start: 1; grid-row-end: span 1;"
     >
-      ×
+      ${this.svgCrossSign()}
     </div>`;
   }
 
@@ -145,7 +177,7 @@ export class PixelArtColorSelector extends LitElement {
       style="grid-row-start:${3 * row +
       3}; grid-row-end: span 1; grid-column-start: ${gridColumnOperator}; grid-column-end: span 1;"
     >
-      ×
+      ${this.svgCrossSign()}
     </div>`;
   }
 

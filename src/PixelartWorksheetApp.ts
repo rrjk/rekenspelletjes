@@ -30,6 +30,6 @@ export class TestApp extends LitElement {
     console.log(questions);
 
     return html`<p>Test</p>
-      <pixel-art-color-selector  .matrix=${colorMatrix} style="width: 200px; height: 200px;"></PixelArtColorSelector>`;
+      <pixel-art-color-selector  .matrix=${colorMatrix} style="width: 300px; height: 300px;"></PixelArtColorSelector>`;
   }
 }
