@@ -63,21 +63,23 @@ export class PixelArtColorSelector extends LitElement {
         border: 1px black solid;
       }
 
-      div.deleteSign,
-      div.addSign {
+      button.deleteSign,
+      button.addSign {
         container-type: size;
         width: 100%;
         height: 100%;
         border: 0px;
         stroke: transparent;
+        background-color: transparent;
       }
 
-      div.deleteSign:hover {
+      button.deleteSign:hover {
         stroke: red;
       }
 
-      div.addSign:hover {
+      button.addSign:hover {
         stroke: green;
+        fill: transparent;
       }
     `;
   }
@@ -91,6 +93,33 @@ export class PixelArtColorSelector extends LitElement {
   handeColorSelected(color: Color) {
     console.log(`handleColorSelected in PixelArtColorSelect, color = ${color}`);
     this.selectedColor = color;
+  }
+
+  handleDeleteColumn(column: number) {
+    for (let row = 0; row < this.matrix.length; row++) {
+      this.matrix[row].splice(column, 1);
+    }
+    this.requestUpdate();
+  }
+
+  handleDeleteRow(row: number) {
+    this.matrix.splice(row, 1);
+    this.requestUpdate();
+  }
+
+  handleAddColumn(column: number) {
+    for (let row = 0; row < this.matrix.length; row++) {
+      this.matrix[row].splice(column, 0, 'white');
+    }
+    this.requestUpdate();
+  }
+
+  handleAddRow(row: number) {
+    const rowToAdd: string[] = [];
+    rowToAdd.length = 4;
+    rowToAdd.fill('white', 0, 4);
+    this.matrix.splice(row, 0, rowToAdd);
+    this.requestUpdate();
   }
 
   svgPlusSign(horSpan: number, verSpan: number): HTMLTemplateResult {
@@ -132,13 +161,14 @@ export class PixelArtColorSelector extends LitElement {
     const span = columnType === 'middle' ? 2 : 1;
     const gridColumnShift = columnType === 'first' ? 1 : 0;
 
-    return html`<div
+    return html`<button
       class="addSign"
       style="grid-column-start:${3 * column +
       gridColumnShift}; grid-column-end: span ${span}; grid-row-start: 1; grid-row-end: span 1;"
+      @click="${() => this.handleAddColumn(column)}"
     >
       ${this.svgPlusSign(span, 1)}
-    </div>`;
+    </button>`;
   }
 
   renderVerPlusSign(
@@ -148,37 +178,40 @@ export class PixelArtColorSelector extends LitElement {
   ): HTMLTemplateResult {
     const span = rowType === 'middle' ? 2 : 1;
     const gridColumnShift = rowType === 'first' ? 2 : 1;
-    return html`<div
+    return html`<button
       class="addSign"
       style="grid-column-start:${gridColumnOperator}; grid-column-end: span 1; grid-row-start: ${3 *
         row +
       gridColumnShift}; grid-row-end: span ${span};"
+      @click="${() => this.handleAddRow(row)}"
     >
       ${this.svgPlusSign(1, span)}
-    </div>`;
+    </button>`;
   }
 
   renderHorDeleteSign(column: number): HTMLTemplateResult {
-    return html` <div
+    return html` <button
       class="deleteSign"
       style="grid-column-start:${3 * column +
       2}; grid-column-end: span 1; grid-row-start: 1; grid-row-end: span 1;"
+      @click="${() => this.handleDeleteColumn(column)}"
     >
       ${this.svgCrossSign()}
-    </div>`;
+    </button>`;
   }
 
   renderVerDeleteSign(
     gridColumnOperator: number,
     row: number
   ): HTMLTemplateResult {
-    return html` <div
+    return html` <button
       class="deleteSign"
       style="grid-row-start:${3 * row +
       3}; grid-row-end: span 1; grid-column-start: ${gridColumnOperator}; grid-column-end: span 1;"
+      @click="${() => this.handleDeleteRow(row)}"
     >
       ${this.svgCrossSign()}
-    </div>`;
+    </button>`;
   }
 
   render(): HTMLTemplateResult {
@@ -187,7 +220,7 @@ export class PixelArtColorSelector extends LitElement {
 
     const buttonArray: HTMLTemplateResult[] = [];
     buttonArray.push(this.renderHorPlusSign(0, 'first'));
-    for (let column = 1; column < this.matrix[0].length; column++) {
+    for (let column = 1; column < numberColumns; column++) {
       buttonArray.push(this.renderHorPlusSign(column, 'middle'));
     }
     buttonArray.push(this.renderHorPlusSign(numberColumns, 'last'));
@@ -212,8 +245,8 @@ export class PixelArtColorSelector extends LitElement {
       buttonArray.push(this.renderHorDeleteSign(column));
     }
 
-    for (let row = 0; row < this.matrix.length; row++) {
-      for (let column = 0; column < this.matrix[row].length; column++) {
+    for (let row = 0; row < numberRows; row++) {
+      for (let column = 0; column < numberColumns; column++) {
         buttonArray.push(
           html`<button
             style="background-color: ${this.matrix[row][
