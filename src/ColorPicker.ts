@@ -49,8 +49,6 @@ export class ColorPicker extends LitElement {
         background-color: #cccccc;
         border-radius: 10%;
         border: 0px;
-        width: calc(var(--nmbrColumn) * 3rem + 1rem);
-        aspect-ratio: var(--nmbrColumn) / var(--nmbrRow);
       }
 
       button {
@@ -89,8 +87,9 @@ export class ColorPicker extends LitElement {
         grid-template-rows: repeat(var(--nmbrRow), 1fr);
         justify-items: center;
         align-items: center;
-        width: 100%;
-        height: 100%;
+        width: calc(var(--nmbrColumn) * 3rem + 1rem);
+        aspect-ratio: var(--nmbrColumn) / var(--nmbrRow);
+        max-width: 100%;
       }
     `;
   }

@@ -14,23 +14,15 @@ type ColumnRowTypes = 'first' | 'middle' | 'last';
 
 @customElement('pixel-art-color-selector')
 export class PixelArtColorSelector extends LitElement {
-  static initialColor = 'red';
-  static colorPalette: Color[] = [
-    'red',
-    'green',
-    'blue',
-    'orange',
-    'yellow',
-    'purple',
-    'brown',
-    'magenta',
-    'lime',
-    'cyan',
+  @property()
+  matrix: Color[][] = [
+    ['white', 'white', 'white', 'white'],
+    ['white', 'white', 'white', 'white'],
+    ['white', 'white', 'white', 'white'],
+    ['white', 'white', 'white', 'white'],
   ];
 
   @property()
-  matrix: Color[][] = [[]];
-
   selectedColor: Color = PixelArtColorSelector.initialColor;
 
   static get styles(): CSSResultGroup {
@@ -42,8 +34,9 @@ export class PixelArtColorSelector extends LitElement {
       }
 
       .buttonField {
-        width: 100%;
-        height: 100%;
+        max-width: 100%;
+        width: calc((var(--numberGridColumns) * 1rem));
+        aspect-ratio: var(--numberGridColumns) / var(--numberGridRows);
         display: grid;
         grid-template-columns: repeat(
           var(--numberGridColumns),
@@ -55,7 +48,7 @@ export class PixelArtColorSelector extends LitElement {
         );
       }
 
-      button {
+      button.coloredField {
         width: 100%;
         height: 100%;
         margin: 0;
@@ -68,7 +61,9 @@ export class PixelArtColorSelector extends LitElement {
         container-type: size;
         width: 100%;
         height: 100%;
-        border: 0px;
+        border: 0;
+        padding: 0;
+        margin: 0;
         stroke: transparent;
         background-color: transparent;
       }
@@ -88,11 +83,6 @@ export class PixelArtColorSelector extends LitElement {
     console.log(`clicked row=${row}, column=${column}`);
     this.matrix[row][column] = this.selectedColor;
     this.requestUpdate();
-  }
-
-  handeColorSelected(color: Color) {
-    console.log(`handleColorSelected in PixelArtColorSelect, color = ${color}`);
-    this.selectedColor = color;
   }
 
   handleDeleteColumn(column: number) {
@@ -116,8 +106,8 @@ export class PixelArtColorSelector extends LitElement {
 
   handleAddRow(row: number) {
     const rowToAdd: string[] = [];
-    rowToAdd.length = 4;
-    rowToAdd.fill('white', 0, 4);
+    rowToAdd.length = this.matrix[0].length;
+    rowToAdd.fill('white', 0, this.matrix[0].length);
     this.matrix.splice(row, 0, rowToAdd);
     this.requestUpdate();
   }
@@ -249,6 +239,7 @@ export class PixelArtColorSelector extends LitElement {
       for (let column = 0; column < numberColumns; column++) {
         buttonArray.push(
           html`<button
+            class="coloredField"
             style="background-color: ${this.matrix[row][
               column
             ]}; grid-column-start:${3 * column +
@@ -267,12 +258,6 @@ export class PixelArtColorSelector extends LitElement {
           --numberRows: ${numberRows};
         }
       </style>
-      <color-picker
-        selectedColor="${PixelArtColorSelector.initialColor}"
-        .selectableColors=${PixelArtColorSelector.colorPalette}
-        @color-selected="${(evt: ColorSelectedEvent) =>
-          this.handeColorSelected(evt.color)}"
-      ></color-picker>
       <div class="buttonField">${buttonArray}</div>
     `;
   }
