@@ -45,7 +45,7 @@ export class ColorPicker extends LitElement {
   static get styles(): CSSResultGroup {
     return css`
       :host {
-        display: block;
+        display: inline-block;
         background-color: #cccccc;
         border-radius: 10%;
         border: 0px;
