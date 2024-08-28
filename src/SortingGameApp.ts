@@ -53,6 +53,7 @@ export class SortingGameApp extends TimeLimitedGame2 {
 
   private minimumValue = 1;
   private maximumValue = 10;
+  private divider = 1;
 
   @state()
   private maxNumberDigits = 1.5;
@@ -109,6 +110,12 @@ export class SortingGameApp extends TimeLimitedGame2 {
       if (Number.isNaN(this.maximumValue)) this.maximumValue = 10;
     }
 
+    if (urlParams.has('divider')) {
+      this.divider = parseInt(urlParams.get('divider') ?? '', 10);
+      if (Number.isNaN(this.divider)) this.divider = 1;
+      if (this.divider % 10 !== 0) this.divider = 1;
+    }
+
     if (this.minimumValue + 5 >= this.maximumValue)
       this.maximumValue = this.minimumValue + 5;
 
@@ -118,11 +125,19 @@ export class SortingGameApp extends TimeLimitedGame2 {
     else if (this.maximumValue === 100) this.maxNumberDigits = 2.5;
     else if (this.maximumValue < 1000) this.maxNumberDigits = 3;
     else if (this.maximumValue === 1000) this.maxNumberDigits = 3.5;
+    else if (this.maximumValue < 10000) this.maxNumberDigits = 4;
+    else if (this.maximumValue === 10000) this.maxNumberDigits = 4.5;
+
+    if (this.divider !== 1) this.maxNumberDigits += 1;
 
     this.boxColor = 'red';
     if (urlParams.has('boxColor')) {
       if (urlParams.get('boxColor') === 'blue') {
         this.boxColor = 'blue';
+        this.gameLogger.setMainCode('S');
+      }
+      if (urlParams.get('boxColor') === 'purple') {
+        this.boxColor = 'purple';
         this.gameLogger.setMainCode('S');
       }
     }
@@ -338,6 +353,7 @@ export class SortingGameApp extends TimeLimitedGame2 {
                 <mompitz-number
                   number="${elt.value}"
                   minimumNumberDigitsForSize="${this.maxNumberDigits}"
+                  divider="${this.divider}"
                   class="number"
                 ></mompitz-number>
               </draggable-element>`
@@ -355,6 +371,7 @@ export class SortingGameApp extends TimeLimitedGame2 {
               <mompitz-number
                 number="${elt.intendedValue}"
                 class="number ${elt.numberVisible === false ? 'hidden' : ''}"
+                divider="${this.divider}"
                 minimumNumberDigitsForSize="${this.maxNumberDigits}"
               ></mompitz-number>
             </drop-target-box>`

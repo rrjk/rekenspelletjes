@@ -52,6 +52,12 @@ export class DropTargetBox extends LitElement implements DropTargetElement {
         )}');
       }
 
+      .boxPurple {
+        background-image: url('${unsafeCSS(
+          new URL('../images/purple-box.png', import.meta.url)
+        )}');
+      }
+
       .boxBlue {
         background-image: url('${unsafeCSS(
           new URL('../images/blue-box.png', import.meta.url)
@@ -113,6 +119,7 @@ export class DropTargetBox extends LitElement implements DropTargetElement {
   render(): HTMLTemplateResult {
     let boxColorClass = 'boxRed';
     if (this.boxColor === 'blue') boxColorClass = 'boxBlue';
+    else if (this.boxColor === 'purple') boxColorClass = 'boxPurple';
     return html`
       <div
         alt="smallest box"

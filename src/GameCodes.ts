@@ -39,7 +39,7 @@ export const gameCodes: GameInfoType[] = [
     name: 'Ballenknallen met som : Ballen aanklikken n.a.v. een keersom',
   },
   { gameCode: 'R', name: 'Vogelspel (nu nog ballon): Splitsen van getallen' },
-  { gameCode: 'S', name: 'Sorteerspel (tot 10000)' },
+  { gameCode: 'S', name: 'Sorteerspel (diverse)' },
   { gameCode: 'T', name: 'Foto kiezen die aan de getallenlijn hangt' },
   { gameCode: 'U', name: 'Jan op de getallenlijn laten springen' },
   { gameCode: 'V', name: 'Sommen met dubbel splitsen' },
