@@ -43,6 +43,7 @@ export const gameCodes: GameInfoType[] = [
   { gameCode: 'T', name: 'Foto kiezen die aan de getallenlijn hangt' },
   { gameCode: 'U', name: 'Jan op de getallenlijn laten springen' },
   { gameCode: 'V', name: 'Sommen met dubbel splitsen' },
+  { gameCode: 'W', name: 'Tiental Afsplitsen' },
 ];
 
 export function getGameDescription(gameCode: string): string {

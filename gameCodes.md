@@ -57,4 +57,5 @@ Game codes
 <tr><td>Va</td><td>Sommen met dubbel splitsen tot 100 +</td></tr>
 <tr><td>Vb</td><td>Sommen met dubbel splitsen tot 100 -</td></tr>
 <tr><td>Vc</td><td>Sommen met dubbel splitsen tot 100 +-</td></tr>
+<tr><td>W</td><td>Splitsen in tiental en eenheden</td></tr>
 </table>
