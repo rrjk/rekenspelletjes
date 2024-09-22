@@ -61,6 +61,10 @@ export class TensSplitApp extends TimeLimitedGame2 {
     return `Splitsen op waarde`;
   }
 
+  executeGameOverActions(): void {
+    this.gameLogger.logGameOver();
+  }
+
   static get styles(): CSSResultArray {
     return [
       ...super.styles,
