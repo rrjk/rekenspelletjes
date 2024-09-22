@@ -1,34 +1,18 @@
-import { LitElement, html, css, unsafeCSS } from 'lit';
-import type { CSSResultArray, HTMLTemplateResult } from 'lit';
+import { LitElement, html, css, svg } from 'lit';
+import type {
+  CSSResultArray,
+  HTMLTemplateResult,
+  SVGTemplateResult,
+} from 'lit';
 // eslint-disable-next-line import/extensions
-import { customElement, property, state } from 'lit/decorators.js';
-
-import {
-  addResizeObserverClient,
-  removeResizeObserverClient,
-  ResizeObserverClientInterface,
-} from './ResizeObserver';
-
-import { Digit } from './DigitKeyboard';
-import type { DigitFillin } from './DigitFillin';
-import './DigitFillin';
-import { ChildNotFoundError } from './ChildNotFoundError';
+import { customElement, property } from 'lit/decorators.js';
 
 @customElement('tens-split-widget')
-export class TensSplitWidget
-  extends LitElement
-  implements ResizeObserverClientInterface
-{
+export class TensSplitWidget extends LitElement {
   @property({ type: Number })
   numberToSplit = 28;
-
-  @state()
-  private activeFillIn = 0;
-  @state()
-  private usedFillIns = ['splitTensLeft', 'splitTensRight', 'splitSingles'];
-
-  @state()
-  wideTallClass = 'WideContainer';
+  @property({ type: Number })
+  activeDigit = 0; // Which digit should be active, counting starts at 0
 
   static get styles(): CSSResultArray {
     return [
@@ -38,130 +22,105 @@ export class TensSplitWidget
           justify-content: center;
           align-items: center;
         }
-        .tenSplitWidgetBox {
-          aspect-ratio: 4/3;
-          box-sizing: border-box;
-          display: grid;
-          grid-template-rows: 60% 40%;
-        }
-
-        .WideContainer {
-          height: 100%;
-          width: auto;
-        }
-
-        .TallContainer {
-          height: auto;
-          width: 100%;
-        }
 
         text {
           dominant-baseline: mathematical;
-          text-anchor: middle;
           font-size: 80px;
         }
 
-        line {
+        .middleAligned {
+          text-anchor: middle;
+        }
+
+        .leftAligned {
+          text-anchor: start;
+        }
+
+        .splitLine {
           stroke: black;
           stroke-width: 3px;
         }
 
-        .upperRow,
-        .bottomRow {
-          display: flex;
-          justify-content: center;
+        .boxLine {
+          stroke: black;
+          stroke-width: 2px;
         }
 
-        .bottomRow {
-          container: lowerRow / size;
+        .outerBoxFill {
+          fill: transparent;
         }
 
-        digit-fillin {
-          font-size: 80cqh;
+        .activeFilled {
+          fill: lightblue;
+        }
+
+        .notActiveFilled {
+          fill: transparent;
         }
       `,
     ];
   }
 
-  connectedCallback(): void {
-    super.connectedCallback();
-    addResizeObserverClient(this);
+  renderNumberToSplit(): SVGTemplateResult {
+    return svg`<text class="middleAligned" x="210" y="50">${this.numberToSplit}</text>`;
   }
 
-  disconnectedCallback(): void {
-    super.disconnectedCallback();
-    removeResizeObserverClient(this);
-  }
-
-  /** Helper function to easily query for an element.
-   *  @param query Querystring for the element.
-   *  @template T The type of the element.
-   *  @throws ChildNotFoundError in case the element can't be found.
-   *
-   */
-  protected getElement<T>(query: string): T {
-    const ret = <T | null>this.renderRoot.querySelector(query);
-    if (ret === null) {
-      throw new ChildNotFoundError(query, 'TimeLimitedGame');
+  renderTens(): SVGTemplateResult {
+    if (this.activeDigit === 1) {
+      return svg`<text class="leftAligned" x="96" y="245">${Math.floor(
+        this.numberToSplit / 10
+      )}</text>`;
     }
-    return ret;
+    if (this.activeDigit > 1) {
+      return svg`<text class="leftAligned" x="96" y="245">${Math.floor(
+        this.numberToSplit / 10
+      )}0</text>`;
+    }
+    return svg``;
   }
 
-  handleResize() {
-    if (this.clientHeight / 3 >= this.clientWidth / 4) {
-      this.wideTallClass = 'TallContainer';
+  renderUnits(): SVGTemplateResult {
+    if (this.activeDigit > 2)
+      return svg`<text class="middleAligned" x="280" y="245">${
+        this.numberToSplit % 10
+      }</text>`;
+    return svg``;
+  }
+
+  renderUnitsBox(): SVGTemplateResult {
+    let rectClasses = '';
+    if (this.activeDigit === 2) {
+      rectClasses = 'boxLine activeFilled';
     } else {
-      this.wideTallClass = 'WideContainer';
+      rectClasses = 'boxLine notActiveFilled';
     }
+    return svg`<rect class="${rectClasses}"  x="250" y="200" width="60" height="100"  /> `;
   }
 
-  getActiveFillin(): DigitFillin {
-    return this.getElement<DigitFillin>(
-      `#${this.usedFillIns[this.activeFillIn]}`
-    );
-  }
-
-  /*
-
-  handleDigit(digit: Digit) {
-    if (this.gameEnabled) {
-      const processResult = this.getActiveFillin().processInput(digit);
-
-      if (processResult === 'inputNok') {
-        this.getElement<DigitKeyboard>('digit-keyboard').disable(digit);
-        this.handleWrongAnswer();
-      } else if (processResult === 'inputOk') {
-        this.getElement<DigitKeyboard>('digit-keyboard').enableAllDigits();
-      } else if (processResult === 'fillinComplete') {
-        if (this.activeFillIn === this.usedFillIns.length - 1) {
-          this.handleCorrectAnswer();
-        } else {
-          this.getElement<DigitKeyboard>('digit-keyboard').enableAllDigits();
-          this.activeFillIn += 1;
-        }
-      }
+  renderTensBox(): SVGTemplateResult {
+    let rectClasses = '';
+    if (this.activeDigit === 0 || this.activeDigit === 1) {
+      rectClasses = 'boxLine activeFilled';
+    } else {
+      rectClasses = 'boxLine notActiveFilled';
     }
+    return svg`<rect class="${rectClasses}"  x="90" y="200" width="100" height="100" /> `;
   }
-*/
+
+  renderSplitLines(): SVGTemplateResult {
+    return svg`        
+      <line class="splitLine" x1="200" y1="110" x2="150" y2="190" />
+      <line class="splitLine" x1="220" y1="110" x2="270" y2="190" />
+    `;
+  }
+
   render(): HTMLTemplateResult {
     return html`
-      <div class="tenSplitWidgetBox ${this.wideTallClass}">
-        <div class="upperRow" style="background-color:orange;">
-          <svg viewbox="-100 -50 200 200" style="height: 100%;">
-            <text>${this.numberToSplit}</text>
-            <line x1="-20" y1="50" x2="-60" y2="140" />
-            <line x1="20" y1="50" x2="60" y2="140" />
-          </svg>
-        </div>
-        <div class="bottomRow" style="background-color:pink;">
-          <digit-fillin
-            desiredNumber="50"
-            numberDigits="2"
-            fillinActive
-          ></digit-fillin>
-          <digit-fillin desiredNumber="6" numberDigits="1"></digit-fillin>
-        </div>
-      </div>
+      <svg viewbox="0 0 420 350" style="height: 100%;">
+        ${this.renderUnitsBox()} ${this.renderTensBox()}
+        ${this.renderNumberToSplit()} ${this.renderTens()} ${this.renderUnits()}
+        ${this.renderSplitLines()}
+      </svg>
     `;
   }
 }
