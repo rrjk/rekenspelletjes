@@ -46,6 +46,7 @@
     <script type="module" src="./src/AnalogClock.ts"></script>
     <script type="module" src="./src/HandImage.ts"></script>
     <script type="module" src="./src/HeartImage.ts"></script>
+    <script type="module" src="./src/TensSplitWidget.ts"></script>
 
     <h1>Rekenspelletjes</h1>
     <div class="buttonTable">
@@ -118,6 +119,15 @@
           minutes="15"
           showHourTickMarks
         ></analog-clock>
+      </icon-label-button>
+      <icon-label-button
+        title="Splitsen in tientallen en eenheden"
+        href="indexSplitsenOpWaarde.html"
+      >
+        <tens-split-widget
+          numberToSplit="37"
+          activeDigit="2"
+        ></tens-split-widget>
       </icon-label-button>
       <icon-label-button
         title="Sommen tot de 20 met één keer splitsen"
