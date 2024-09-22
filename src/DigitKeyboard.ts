@@ -18,7 +18,7 @@ export class DigitKeyboard
 {
   @state()
   wideTallClass = 'WideContainer';
-  @state()
+  @property({ attribute: false })
   disabledDigits = [
     false,
     false,
@@ -194,6 +194,12 @@ export class DigitKeyboard
     let digits: Digit[] = [];
     if (this.showTen) digits = [10, 1, 2, 3, 4, 5, 6, 7, 8, 9];
     else digits = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+    console.log(
+      `render digitKeyboad disabledDigits = ${JSON.stringify(
+        this.disabledDigits
+      )}`
+    );
 
     for (let row = 0; row < 4; row++) {
       const buttons: HTMLTemplateResult[] = [];
