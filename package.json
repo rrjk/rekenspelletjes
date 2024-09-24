@@ -15,7 +15,8 @@
     "start": "web-dev-server",
     "prepare": "husky install",
     "clean": "del-cli  dist",
-    "build": "npm run clean && rollup --config rollup.config.ts --configPlugin typescript"
+    "build": "npm run clean && rollup --config rollup.config.ts --configPlugin typescript && rollup --config s/rollup.config.ts --configPlugin typescript",
+    "build-root": "rollup --config rollup.config-s.ts --configPlugin typescript"
   },
   "browserslist": [
     "> 1% and not dead and not ie 11",
