@@ -37,6 +37,11 @@ export default {
     copy({
       targets: [
         {
+          src: '.htaccess-jufankie-root',
+          dest: 'dist/',
+          rename: '.htaccess',
+        },
+        {
           src: '.htaccess-root',
           dest: 'dist/Rekenspelletjes',
           rename: '.htaccess',
