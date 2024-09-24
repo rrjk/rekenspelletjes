@@ -37,9 +37,9 @@ export default {
     copy({
       targets: [
         {
-          src: '.htaccess-jufankie-root',
-          dest: 'dist/',
-          rename: '.htaccess',
+          src: 'short-root.html',
+          dest: 'dist/s/',
+          rename: 'index.html',
         },
         {
           src: '.htaccess-root',

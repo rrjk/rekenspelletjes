@@ -2,6 +2,10 @@ const urlParams = new URLSearchParams(window.location.search);
 
 const key = urlParams.keys().next().value;
 
+const path = window.location.pathname;
+
+console.log(path);
+
 const urls = [
   // a
   '../Rekenspelletjes/SommenMetSplitsen.html?game=split1Till20&plus&time=60',
