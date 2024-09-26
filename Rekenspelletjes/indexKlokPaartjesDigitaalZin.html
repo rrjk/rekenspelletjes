@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="nl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Combineer een digitale klok met de juiste tijd</title>
+  </head>
+  <style>
+    html {
+      font-size: x-large;
+    }
+    .buttonTable {
+      position: relative;
+      display: flex;
+      gap: 10px 10px;
+      flex-wrap: wrap;
+      width: 450px;
+    }
+  </style>
+  <body>
+    <script type="module" src="../src/IconHourglassButton.ts"></script>
+    <script type="module" src="../src/IconClockPair.ts"></script>
+
+    <h2>Combineer een digitale klok met de juiste tijd</h2>
+    <div class="buttonTable">
+      <icon-hourglass-button
+        title="Alleen hele uren"
+        time="1min"
+        href="KlokPaartjes.html?hour&digital&sentence"
+      >
+        <icon-clock-pair
+          digital
+          sentence
+          hours="7"
+          minutes="0"
+          color="cyan"
+        ></icon-clock-pair>
+      </icon-hourglass-button>
+      <icon-hourglass-button
+        title="Alleen hele uren"
+        time="3min"
+        href="KlokPaartjes.html?hour&digital&sentence"
+      >
+        <icon-clock-pair
+          digital
+          sentence
+          hours="7"
+          minutes="0"
+          color="cyan"
+        ></icon-clock-pair>
+      </icon-hourglass-button>
+      <icon-hourglass-button
+        title="Halve en hele uren"
+        time="1min"
+        href="KlokPaartjes.html?hour&halfhour&digital&sentence"
+      >
+        <icon-clock-pair
+          digital
+          sentence
+          hours="3"
+          minutes="30"
+          color="blue"
+        ></icon-clock-pair>
+      </icon-hourglass-button>
+      <icon-hourglass-button
+        title="Halve en hele uren"
+        time="3min"
+        href="KlokPaartjes.html?hour&halfhour&digital&sentence"
+      >
+        <icon-clock-pair
+          digital
+          sentence
+          hours="3"
+          minutes="30"
+          color="blue"
+        ></icon-clock-pair>
+      </icon-hourglass-button>
+
+      <icon-hourglass-button
+        title="Halve en hele uren en kwartieren"
+        time="1min"
+        href="KlokPaartjes.html?hour&halfhour&quarterhour&digital&sentence"
+      >
+        <icon-clock-pair
+          digital
+          sentence
+          hours="11"
+          minutes="15"
+          color="purple"
+        ></icon-clock-pair>
+      </icon-hourglass-button>
+      <icon-hourglass-button
+        title="Halve en hele uren en kwartieren"
+        time="3min"
+        href="KlokPaartjes.html?hour&halfhour&quarterhour&digital&sentence"
+      >
+        <icon-clock-pair
+          digital
+          sentence
+          hours="11"
+          minutes="15"
+          color="purple"
+        ></icon-clock-pair>
+      </icon-hourglass-button>
+
+      <icon-hourglass-button
+        title="Halve en hele uren, kwartieren en tien minuten"
+        time="1min"
+        href="KlokPaartjes.html?hour&halfhour&quarterhour&10minute&digital&sentence"
+      >
+        <icon-clock-pair
+          digital
+          sentence
+          hours="1"
+          minutes="40"
+          color="magenta"
+        ></icon-clock-pair>
+      </icon-hourglass-button>
+      <icon-hourglass-button
+        title="Halve en hele uren, kwartieren en tien minuten"
+        time="3min"
+        href="KlokPaartjes.html?hour&halfhour&quarterhour&10minute&digital&sentence"
+      >
+        <icon-clock-pair
+          digital
+          sentence
+          hours="1"
+          minutes="40"
+          color="magenta"
+        ></icon-clock-pair>
+      </icon-hourglass-button>
+
+      <icon-hourglass-button
+        title="Alle mogelijke tijden"
+        time="1min"
+        href="KlokPaartjes.html?hour&halfhour&quarterhour&10minute&minute&digital&sentence"
+      >
+        <icon-clock-pair
+          digital
+          sentence
+          hours="3"
+          minutes="53"
+          color="grey"
+        ></icon-clock-pair>
+      </icon-hourglass-button>
+      <icon-hourglass-button
+        title="Alle mogelijke tijden"
+        time="3min"
+        href="KlokPaartjes.html?hour&halfhour&quarterhour&10minute&minute&digital&sentence"
+      >
+        <icon-clock-pair
+          digital
+          sentence
+          hours="3"
+          minutes="53"
+          color="grey"
+        ></icon-clock-pair>
+      </icon-hourglass-button>
+    </div>
+
+    <p>
+      <a href="index.html">Terug naar het klokspelletjes menu</a>
+    </p>
+  </body>
+</html>

@@ -1,7 +1,7 @@
 import html from '@web/rollup-plugin-html';
 import { babel } from '@rollup/plugin-babel';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
-// import copy from 'rollup-plugin-copy';
+import copy from 'rollup-plugin-copy';
 // MinifyHTML removed because it caused in some cases ; to be removed while it shouldn't be removed.
 // import minifyHTML from 'rollup-plugin-minify-html-literals';
 import { terser } from 'rollup-plugin-terser';
@@ -11,11 +11,11 @@ import commonjs from '@rollup/plugin-commonjs';
 
 export default {
   output: {
-    dir: 'dist/s',
+    dir: 'dist/Rekenspelletjes',
     entryFileNames: 'src/[name]-[hash].js',
     chunkFileNames: 'src/[name]-[hash].js',
   },
-  input: 's/index.html',
+  input: 'Rekenspelletjes/*.html',
   plugins: [
     html({
       minify: true,
@@ -34,6 +34,40 @@ export default {
     nodeResolve({ extensions: ['.ts', 'mjs', 'js'] }),
     // The commonjs plugin allows to use npm packages that are still using the CommonJS packaging
     commonjs(),
+    copy({
+      targets: [
+        {
+          src: 'short-root.html',
+          dest: 'dist/s/',
+          rename: 'index.html',
+        },
+        {
+          src: '.htaccess-root',
+          dest: 'dist/Rekenspelletjes',
+          rename: '.htaccess',
+        },
+        { src: 'index-root.html', dest: 'dist/', rename: 'index.html' },
+        {
+          src: '.htaccess-assets',
+          dest: 'dist/Rekenspelletjes/assets',
+          rename: '.htaccess',
+        },
+        {
+          src: '.htaccess-src',
+          dest: 'dist/Rekenspelletjes/src',
+          rename: '.htaccess',
+        },
+        { src: 'asdflog.php', dest: 'dist/Rekenspelletjes' },
+        {
+          src: [
+            'images/favicon-math-multicolor-16x16.png',
+            'images/favicon-math-multicolor-32x32.png',
+            'images/favicon-math-multicolor-180x180.png',
+          ],
+          dest: 'dist/Rekenspelletjes/images',
+        },
+      ],
+    }),
     terser({ ecma: 2020, module: true }),
     summary({}),
   ],

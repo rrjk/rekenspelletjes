@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="nl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Menu splisten in tientallen en eenhede</title>
+  </head>
+  <style>
+    html {
+      font-size: x-large;
+    }
+    .buttonTable {
+      position: relative;
+      display: flex;
+      gap: 10px 10px;
+      flex-wrap: wrap;
+      width: 410px;
+    }
+
+    icon-hourglass-button {
+      width: 40%;
+    }
+
+    .iconWidget {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+  <body>
+    <script type="module" src="../src/IconHourglassButton.ts"></script>
+    <script type="module" src="../src/TensSplitWidget.ts"></script>
+
+    <h2>Splitsen in tientallen en eenheden</h2>
+    <div class="buttonTable">
+      <icon-hourglass-button
+        title="Splitsen in tientallen en eenheden"
+        time="1min"
+        href="SplitsenOpWaarde.html?"
+      >
+        <div class="iconWidget">
+          <tens-split-widget
+            numberToSplit="56"
+            activeDigit="2"
+          ></tens-split-widget>
+        </div>
+      </icon-hourglass-button>
+      <icon-hourglass-button
+        title="Splitsen in tientallen en eenheden"
+        time="3min"
+        href="SplitsenOpWaarde.html?"
+      >
+        <div class="iconWidget">
+          <tens-split-widget
+            numberToSplit="56"
+            activeDigit="2"
+          ></tens-split-widget>
+        </div>
+      </icon-hourglass-button>
+    </div>
+
+    <p>
+      <a href="index.html">Terug naar het hoofdmenu</a>
+    </p>
+  </body>
+</html>

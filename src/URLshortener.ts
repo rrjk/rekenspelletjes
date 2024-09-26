@@ -6,6 +6,9 @@ const path = window.location.pathname;
 
 console.log(path);
 
+const root = `${window.location.protocol}//${window.location.host}`;
+console.log(root);
+
 const urls = [
   // a
   '../Rekenspelletjes/SommenMetSplitsen.html?game=split1Till20&plus&time=60',
@@ -22,6 +25,8 @@ function stringValue(a: string): number {
   }
   return value;
 }
-
-const index = stringValue(key);
-if (urls[index]) window.location.href = urls[index];
+if (key) {
+  const index = stringValue(key);
+  if (urls[index]) window.location.href = urls[index];
+  else window.location.href = root;
+} else window.location.href = root;

@@ -11,7 +11,7 @@ import commonjs from '@rollup/plugin-commonjs';
 
 export default {
   output: {
-    dir: 'dist/Rekenspelletjes',
+    dir: 'dist',
     entryFileNames: 'src/[name]-[hash].js',
     chunkFileNames: 'src/[name]-[hash].js',
   },
@@ -36,28 +36,6 @@ export default {
     commonjs(),
     copy({
       targets: [
-        {
-          src: 'short-root.html',
-          dest: 'dist/s/',
-          rename: 'index.html',
-        },
-        {
-          src: '.htaccess-root',
-          dest: 'dist/Rekenspelletjes',
-          rename: '.htaccess',
-        },
-        { src: 'index-root.html', dest: 'dist/', rename: 'index.html' },
-        {
-          src: '.htaccess-assets',
-          dest: 'dist/Rekenspelletjes/assets',
-          rename: '.htaccess',
-        },
-        {
-          src: '.htaccess-src',
-          dest: 'dist/Rekenspelletjes/src',
-          rename: '.htaccess',
-        },
-        { src: 'asdflog.php', dest: 'dist/Rekenspelletjes' },
         {
           src: [
             'images/favicon-math-multicolor-16x16.png',

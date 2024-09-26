@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="nl">    
+    <style>
+        html {
+            font-size: xx-large;
+        }
+        .buttonTable{
+            position: relative;
+            display: flex;
+            gap: 10px 10px;
+            flex-wrap: wrap;
+            width: 450px;
+        }
+
+        img{
+            margin-right: 5px;
+        }
+
+    </style>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+        <title>Sommen tot de twintig met splitsen</title>
+    </head>
+    <body>
+        <script type="module" src="../src/IconHourglassButton.ts"></script>  
+        <h2>Sommen met een keer splitsen</h2>
+        
+        <h3>Sommen tot de 20</h3>
+        <div class="buttonTable">
+            <icon-hourglass-button 
+                time="1min"
+                title="Sommen zoals 6+8, met splitsen"
+                href="SommenMetSplitsen.html?game=split1Till20&plus">
+                <img src="../images/Als6+8.svg"  alt="Als 6+8" height=90px></img>
+            </icon-hourglass-button>
+            <icon-hourglass-button 
+                time="3min"
+                title="Sommen zoals 6+8, met splitsen"
+                href="SommenMetSplitsen.html?game=split1Till20&plus">
+                <img src="../images/Als6+8.svg"  alt="Als 6+8" height=90px></img>
+            </icon-hourglass-button>
+            <icon-hourglass-button 
+                time="1min"
+                title="Sommen zoals 12-3, met splitsen"
+                href="SommenMetSplitsen.html?game=split1Till20&minus">
+                <img src="../images/Als12-3.svg"  alt="Als 12-3" height=90px></img>
+            </icon-hourglass-button>
+            <icon-hourglass-button 
+                time="3min"
+                title="Sommen zoals 12-3, met splitsen"
+                href="SommenMetSplitsen.html?game=split1Till20&minus">
+                <img src="../images/Als12-3.svg"  alt="Als 12-3" height=90px></img>
+            </icon-hourglass-button>
+            <icon-hourglass-button 
+                time="1min"
+                title="Sommen zoals 6+8 en 12-3, met splitsen"
+                href="SommenMetSplitsen.html?game=split1Till20&plus&minus">
+                <img src="../images/Als6+8_12-3.svg"  alt="Als 6+8 en 12-3" height=90px></img>
+            </icon-hourglass-button>
+            <icon-hourglass-button 
+                time="3min"
+                title="Sommen zoals 6+8 en 12-3, met splitsen"
+                href="SommenMetSplitsen.html?game=split1Till20&plus&minus">
+                <img src="../images/Als6+8_12-3.svg"  alt="Als 6+8 en 12-3" height=90px></img>
+            </icon-hourglass-button>
+        </div>
+        <p>
+            <a href="index.html">Terug naar het hoofdmenu</a>
+        </p>
+    </body>
+</html>
