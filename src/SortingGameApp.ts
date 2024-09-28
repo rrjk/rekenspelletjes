@@ -44,9 +44,9 @@ type BoxInformation = {
  * @param time - Game length
  */
 export function sorterenLink(
-  numberBoxes: 2 | 3 | 4 = 2,
-  minimumValue = 1,
-  maximumValue = 10,
+  numberBoxes: 2 | 3 | 4,
+  minimumValue: number,
+  maximumValue: number,
   divider = 1,
   boxColor: BoxColor = 'red',
   time: number

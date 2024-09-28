@@ -20,6 +20,42 @@ interface AnswerAndSums {
   sums: Sum[];
 }
 
+type Descending = 'descending' | 'ascending';
+type ShowSum = 'showSum' | 'hideSum';
+type EvenOdd = 'even' | 'odd' | 'all';
+type Start = 'random' | number;
+
+/** Create link for click in order game.
+ * @param nmbrBalls - Number of balls  to show
+ * @param start - First number to show, or random to randomly select from 20 - 80
+ * @param descending - use descending numbers when start is specified
+ * @param tableOfMultiplication - create balls from the tableOfMultiplication, if showSum is not active, only the first table is selected.
+ * @param showSum: Show sum with the table of multiplication(s), in this case the balls need to be clicked in the order the sums are shown (random), multiple tables are allowed.
+ * @param random: Select number from a random start number, increasing by 1.
+ * @param even: Only show even numbers. If Start is not an even number, this first higher even number is selected.
+ * @param odd: Only show odd numbers. If Start is not an odd number, this first higher odd number is selected.
+ * @param time - Game length
+ */
+export function aanklikkenInVolgordeLink(
+  start: Start,
+  nmbrBalls: number,
+  descending: Descending,
+  tableOfMultiplication: number[],
+  showSum: ShowSum,
+  evenOdd: EvenOdd
+) {
+  let params = `nmbrBalls=${nmbrBalls}`;
+  if (start === 'random') params += '&random';
+  else params += `&start=${start}`;
+  if (descending === 'descending') params += `&descending`;
+  if (showSum === 'showSum') params += `&showSum`;
+  if (evenOdd === 'even') params += `&even`;
+  else if (evenOdd === 'odd') params += `&odd`;
+  for (const n of tableOfMultiplication)
+    params += `&tableOfMultiplication=${n}`;
+  return `../Rekenspelletjes/aanklikkenInVolgorde.html?${params}`;
+}
+
 /** Click in order application
  * @url-parameter nmbrBalls: int - number of balls to show
  * @url-parameter start:int - first number to show, balls will be selected increasing by 1 from the first number, except when also descending is specified.

@@ -1,3 +1,4 @@
+import { aanklikkenInVolgordeLink } from './ClickInOrderApp';
 import { sorterenLink } from './SortingGameApp';
 import { sommenMetSplitsenLink } from './SumsWithSplitApp';
 import { welkeHandHeeftMeerStippenLink } from './WhichIsBiggerApp';
@@ -35,7 +36,6 @@ const urls: (() => string)[] = [
   () => welkeHandHeeftMeerStippenLink(false, true, 180),
   // i - indexSorteren.html 1
   () => sorterenLink(2, 1, 10, 1, 'red', 60),
-  () => sorterenLink(2, 1, 10, 1, 'red', 60),
   () => sorterenLink(2, 1, 10, 1, 'red', 180),
   () => sorterenLink(3, 1, 10, 1, 'red', 60),
   () => sorterenLink(3, 1, 10, 1, 'red', 180),
@@ -62,6 +62,20 @@ const urls: (() => string)[] = [
   () => sorterenLink(3, 1, 100, 1, 'red', 180),
   () => sorterenLink(4, 1, 100, 1, 'red', 60),
   () => sorterenLink(4, 1, 100, 1, 'red', 180),
+  // bg - indexAanklikkenInVolgorde.html
+  () => aanklikkenInVolgordeLink(1, 10, 'ascending', [], 'hideSum', 'all'),
+  () => aanklikkenInVolgordeLink(11, 10, 'ascending', [], 'hideSum', 'all'),
+  () => aanklikkenInVolgordeLink(1, 20, 'ascending', [], 'hideSum', 'all'),
+  () => aanklikkenInVolgordeLink(11, 20, 'ascending', [], 'hideSum', 'all'),
+  () => aanklikkenInVolgordeLink(21, 20, 'ascending', [], 'hideSum', 'all'),
+  () => aanklikkenInVolgordeLink(31, 20, 'ascending', [], 'hideSum', 'all'),
+  () => aanklikkenInVolgordeLink(1, 50, 'ascending', [], 'hideSum', 'all'),
+  () => aanklikkenInVolgordeLink(20, 20, 'descending', [], 'hideSum', 'all'),
+  () =>
+    aanklikkenInVolgordeLink('random', 20, 'ascending', [], 'hideSum', 'all'),
+  () => aanklikkenInVolgordeLink(2, 10, 'ascending', [], 'hideSum', 'even'),
+  () => aanklikkenInVolgordeLink(1, 10, 'ascending', [], 'hideSum', 'odd'),
+  // br
 ];
 
 const urlParams = new URLSearchParams(window.location.search);
