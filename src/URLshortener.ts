@@ -76,7 +76,7 @@ const urls: (() => string)[] = [
     aanklikkenInVolgordeLink('random', 20, 'ascending', [], 'hideSum', 'all'),
   () => aanklikkenInVolgordeLink(2, 10, 'ascending', [], 'hideSum', 'even'),
   () => aanklikkenInVolgordeLink(1, 10, 'ascending', [], 'hideSum', 'odd'),
-  // br indexSplitsen.html 1
+  // br - indexSplitsen.html 1
   () => splitsenLink([4], 60),
   () => splitsenLink([4], 180),
   () => splitsenLink([5], 60),
@@ -91,14 +91,16 @@ const urls: (() => string)[] = [
   () => splitsenLink([9], 180),
   () => splitsenLink([10], 60),
   () => splitsenLink([10], 180),
-  // cf indexSplitsen.html 2
+  // cf - indexSplitsen.html 2
   () => splitsenLink([1, 2, 3, 4, 5, 10], 60),
   () => splitsenLink([1, 2, 3, 4, 5, 10], 180),
   () => splitsenLink([6, 7, 8, 9, 10], 60),
   () => splitsenLink([6, 7, 8, 9, 10], 180),
   () => splitsenLink([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 60),
   () => splitsenLink([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 180),
-  // cl
+  // cl - indexVerliefdeharten.html
+  () => `../Rekenspelletjes/SomPaartjes.html`,
+  // cm - indexVerliefdeharten.html
 ];
 
 const urlParams = new URLSearchParams(window.location.search);
