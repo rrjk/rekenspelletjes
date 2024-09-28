@@ -17,7 +17,23 @@ import './DigitFillin';
 import './RealHeight';
 
 type OperatorType = '+' | '-';
+
 type GameRangeType = 'split1Till20' | 'split1Till100' | 'split2Till100';
+
+/** Create link for Sommen Met Splitsen game
+ * @param game - Game to play
+ * @param plus - Include exercises with the plus operator (If all operators are false, the plus operator is used.)
+ * @param minus - Include exercises with the minus operator
+ * @param time - Game length (seconds)
+ */
+export function sommenMetSplitsenLink(
+  game: GameRangeType,
+  plus: boolean,
+  minus: boolean,
+  time: number
+) {
+  return `../Rekenspelletjes/SommenMetSplitsen.html?game=${game}&plus=${plus}&minus=${minus}&time=${time}`;
+}
 
 /** Get the width of a piece of text in real vh units
  * @param text - Text for which to determine the width
@@ -84,8 +100,16 @@ export class SumsWithDoubleSplitApp extends TimeLimitedGame2 {
   private parseUrl(): void {
     const urlParams = new URLSearchParams(window.location.search);
     this.operators = [];
-    if (urlParams.has('plus')) this.operators.push('+');
-    if (urlParams.has('minus')) this.operators.push('-');
+    if (
+      urlParams.has('plus') &&
+      (urlParams.get('plus') === 'true' || urlParams.get('plus') === '')
+    )
+      this.operators.push('+');
+    if (
+      urlParams.has('minus') &&
+      (urlParams.get('minus') === 'true' || urlParams.get('minus') === '')
+    )
+      this.operators.push('-');
     if (this.operators.length === 0) this.operators.push('+');
 
     if (urlParams.has('game')) {
