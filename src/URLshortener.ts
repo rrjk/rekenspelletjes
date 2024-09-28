@@ -1,5 +1,6 @@
 import { aanklikkenInVolgordeLink } from './ClickInOrderApp';
 import { sorterenLink } from './SortingGameApp';
+import { splitsenLink } from './SplitApp';
 import { sommenMetSplitsenLink } from './SumsWithSplitApp';
 import { welkeHandHeeftMeerStippenLink } from './WhichIsBiggerApp';
 
@@ -75,7 +76,29 @@ const urls: (() => string)[] = [
     aanklikkenInVolgordeLink('random', 20, 'ascending', [], 'hideSum', 'all'),
   () => aanklikkenInVolgordeLink(2, 10, 'ascending', [], 'hideSum', 'even'),
   () => aanklikkenInVolgordeLink(1, 10, 'ascending', [], 'hideSum', 'odd'),
-  // br
+  // br indexSplitsen.html 1
+  () => splitsenLink([4], 60),
+  () => splitsenLink([4], 180),
+  () => splitsenLink([5], 60),
+  () => splitsenLink([5], 180),
+  () => splitsenLink([6], 60),
+  () => splitsenLink([6], 180),
+  () => splitsenLink([7], 60),
+  () => splitsenLink([7], 180),
+  () => splitsenLink([8], 60),
+  () => splitsenLink([8], 180),
+  () => splitsenLink([9], 60),
+  () => splitsenLink([9], 180),
+  () => splitsenLink([10], 60),
+  () => splitsenLink([10], 180),
+  // cf indexSplitsen.html 2
+  () => splitsenLink([1, 2, 3, 4, 5, 10], 60),
+  () => splitsenLink([1, 2, 3, 4, 5, 10], 180),
+  () => splitsenLink([6, 7, 8, 9, 10], 60),
+  () => splitsenLink([6, 7, 8, 9, 10], 180),
+  () => splitsenLink([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 60),
+  () => splitsenLink([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 180),
+  // cl
 ];
 
 const urlParams = new URLSearchParams(window.location.search);
