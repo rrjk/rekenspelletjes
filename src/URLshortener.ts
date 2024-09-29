@@ -1,6 +1,7 @@
 import { plusMinBinnenTientalLink } from './AdditionSubstractionWithinDecadeApp';
 import { aanklikkenInVolgordeLink } from './ClickInOrderApp';
 import { klikFotoOpGetallenlijnLink } from './ClickTheRightPhotoOnNumberLineApp';
+import { klokPaartjesLink } from './ClockPairingApp';
 import { springOpGetallenlijnLink } from './JumpOnNumberLineApp';
 import { sorterenLink } from './SortingGameApp';
 import { splitsenLink } from './SplitApp';
@@ -374,7 +375,181 @@ const urls: (() => string)[] = [
     ),
   () => springOpGetallenlijnLink(0, 100, ['show10TickMarks'], 60),
   () => springOpGetallenlijnLink(0, 100, ['show10TickMarks'], 180),
-  // ek
+  // ek -- indexKlokPaartjesAnaloogZin.html
+  () => klokPaartjesLink(['Hour'], ['Analog', 'Sentence'], 60),
+  () => klokPaartjesLink(['Hour'], ['Analog', 'Sentence'], 180),
+  () => klokPaartjesLink(['HalfHour', 'Hour'], ['Analog', 'Sentence'], 60),
+  () => klokPaartjesLink(['HalfHour', 'Hour'], ['Analog', 'Sentence'], 180),
+  () =>
+    klokPaartjesLink(
+      ['QuarterHour', 'HalfHour', 'Hour'],
+      ['Analog', 'Sentence'],
+      60
+    ),
+  () =>
+    klokPaartjesLink(
+      ['QuarterHour', 'HalfHour', 'Hour'],
+      ['Analog', 'Sentence'],
+      180
+    ),
+  () =>
+    klokPaartjesLink(
+      ['10Minute', 'QuarterHour', 'HalfHour', 'Hour'],
+      ['Analog', 'Sentence'],
+      60
+    ),
+  () =>
+    klokPaartjesLink(
+      ['10Minute', 'QuarterHour', 'HalfHour', 'Hour'],
+      ['Analog', 'Sentence'],
+      180
+    ),
+  () =>
+    klokPaartjesLink(
+      ['Minute', '10Minute', 'QuarterHour', 'HalfHour', 'Hour'],
+      ['Analog', 'Sentence'],
+      60
+    ),
+  () =>
+    klokPaartjesLink(
+      ['Minute', '10Minute', 'QuarterHour', 'HalfHour', 'Hour'],
+      ['Analog', 'Sentence'],
+      180
+    ),
+  // eu -- indexKlokPaartjesDigitaalZin.html
+  () => klokPaartjesLink(['Hour'], ['Sentence', 'Digital'], 60),
+  () => klokPaartjesLink(['Hour'], ['Sentence', 'Digital'], 180),
+  () => klokPaartjesLink(['HalfHour', 'Hour'], ['Sentence', 'Digital'], 60),
+  () => klokPaartjesLink(['HalfHour', 'Hour'], ['Sentence', 'Digital'], 180),
+  () =>
+    klokPaartjesLink(
+      ['QuarterHour', 'HalfHour', 'Hour'],
+      ['Sentence', 'Digital'],
+      60
+    ),
+  () =>
+    klokPaartjesLink(
+      ['QuarterHour', 'HalfHour', 'Hour'],
+      ['Sentence', 'Digital'],
+      180
+    ),
+  () =>
+    klokPaartjesLink(
+      ['10Minute', 'QuarterHour', 'HalfHour', 'Hour'],
+      ['Sentence', 'Digital'],
+      60
+    ),
+  () =>
+    klokPaartjesLink(
+      ['10Minute', 'QuarterHour', 'HalfHour', 'Hour'],
+      ['Sentence', 'Digital'],
+      180
+    ),
+  () =>
+    klokPaartjesLink(
+      ['Minute', '10Minute', 'QuarterHour', 'HalfHour', 'Hour'],
+      ['Sentence', 'Digital'],
+      60
+    ),
+  () =>
+    klokPaartjesLink(
+      ['Minute', '10Minute', 'QuarterHour', 'HalfHour', 'Hour'],
+      ['Sentence', 'Digital'],
+      180
+    ),
+  // fe -- indexKlokPaartjesAnaloogDigitaal.html
+  () => klokPaartjesLink(['Hour'], ['Analog', 'Digital'], 60),
+  () => klokPaartjesLink(['Hour'], ['Analog', 'Digital'], 180),
+  () => klokPaartjesLink(['HalfHour', 'Hour'], ['Analog', 'Digital'], 60),
+  () => klokPaartjesLink(['HalfHour', 'Hour'], ['Analog', 'Digital'], 180),
+  () =>
+    klokPaartjesLink(
+      ['QuarterHour', 'HalfHour', 'Hour'],
+      ['Analog', 'Digital'],
+      60
+    ),
+  () =>
+    klokPaartjesLink(
+      ['QuarterHour', 'HalfHour', 'Hour'],
+      ['Analog', 'Digital'],
+      180
+    ),
+  () =>
+    klokPaartjesLink(
+      ['10Minute', 'QuarterHour', 'HalfHour', 'Hour'],
+      ['Analog', 'Digital'],
+      60
+    ),
+  () =>
+    klokPaartjesLink(
+      ['10Minute', 'QuarterHour', 'HalfHour', 'Hour'],
+      ['Analog', 'Digital'],
+      180
+    ),
+  () =>
+    klokPaartjesLink(
+      ['Minute', '10Minute', 'QuarterHour', 'HalfHour', 'Hour'],
+      ['Analog', 'Digital'],
+      60
+    ),
+  () =>
+    klokPaartjesLink(
+      ['Minute', '10Minute', 'QuarterHour', 'HalfHour', 'Hour'],
+      ['Analog', 'Digital'],
+      180
+    ),
+  // fo -- indexKlokPaartjesAnaloogDigitaalZin.html
+  () => klokPaartjesLink(['Hour'], ['Analog', 'Digital', 'Sentence'], 60),
+  () => klokPaartjesLink(['Hour'], ['Analog', 'Digital', 'Sentence'], 180),
+  () =>
+    klokPaartjesLink(
+      ['HalfHour', 'Hour'],
+      ['Analog', 'Digital', 'Sentence'],
+      60
+    ),
+  () =>
+    klokPaartjesLink(
+      ['HalfHour', 'Hour'],
+      ['Analog', 'Digital', 'Sentence'],
+      180
+    ),
+  () =>
+    klokPaartjesLink(
+      ['QuarterHour', 'HalfHour', 'Hour'],
+      ['Analog', 'Digital', 'Sentence'],
+      60
+    ),
+  () =>
+    klokPaartjesLink(
+      ['QuarterHour', 'HalfHour', 'Hour'],
+      ['Analog', 'Digital', 'Sentence'],
+      180
+    ),
+  () =>
+    klokPaartjesLink(
+      ['10Minute', 'QuarterHour', 'HalfHour', 'Hour'],
+      ['Analog', 'Digital', 'Sentence'],
+      60
+    ),
+  () =>
+    klokPaartjesLink(
+      ['10Minute', 'QuarterHour', 'HalfHour', 'Hour'],
+      ['Analog', 'Digital', 'Sentence'],
+      180
+    ),
+  () =>
+    klokPaartjesLink(
+      ['Minute', '10Minute', 'QuarterHour', 'HalfHour', 'Hour'],
+      ['Analog', 'Digital', 'Sentence'],
+      60
+    ),
+  () =>
+    klokPaartjesLink(
+      ['Minute', '10Minute', 'QuarterHour', 'HalfHour', 'Hour'],
+      ['Analog', 'Digital', 'Sentence'],
+      180
+    ),
+  // fy
 ];
 
 const urlParams = new URLSearchParams(window.location.search);
