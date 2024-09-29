@@ -20,6 +20,41 @@ import type { GameOverDialog } from './GameOverDialog';
 import { ChildNotFoundError } from './ChildNotFoundError';
 import { GameLogger } from './GameLogger';
 
+type Helpers =
+  | 'show10TickMarks'
+  | 'show5TickMarks'
+  | 'show1TickMarks'
+  | 'showAll10Numbers';
+type NumberLineBoundaries =
+  | 0
+  | 10
+  | 20
+  | 30
+  | 40
+  | 50
+  | 60
+  | 70
+  | 80
+  | 90
+  | 100;
+
+/** Create link for click the right photo on numberline game.
+ * @param minimum - Minimum number to show on numberline
+ * @param maximum - Maximum number to show on numberline
+ * @param showHelpers - What helpers to show
+ * @param time - Game length
+ */
+export function klikFotoOpGetallenlijnLink(
+  minumum: NumberLineBoundaries,
+  maximum: NumberLineBoundaries,
+  helpers: Helpers[],
+  time: number
+) {
+  let params = `time=${time}&minumum=${minumum}&maximum=${maximum}`;
+  for (const h of helpers) params += `&${h}`;
+  return `../Rekenspelletjes/KlikFotoOpGetallenlijn.html?${params}`;
+}
+
 class ClickTheRightPhotoOnNumberLineApp extends LitElement {
   numberToClick: number;
   minimum: number;
@@ -32,6 +67,7 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
   disabledPositions: number[];
   _numberOk: number;
   _numberNok: number;
+  time: number;
 
   private gameLogger = new GameLogger('T', 'a');
 
@@ -48,6 +84,7 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
       disabledPositions: { type: Array },
       _numberOk: { type: Number, state: true },
       _numberNok: { type: Number, state: true },
+      time: { type: Number },
     };
   }
 
@@ -58,7 +95,7 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
 
     this.show1TickMarks = false;
     this.show5TickMarks = false;
-    this.show10TickMarks = true;
+    this.show10TickMarks = false;
     this._showAll10Numbers = false;
 
     this.numberToClick = 8;
@@ -68,6 +105,8 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
     this._numberNok = 0;
     this._numberOk = 0;
 
+    this.time = 60;
+
     this.parseUrl();
 
     //        this.startNewGame();
@@ -75,6 +114,11 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
 
   parseUrl() {
     const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('time')) {
+      const time = parseInt(urlParams.get('time') || '', 10);
+      if (!Number.isNaN(time)) this.time = time;
+    }
+
     if (urlParams.has('minimum')) {
       const minimum = parseInt(urlParams.get('minimum') || '', 10);
       if (minimum % 10 === 0) {
@@ -267,7 +311,7 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
   render() {
     return html`
       <progress-bar
-        style="--progress-bar-gametime: 60s;"
+        style="--progress-bar-gametime: ${this.time}s;"
         id="progressBar"
         @timeUp="${() => this.handleTimeUp()}"
       ></progress-bar>

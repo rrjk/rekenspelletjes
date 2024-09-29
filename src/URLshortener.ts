@@ -1,5 +1,6 @@
 import { plusMinBinnenTientalLink } from './AdditionSubstractionWithinDecadeApp';
 import { aanklikkenInVolgordeLink } from './ClickInOrderApp';
+import { klikFotoOpGetallenlijnLink } from './ClickTheRightPhotoOnNumberLineApp';
 import { sorterenLink } from './SortingGameApp';
 import { splitsenLink } from './SplitApp';
 import { sommenMetSplitsenLink } from './SumsWithSplitApp';
@@ -152,7 +153,117 @@ const urls: (() => string)[] = [
       ['plus', 'minus'],
       180
     ),
-  // de -
+  // de - indexKlikFotoOpGetallenlijn.html - Getallenlijn van 0 tot 20
+  () =>
+    klikFotoOpGetallenlijnLink(
+      0,
+      20,
+      [
+        'show10TickMarks',
+        'show5TickMarks',
+        'show1TickMarks',
+        'showAll10Numbers',
+      ],
+      60
+    ),
+  () =>
+    klikFotoOpGetallenlijnLink(
+      0,
+      20,
+      [
+        'show10TickMarks',
+        'show5TickMarks',
+        'show1TickMarks',
+        'showAll10Numbers',
+      ],
+      180
+    ),
+  () =>
+    klikFotoOpGetallenlijnLink(
+      0,
+      20,
+      ['show10TickMarks', 'show5TickMarks', 'showAll10Numbers'],
+      60
+    ),
+  () =>
+    klikFotoOpGetallenlijnLink(
+      0,
+      20,
+      ['show10TickMarks', 'show5TickMarks', 'showAll10Numbers'],
+      180
+    ),
+  () =>
+    klikFotoOpGetallenlijnLink(
+      0,
+      20,
+      ['show10TickMarks', 'showAll10Numbers'],
+      60
+    ),
+  () =>
+    klikFotoOpGetallenlijnLink(
+      0,
+      20,
+      ['show10TickMarks', 'showAll10Numbers'],
+      180
+    ),
+  () => klikFotoOpGetallenlijnLink(0, 20, ['show10TickMarks'], 60),
+  () => klikFotoOpGetallenlijnLink(0, 20, ['show10TickMarks'], 180),
+  // dm - indexKlikFotoOpGetallenlijn.html Getallenlijn van 0 tot 100
+  () =>
+    klikFotoOpGetallenlijnLink(
+      0,
+      100,
+      [
+        'show10TickMarks',
+        'show5TickMarks',
+        'show1TickMarks',
+        'showAll10Numbers',
+      ],
+      60
+    ),
+  () =>
+    klikFotoOpGetallenlijnLink(
+      0,
+      100,
+      [
+        'show10TickMarks',
+        'show5TickMarks',
+        'show1TickMarks',
+        'showAll10Numbers',
+      ],
+      180
+    ),
+  () =>
+    klikFotoOpGetallenlijnLink(
+      0,
+      100,
+      ['show10TickMarks', 'show5TickMarks', 'showAll10Numbers'],
+      60
+    ),
+  () =>
+    klikFotoOpGetallenlijnLink(
+      0,
+      100,
+      ['show10TickMarks', 'show5TickMarks', 'showAll10Numbers'],
+      180
+    ),
+  () =>
+    klikFotoOpGetallenlijnLink(
+      0,
+      100,
+      ['show10TickMarks', 'showAll10Numbers'],
+      60
+    ),
+  () =>
+    klikFotoOpGetallenlijnLink(
+      0,
+      100,
+      ['show10TickMarks', 'showAll10Numbers'],
+      180
+    ),
+  () => klikFotoOpGetallenlijnLink(0, 100, ['show10TickMarks'], 60),
+  () => klikFotoOpGetallenlijnLink(0, 100, ['show10TickMarks'], 180),
+  // du -
 ];
 
 const urlParams = new URLSearchParams(window.location.search);
