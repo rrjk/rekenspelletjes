@@ -1,6 +1,7 @@
 import { plusMinBinnenTientalLink } from './AdditionSubstractionWithinDecadeApp';
 import { aanklikkenInVolgordeLink } from './ClickInOrderApp';
 import { klikFotoOpGetallenlijnLink } from './ClickTheRightPhotoOnNumberLineApp';
+import { springOpGetallenlijnLink } from './JumpOnNumberLineApp';
 import { sorterenLink } from './SortingGameApp';
 import { splitsenLink } from './SplitApp';
 import { sommenMetSplitsenLink } from './SumsWithSplitApp';
@@ -263,7 +264,117 @@ const urls: (() => string)[] = [
     ),
   () => klikFotoOpGetallenlijnLink(0, 100, ['show10TickMarks'], 60),
   () => klikFotoOpGetallenlijnLink(0, 100, ['show10TickMarks'], 180),
-  // du -
+  // du - indexSpringOpGetallenlijn.html - Getallenlijn van 0 tot 20
+  () =>
+    springOpGetallenlijnLink(
+      0,
+      20,
+      [
+        'show10TickMarks',
+        'show5TickMarks',
+        'show1TickMarks',
+        'showAll10Numbers',
+      ],
+      60
+    ),
+  () =>
+    springOpGetallenlijnLink(
+      0,
+      20,
+      [
+        'show10TickMarks',
+        'show5TickMarks',
+        'show1TickMarks',
+        'showAll10Numbers',
+      ],
+      180
+    ),
+  () =>
+    springOpGetallenlijnLink(
+      0,
+      20,
+      ['show10TickMarks', 'show5TickMarks', 'showAll10Numbers'],
+      60
+    ),
+  () =>
+    springOpGetallenlijnLink(
+      0,
+      20,
+      ['show10TickMarks', 'show5TickMarks', 'showAll10Numbers'],
+      180
+    ),
+  () =>
+    springOpGetallenlijnLink(
+      0,
+      20,
+      ['show10TickMarks', 'showAll10Numbers'],
+      60
+    ),
+  () =>
+    springOpGetallenlijnLink(
+      0,
+      20,
+      ['show10TickMarks', 'showAll10Numbers'],
+      180
+    ),
+  () => springOpGetallenlijnLink(0, 20, ['show10TickMarks'], 60),
+  () => springOpGetallenlijnLink(0, 20, ['show10TickMarks'], 180),
+  // ec
+  () =>
+    springOpGetallenlijnLink(
+      0,
+      100,
+      [
+        'show10TickMarks',
+        'show5TickMarks',
+        'show1TickMarks',
+        'showAll10Numbers',
+      ],
+      60
+    ),
+  () =>
+    springOpGetallenlijnLink(
+      0,
+      100,
+      [
+        'show10TickMarks',
+        'show5TickMarks',
+        'show1TickMarks',
+        'showAll10Numbers',
+      ],
+      180
+    ),
+  () =>
+    springOpGetallenlijnLink(
+      0,
+      100,
+      ['show10TickMarks', 'show5TickMarks', 'showAll10Numbers'],
+      60
+    ),
+  () =>
+    springOpGetallenlijnLink(
+      0,
+      100,
+      ['show10TickMarks', 'show5TickMarks', 'showAll10Numbers'],
+      180
+    ),
+  () =>
+    springOpGetallenlijnLink(
+      0,
+      100,
+      ['show10TickMarks', 'showAll10Numbers'],
+      60
+    ),
+  () =>
+    springOpGetallenlijnLink(
+      0,
+      100,
+      ['show10TickMarks', 'showAll10Numbers'],
+      180
+    ),
+  () => springOpGetallenlijnLink(0, 100, ['show10TickMarks'], 60),
+  () => springOpGetallenlijnLink(0, 100, ['show10TickMarks'], 180),
+  // ek
 ];
 
 const urlParams = new URLSearchParams(window.location.search);
