@@ -6,6 +6,7 @@ import { springOpGetallenlijnLink } from './JumpOnNumberLineApp';
 import { sorterenLink } from './SortingGameApp';
 import { splitsenLink } from './SplitApp';
 import { sommenMetSplitsenLink } from './SumsWithSplitApp';
+import { splitsenOpWaardeLink } from './TensSplitApp';
 import { welkeHandHeeftMeerStippenLink } from './WhichIsBiggerApp';
 
 /** Function to determine the number belonging to a string of lower case letters
@@ -549,7 +550,10 @@ const urls: (() => string)[] = [
       ['Analog', 'Digital', 'Sentence'],
       180
     ),
-  // fy
+  // fy - indexSplitsenOpwaarde.html
+  () => splitsenOpWaardeLink(60),
+  () => splitsenOpWaardeLink(180),
+  // ga -
 ];
 
 const urlParams = new URLSearchParams(window.location.search);
