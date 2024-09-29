@@ -1,3 +1,4 @@
+import { plusMinBinnenTientalLink } from './AdditionSubstractionWithinDecadeApp';
 import { aanklikkenInVolgordeLink } from './ClickInOrderApp';
 import { sorterenLink } from './SortingGameApp';
 import { splitsenLink } from './SplitApp';
@@ -100,7 +101,58 @@ const urls: (() => string)[] = [
   () => splitsenLink([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 180),
   // cl - indexVerliefdeharten.html
   () => `../Rekenspelletjes/SomPaartjes.html`,
-  // cm - indexVerliefdeharten.html
+  // cm - indexBinnenTiental.html - Sommen tot 10
+  () => plusMinBinnenTientalLink([0], ['plus'], 60),
+  () => plusMinBinnenTientalLink([0], ['plus'], 180),
+  () => plusMinBinnenTientalLink([0], ['minus'], 60),
+  () => plusMinBinnenTientalLink([0], ['minus'], 180),
+  () => plusMinBinnenTientalLink([0], ['plus', 'minus'], 60),
+  () => plusMinBinnenTientalLink([0], ['plus', 'minus'], 180),
+  // cs - indexBinnenTiental.html - Sommen van 10 tot 20
+  () => plusMinBinnenTientalLink([10], ['plus'], 60),
+  () => plusMinBinnenTientalLink([10], ['plus'], 180),
+  () => plusMinBinnenTientalLink([10], ['minus'], 60),
+  () => plusMinBinnenTientalLink([10], ['minus'], 180),
+  () => plusMinBinnenTientalLink([10], ['plus', 'minus'], 60),
+  () => plusMinBinnenTientalLink([10], ['plus', 'minus'], 180),
+  // cy - indexBinnenTiental.html - Sommen van 10 tot 20
+  () =>
+    plusMinBinnenTientalLink(
+      [0, 10, 20, 30, 40, 50, 60, 70, 80, 90],
+      ['plus'],
+      60
+    ),
+  () =>
+    plusMinBinnenTientalLink(
+      [0, 10, 20, 30, 40, 50, 60, 70, 80, 90],
+      ['plus'],
+      180
+    ),
+  () =>
+    plusMinBinnenTientalLink(
+      [0, 10, 20, 30, 40, 50, 60, 70, 80, 90],
+      ['minus'],
+      60
+    ),
+  () =>
+    plusMinBinnenTientalLink(
+      [0, 10, 20, 30, 40, 50, 60, 70, 80, 90],
+      ['minus'],
+      180
+    ),
+  () =>
+    plusMinBinnenTientalLink(
+      [0, 10, 20, 30, 40, 50, 60, 70, 80, 90],
+      ['plus', 'minus'],
+      60
+    ),
+  () =>
+    plusMinBinnenTientalLink(
+      [0, 10, 20, 30, 40, 50, 60, 70, 80, 90],
+      ['plus', 'minus'],
+      180
+    ),
+  // de -
 ];
 
 const urlParams = new URLSearchParams(window.location.search);
