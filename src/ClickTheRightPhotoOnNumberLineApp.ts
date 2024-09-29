@@ -19,6 +19,7 @@ import type { GameOverDialog } from './GameOverDialog';
 
 import { ChildNotFoundError } from './ChildNotFoundError';
 import { GameLogger } from './GameLogger';
+import { ParseGametimeFromUrl } from './GametimeParameters';
 
 type Helpers =
   | 'show10TickMarks'
@@ -113,11 +114,8 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
   }
 
   parseUrl() {
+    this.time = ParseGametimeFromUrl(60);
     const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.has('time')) {
-      const time = parseInt(urlParams.get('time') || '', 10);
-      if (!Number.isNaN(time)) this.time = time;
-    }
 
     if (urlParams.has('minimum')) {
       const minimum = parseInt(urlParams.get('minimum') || '', 10);
