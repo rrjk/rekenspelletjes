@@ -22,8 +22,7 @@ type GameRangeType = 'split1Till20' | 'split1Till100' | 'split2Till100';
 
 /** Create link for Sommen Met Splitsen game
  * @param game - Game to play
- * @param plus - Include exercises with the plus operator (If all operators are false, the plus operator is used.)
- * @param minus - Include exercises with the minus operator
+ * @param operators - Which operators to use. If none are given, plus will be used.
  * @param time - Game length (seconds)
  */
 export function sommenMetSplitsenLink(
