@@ -573,7 +573,21 @@ const urls: (() => string)[] = [
   () => plusMinHeleTientallenLink('decadeFirst', ['minus'], 180),
   () => plusMinHeleTientallenLink('decadeFirst', ['plus', 'minus'], 60),
   () => plusMinHeleTientallenLink('decadeFirst', ['plus', 'minus'], 180),
-  // gq
+  // gq indexSommenTot100EnkelSplitsen.html
+  () => sommenMetSplitsenLink('split1Till100', ['plus'], 60),
+  () => sommenMetSplitsenLink('split1Till100', ['plus'], 180),
+  () => sommenMetSplitsenLink('split1Till100', ['minus'], 60),
+  () => sommenMetSplitsenLink('split1Till100', ['minus'], 180),
+  () => sommenMetSplitsenLink('split1Till100', ['plus', 'minus'], 60),
+  () => sommenMetSplitsenLink('split1Till100', ['plus', 'minus'], 180),
+  // gw indexSommenTot100DubbelSplitsen.html
+  () => sommenMetSplitsenLink('split2Till100', ['plus'], 60),
+  () => sommenMetSplitsenLink('split2Till100', ['plus'], 180),
+  () => sommenMetSplitsenLink('split2Till100', ['minus'], 60),
+  () => sommenMetSplitsenLink('split2Till100', ['minus'], 180),
+  () => sommenMetSplitsenLink('split2Till100', ['plus', 'minus'], 60),
+  () => sommenMetSplitsenLink('split2Till100', ['plus', 'minus'], 180),
+  // hc
 ];
 
 const urlParams = new URLSearchParams(window.location.search);
