@@ -1,3 +1,4 @@
+import { plusMinHeleTientallenLink } from './AdditionSubstractionWholeDecadeApp';
 import { plusMinBinnenTientalLink } from './AdditionSubstractionWithinDecadeApp';
 import { aanklikkenInVolgordeLink } from './ClickInOrderApp';
 import { klikFotoOpGetallenlijnLink } from './ClickTheRightPhotoOnNumberLineApp';
@@ -558,6 +559,21 @@ const urls: (() => string)[] = [
   () => sommenMetSplitsenLink('split1Till20', ['minus'], 180),
   () => sommenMetSplitsenLink('split1Till20', ['plus', 'minus'], 60),
   () => sommenMetSplitsenLink('split1Till20', ['plus', 'minus'], 180),
+  // ge - indexSterSpel.html - Plus en min sommen met hele tientallen erbij of eraf
+  () => plusMinHeleTientallenLink('decadeLast', ['plus'], 60),
+  () => plusMinHeleTientallenLink('decadeLast', ['plus'], 180),
+  () => plusMinHeleTientallenLink('decadeLast', ['minus'], 60),
+  () => plusMinHeleTientallenLink('decadeLast', ['minus'], 180),
+  () => plusMinHeleTientallenLink('decadeLast', ['plus', 'minus'], 60),
+  () => plusMinHeleTientallenLink('decadeLast', ['plus', 'minus'], 180),
+  // gk indexSterSpel.html - Plus en min sommen vanuit een heel tiental
+  () => plusMinHeleTientallenLink('decadeFirst', ['plus'], 60),
+  () => plusMinHeleTientallenLink('decadeFirst', ['plus'], 180),
+  () => plusMinHeleTientallenLink('decadeFirst', ['minus'], 60),
+  () => plusMinHeleTientallenLink('decadeFirst', ['minus'], 180),
+  () => plusMinHeleTientallenLink('decadeFirst', ['plus', 'minus'], 60),
+  () => plusMinHeleTientallenLink('decadeFirst', ['plus', 'minus'], 180),
+  // gq
 ];
 
 const urlParams = new URLSearchParams(window.location.search);
