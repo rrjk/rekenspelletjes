@@ -53,7 +53,7 @@ export function aanklikkenInVolgordeLink(
   else if (evenOdd === 'odd') params += `&odd`;
   for (const n of tableOfMultiplication)
     params += `&tableOfMultiplication=${n}`;
-  return `../Rekenspelletjes/aanklikkenInVolgorde.html?${params}`;
+  return `../Rekenspelletjes/AanklikkenInVolgorde.html?${params}`;
 }
 
 /** Click in order application
