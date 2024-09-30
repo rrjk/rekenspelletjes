@@ -31,8 +31,8 @@ function stringValue(a: string): number | null {
 // We use an array with function pointers to prevent that all urls are created, where we only need one
 const urls: (() => string)[] = [
   // a - indexSommenTot20Splitsen first two items
-  () => sommenMetSplitsenLink('split1Till20', true, false, 60),
-  () => sommenMetSplitsenLink('split1Till20', true, false, 180),
+  () => sommenMetSplitsenLink('split1Till20', ['plus'], 60),
+  () => sommenMetSplitsenLink('split1Till20', ['plus'], 180),
   // c - indexWelkeHandHeeftMeerStippen
   () => welkeHandHeeftMeerStippenLink(true, false, 60),
   () => welkeHandHeeftMeerStippenLink(true, false, 180),
@@ -553,7 +553,11 @@ const urls: (() => string)[] = [
   // fy - indexSplitsenOpwaarde.html
   () => splitsenOpWaardeLink(60),
   () => splitsenOpWaardeLink(180),
-  // ga -
+  // ga - indexSommenTot20Splitsen.html (3rd - 6th item, 1st and 2nd are a and b)
+  () => sommenMetSplitsenLink('split1Till20', ['minus'], 60),
+  () => sommenMetSplitsenLink('split1Till20', ['minus'], 180),
+  () => sommenMetSplitsenLink('split1Till20', ['plus', 'minus'], 60),
+  () => sommenMetSplitsenLink('split1Till20', ['plus', 'minus'], 180),
 ];
 
 const urlParams = new URLSearchParams(window.location.search);

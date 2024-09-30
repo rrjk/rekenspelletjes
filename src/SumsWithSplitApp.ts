@@ -17,7 +17,7 @@ import './DigitFillin';
 import './RealHeight';
 
 type OperatorType = '+' | '-';
-
+type Operator = 'plus' | 'minus'; // Type for Operator as text (used in link creation)
 type GameRangeType = 'split1Till20' | 'split1Till100' | 'split2Till100';
 
 /** Create link for Sommen Met Splitsen game
@@ -28,11 +28,12 @@ type GameRangeType = 'split1Till20' | 'split1Till100' | 'split2Till100';
  */
 export function sommenMetSplitsenLink(
   game: GameRangeType,
-  plus: boolean,
-  minus: boolean,
+  operators: Operator[],
   time: number
 ) {
-  return `../Rekenspelletjes/SommenMetSplitsen.html?game=${game}&plus=${plus}&minus=${minus}&time=${time}`;
+  let params = `time=${time}&game=${game}`;
+  for (const o of operators) params += `&${o}`;
+  return `../Rekenspelletjes/SommenMetSplitsen.html?${params}`;
 }
 
 /** Get the width of a piece of text in real vh units
