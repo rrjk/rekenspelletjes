@@ -1,6 +1,9 @@
 import { plusMinHeleTientallenLink } from './AdditionSubstractionWholeDecadeApp';
 import { plusMinBinnenTientalLink } from './AdditionSubstractionWithinDecadeApp';
-import { aanklikkenInVolgordeLink } from './ClickInOrderApp';
+import {
+  aanklikkenInTafelVolgordeLink,
+  aanklikkenInVolgordeLink,
+} from './ClickInOrderApp';
 import { klikFotoOpGetallenlijnLink } from './ClickTheRightPhotoOnNumberLineApp';
 import { klokPaartjesLink } from './ClockPairingApp';
 import { springOpGetallenlijnLink } from './JumpOnNumberLineApp';
@@ -587,7 +590,17 @@ const urls: (() => string)[] = [
   () => sommenMetSplitsenLink('split2Till100', ['minus'], 180),
   () => sommenMetSplitsenLink('split2Till100', ['plus', 'minus'], 60),
   () => sommenMetSplitsenLink('split2Till100', ['plus', 'minus'], 180),
-  // hc
+  // hc - indexBallenKnallen.html
+  () => aanklikkenInTafelVolgordeLink(10, [10], 'hideSum'),
+  () => aanklikkenInTafelVolgordeLink(10, [2], 'hideSum'),
+  () => aanklikkenInTafelVolgordeLink(10, [5], 'hideSum'),
+  () => aanklikkenInTafelVolgordeLink(10, [3], 'hideSum'),
+  () => aanklikkenInTafelVolgordeLink(10, [4], 'hideSum'),
+  () => aanklikkenInTafelVolgordeLink(10, [6], 'hideSum'),
+  () => aanklikkenInTafelVolgordeLink(10, [7], 'hideSum'),
+  () => aanklikkenInTafelVolgordeLink(10, [8], 'hideSum'),
+  () => aanklikkenInTafelVolgordeLink(10, [9], 'hideSum'),
+  // hl
 ];
 
 const urlParams = new URLSearchParams(window.location.search);
