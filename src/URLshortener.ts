@@ -7,6 +7,7 @@ import {
 import { klikFotoOpGetallenlijnLink } from './ClickTheRightPhotoOnNumberLineApp';
 import { klokPaartjesLink } from './ClockPairingApp';
 import { springOpGetallenlijnLink } from './JumpOnNumberLineApp';
+import { ballonnenSpelLink } from './MultiplicationTablesBalloonGame';
 import { groepjesVanHerkennenLink } from './RecognizeGroupsApp';
 import { sorterenLink } from './SortingGameApp';
 import { splitsenLink } from './SplitApp';
@@ -624,7 +625,30 @@ const urls: (() => string)[] = [
   () => aanklikkenInTafelVolgordeLink(10, [9], 'showSum'),
   () =>
     aanklikkenInTafelVolgordeLink(10, [2, 3, 4, 5, 6, 7, 8, 9, 10], 'showSum'),
-  // if
+  // if indexBallonnenspel.html
+  () => ballonnenSpelLink(['×'], [10], 'balloon', 60),
+  () => ballonnenSpelLink(['×'], [10], 'balloon', 180),
+  () => ballonnenSpelLink(['×'], [2], 'balloon', 60),
+  () => ballonnenSpelLink(['×'], [2], 'balloon', 180),
+  () => ballonnenSpelLink(['×'], [5], 'balloon', 60),
+  () => ballonnenSpelLink(['×'], [5], 'balloon', 180),
+  () => ballonnenSpelLink(['×'], [3], 'balloon', 60),
+  () => ballonnenSpelLink(['×'], [3], 'balloon', 180),
+  () => ballonnenSpelLink(['×'], [4], 'balloon', 60),
+  () => ballonnenSpelLink(['×'], [4], 'balloon', 180),
+  () => ballonnenSpelLink(['×'], [2, 3, 4, 5, 10], 'balloon', 60),
+  () => ballonnenSpelLink(['×'], [2, 3, 4, 5, 10], 'balloon', 180),
+  () => ballonnenSpelLink(['×'], [6], 'balloon', 60),
+  () => ballonnenSpelLink(['×'], [6], 'balloon', 180),
+  () => ballonnenSpelLink(['×'], [7], 'balloon', 60),
+  () => ballonnenSpelLink(['×'], [7], 'balloon', 180),
+  () => ballonnenSpelLink(['×'], [8], 'balloon', 60),
+  () => ballonnenSpelLink(['×'], [8], 'balloon', 180),
+  () => ballonnenSpelLink(['×'], [9], 'balloon', 60),
+  () => ballonnenSpelLink(['×'], [9], 'balloon', 180),
+  () => ballonnenSpelLink(['×'], [2, 3, 4, 5, 6, 7, 8, 9, 10], 'balloon', 60),
+  () => ballonnenSpelLink(['×'], [2, 3, 4, 5, 6, 7, 8, 9, 10], 'balloon', 180),
+  // jb
 ];
 
 const urlParams = new URLSearchParams(window.location.search);
