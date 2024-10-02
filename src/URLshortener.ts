@@ -75,18 +75,17 @@ const urls: (() => string)[] = [
   () => sorterenLink(4, 1, 100, 1, 'red', 60),
   () => sorterenLink(4, 1, 100, 1, 'red', 180),
   // bg - indexAanklikkenInVolgorde.html
-  () => aanklikkenInVolgordeLink(1, 10, 'ascending', [], 'hideSum', 'all'),
-  () => aanklikkenInVolgordeLink(11, 10, 'ascending', [], 'hideSum', 'all'),
-  () => aanklikkenInVolgordeLink(1, 20, 'ascending', [], 'hideSum', 'all'),
-  () => aanklikkenInVolgordeLink(11, 20, 'ascending', [], 'hideSum', 'all'),
-  () => aanklikkenInVolgordeLink(21, 20, 'ascending', [], 'hideSum', 'all'),
-  () => aanklikkenInVolgordeLink(31, 20, 'ascending', [], 'hideSum', 'all'),
-  () => aanklikkenInVolgordeLink(1, 50, 'ascending', [], 'hideSum', 'all'),
-  () => aanklikkenInVolgordeLink(20, 20, 'descending', [], 'hideSum', 'all'),
-  () =>
-    aanklikkenInVolgordeLink('random', 20, 'ascending', [], 'hideSum', 'all'),
-  () => aanklikkenInVolgordeLink(2, 10, 'ascending', [], 'hideSum', 'even'),
-  () => aanklikkenInVolgordeLink(1, 10, 'ascending', [], 'hideSum', 'odd'),
+  () => aanklikkenInVolgordeLink(1, 10, 'ascending', 'all'),
+  () => aanklikkenInVolgordeLink(11, 10, 'ascending', 'all'),
+  () => aanklikkenInVolgordeLink(1, 20, 'ascending', 'all'),
+  () => aanklikkenInVolgordeLink(11, 20, 'ascending', 'all'),
+  () => aanklikkenInVolgordeLink(21, 20, 'ascending', 'all'),
+  () => aanklikkenInVolgordeLink(31, 20, 'ascending', 'all'),
+  () => aanklikkenInVolgordeLink(1, 50, 'ascending', 'all'),
+  () => aanklikkenInVolgordeLink(20, 20, 'descending', 'all'),
+  () => aanklikkenInVolgordeLink('random', 20, 'ascending', 'all'),
+  () => aanklikkenInVolgordeLink(2, 10, 'ascending', 'even'),
+  () => aanklikkenInVolgordeLink(1, 10, 'ascending', 'odd'),
   // br - indexSplitsen.html 1
   () => splitsenLink([4], 60),
   () => splitsenLink([4], 180),
@@ -724,7 +723,14 @@ const urls: (() => string)[] = [
   () => ballonnenSpelLink(['×'], [18], 'zeppelin', 180),
   () => ballonnenSpelLink(['×'], [19], 'zeppelin', 60),
   () => ballonnenSpelLink(['×'], [19], 'zeppelin', 180),
-  // lr -
+  // lr - indexSorterenKommaGetallen.html
+  () => sorterenLink(4, 1, 10, 10, 'purple', 60),
+  () => sorterenLink(4, 1, 10, 10, 'purple', 180),
+  () => sorterenLink(4, 1, 100, 100, 'purple', 60),
+  () => sorterenLink(4, 1, 100, 100, 'purple', 180),
+  () => sorterenLink(4, 1, 1000, 1000, 'purple', 60),
+  () => sorterenLink(4, 1, 1000, 1000, 'purple', 180),
+  // lx
 ];
 
 const urlParams = new URLSearchParams(window.location.search);
