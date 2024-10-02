@@ -611,7 +611,20 @@ const urls: (() => string)[] = [
   () => groepjesVanHerkennenLink('includeAnswer', 'excludeLongAddition', 60),
   () => groepjesVanHerkennenLink('includeAnswer', 'excludeLongAddition', 180),
   () => groepjesVanHerkennenLink('includeAnswer', 'excludeLongAddition', 300),
-  // hu -
+  // hu - indexBallenKnallenMetSom.html
+  () => aanklikkenInTafelVolgordeLink(10, [2], 'showSum'),
+  () => aanklikkenInTafelVolgordeLink(10, [5], 'showSum'),
+  () => aanklikkenInTafelVolgordeLink(10, [10], 'showSum'),
+  () => aanklikkenInTafelVolgordeLink(10, [3], 'showSum'),
+  () => aanklikkenInTafelVolgordeLink(10, [4], 'showSum'),
+  () => aanklikkenInTafelVolgordeLink(10, [2, 3, 4, 5, 10], 'showSum'),
+  () => aanklikkenInTafelVolgordeLink(10, [6], 'showSum'),
+  () => aanklikkenInTafelVolgordeLink(10, [7], 'showSum'),
+  () => aanklikkenInTafelVolgordeLink(10, [8], 'showSum'),
+  () => aanklikkenInTafelVolgordeLink(10, [9], 'showSum'),
+  () =>
+    aanklikkenInTafelVolgordeLink(10, [2, 3, 4, 5, 6, 7, 8, 9, 10], 'showSum'),
+  // if
 ];
 
 const urlParams = new URLSearchParams(window.location.search);
