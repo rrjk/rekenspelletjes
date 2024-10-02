@@ -701,7 +701,30 @@ const urls: (() => string)[] = [
     ballonnenSpelLink([':', '×'], [2, 3, 4, 5, 6, 7, 8, 9, 10], 'rocket', 60),
   () =>
     ballonnenSpelLink([':', '×'], [2, 3, 4, 5, 6, 7, 8, 9, 10], 'rocket', 180),
-  // kx
+  // kx - indexZeppelinSpel.html
+  () =>
+    ballonnenSpelLink(['×'], [20, 30, 40, 50, 60, 70, 80, 90], 'zeppelin', 60),
+  () =>
+    ballonnenSpelLink(['×'], [20, 30, 40, 50, 60, 70, 80, 90], 'zeppelin', 180),
+  () => ballonnenSpelLink(['×'], [11], 'zeppelin', 60),
+  () => ballonnenSpelLink(['×'], [11], 'zeppelin', 180),
+  () => ballonnenSpelLink(['×'], [12], 'zeppelin', 60),
+  () => ballonnenSpelLink(['×'], [12], 'zeppelin', 180),
+  () => ballonnenSpelLink(['×'], [13], 'zeppelin', 60),
+  () => ballonnenSpelLink(['×'], [13], 'zeppelin', 180),
+  () => ballonnenSpelLink(['×'], [14], 'zeppelin', 60),
+  () => ballonnenSpelLink(['×'], [14], 'zeppelin', 180),
+  () => ballonnenSpelLink(['×'], [15], 'zeppelin', 60),
+  () => ballonnenSpelLink(['×'], [15], 'zeppelin', 180),
+  () => ballonnenSpelLink(['×'], [16], 'zeppelin', 60),
+  () => ballonnenSpelLink(['×'], [16], 'zeppelin', 180),
+  () => ballonnenSpelLink(['×'], [17], 'zeppelin', 60),
+  () => ballonnenSpelLink(['×'], [17], 'zeppelin', 180),
+  () => ballonnenSpelLink(['×'], [18], 'zeppelin', 60),
+  () => ballonnenSpelLink(['×'], [18], 'zeppelin', 180),
+  () => ballonnenSpelLink(['×'], [19], 'zeppelin', 60),
+  () => ballonnenSpelLink(['×'], [19], 'zeppelin', 180),
+  // lr -
 ];
 
 const urlParams = new URLSearchParams(window.location.search);
