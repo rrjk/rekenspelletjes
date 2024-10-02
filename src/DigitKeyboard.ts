@@ -195,12 +195,6 @@ export class DigitKeyboard
     if (this.showTen) digits = [10, 1, 2, 3, 4, 5, 6, 7, 8, 9];
     else digits = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-    console.log(
-      `render digitKeyboad disabledDigits = ${JSON.stringify(
-        this.disabledDigits
-      )}`
-    );
-
     for (let row = 0; row < 4; row++) {
       const buttons: HTMLTemplateResult[] = [];
       const firstDigitInRow = row === 3 ? 0 : row * 3 + 1;

@@ -68,7 +68,7 @@ export class NumberLineHangingPhotos extends LitElement {
 
     this.show1TickMarks = false;
     this.show5TickMarks = false;
-    this.show10TickMarks = true;
+    this.show10TickMarks = false;
 
     this.showAll10Numbers = false;
 

@@ -50,6 +50,23 @@ interface ClockInformationType {
   addImage: ImageInfo | null;
 }
 
+/** Create link for clock pairing game.
+ * @param timeTypes - Timetypes to use in the game. If none are provided, hour, halfhour and quaterhour are mixed.
+ * @param clockType - Clocktypes to use in the game. If none are provided, analog and setence are used.
+ * @param showHelpers - What helpers to show
+ * @param time - Game length
+ */
+export function klokPaartjesLink(
+  timeTypes: TimeTypes[],
+  clockTypes: ClockTypes[],
+  time: number
+) {
+  let params = `time=${time}`;
+  for (const t of timeTypes) params += `&${t}`;
+  for (const c of clockTypes) params += `&${c}`;
+  return `../Rekenspelletjes/KlokPaartjes.html?${params}`;
+}
+
 @customElement('clock-pairing-app')
 export class ClockPairingApp extends TimeLimitedGame2 {
   private gameLogger = new GameLogger('L', '');
@@ -75,23 +92,23 @@ export class ClockPairingApp extends TimeLimitedGame2 {
 
     this.selectedTimeTypes = [];
     // Parse from URL what time types to use in game
-    if (urlParams.has('hour')) {
+    if (urlParams.has('hour') || urlParams.has('Hour')) {
       this.selectedTimeTypes.push('Hour');
       this.gameLogger.appendSubCode('u');
     }
-    if (urlParams.has('halfhour')) {
+    if (urlParams.has('halfhour') || urlParams.has('HalfHour')) {
       this.selectedTimeTypes.push('HalfHour');
       this.gameLogger.appendSubCode('h');
     }
-    if (urlParams.has('quarterhour')) {
+    if (urlParams.has('quarterhour') || urlParams.has('QuarterHour')) {
       this.selectedTimeTypes.push('QuarterHour');
       this.gameLogger.appendSubCode('q');
     }
-    if (urlParams.has('10minute')) {
+    if (urlParams.has('10minute') || urlParams.has('10Minute')) {
       this.selectedTimeTypes.push('10Minute');
       this.gameLogger.appendSubCode('t');
     }
-    if (urlParams.has('minute')) {
+    if (urlParams.has('minute') || urlParams.has('Minute')) {
       this.selectedTimeTypes.push('Minute');
       this.gameLogger.appendSubCode('m');
     }
@@ -103,15 +120,15 @@ export class ClockPairingApp extends TimeLimitedGame2 {
     this.gameLogger.appendSubCode('-');
     // Parse from URL what clock types to use in game
     this.selectedClockTypes = [];
-    if (urlParams.has('analog')) {
+    if (urlParams.has('analog') || urlParams.has('Analog')) {
       this.selectedClockTypes.push('Analog');
       this.gameLogger.appendSubCode('a');
     }
-    if (urlParams.has('digital')) {
+    if (urlParams.has('digital') || urlParams.has('Digital')) {
       this.selectedClockTypes.push('Digital');
       this.gameLogger.appendSubCode('d');
     }
-    if (urlParams.has('sentence')) {
+    if (urlParams.has('sentence') || urlParams.has('Sentence')) {
       this.selectedClockTypes.push('Sentence');
       this.gameLogger.appendSubCode('s');
     }

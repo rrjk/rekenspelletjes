@@ -20,6 +20,7 @@ import './MompitzNumber';
 import './RealHeight';
 
 type BoxSize = 'Smallest' | 'Small' | 'Big' | 'Biggest';
+type BoxColor = 'red' | 'blue' | 'purple';
 
 type NumberInformation = {
   id: string;
@@ -34,6 +35,25 @@ type BoxInformation = {
   size: BoxSize;
 };
 
+/** Create link for sorting game.
+ * @param numberBoxes - Number of boxes to show
+ * @param minumumValue - Lowest value to show (integer)
+ * @param maximumValue - Highest value to show (integer)
+ * @param divider - Divider to use (used to create a sorting game with fractions)
+ * @param boxColor - Color of the boxes
+ * @param time - Game length
+ */
+export function sorterenLink(
+  numberBoxes: 2 | 3 | 4,
+  minimumValue: number,
+  maximumValue: number,
+  divider = 1,
+  boxColor: BoxColor = 'red',
+  time: number
+) {
+  return `../Rekenspelletjes/Sorteren.html?numberBoxes=${numberBoxes}&minimumValue=${minimumValue}&maximumValue=${maximumValue}&divider=${divider}&boxColor=${boxColor}&time=${time}`;
+}
+
 @customElement('sorting-game-app')
 export class SortingGameApp extends TimeLimitedGame2 {
   private static boxSizes: Map<number, BoxSize[]> = new Map<number, BoxSize[]>([
@@ -43,7 +63,7 @@ export class SortingGameApp extends TimeLimitedGame2 {
   ]);
 
   @state()
-  private boxColor = 'red';
+  private boxColor: BoxColor = 'red';
 
   @state()
   private numbers: NumberInformation[] = [];
