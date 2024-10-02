@@ -7,6 +7,7 @@ import {
 import { klikFotoOpGetallenlijnLink } from './ClickTheRightPhotoOnNumberLineApp';
 import { klokPaartjesLink } from './ClockPairingApp';
 import { springOpGetallenlijnLink } from './JumpOnNumberLineApp';
+import { groepjesVanHerkennenLink } from './RecognizeGroupsApp';
 import { sorterenLink } from './SortingGameApp';
 import { splitsenLink } from './SplitApp';
 import { sommenMetSplitsenLink } from './SumsWithSplitApp';
@@ -600,7 +601,17 @@ const urls: (() => string)[] = [
   () => aanklikkenInTafelVolgordeLink(10, [7], 'hideSum'),
   () => aanklikkenInTafelVolgordeLink(10, [8], 'hideSum'),
   () => aanklikkenInTafelVolgordeLink(10, [9], 'hideSum'),
-  // hl
+  // hl - indexGroepjesVanHerkennen.html
+  () => groepjesVanHerkennenLink('excludeAnswer', 'includeLongAddition', 60),
+  () => groepjesVanHerkennenLink('excludeAnswer', 'includeLongAddition', 180),
+  () => groepjesVanHerkennenLink('excludeAnswer', 'includeLongAddition', 300),
+  () => groepjesVanHerkennenLink('excludeAnswer', 'excludeLongAddition', 60),
+  () => groepjesVanHerkennenLink('excludeAnswer', 'excludeLongAddition', 180),
+  () => groepjesVanHerkennenLink('excludeAnswer', 'excludeLongAddition', 300),
+  () => groepjesVanHerkennenLink('includeAnswer', 'excludeLongAddition', 60),
+  () => groepjesVanHerkennenLink('includeAnswer', 'excludeLongAddition', 180),
+  () => groepjesVanHerkennenLink('includeAnswer', 'excludeLongAddition', 300),
+  // hu -
 ];
 
 const urlParams = new URLSearchParams(window.location.search);
