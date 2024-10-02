@@ -625,7 +625,7 @@ const urls: (() => string)[] = [
   () => aanklikkenInTafelVolgordeLink(10, [9], 'showSum'),
   () =>
     aanklikkenInTafelVolgordeLink(10, [2, 3, 4, 5, 6, 7, 8, 9, 10], 'showSum'),
-  // if indexBallonnenspel.html
+  // if - indexBallonnenspel.html
   () => ballonnenSpelLink(['×'], [10], 'balloon', 60),
   () => ballonnenSpelLink(['×'], [10], 'balloon', 180),
   () => ballonnenSpelLink(['×'], [2], 'balloon', 60),
@@ -648,7 +648,60 @@ const urls: (() => string)[] = [
   () => ballonnenSpelLink(['×'], [9], 'balloon', 180),
   () => ballonnenSpelLink(['×'], [2, 3, 4, 5, 6, 7, 8, 9, 10], 'balloon', 60),
   () => ballonnenSpelLink(['×'], [2, 3, 4, 5, 6, 7, 8, 9, 10], 'balloon', 180),
-  // jb
+  // jb - indexSorterenTot10000.html
+  () => sorterenLink(4, 1, 999, 1, 'blue', 60),
+  () => sorterenLink(4, 1, 999, 1, 'blue', 180),
+  () => sorterenLink(4, 1, 9999, 1, 'blue', 60),
+  () => sorterenLink(4, 1, 9999, 1, 'blue', 180),
+  // jf - indexRaketSpel.html Deelsommen met tafeltjes
+  () => ballonnenSpelLink([':'], [10], 'rocket', 60),
+  () => ballonnenSpelLink([':'], [10], 'rocket', 180),
+  () => ballonnenSpelLink([':'], [2], 'rocket', 60),
+  () => ballonnenSpelLink([':'], [2], 'rocket', 180),
+  () => ballonnenSpelLink([':'], [5], 'rocket', 60),
+  () => ballonnenSpelLink([':'], [5], 'rocket', 180),
+  () => ballonnenSpelLink([':'], [3], 'rocket', 60),
+  () => ballonnenSpelLink([':'], [3], 'rocket', 180),
+  () => ballonnenSpelLink([':'], [4], 'rocket', 60),
+  () => ballonnenSpelLink([':'], [4], 'rocket', 180),
+  () => ballonnenSpelLink([':'], [2, 3, 4, 5, 10], 'rocket', 60),
+  () => ballonnenSpelLink([':'], [2, 3, 4, 5, 10], 'rocket', 180),
+  () => ballonnenSpelLink([':'], [6], 'rocket', 60),
+  () => ballonnenSpelLink([':'], [6], 'rocket', 180),
+  () => ballonnenSpelLink([':'], [7], 'rocket', 60),
+  () => ballonnenSpelLink([':'], [7], 'rocket', 180),
+  () => ballonnenSpelLink([':'], [8], 'rocket', 60),
+  () => ballonnenSpelLink([':'], [8], 'rocket', 180),
+  () => ballonnenSpelLink([':'], [9], 'rocket', 60),
+  () => ballonnenSpelLink([':'], [9], 'rocket', 180),
+  () => ballonnenSpelLink([':'], [2, 3, 4, 5, 6, 7, 8, 9, 10], 'rocket', 60),
+  () => ballonnenSpelLink([':'], [2, 3, 4, 5, 6, 7, 8, 9, 10], 'rocket', 180),
+  // kb - indexRaketSpel.html Deelsommen en keersommen met de tafeltjes
+  () => ballonnenSpelLink([':', '×'], [10], 'rocket', 60),
+  () => ballonnenSpelLink([':', '×'], [10], 'rocket', 180),
+  () => ballonnenSpelLink([':', '×'], [2], 'rocket', 60),
+  () => ballonnenSpelLink([':', '×'], [2], 'rocket', 180),
+  () => ballonnenSpelLink([':', '×'], [5], 'rocket', 60),
+  () => ballonnenSpelLink([':', '×'], [5], 'rocket', 180),
+  () => ballonnenSpelLink([':', '×'], [3], 'rocket', 60),
+  () => ballonnenSpelLink([':', '×'], [3], 'rocket', 180),
+  () => ballonnenSpelLink([':', '×'], [4], 'rocket', 60),
+  () => ballonnenSpelLink([':', '×'], [4], 'rocket', 180),
+  () => ballonnenSpelLink([':', '×'], [2, 3, 4, 5, 10], 'rocket', 60),
+  () => ballonnenSpelLink([':', '×'], [2, 3, 4, 5, 10], 'rocket', 180),
+  () => ballonnenSpelLink([':', '×'], [6], 'rocket', 60),
+  () => ballonnenSpelLink([':', '×'], [6], 'rocket', 180),
+  () => ballonnenSpelLink([':', '×'], [7], 'rocket', 60),
+  () => ballonnenSpelLink([':', '×'], [7], 'rocket', 180),
+  () => ballonnenSpelLink([':', '×'], [8], 'rocket', 60),
+  () => ballonnenSpelLink([':', '×'], [8], 'rocket', 180),
+  () => ballonnenSpelLink([':', '×'], [9], 'rocket', 60),
+  () => ballonnenSpelLink([':', '×'], [9], 'rocket', 180),
+  () =>
+    ballonnenSpelLink([':', '×'], [2, 3, 4, 5, 6, 7, 8, 9, 10], 'rocket', 60),
+  () =>
+    ballonnenSpelLink([':', '×'], [2, 3, 4, 5, 6, 7, 8, 9, 10], 'rocket', 180),
+  // kx
 ];
 
 const urlParams = new URLSearchParams(window.location.search);
