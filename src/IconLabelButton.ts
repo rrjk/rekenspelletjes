@@ -7,8 +7,6 @@ import './GameIconWithTextOverlay';
 @customElement('icon-label-button')
 export class IconLabelButton extends LitElement {
   @property()
-  title = '';
-  @property()
   href = '';
 
   static get styles(): CSSResultGroup {
@@ -35,7 +33,7 @@ export class IconLabelButton extends LitElement {
 
   render(): HTMLTemplateResult {
     return html`
-      <a href="${this.href}" title="${this.title}">
+      <a href="${this.href}">
         <slot></slot>
         <p>${this.title}</p>
       </a>

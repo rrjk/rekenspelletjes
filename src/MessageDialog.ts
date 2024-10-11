@@ -1,10 +1,8 @@
 import { LitElement, html } from 'lit';
+// eslint-disable-next-line import/extensions
+import { property } from 'lit/decorators.js';
 
-import type {
-  PropertyDeclarations,
-  CSSResultGroup,
-  HTMLTemplateResult,
-} from 'lit';
+import type { CSSResultGroup, HTMLTemplateResult } from 'lit';
 
 // eslint-disable-next-line no-unused-vars
 import 'web-dialog';
@@ -15,17 +13,12 @@ import { RKdialogStyles } from './RKDialog';
 import { ChildNotFoundError } from './ChildNotFoundError';
 
 export class MessageDialog extends LitElement {
+  @property({ type: String })
   dialogTitle: string;
+  @property({ attribute: false })
   text: HTMLTemplateResult;
+  @property({ attribute: false })
   imageUrl: URL;
-
-  static get properties(): PropertyDeclarations {
-    return {
-      dialogTitle: { type: String },
-      text: { attribute: false },
-      imageUrl: { attribute: false },
-    };
-  }
 
   static get styles(): CSSResultGroup {
     return RKdialogStyles;

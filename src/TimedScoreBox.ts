@@ -1,23 +1,18 @@
 import { LitElement, html, css } from 'lit';
-import type {
-  PropertyDeclarations,
-  HTMLTemplateResult,
-  CSSResultGroup,
-} from 'lit';
+// eslint-disable-next-line import/extensions
+import { property } from 'lit/decorators.js';
+
+import type { HTMLTemplateResult, CSSResultGroup } from 'lit';
 
 export class TimedScoreBox extends LitElement {
   paused: boolean;
-  numberNok: number;
-  minutes: number;
-  seconds: number;
 
-  static get properties(): PropertyDeclarations {
-    return {
-      minutes: { type: Number },
-      seconds: { type: Number },
-      numberNok: { type: Number },
-    };
-  }
+  @property({ type: Number })
+  numberNok: number;
+  @property({ type: Number })
+  minutes: number;
+  @property({ type: Number })
+  seconds: number;
 
   static get styles(): CSSResultGroup {
     return css`

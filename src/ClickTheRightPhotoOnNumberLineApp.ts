@@ -1,4 +1,6 @@
 import { LitElement, html } from 'lit';
+// eslint-disable-next-line import/extensions
+import { state, property } from 'lit/decorators.js';
 
 import './NumberLineHangingPhotos';
 import type { NumberLineHangingPhotos } from './NumberLineHangingPhotos';
@@ -57,37 +59,32 @@ export function klikFotoOpGetallenlijnLink(
 }
 
 class ClickTheRightPhotoOnNumberLineApp extends LitElement {
+  @property({ type: Number })
   numberToClick: number;
+  @property({ type: Number })
   minimum: number;
+  @property({ type: Number })
   maximum: number;
+  @property({ type: Boolean })
   show10TickMarks: boolean;
+  @property({ type: Boolean })
   show5TickMarks: boolean;
+  @property({ type: Boolean })
   show1TickMarks: boolean;
+  @property({ type: Boolean })
   _showAll10Numbers: boolean;
+  @property({ type: Array })
   positions: number[];
+  @property({ type: Array })
   disabledPositions: number[];
+  @state()
   _numberOk: number;
+  @state()
   _numberNok: number;
+  @property({ type: Number })
   time: number;
 
   private gameLogger = new GameLogger('T', 'a');
-
-  static get properties() {
-    return {
-      numberToClick: { type: Number },
-      show10TickMarks: { type: Boolean },
-      show5TickMarks: { type: Boolean },
-      show1TickMarks: { type: Boolean },
-      _showAll10Numbers: { type: Boolean, state: true },
-      minimum: { type: Number },
-      maximum: { type: Number },
-      positions: { type: Array },
-      disabledPositions: { type: Array },
-      _numberOk: { type: Number, state: true },
-      _numberNok: { type: Number, state: true },
-      time: { type: Number },
-    };
-  }
 
   constructor() {
     super();

@@ -2,11 +2,11 @@
 /* eslint no-plusplus: ["error", { "allowForLoopAfterthoughts": true }] */
 
 import { LitElement, html, css } from 'lit';
-import type {
-  PropertyDeclarations,
-  CSSResultGroup,
-  HTMLTemplateResult,
-} from 'lit';
+
+// eslint-disable-next-line import/extensions
+import { property } from 'lit/decorators.js';
+
+import type { CSSResultGroup, HTMLTemplateResult } from 'lit';
 
 import { randomIntFromRange } from './Randomizer';
 
@@ -31,15 +31,10 @@ interface NotShownBallInfo {
 */
 export class BallFieldEntry extends LitElement {
   preventCollisionElements: HTMLElement[];
-  labels: string[];
   balls: (BallInfo | NotShownBallInfo)[];
 
-  static get properties(): PropertyDeclarations {
-    return {
-      ignoreKeyboard: { type: Boolean },
-      labels: { type: Array },
-    };
-  }
+  @property({ type: Array })
+  labels: string[];
 
   static get styles(): CSSResultGroup {
     return css`

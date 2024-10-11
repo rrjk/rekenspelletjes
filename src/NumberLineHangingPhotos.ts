@@ -1,6 +1,8 @@
 import { LitElement, html, css, svg } from 'lit';
+// eslint-disable-next-line import/extensions
+import { property } from 'lit/decorators.js';
+
 import type {
-  PropertyDeclarations,
   CSSResultGroup,
   PropertyValues,
   SVGTemplateResult,
@@ -22,37 +24,33 @@ interface verticalDisctanceInfoType {
 }
 
 export class NumberLineHangingPhotos extends LitElement {
+  @property({ type: Boolean })
   show1TickMarks: boolean;
+  @property({ type: Boolean })
   show5TickMarks: boolean;
+  @property({ type: Boolean })
   show10TickMarks: boolean;
+  @property({ type: Boolean })
   showAll10Numbers: boolean;
 
+  @property({ type: Number })
   minimum: number;
+  @property({ type: Number })
   maximum: number;
 
   margin: number;
   lineWidth: number;
 
+  @property({ type: Array })
   photoPositions: number[];
+  @property({ type: Array })
   disabledPositions: number[];
+
   photoMetaData: {
     position: number;
     verticalDistance: verticalDistanceEnum;
     photoId: PhotoId;
   }[];
-
-  static get properties(): PropertyDeclarations {
-    return {
-      show10TickMarks: { type: Boolean },
-      show5TickMarks: { type: Boolean },
-      show1TickMarks: { type: Boolean },
-      showAll10Numbers: { type: Boolean },
-      minimum: { type: Number },
-      maximum: { type: Number },
-      photoPositions: { type: Array },
-      disabledPositions: { type: Array },
-    };
-  }
 
   static get styles(): CSSResultGroup {
     return css``;

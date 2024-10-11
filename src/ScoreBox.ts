@@ -1,20 +1,14 @@
 import { LitElement, html, css } from 'lit';
-import type {
-  PropertyDeclarations,
-  HTMLTemplateResult,
-  CSSResultGroup,
-} from 'lit';
+// eslint-disable-next-line import/extensions
+import { property } from 'lit/decorators.js';
+
+import type { HTMLTemplateResult, CSSResultGroup } from 'lit';
 
 export class ScoreBox extends LitElement {
+  @property({ type: Number })
   numberOk: number;
+  @property({ type: Number })
   numberNok: number;
-
-  static get properties(): PropertyDeclarations {
-    return {
-      numberOk: { type: Number },
-      numberNok: { type: Number },
-    };
-  }
 
   static get styles(): CSSResultGroup {
     return css`

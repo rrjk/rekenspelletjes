@@ -11,8 +11,6 @@ import { customElement, property } from 'lit/decorators.js';
 export class NumbersInOrderIndexIcon extends LitElement {
   @property({ type: String })
   text = '';
-  @property({ type: String })
-  title = '';
   @property({ type: Boolean })
   die = false;
 
@@ -42,7 +40,6 @@ export class NumbersInOrderIndexIcon extends LitElement {
       content = svg`<image x="90" y="10" height="70" href="${this.dieImage}"></image>`;
     }
     return html` <svg viewBox="0 0 250 90" style="width: 300px">
-      <title>${this.title}</title>
       <rect
         x="12"
         y="5"
