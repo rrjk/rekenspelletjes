@@ -18,11 +18,11 @@ const segmentNames = [
   'bottom',
 ] as const;
 /** A type for the segment names */
-type SegmentNamesType = typeof segmentNames[number];
+type SegmentNamesType = (typeof segmentNames)[number];
 /** The names of the coordinates for an SVG line */
 const svgLineCoordinates = ['x1', 'x2', 'y1', 'y2'];
 /** A type for the names of the coordinates for an SVG line */
-type SvgLineCoordinatesType = typeof svgLineCoordinates[number];
+type SvgLineCoordinatesType = (typeof svgLineCoordinates)[number];
 
 /** A type to describe the SVG coordinates for the SVG line making up a segment. */
 type segmentXYOffsetsType = {
