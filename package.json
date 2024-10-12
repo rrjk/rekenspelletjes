@@ -103,7 +103,7 @@
   "dependencies": {
     "@lit-labs/observers": "^2.0.4",
     "color2k": "^2.0.3",
-    "lit": "^3.2.1",
+    "lit": "^2.8.0",
     "web-dialog": "^0.0.11"
   },
   "lint-staged": {
