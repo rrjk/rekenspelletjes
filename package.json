@@ -88,7 +88,7 @@
     "@web/dev-server-rollup": "^0.6.4",
     "@web/rollup-plugin-html": "^2.3.0",
     "@web/rollup-plugin-import-meta-assets": "^2.2.1",
-    "del-cli": "^4.0.1",
+    "del-cli": "^6.0.0",
     "eslint": "^8.57.1",
     "eslint-config-prettier": "^8.10.0",
     "hint": "^7.1.13",
