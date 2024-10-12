@@ -47,55 +47,55 @@ export class BalloonIndex extends LitElement {
 
       .image-red {
         background-image: url('${unsafeCSS(
-          new URL('../images/Mompitz Elli star-red.png', import.meta.url)
+          new URL('../images/Mompitz Elli star-red.png', import.meta.url),
         )}');
       }
 
       .image-orange {
         background-image: url('${unsafeCSS(
-          new URL('../images/Mompitz Elli star-orange.png', import.meta.url)
+          new URL('../images/Mompitz Elli star-orange.png', import.meta.url),
         )}');
       }
 
       .image-yellow {
         background-image: url('${unsafeCSS(
-          new URL('../images/Mompitz Elli star-yellow.png', import.meta.url)
+          new URL('../images/Mompitz Elli star-yellow.png', import.meta.url),
         )}');
       }
 
       .image-lime {
         background-image: url('${unsafeCSS(
-          new URL('../images/Mompitz Elli star-lime.png', import.meta.url)
+          new URL('../images/Mompitz Elli star-lime.png', import.meta.url),
         )}');
       }
 
       .image-green {
         background-image: url('${unsafeCSS(
-          new URL('../images/Mompitz Elli star-green.png', import.meta.url)
+          new URL('../images/Mompitz Elli star-green.png', import.meta.url),
         )}');
       }
 
       .image-cyan {
         background-image: url('${unsafeCSS(
-          new URL('../images/Mompitz Elli star-cyan.png', import.meta.url)
+          new URL('../images/Mompitz Elli star-cyan.png', import.meta.url),
         )}');
       }
 
       .image-blue {
         background-image: url('${unsafeCSS(
-          new URL('../images/Mompitz Elli star-blue.png', import.meta.url)
+          new URL('../images/Mompitz Elli star-blue.png', import.meta.url),
         )}');
       }
 
       .image-purple {
         background-image: url('${unsafeCSS(
-          new URL('../images/Mompitz Elli star-purple.png', import.meta.url)
+          new URL('../images/Mompitz Elli star-purple.png', import.meta.url),
         )}');
       }
 
       .image-magenta {
         background-image: url('${unsafeCSS(
-          new URL('../images/Mompitz Elli star-magenta.png', import.meta.url)
+          new URL('../images/Mompitz Elli star-magenta.png', import.meta.url),
         )}');
       }
 

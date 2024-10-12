@@ -48,8 +48,8 @@ export class StatsApp extends LitElement {
     super();
     fetch(
       `https://counter.jufAnkie.nl/getCount.php?game=${getGameCodes().join(
-        ','
-      )}`
+        ',',
+      )}`,
     )
       .then(respons => respons.json())
       .then(json => {
@@ -57,7 +57,7 @@ export class StatsApp extends LitElement {
         for (const countInfo of countInfoList) {
           for (const monthlyCount of countInfo.counts) {
             const totalMonthCount = this.totalsPerMonth.find(
-              m => m.month === monthlyCount.month
+              m => m.month === monthlyCount.month,
             );
             if (totalMonthCount !== undefined)
               totalMonthCount.count += monthlyCount.count;
@@ -120,16 +120,16 @@ export class StatsApp extends LitElement {
               <td>${stat.gameCode}</td>
               <td>${stat.gameDescription}</td>
               ${stat.gameCounts.map(
-                monthlyCount => html`<td>${monthlyCount.count}</td>`
+                monthlyCount => html`<td>${monthlyCount.count}</td>`,
               )}
               <td>${stat.totalCount}</td>
-            </tr>`
+            </tr>`,
         )}
         <tr>
           <td>Totaal</td>
           <td>Totaal voor alle spellen</td>
           ${this.totalsPerMonth.map(
-            monthlyTotal => html` <td>${monthlyTotal.count}</td>`
+            monthlyTotal => html` <td>${monthlyTotal.count}</td>`,
           )}
           <td>
             ${this.totalsPerMonth.map(t => t.count).reduce((sum, c) => sum + c)}

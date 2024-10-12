@@ -1,4 +1,5 @@
 import { esbuildPlugin } from '@web/dev-server-esbuild';
+import { fileURLToPath } from 'url';
 
 // The following two are includes to be able to import old-style CommonJs modules
 // See https://modern-web.dev/guides/dev-server/using-plugins/#commonjs
@@ -19,6 +20,10 @@ export default /** @type {import('@web/dev-server').DevServerConfig} */ ({
         '**/node_modules/chroma-js/**/*',
       ],
     }),
-    esbuildPlugin({ ts: true, target: 'auto' }),
+    esbuildPlugin({
+      ts: true,
+      target: 'auto',
+      tsconfig: fileURLToPath(new URL('./tsconfig.json', import.meta.url)),
+    }),
   ],
 });

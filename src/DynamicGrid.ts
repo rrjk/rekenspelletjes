@@ -80,10 +80,10 @@ export class DynamicGrid
     const ratioPerRowPerColumn = boxAspectRatio / this.contentAspectRatio;
 
     const perColumnCeiled = Math.ceil(
-      Math.sqrt(this.numberSlottedChildren / ratioPerRowPerColumn)
+      Math.sqrt(this.numberSlottedChildren / ratioPerRowPerColumn),
     );
     const perColumnFloored = Math.floor(
-      Math.sqrt(this.numberSlottedChildren / ratioPerRowPerColumn)
+      Math.sqrt(this.numberSlottedChildren / ratioPerRowPerColumn),
     );
 
     const resultingRatioRowPerColumnCeiled =

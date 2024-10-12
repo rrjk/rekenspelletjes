@@ -1,9 +1,8 @@
 import { LitElement, html } from 'lit';
-import type {
-  PropertyDeclarations,
-  CSSResultGroup,
-  HTMLTemplateResult,
-} from 'lit';
+// eslint-disable-next-line import/extensions
+import { state } from 'lit/decorators.js';
+
+import type { CSSResultGroup, HTMLTemplateResult } from 'lit';
 
 import 'web-dialog';
 import type { WebDialog } from 'web-dialog';
@@ -16,13 +15,8 @@ import { ChildNotFoundError } from './ChildNotFoundError';
 export class GameOverDialog extends LitElement {
   static gameOverImage = new URL('../images/Mompitz Anne.png', import.meta.url);
 
+  @state()
   text: HTMLTemplateResult;
-
-  static get properties(): PropertyDeclarations {
-    return {
-      text: { state: true, attribute: false },
-    };
-  }
 
   static get styles(): CSSResultGroup {
     return RKdialogStyles;
@@ -52,7 +46,7 @@ export class GameOverDialog extends LitElement {
         e => {
           resolve((<CustomEvent<string>>e).detail);
         },
-        { once: true }
+        { once: true },
       );
       this._dialog.show();
     });

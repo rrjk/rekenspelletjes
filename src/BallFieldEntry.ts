@@ -124,25 +124,25 @@ export class BallFieldEntry
 
       .ballBlue {
         background-image: url('${unsafeCSS(
-          new URL('../images/ball-blue.svg', import.meta.url)
+          new URL('../images/ball-blue.svg', import.meta.url),
         )}');
       }
 
       .ballRed {
         background-image: url('${unsafeCSS(
-          new URL('../images/ball-red.svg', import.meta.url)
+          new URL('../images/ball-red.svg', import.meta.url),
         )}');
       }
 
       .ballGreen {
         background-image: url('${unsafeCSS(
-          new URL('../images/ball-green.svg', import.meta.url)
+          new URL('../images/ball-green.svg', import.meta.url),
         )}');
       }
 
       .ballYellow {
         background-image: url('${unsafeCSS(
-          new URL('../images/ball-yellow.svg', import.meta.url)
+          new URL('../images/ball-yellow.svg', import.meta.url),
         )}');
       }
     `;
@@ -164,7 +164,7 @@ export class BallFieldEntry
       this.disabledBallLabels.includes(label)
     ) {
       throw Error(
-        'A invisible or disabled ball was clicked, this should not happen'
+        'A invisible or disabled ball was clicked, this should not happen',
       );
     } else {
       const event = new CustomEvent('ball-clicked', {
@@ -191,7 +191,7 @@ export class BallFieldEntry
     while (notYetAssignedLabels.length > 0) {
       const toBeAssignedLabelIndex = randomIntFromRange(
         0,
-        notYetAssignedLabels.length - 1
+        notYetAssignedLabels.length - 1,
       );
 
       this.randomizedBallInfoList.push({
@@ -228,10 +228,10 @@ export class BallFieldEntry
       minimumNumberExerciseCells + this.ballLabels.length;
 
     const perColumnCeiled = Math.ceil(
-      Math.sqrt(minimumNumberCells / ratioPerRowPerColumn)
+      Math.sqrt(minimumNumberCells / ratioPerRowPerColumn),
     );
     const perColumnFloored = Math.floor(
-      Math.sqrt(minimumNumberCells / ratioPerRowPerColumn)
+      Math.sqrt(minimumNumberCells / ratioPerRowPerColumn),
     );
 
     const resultingRatioRowPerColumnCeiled =
@@ -275,7 +275,7 @@ export class BallFieldEntry
     const exerciseFlexItemWidth = flexItemWidth * this.numberExerciseCells;
     this.selectedExerciseAspectRatio = Math.max(
       this.minimumExerciseAspectRatio,
-      exerciseFlexItemWidth / flexItemHeight
+      exerciseFlexItemWidth / flexItemHeight,
     );
 
     if (flexItemWidth > flexItemHeight)
@@ -306,7 +306,7 @@ export class BallFieldEntry
               style="top: calc(${ballInfo.deltaYFactor} * (100% - var(--ballHeightWidth)));; left: calc(${ballInfo.deltaXFactor} * (100% - var(--ballHeightWidth)));"
             >
               ${renderLabelAsSvg(
-                this.ballDisabled(ballInfo.label) ? '✗' : ballInfo.label
+                this.ballDisabled(ballInfo.label) ? '✗' : ballInfo.label,
               )}
             </button>
           `;
@@ -318,9 +318,9 @@ export class BallFieldEntry
               : renderLabelAsSvg(
                   this.exercise,
                   this.selectedExerciseAspectRatio,
-                  70
+                  70,
                 )}
-          </div>`
+          </div>`,
         );
       }
       flexItems.push(html`<div class="flexItem">${ballButton}</div>`);

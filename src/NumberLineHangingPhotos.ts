@@ -1,6 +1,8 @@
 import { LitElement, html, css, svg } from 'lit';
+// eslint-disable-next-line import/extensions
+import { property } from 'lit/decorators.js';
+
 import type {
-  PropertyDeclarations,
   CSSResultGroup,
   PropertyValues,
   SVGTemplateResult,
@@ -22,37 +24,33 @@ interface verticalDisctanceInfoType {
 }
 
 export class NumberLineHangingPhotos extends LitElement {
+  @property({ type: Boolean })
   show1TickMarks: boolean;
+  @property({ type: Boolean })
   show5TickMarks: boolean;
+  @property({ type: Boolean })
   show10TickMarks: boolean;
+  @property({ type: Boolean })
   showAll10Numbers: boolean;
 
+  @property({ type: Number })
   minimum: number;
+  @property({ type: Number })
   maximum: number;
 
   margin: number;
   lineWidth: number;
 
+  @property({ type: Array })
   photoPositions: number[];
+  @property({ type: Array })
   disabledPositions: number[];
+
   photoMetaData: {
     position: number;
     verticalDistance: verticalDistanceEnum;
     photoId: PhotoId;
   }[];
-
-  static get properties(): PropertyDeclarations {
-    return {
-      show10TickMarks: { type: Boolean },
-      show5TickMarks: { type: Boolean },
-      show1TickMarks: { type: Boolean },
-      showAll10Numbers: { type: Boolean },
-      minimum: { type: Number },
-      maximum: { type: Number },
-      photoPositions: { type: Array },
-      disabledPositions: { type: Array },
-    };
-  }
 
   static get styles(): CSSResultGroup {
     return css``;
@@ -173,7 +171,7 @@ export class NumberLineHangingPhotos extends LitElement {
   }
 
   translateVerticalDistance(
-    verticalDistance: verticalDistanceEnum
+    verticalDistance: verticalDistanceEnum,
   ): verticalDisctanceInfoType {
     const verticalDistanceInfo: verticalDisctanceInfoType = {
       lineHeight: 0,
@@ -192,7 +190,7 @@ export class NumberLineHangingPhotos extends LitElement {
   renderLine(
     position: number,
     verticalDistance: verticalDistanceEnum,
-    lineColor: string
+    lineColor: string,
   ): SVGTemplateResult {
     return svg`
             <svg style="position:absolute; 
@@ -222,7 +220,7 @@ export class NumberLineHangingPhotos extends LitElement {
   renderFramedPhoto(
     position: number,
     verticalDistance: verticalDistanceEnum,
-    photoId: PhotoId
+    photoId: PhotoId,
   ): HTMLTemplateResult {
     return html`
       <framed-photo
@@ -230,11 +228,11 @@ export class NumberLineHangingPhotos extends LitElement {
                                          width: ${this.width * 0.04}vw; 
                                          height: ${this.width * 0.04}vw; 
                                          left:${this.translatePosition(
-          position
+          position,
         ) -
         this.width * 0.02}vw; 
                                          top: ${this.translateVerticalDistance(
-          verticalDistance
+          verticalDistance,
         ).lineHeight}vw;"
         photoId="${photoId}"
         ?disabled="${this.disabledPositions.some(value => value === position)}"
@@ -265,15 +263,15 @@ export class NumberLineHangingPhotos extends LitElement {
         this.renderLine(
           metaData.position,
           metaData.verticalDistance,
-          FramedPhoto.getFrameColor(metaData.photoId)
-        )
+          FramedPhoto.getFrameColor(metaData.photoId),
+        ),
       )}
       ${this.photoMetaData.map(metaData =>
         this.renderFramedPhoto(
           metaData.position,
           metaData.verticalDistance,
-          metaData.photoId
-        )
+          metaData.photoId,
+        ),
       )}
     `;
   }

@@ -11,7 +11,7 @@ export function renderLabelAsSvg(
   label: string,
   aspectRatio = 1,
   /** Fontsize as percentage of height */
-  fontsize = 50
+  fontsize = 50,
 ): HTMLTemplateResult {
   return html`
     <svg

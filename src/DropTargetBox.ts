@@ -48,19 +48,19 @@ export class DropTargetBox extends LitElement implements DropTargetElement {
 
       .boxRed {
         background-image: url('${unsafeCSS(
-          new URL('../images/red-box.png', import.meta.url)
+          new URL('../images/red-box.png', import.meta.url),
         )}');
       }
 
       .boxPurple {
         background-image: url('${unsafeCSS(
-          new URL('../images/purple-box.png', import.meta.url)
+          new URL('../images/purple-box.png', import.meta.url),
         )}');
       }
 
       .boxBlue {
         background-image: url('${unsafeCSS(
-          new URL('../images/blue-box.png', import.meta.url)
+          new URL('../images/blue-box.png', import.meta.url),
         )}');
       }
 

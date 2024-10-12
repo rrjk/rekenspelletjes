@@ -34,12 +34,12 @@ export class MompitzNumber extends LitElement {
 
   static digit1NarrowImage: URL = new URL(
     '../images/Mompitz1narrow.png',
-    import.meta.url
+    import.meta.url,
   );
 
   static commaImage: URL = new URL(
     '../images/MompitzComma.png',
-    import.meta.url
+    import.meta.url,
   );
 
   static getUrl(digitInfo: DigitInfo): URL {
@@ -147,7 +147,7 @@ export class MompitzNumber extends LitElement {
 
     const numberDigits = Math.max(
       currentDigit,
-      this.minimumNumberDigitsForSize
+      this.minimumNumberDigitsForSize,
     );
 
     return html`
@@ -166,7 +166,7 @@ export class MompitzNumber extends LitElement {
               class="digit ${digitInfo.narrow}"
               src="${MompitzNumber.getUrl(digitInfo)}"
             />
-          `
+          `,
         )}
       </div>
     `;

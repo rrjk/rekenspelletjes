@@ -65,13 +65,13 @@ export class CombineToSolveSumApp extends TimeCountingGame {
 
     this.initialNumberOfPairs = parseInt(
       urlParams.get('initialNumberOfPairs') || '10',
-      10
+      10,
     );
     if (Number.isNaN(this.initialNumberOfPairs)) this.initialNumberOfPairs = 10;
 
     this.maxNumberOfPairs = parseInt(
       urlParams.get('maxNumberOfPairs') || '20',
-      10
+      10,
     );
     if (Number.isNaN(this.maxNumberOfPairs)) this.initialNumberOfPairs = 10;
 
@@ -202,7 +202,7 @@ export class CombineToSolveSumApp extends TimeCountingGame {
     } else if (evt.dropType === 'dropOk') {
       this.numberNok += 1;
       this.getHeart(`#${evt.draggableId}`).markAsWrongDrop(
-        this.getHeart(`#${evt.dropTargetId}`)
+        this.getHeart(`#${evt.dropTargetId}`),
       );
       this.addPair();
     }
@@ -210,11 +210,11 @@ export class CombineToSolveSumApp extends TimeCountingGame {
 
   removePair(id1: string, id2: string) {
     const cellIndex1 = this.cells.findIndex(
-      cell => cell !== null && cell.id === id1
+      cell => cell !== null && cell.id === id1,
     );
     this.cells[cellIndex1] = null;
     const cellIndex2 = this.cells.findIndex(
-      cell => cell !== null && cell.id === id2
+      cell => cell !== null && cell.id === id2,
     );
     this.cells[cellIndex2] = null;
     this.currentNumberOfPairs -= 1;
@@ -298,7 +298,7 @@ export class CombineToSolveSumApp extends TimeCountingGame {
               style="height: 50%; aspect-ratio: 1; display:block; position: relative; left: ${cell.left}%; top: ${cell.top}%;"
               @dropped="${this.handleDropped}"
             ></draggable-target-heart>
-          </div>`
+          </div>`,
         );
       }
     }

@@ -54,7 +54,7 @@ export class AscendingBalloonsTestApp extends LitElement {
           const logBox = this.getElement<HTMLParagraphElement>('#logBox');
           logBox.insertAdjacentText(
             'beforeend',
-            'Ascension complete event received == '
+            'Ascension complete event received == ',
           );
         }}"
         .answers=${this.answers}

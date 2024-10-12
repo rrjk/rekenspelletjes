@@ -82,8 +82,8 @@ export class AscendingBalloons extends LitElement {
             `data:image/svg+xml,${getZeppelinAsSvgUrl(
               darken(getColorInfo('purple').mainColorCode, 0.2),
               getColorInfo('purple').mainColorCode,
-              lighten(getColorInfo('purple').mainColorCode, 0.1)
-            )}`
+              lighten(getColorInfo('purple').mainColorCode, 0.1),
+            )}`,
           ),
         ],
         [
@@ -92,8 +92,8 @@ export class AscendingBalloons extends LitElement {
             `data:image/svg+xml,${getZeppelinAsSvgUrl(
               darken(getColorInfo('green').mainColorCode, 0.2),
               getColorInfo('green').mainColorCode,
-              lighten(getColorInfo('green').mainColorCode, 0.1)
-            )}`
+              lighten(getColorInfo('green').mainColorCode, 0.1),
+            )}`,
           ),
         ],
         [
@@ -102,8 +102,8 @@ export class AscendingBalloons extends LitElement {
             `data:image/svg+xml,${getZeppelinAsSvgUrl(
               darken(getColorInfo('orange').mainColorCode, 0.2),
               getColorInfo('orange').mainColorCode,
-              lighten(getColorInfo('orange').mainColorCode, 0.2)
-            )}`
+              lighten(getColorInfo('orange').mainColorCode, 0.2),
+            )}`,
           ),
         ],
         [
@@ -112,8 +112,8 @@ export class AscendingBalloons extends LitElement {
             `data:image/svg+xml,${getZeppelinAsSvgUrl(
               darken(getColorInfo('blue').mainColorCode, 0.2),
               getColorInfo('blue').mainColorCode,
-              lighten(getColorInfo('blue').mainColorCode, 0.1)
-            )}`
+              lighten(getColorInfo('blue').mainColorCode, 0.1),
+            )}`,
           ),
         ],
       ]),
@@ -327,7 +327,7 @@ export class AscendingBalloons extends LitElement {
         balloonInfo.disabled = true;
       } else {
         throw Error(
-          'Balloon label not found in balloonInfoList, this should not happen'
+          'Balloon label not found in balloonInfoList, this should not happen',
         );
       }
       this.requestUpdate();
@@ -362,20 +362,19 @@ export class AscendingBalloons extends LitElement {
         @animationend=${() => this.ascensionComplete()}
       >
         ${this.balloonInfoList.map(
-          balloonInfo =>
-            html`
-              <button
-                type="button"
-                class="${this.imageType}"
-                style="background-image: url('${AscendingBalloons.ascendingImage
-                  .get(this.imageType)
-                  ?.get(balloonInfo.color)}');"
-                @click="${() => this.balloonClicked(balloonInfo.label)}"
-                ?disabled="${balloonInfo.disabled || this.disabled}"
-              >
-                <span>${this.renderTextBalloon(balloonInfo)}</span>
-              </button>
-            `
+          balloonInfo => html`
+            <button
+              type="button"
+              class="${this.imageType}"
+              style="background-image: url('${AscendingBalloons.ascendingImage
+                .get(this.imageType)
+                ?.get(balloonInfo.color)}');"
+              @click="${() => this.balloonClicked(balloonInfo.label)}"
+              ?disabled="${balloonInfo.disabled || this.disabled}"
+            >
+              <span>${this.renderTextBalloon(balloonInfo)}</span>
+            </button>
+          `,
         )}
       </div>
     `;

@@ -59,7 +59,7 @@ export function springOpGetallenlijnLink(
   minumum: NumberLineBoundaries,
   maximum: NumberLineBoundaries,
   helpers: Helpers[],
-  time: number
+  time: number,
 ) {
   let params = `time=${time}&minumum=${minumum}&maximum=${maximum}`;
   for (const h of helpers) params += `&${h}`;
@@ -70,7 +70,7 @@ export function springOpGetallenlijnLink(
 export class JumpOnNumberLineApp extends LitElement {
   static janImage = new URL(
     '../images/Mompitz Jan_Ballon.png',
-    import.meta.url
+    import.meta.url,
   );
 
   /** Number correct answers */
@@ -373,7 +373,7 @@ export class JumpOnNumberLineApp extends LitElement {
           <p>
             Je hebt ${this.numberNok === 0 ? 'geen' : this.numberNok}
             ${this.numberNok === 1 ? 'fout' : 'fouten'} gemaakt.
-          </p>`
+          </p>`,
       )
       .then(result => {
         if (result === 'again') this.startNewGame();
@@ -396,7 +396,7 @@ export class JumpOnNumberLineApp extends LitElement {
   newRound(): void {
     this.numberToSet = randomIntFromRange(
       this.numberLineProperties.minimum,
-      this.numberLineProperties.maximum
+      this.numberLineProperties.maximum,
     );
   }
 
@@ -442,7 +442,7 @@ export class JumpOnNumberLineApp extends LitElement {
           this.newRound();
         }, timeOut);
       },
-      { once: true }
+      { once: true },
     );
 
     if (janFootRight > platformLeft && janFootLeft < platformRight) {
@@ -483,7 +483,7 @@ export class JumpOnNumberLineApp extends LitElement {
           Zet het platform op de juiste plek op de getallenlijn, zodat Jan erop
           kan springen.
         </p>
-        <p>Dit spel kun je op de telefoon het beste horizontaal spelen.</p>`
+        <p>Dit spel kun je op de telefoon het beste horizontaal spelen.</p>`,
     );
   }
 

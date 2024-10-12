@@ -1,4 +1,6 @@
 import { LitElement, html } from 'lit';
+// eslint-disable-next-line import/extensions
+import { state, property } from 'lit/decorators.js';
 
 import './NumberLineHangingPhotos';
 import type { NumberLineHangingPhotos } from './NumberLineHangingPhotos';
@@ -49,7 +51,7 @@ export function klikFotoOpGetallenlijnLink(
   minumum: NumberLineBoundaries,
   maximum: NumberLineBoundaries,
   helpers: Helpers[],
-  time: number
+  time: number,
 ) {
   let params = `time=${time}&minumum=${minumum}&maximum=${maximum}`;
   for (const h of helpers) params += `&${h}`;
@@ -57,37 +59,32 @@ export function klikFotoOpGetallenlijnLink(
 }
 
 class ClickTheRightPhotoOnNumberLineApp extends LitElement {
+  @property({ type: Number })
   numberToClick: number;
+  @property({ type: Number })
   minimum: number;
+  @property({ type: Number })
   maximum: number;
+  @property({ type: Boolean })
   show10TickMarks: boolean;
+  @property({ type: Boolean })
   show5TickMarks: boolean;
+  @property({ type: Boolean })
   show1TickMarks: boolean;
+  @property({ type: Boolean })
   _showAll10Numbers: boolean;
+  @property({ type: Array })
   positions: number[];
+  @property({ type: Array })
   disabledPositions: number[];
+  @state()
   _numberOk: number;
+  @state()
   _numberNok: number;
+  @property({ type: Number })
   time: number;
 
   private gameLogger = new GameLogger('T', 'a');
-
-  static get properties() {
-    return {
-      numberToClick: { type: Number },
-      show10TickMarks: { type: Boolean },
-      show5TickMarks: { type: Boolean },
-      show1TickMarks: { type: Boolean },
-      _showAll10Numbers: { type: Boolean, state: true },
-      minimum: { type: Number },
-      maximum: { type: Number },
-      positions: { type: Array },
-      disabledPositions: { type: Array },
-      _numberOk: { type: Number, state: true },
-      _numberNok: { type: Number, state: true },
-      time: { type: Number },
-    };
-  }
 
   constructor() {
     super();
@@ -156,7 +153,7 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
   handlePhotoClicked(event: CustomEvent) {
     if (event.detail.position !== this.numberToClick) {
       this.disabledPositions = this.disabledPositions.concat(
-        event.detail.position
+        event.detail.position,
       );
       this._numberNok += 1;
     } else {
@@ -191,7 +188,7 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
     if (ret === null) {
       throw new ChildNotFoundError(
         'scoreBox',
-        'ClickTheRightPhotoOnNumberLineApp'
+        'ClickTheRightPhotoOnNumberLineApp',
       );
     }
     return ret;
@@ -207,7 +204,7 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
     if (ret === null) {
       throw new ChildNotFoundError(
         'progressBar',
-        'ClickTheRightPhotoOnNumberLineApp'
+        'ClickTheRightPhotoOnNumberLineApp',
       );
     }
     return ret;
@@ -223,7 +220,7 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
     if (ret === null) {
       throw new ChildNotFoundError(
         'numberLine',
-        'ClickTheRightPhotoOnNumberLineApp'
+        'ClickTheRightPhotoOnNumberLineApp',
       );
     }
     return ret;
@@ -239,7 +236,7 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
     if (ret === null) {
       throw new ChildNotFoundError(
         'messageDialog',
-        'ClickTheRightPhotoOnNumberLineApp'
+        'ClickTheRightPhotoOnNumberLineApp',
       );
     }
     return ret;
@@ -255,7 +252,7 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
     if (ret === null) {
       throw new ChildNotFoundError(
         'gameOverDialog',
-        'ClickTheRightPhotoOnNumberLineApp'
+        'ClickTheRightPhotoOnNumberLineApp',
       );
     }
     return ret;
@@ -282,7 +279,7 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
     return this._messageDialog.show(
       'De juiste foto kiezen',
       html`<p>Kies de juiste foto op de getallenlijn.</p>
-        <p>Dit spel kun je op de telefoon het beste horizontaal spelen.</p>`
+        <p>Dit spel kun je op de telefoon het beste horizontaal spelen.</p>`,
     );
   }
 
@@ -298,7 +295,7 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
           <p>
             Je hebt ${this._numberNok === 0 ? 'geen' : this._numberNok}
             ${this._numberNok === 1 ? 'fout' : 'fouten'} gemaakt.
-          </p>`
+          </p>`,
       )
       .then(result => {
         if (result === 'again') this.startNewGame();
@@ -353,5 +350,5 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
 
 customElements.define(
   'click-correct-photo-on-numberline-app',
-  ClickTheRightPhotoOnNumberLineApp
+  ClickTheRightPhotoOnNumberLineApp,
 );

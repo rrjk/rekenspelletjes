@@ -1,13 +1,19 @@
 /* eslint-disable class-methods-use-this */
 import { LitElement, html, css } from 'lit';
-import type { PropertyDeclarations, TemplateResult, CSSResultGroup } from 'lit';
+// eslint-disable-next-line import/extensions
+import { property } from 'lit/decorators.js';
+
+import type { TemplateResult, CSSResultGroup } from 'lit';
 
 export class Platform extends LitElement {
+  @property({ type: Boolean })
   dragDisabled = false;
+  @property({ type: Number })
   cummulativeDeltaX = 0;
   mouseDrag = false;
   touchDrag = false;
   touchPreviousScreenX = 0;
+  @property({ type: Number })
   maxDeltaX = 0;
 
   static get styles(): CSSResultGroup {
@@ -16,15 +22,6 @@ export class Platform extends LitElement {
         transform: translate(var(--cummulativeDeltaX, 0), 0);
       }
     `;
-  }
-
-  static get properties(): PropertyDeclarations {
-    return {
-      location: { type: Number },
-      maxDeltaX: { type: Number }, // Maximum delta for the platform in vw units
-      cummulativeDeltaX: { type: Number },
-      dragDisabled: { type: Boolean },
-    };
   }
 
   /* Determine the width of the custom-element. expressed in vw units.
@@ -67,7 +64,7 @@ export class Platform extends LitElement {
       //      this.style.transform = `translate(${this.cummulativeDeltaX}vw, 0px)`;
       this.style.setProperty(
         '--cummulativeDeltaX',
-        `${this.cummulativeDeltaX}vw`
+        `${this.cummulativeDeltaX}vw`,
       );
     }
   }
@@ -84,7 +81,7 @@ export class Platform extends LitElement {
       else if (this.cummulativeDeltaX < 0) this.cummulativeDeltaX = 0;
       this.style.setProperty(
         '--cummulativeDeltaX',
-        `${this.cummulativeDeltaX}vw`
+        `${this.cummulativeDeltaX}vw`,
       );
       //    this.style.transform = `translate(${this.cummulativeDeltaX}vw, 0px)`;
     }

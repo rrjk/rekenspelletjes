@@ -84,17 +84,17 @@ export class SentenceClock extends LitElement {
       clockTextLine2 = `${this.numberAsStringOrDigits(hoursNormalized)}`;
     } else if (minutesBounded > 15 && minutesBounded < 30) {
       clockTextLine1 = `${this.numberAsStringOrDigits(
-        30 - minutesBounded
+        30 - minutesBounded,
       )} voor`;
       clockTextLine2 = `half ${this.numberAsStringOrDigits(nextHour)}`;
     } else if (minutesBounded > 30 && minutesBounded < 45) {
       clockTextLine1 = `${this.numberAsStringOrDigits(
-        minutesBounded - 30
+        minutesBounded - 30,
       )} over`;
       clockTextLine2 = `half ${this.numberAsStringOrDigits(nextHour)}`;
     } else if (minutesBounded > 45 && minutesBounded < 60) {
       clockTextLine1 = `${this.numberAsStringOrDigits(
-        60 - minutesBounded
+        60 - minutesBounded,
       )} voor`;
       clockTextLine2 = `${this.numberAsStringOrDigits(nextHour)}`;
     }

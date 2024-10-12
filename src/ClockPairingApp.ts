@@ -59,7 +59,7 @@ interface ClockInformationType {
 export function klokPaartjesLink(
   timeTypes: TimeTypes[],
   clockTypes: ClockTypes[],
-  time: number
+  time: number,
 ) {
   let params = `time=${time}`;
   for (const t of timeTypes) params += `&${t}`;
@@ -191,13 +191,13 @@ export class ClockPairingApp extends TimeLimitedGame2 {
     ];
     const chosenMompitzLocations = [];
     chosenMompitzLocations.push(
-      randomFromSetAndSplice(possibleMompitzLocations)
+      randomFromSetAndSplice(possibleMompitzLocations),
     );
     chosenMompitzLocations.push(
-      randomFromSetAndSplice(possibleMompitzLocations)
+      randomFromSetAndSplice(possibleMompitzLocations),
     );
     chosenMompitzLocations.push(
-      randomFromSetAndSplice(possibleMompitzLocations)
+      randomFromSetAndSplice(possibleMompitzLocations),
     );
 
     const possibleMompitzs = [...AvailableImageUrls];
@@ -398,7 +398,7 @@ export class ClockPairingApp extends TimeLimitedGame2 {
         style="width: 100%; height: 100%; top: 0;"
       >
         ${this.clockInformation.map(clockInformation =>
-          this.createButton(clockInformation)
+          this.createButton(clockInformation),
         )}
       </dynamic-grid>
     `;

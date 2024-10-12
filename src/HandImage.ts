@@ -14,7 +14,7 @@ export type PossibleNumberDots = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
  * If the provided string is to large, 10  is selected as the number of dots.
  */
 export function numberToPossibleNumberDots(
-  attributeValue: string | null
+  attributeValue: string | null,
 ): PossibleNumberDots {
   if (attributeValue === null) return 5;
   const nmbr = parseInt(attributeValue, 10);
@@ -185,7 +185,7 @@ function getDotsMontessoriAsSvgString(numberDots: PossibleNumberDots) {
 export function getHandAsSvgString(
   handColor: string,
   dotColor: string,
-  numberDots: PossibleNumberDots
+  numberDots: PossibleNumberDots,
 ): string {
   const style = `
     <style>
@@ -213,10 +213,10 @@ export function getHandAsSvgString(
 export function getHandAsSvgUrl(
   handColor: string,
   dotColor: string,
-  numberDots: PossibleNumberDots
+  numberDots: PossibleNumberDots,
 ): string {
   return encodeURIComponent(
-    getHandAsSvgString(handColor, dotColor, numberDots)
+    getHandAsSvgString(handColor, dotColor, numberDots),
   );
 }
 

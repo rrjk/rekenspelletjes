@@ -99,21 +99,21 @@ export class SplitApp extends TimeLimitedGame2 {
     if (this.numbersToSplit.length <= 0) throw new Error('Internal error');
     else if (this.numbersToSplit.length === 1)
       numbersToSplitAsScentence = numbersToSplitAsScentence.concat(
-        `${this.numbersToSplit[0]}.`
+        `${this.numbersToSplit[0]}.`,
       );
     else {
       this.numbersToSplit.forEach((value, index) => {
         if (index === 0) {
           numbersToSplitAsScentence = numbersToSplitAsScentence.concat(
-            `${value}`
+            `${value}`,
           );
         } else if (index === this.numbersToSplit.length - 1) {
           numbersToSplitAsScentence = numbersToSplitAsScentence.concat(
-            ` en ${value}.`
+            ` en ${value}.`,
           );
         } else {
           numbersToSplitAsScentence = numbersToSplitAsScentence.concat(
-            `, ${value}`
+            `, ${value}`,
           );
         }
       });
@@ -151,7 +151,7 @@ export class SplitApp extends TimeLimitedGame2 {
 
     const possibleFirstNumbers = possibleNumbers.slice(
       0,
-      possibleNumbers.findIndex(elm => elm === this.numberToSplit) + 1
+      possibleNumbers.findIndex(elm => elm === this.numberToSplit) + 1,
     );
     this.firstNumber = randomFromSet(possibleFirstNumbers);
 

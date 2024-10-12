@@ -12,7 +12,7 @@ const iconURLArray: { iconColor: Color; balloonUrl: URL; kiteUrl: URL }[] = [
     iconColor: 'yellow',
     balloonUrl: new URL(
       '../images/balloon-20-color-set-yellow.png',
-      import.meta.url
+      import.meta.url,
     ),
     kiteUrl: new URL('../images/kite-20-color-set-yellow.png', import.meta.url),
   },
@@ -20,7 +20,7 @@ const iconURLArray: { iconColor: Color; balloonUrl: URL; kiteUrl: URL }[] = [
     iconColor: 'purple',
     balloonUrl: new URL(
       '../images/balloon-20-color-set-purple.png',
-      import.meta.url
+      import.meta.url,
     ),
     kiteUrl: new URL('../images/kite-20-color-set-purple.png', import.meta.url),
   },
@@ -28,7 +28,7 @@ const iconURLArray: { iconColor: Color; balloonUrl: URL; kiteUrl: URL }[] = [
     iconColor: 'green',
     balloonUrl: new URL(
       '../images/balloon-20-color-set-green.png',
-      import.meta.url
+      import.meta.url,
     ),
     kiteUrl: new URL('../images/kite-20-color-set-green.png', import.meta.url),
   },
@@ -36,7 +36,7 @@ const iconURLArray: { iconColor: Color; balloonUrl: URL; kiteUrl: URL }[] = [
     iconColor: 'blue',
     balloonUrl: new URL(
       '../images/balloon-20-color-set-blue.png',
-      import.meta.url
+      import.meta.url,
     ),
     kiteUrl: new URL('../images/kite-20-color-set-blue.png', import.meta.url),
   },
@@ -44,7 +44,7 @@ const iconURLArray: { iconColor: Color; balloonUrl: URL; kiteUrl: URL }[] = [
     iconColor: 'maroon',
     balloonUrl: new URL(
       '../images/balloon-20-color-set-maroon.png',
-      import.meta.url
+      import.meta.url,
     ),
     kiteUrl: new URL('../images/kite-20-color-set-maroon.png', import.meta.url),
   },
@@ -52,7 +52,7 @@ const iconURLArray: { iconColor: Color; balloonUrl: URL; kiteUrl: URL }[] = [
     iconColor: 'red',
     balloonUrl: new URL(
       '../images/balloon-20-color-set-red.png',
-      import.meta.url
+      import.meta.url,
     ),
     kiteUrl: new URL('../images/kite-20-color-set-red.png', import.meta.url),
   },
@@ -60,7 +60,7 @@ const iconURLArray: { iconColor: Color; balloonUrl: URL; kiteUrl: URL }[] = [
     iconColor: 'pink',
     balloonUrl: new URL(
       '../images/balloon-20-color-set-pink.png',
-      import.meta.url
+      import.meta.url,
     ),
     kiteUrl: new URL('../images/kite-20-color-set-pink.png', import.meta.url),
   },
@@ -68,7 +68,7 @@ const iconURLArray: { iconColor: Color; balloonUrl: URL; kiteUrl: URL }[] = [
     iconColor: 'brown',
     balloonUrl: new URL(
       '../images/balloon-20-color-set-brown.png',
-      import.meta.url
+      import.meta.url,
     ),
     kiteUrl: new URL('../images/kite-20-color-set-brown.png', import.meta.url),
   },
@@ -76,7 +76,7 @@ const iconURLArray: { iconColor: Color; balloonUrl: URL; kiteUrl: URL }[] = [
     iconColor: 'orange',
     balloonUrl: new URL(
       '../images/balloon-20-color-set-orange.png',
-      import.meta.url
+      import.meta.url,
     ),
     kiteUrl: new URL('../images/kite-20-color-set-orange.png', import.meta.url),
   },
@@ -84,18 +84,18 @@ const iconURLArray: { iconColor: Color; balloonUrl: URL; kiteUrl: URL }[] = [
     iconColor: 'apricot',
     balloonUrl: new URL(
       '../images/balloon-20-color-set-apricot.png',
-      import.meta.url
+      import.meta.url,
     ),
     kiteUrl: new URL(
       '../images/kite-20-color-set-apricot.png',
-      import.meta.url
+      import.meta.url,
     ),
   },
   {
     iconColor: 'olive',
     balloonUrl: new URL(
       '../images/balloon-20-color-set-olive.png',
-      import.meta.url
+      import.meta.url,
     ),
     kiteUrl: new URL('../images/kite-20-color-set-olive.png', import.meta.url),
   },
@@ -103,7 +103,7 @@ const iconURLArray: { iconColor: Color; balloonUrl: URL; kiteUrl: URL }[] = [
     iconColor: 'beige',
     balloonUrl: new URL(
       '../images/balloon-20-color-set-beige.png',
-      import.meta.url
+      import.meta.url,
     ),
     kiteUrl: new URL('../images/kite-20-color-set-beige.png', import.meta.url),
   },
@@ -111,7 +111,7 @@ const iconURLArray: { iconColor: Color; balloonUrl: URL; kiteUrl: URL }[] = [
     iconColor: 'lime',
     balloonUrl: new URL(
       '../images/balloon-20-color-set-lime.png',
-      import.meta.url
+      import.meta.url,
     ),
     kiteUrl: new URL('../images/kite-20-color-set-lime.png', import.meta.url),
   },
@@ -119,7 +119,7 @@ const iconURLArray: { iconColor: Color; balloonUrl: URL; kiteUrl: URL }[] = [
     iconColor: 'mint',
     balloonUrl: new URL(
       '../images/balloon-20-color-set-mint.png',
-      import.meta.url
+      import.meta.url,
     ),
     kiteUrl: new URL('../images/kite-20-color-set-mint.png', import.meta.url),
   },
@@ -127,7 +127,7 @@ const iconURLArray: { iconColor: Color; balloonUrl: URL; kiteUrl: URL }[] = [
     iconColor: 'teal',
     balloonUrl: new URL(
       '../images/balloon-20-color-set-teal.png',
-      import.meta.url
+      import.meta.url,
     ),
     kiteUrl: new URL('../images/kite-20-color-set-teal.png', import.meta.url),
   },
@@ -135,7 +135,7 @@ const iconURLArray: { iconColor: Color; balloonUrl: URL; kiteUrl: URL }[] = [
     iconColor: 'cyan',
     balloonUrl: new URL(
       '../images/balloon-20-color-set-cyan.png',
-      import.meta.url
+      import.meta.url,
     ),
     kiteUrl: new URL('../images/kite-20-color-set-cyan.png', import.meta.url),
   },
@@ -143,7 +143,7 @@ const iconURLArray: { iconColor: Color; balloonUrl: URL; kiteUrl: URL }[] = [
     iconColor: 'navy',
     balloonUrl: new URL(
       '../images/balloon-20-color-set-navy.png',
-      import.meta.url
+      import.meta.url,
     ),
     kiteUrl: new URL('../images/kite-20-color-set-navy.png', import.meta.url),
   },
@@ -151,29 +151,29 @@ const iconURLArray: { iconColor: Color; balloonUrl: URL; kiteUrl: URL }[] = [
     iconColor: 'lavender',
     balloonUrl: new URL(
       '../images/balloon-20-color-set-lavender.png',
-      import.meta.url
+      import.meta.url,
     ),
     kiteUrl: new URL(
       '../images/kite-20-color-set-lavender.png',
-      import.meta.url
+      import.meta.url,
     ),
   },
   {
     iconColor: 'magenta',
     balloonUrl: new URL(
       '../images/balloon-20-color-set-magenta.png',
-      import.meta.url
+      import.meta.url,
     ),
     kiteUrl: new URL(
       '../images/kite-20-color-set-magenta.png',
-      import.meta.url
+      import.meta.url,
     ),
   },
   {
     iconColor: 'grey',
     balloonUrl: new URL(
       '../images/balloon-20-color-set-grey.png',
-      import.meta.url
+      import.meta.url,
     ),
     kiteUrl: new URL('../images/kite-20-color-set-grey.png', import.meta.url),
   },
@@ -198,7 +198,7 @@ export function getIconStyles(icon: GameIcon): CSSResult[] {
       fontColor = colorInfo.fontColor;
     } else if (icon === 'rocket') {
       iconURL = `data:image/svg+xml,${unsafeCSS(
-        getRocketAsSvgUrl(colorInfo.accentColorCode, colorInfo.mainColorCode)
+        getRocketAsSvgUrl(colorInfo.accentColorCode, colorInfo.mainColorCode),
       )}`;
       fontColor = 'black;';
     } else if (icon === 'zeppelin') {
@@ -206,8 +206,8 @@ export function getIconStyles(icon: GameIcon): CSSResult[] {
         getZeppelinAsSvgUrl(
           colorInfo.accentColorCode,
           colorInfo.mainColorCode,
-          lighten(colorInfo.mainColorCode, 0.2)
-        )
+          lighten(colorInfo.mainColorCode, 0.2),
+        ),
       )}`;
       fontColor = colorInfo.fontColor;
     }

@@ -23,7 +23,7 @@ export function randomFromSet<T>(arrayOfPossibleValues: T[]): T {
 export function randomFromSetAndSplice<T>(arrayOfPossibleValues: T[]): T {
   return arrayOfPossibleValues.splice(
     randomIntFromRange(0, arrayOfPossibleValues.length - 1),
-    1
+    1,
   )[0];
 }
 

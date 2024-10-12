@@ -22,7 +22,7 @@ export abstract class GameSkeleton extends LitElement {
   @state()
   protected welcomeDialogImageUrl = new URL(
     '../images/Mompitz Otto.png',
-    import.meta.url
+    import.meta.url,
   );
 
   /** Helper function to easily query for an element.
@@ -84,7 +84,7 @@ export abstract class GameSkeleton extends LitElement {
   async showWelcomeMessage(): Promise<string> {
     return this.messageDialog.show(
       this.welcomeDialogTitle,
-      this.welcomeMessage
+      this.welcomeMessage,
     );
   }
 

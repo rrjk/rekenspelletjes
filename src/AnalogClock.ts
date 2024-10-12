@@ -94,8 +94,8 @@ export class AnalogClock extends LitElement {
       y="${125 - 90 * Math.cos(((hour % 12) / 12) * 2 * Math.PI)}"
       dominant-baseline="central" text-anchor="middle" font-size="20"
       transform="rotate(${((hour % 12) / 12) * 360}, ${
-      125 + 90 * Math.sin(((hour % 12) / 12) * 2 * Math.PI)
-    }, ${125 - 90 * Math.cos(((hour % 12) / 12) * 2 * Math.PI)})"
+        125 + 90 * Math.sin(((hour % 12) / 12) * 2 * Math.PI)
+      }, ${125 - 90 * Math.cos(((hour % 12) / 12) * 2 * Math.PI)})"
     >
       ${romanNumerals[hour % 12]}
     </text>

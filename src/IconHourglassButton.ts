@@ -11,8 +11,7 @@ type TimeEnum = '1min' | '3min' | '5min';
 export class IconHourglassButton extends LitElement {
   @property()
   time: TimeEnum = '1min';
-  @property()
-  title = '';
+
   // href for the link to be created. Not needed when a shortCode is provided
   @property()
   href = '';
@@ -44,24 +43,20 @@ export class IconHourglassButton extends LitElement {
 
   render(): HTMLTemplateResult {
     let timeText: string;
-    let timeLabel: string;
     let timeSuffix: string;
     let hourglassImage: URL;
     let url: string;
 
     if (this.time === '1min') {
       timeText = '(1 minuut)';
-      timeLabel = '';
       hourglassImage = new URL('../images/hourglass_1min.png', import.meta.url);
       timeSuffix = '&time=60';
     } else if (this.time === '3min') {
       timeText = '(3 minuten)';
-      timeLabel = '';
       hourglassImage = new URL('../images/hourglass_3min.png', import.meta.url);
       timeSuffix = '&time=180';
     } else {
       timeText = '(5 minuten)';
-      timeLabel = '';
       hourglassImage = new URL('../images/hourglass_5min.png', import.meta.url);
       timeSuffix = '&time=300';
     }
@@ -71,13 +66,9 @@ export class IconHourglassButton extends LitElement {
     else url = this.href.concat(timeSuffix);
 
     return html`
-      <a href="${url}" title="${this.title} ${timeText}">
+      <a href="${url}">
         <slot></slot>
-        <img
-          class="hourglass"
-          alt="${timeLabel}"
-          src="${hourglassImage}"
-        />${timeLabel}
+        <img class="hourglass" alt="${timeText}" src="${hourglassImage}" />
       </a>
     `;
   }

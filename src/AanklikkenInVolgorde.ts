@@ -52,7 +52,7 @@ class AanklikkenInVolgordeApp {
 
     this.ballFieldEntry.setPreventCollisionElements([this.scoreBox]);
     this.ballFieldEntry.addEventListener('input-clicked', (evt: Event) =>
-      this.inputClicked(<CustomEvent>evt)
+      this.inputClicked(<CustomEvent>evt),
     );
 
     this.parsePossibleNumbersFromUrl();
@@ -100,7 +100,7 @@ class AanklikkenInVolgordeApp {
             Je hebt
             ${this.scoreBox.numberNok === 0 ? 'geen' : this.scoreBox.numberNok}
             ${this.scoreBox.numberNok === 1 ? 'fout' : 'fouten'} gemaakt.
-          </p>`
+          </p>`,
       )
       .then(result => {
         if (result === 'again') this.resetGame();
@@ -120,7 +120,7 @@ class AanklikkenInVolgordeApp {
     if (urlParams.has('tableOfMultiplication')) {
       const tableAsInt = parseInt(
         urlParams.get('tableOfMultiplication') || '',
-        10
+        10,
       );
       if (!Number.isNaN(tableAsInt)) {
         for (let i = 1; i <= 10; i++) {

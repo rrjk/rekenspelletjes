@@ -36,7 +36,7 @@ export class DraggableTargetHeart
   render(): HTMLTemplateResult {
     this.content = html`${getHeartasHTMLTemplateResult(
       this.heartColor,
-      `${this.value}`
+      `${this.value}`,
     )}`;
     return html` <style>
         :host {

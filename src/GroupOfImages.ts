@@ -145,10 +145,10 @@ export class GroupOfImages
     const ratioPerRowPerColumn = boxAspectRatio / imageAspectRatio;
 
     const perColumnCeiled = Math.ceil(
-      Math.sqrt(this.numberInGroup / ratioPerRowPerColumn)
+      Math.sqrt(this.numberInGroup / ratioPerRowPerColumn),
     );
     const perColumnFloored = Math.floor(
-      Math.sqrt(this.numberInGroup / ratioPerRowPerColumn)
+      Math.sqrt(this.numberInGroup / ratioPerRowPerColumn),
     );
 
     const resultingRatioRowPerColumnCeiled =
@@ -183,13 +183,15 @@ export class GroupOfImages
      */
 
     for (let i = 0; i < this.numberInGroup; i++) {
-      flexItems.push(html`<div class="flexItem">
-        <img
-          class="${this.tallWideFlexItem}"
-          src="${getImageInfo(this.image).url}"
-          alt="${getImageInfo(this.image).name}"
-        />
-      </div>`);
+      flexItems.push(
+        html`<div class="flexItem">
+          <img
+            class="${this.tallWideFlexItem}"
+            src="${getImageInfo(this.image).url}"
+            alt="${getImageInfo(this.image).name}"
+          />
+        </div>`,
+      );
     }
 
     return html`
