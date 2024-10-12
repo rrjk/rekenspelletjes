@@ -19,10 +19,13 @@ const segmentNames = [
 ] as const;
 /** A type for the segment names */
 type SegmentNamesType = (typeof segmentNames)[number];
+
 /** The names of the coordinates for an SVG line */
-const svgLineCoordinates = ['x1', 'x2', 'y1', 'y2'];
+// const svgLineCoordinates = ['x1', 'x2', 'y1', 'y2'] as const;
 /** A type for the names of the coordinates for an SVG line */
-type SvgLineCoordinatesType = (typeof svgLineCoordinates)[number];
+// type SvgLineCoordinatesType = (typeof svgLineCoordinates)[number];
+
+type SvgLineCoordinatesType = 'x1' | 'x2' | 'y1' | 'y2';
 
 /** A type to describe the SVG coordinates for the SVG line making up a segment. */
 type segmentXYOffsetsType = {
