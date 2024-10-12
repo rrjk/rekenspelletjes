@@ -32,7 +32,7 @@ export function ballonnenSpelLink(
   operators: Operator[],
   tables: number[],
   image: Image,
-  time: number
+  time: number,
 ) {
   let params = `time=${time}`;
   for (const o of operators) {
@@ -105,7 +105,7 @@ export class MultiplicationTablesBalloonGameApp extends TimeLimitedGame2 {
       this.image = 'rocket';
       this.welcomeDialogImageUrl = new URL(
         '../images/rocket-blue.svg',
-        import.meta.url
+        import.meta.url,
       );
     } else if (imageInUrl === 'zeppelin') {
       this.image = 'zeppelin';
@@ -113,8 +113,8 @@ export class MultiplicationTablesBalloonGameApp extends TimeLimitedGame2 {
         `data:image/svg+xml,${getZeppelinAsSvgUrl(
           darken('green', 0.2),
           'green',
-          lighten('green', 0.1)
-        )}`
+          lighten('green', 0.1),
+        )}`,
       );
     } else if (imageInUrl === 'balloon') this.image = 'balloon';
     else this.image = 'balloon';
@@ -229,7 +229,7 @@ export class MultiplicationTablesBalloonGameApp extends TimeLimitedGame2 {
       title = `Deel- en keersommen met de tafeltjes`;
     else
       throw new Error(
-        'Wrong number of operators, there is a problem in de software'
+        'Wrong number of operators, there is a problem in de software',
       );
 
     return title;

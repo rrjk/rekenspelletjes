@@ -34,7 +34,7 @@ type Start = 'random' | number;
 export function aanklikkenInTafelVolgordeLink(
   nmbrBalls: number,
   tableOfMultiplication: number[],
-  showSum: ShowSum
+  showSum: ShowSum,
 ) {
   let params = `nmbrBalls=${nmbrBalls}`;
   if (showSum === 'showSum') params += `&showSum`;
@@ -54,7 +54,7 @@ export function aanklikkenInVolgordeLink(
   start: Start,
   nmbrBalls: number,
   descending: Descending,
-  evenOdd: EvenOdd
+  evenOdd: EvenOdd,
 ) {
   let params = `nmbrBalls=${nmbrBalls}`;
   if (start === 'random') params += '&random';
@@ -142,7 +142,7 @@ export class ClickInOrderApp extends TimeCountingGame {
 
       if (urlParams.has('descending')) {
         this.welcomeMessageString = this.welcomeMessageString.concat(
-          `, van groot naar klein, begin bij ${startAsInt}.`
+          `, van groot naar klein, begin bij ${startAsInt}.`,
         );
         this.gameLogger.setSubCode(`${subCodeInitial}d`);
         for (
@@ -154,7 +154,7 @@ export class ClickInOrderApp extends TimeCountingGame {
         }
       } else {
         this.welcomeMessageString = this.welcomeMessageString.concat(
-          `, van klein naar groot, begin bij ${startAsInt}.`
+          `, van klein naar groot, begin bij ${startAsInt}.`,
         );
         this.gameLogger.setSubCode(`${subCodeInitial}a`);
         for (
@@ -233,7 +233,7 @@ export class ClickInOrderApp extends TimeCountingGame {
         for (const table of this.tables) {
           const answer = table * multiplier;
           const answerAndSums = possibleAnswersAndSums.find(
-            answerAndSum => answerAndSum.answer === answer
+            answerAndSum => answerAndSum.answer === answer,
           );
           if (answerAndSums === undefined)
             possibleAnswersAndSums.push({
@@ -256,7 +256,7 @@ export class ClickInOrderApp extends TimeCountingGame {
         this.labelsInOrder.push(`${answerAndSum.answer}`);
 
         possibleAnswersAndSums = possibleAnswersAndSums.filter(
-          item => item.answer !== answerAndSum.answer
+          item => item.answer !== answerAndSum.answer,
         );
       }
     } else {

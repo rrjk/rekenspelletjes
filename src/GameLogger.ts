@@ -12,7 +12,7 @@ export class GameLogger {
       `https://counter.jufankie.nl/asdflog.php?game=${this.mainCode}&subgame=${this.subCode}`,
       {
         method: 'POST',
-      }
+      },
     );
   }
 

@@ -29,7 +29,7 @@ type IncludeLongAddition = 'includeLongAddition' | 'excludeLongAddition';
 export function groepjesVanHerkennenLink(
   includeAnswer: IncludeAnswer,
   includeLongAddition: IncludeLongAddition,
-  time: number
+  time: number,
 ) {
   let params = `time=${time}`;
   if (includeAnswer === 'includeAnswer') params += '&includeAnswer';
@@ -144,7 +144,7 @@ export class RecognizeGroupsApp extends TimeLimitedGame2 {
     while (proposedNumberOfGroups === this.numberOfGroups) {
       proposedNumberOfGroups = randomIntFromRange(
         this.numberOfGroups1Seen ? 2 : 1,
-        9
+        9,
       );
     }
     if (proposedNumberOfGroups === 1) this.numberOfGroups1Seen = true;
@@ -319,7 +319,7 @@ export class RecognizeGroupsApp extends TimeLimitedGame2 {
 
   getActiveFillin(): DigitFillin {
     return this.getElement<DigitFillin>(
-      `#${this.usedFillIns[this.activeFillIn]}`
+      `#${this.usedFillIns[this.activeFillIn]}`,
     );
   }
 
@@ -351,7 +351,7 @@ export class RecognizeGroupsApp extends TimeLimitedGame2 {
         html` <group-of-images
           numberInGroup="${this.groupSize}"
           image="${this.image}"
-        ></group-of-images>`
+        ></group-of-images>`,
       );
     }
 
@@ -362,7 +362,7 @@ export class RecognizeGroupsApp extends TimeLimitedGame2 {
         desiredNumber="${this.groupSize}"
         numberDigits="1"
         ?fillinActive=${this.usedFillIns[this.activeFillIn] === `longAddition0`}
-      ></digit-fillin>`
+      ></digit-fillin>`,
     );
 
     for (let i = 1; i < 9; i++) {
@@ -377,7 +377,7 @@ export class RecognizeGroupsApp extends TimeLimitedGame2 {
             ?fillinActive=${this.usedFillIns[this.activeFillIn] ===
             `longAddition${i}`}
             ?hidden=${i >= this.numberOfGroups}
-          ></digit-fillin>`
+          ></digit-fillin>`,
       );
     }
 
@@ -416,7 +416,7 @@ export class RecognizeGroupsApp extends TimeLimitedGame2 {
         #groups {
           --groupsPerRow: ${groupsPerRow[this.numberOfGroups]};
           --numberRows: ${Math.ceil(
-            this.numberOfGroups / groupsPerRow[this.numberOfGroups]
+            this.numberOfGroups / groupsPerRow[this.numberOfGroups],
           )};
         }
       </style>

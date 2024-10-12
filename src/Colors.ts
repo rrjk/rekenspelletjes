@@ -174,7 +174,7 @@ export function getColorInfo(color: Color): ColorInfo {
      * This implies we should always find the colorInfo for the color
      */
     throw new Error(
-      'Internal software bug - colorinfo requested for a non existing color'
+      'Internal software bug - colorinfo requested for a non existing color',
     );
   }
   return colorInfo;

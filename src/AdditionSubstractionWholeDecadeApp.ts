@@ -25,7 +25,7 @@ type DecadeLocation = 'decadeFirst' | 'decadeLast';
 export function plusMinHeleTientallenLink(
   decadeLocation: DecadeLocation,
   operators: OperatorAsText[],
-  time: number
+  time: number,
 ) {
   let params = `time=${time}`;
   for (const o of operators) params += `&operator=${o}`;
@@ -55,7 +55,7 @@ export class AdditionSubstractionWholeDecadeApp extends TimeLimitedGame2 {
     super();
     this.welcomeDialogImageUrl = new URL(
       '../images/Mompitz Elli star-yellow.png',
-      import.meta.url
+      import.meta.url,
     );
     this.parseUrl();
   }

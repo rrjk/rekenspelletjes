@@ -68,12 +68,12 @@ export class TensSplitWidget extends LitElement {
   renderTens(): SVGTemplateResult {
     if (this.activeDigit === 1) {
       return svg`<text class="leftAligned" x="96" y="245">${Math.floor(
-        this.numberToSplit / 10
+        this.numberToSplit / 10,
       )}</text>`;
     }
     if (this.activeDigit > 1) {
       return svg`<text class="leftAligned" x="96" y="245">${Math.floor(
-        this.numberToSplit / 10
+        this.numberToSplit / 10,
       )}0</text>`;
     }
     return svg``;

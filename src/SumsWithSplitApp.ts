@@ -28,7 +28,7 @@ type GameRangeType = 'split1Till20' | 'split1Till100' | 'split2Till100';
 export function sommenMetSplitsenLink(
   game: GameRangeType,
   operators: Operator[],
-  time: number
+  time: number,
 ) {
   let params = `time=${time}&game=${game}`;
   for (const o of operators) params += `&${o}`;
@@ -340,7 +340,7 @@ export class SumsWithDoubleSplitApp extends TimeLimitedGame2 {
 
   getActiveFillin(): DigitFillin {
     return this.getElement<DigitFillin>(
-      `#${this.usedFillIns[this.activeFillIn]}`
+      `#${this.usedFillIns[this.activeFillIn]}`,
     );
   }
 
@@ -380,14 +380,15 @@ export class SumsWithDoubleSplitApp extends TimeLimitedGame2 {
           );
 
           --preSplit1Slashes1DigitWidth: calc(
-            (2.5 * var(--singleDigitWidth) + var(--operatorWidth)) -
-              var(--slashWidth) - (0.5 * var(--spaceBetweenSlashesWidth))
+            (2.5 * var(--singleDigitWidth) + var(--operatorWidth)) - var(
+                --slashWidth
+              ) - (0.5 * var(--spaceBetweenSlashesWidth))
           );
 
           --preSplit1DigitEntry1DigitWidthBackup: calc(
-            (2.5 * var(--singleDigitWidth) + var(--operatorWidth)) -
-              var(--slashWidth) - (0.5 * var(--spaceBetweenSlashesWidth)) -
-              var(--fillInWidth)
+            (2.5 * var(--singleDigitWidth) + var(--operatorWidth)) - var(
+                --slashWidth
+              ) - (0.5 * var(--spaceBetweenSlashesWidth)) - var(--fillInWidth)
           );
 
           --preSplit1DigitEntry1DigitWidth: calc(
@@ -396,8 +397,9 @@ export class SumsWithDoubleSplitApp extends TimeLimitedGame2 {
           );
 
           --preSplit1Slashes2DigitWidth: calc(
-            (3 * var(--singleDigitWidth) + var(--operatorWidth)) -
-              var(--slashWidth) - (0.5 * var(--spaceBetweenSlashesWidth))
+            (3 * var(--singleDigitWidth) + var(--operatorWidth)) - var(
+                --slashWidth
+              ) - (0.5 * var(--spaceBetweenSlashesWidth))
           );
 
           --preSplit1DigitEntry2DigitWidth: calc(
@@ -406,8 +408,9 @@ export class SumsWithDoubleSplitApp extends TimeLimitedGame2 {
           );
 
           --preSplit2SlashesWidth: calc(
-            (2.5 * var(--fillInWidth)) + (3 * var(--fillInMargin)) -
-              var(--slashWidth) - (0.5 * var(--spaceBetweenSlashesWidth)) +
+            (2.5 * var(--fillInWidth)) + (3 * var(--fillInMargin)) - var(
+                --slashWidth
+              ) - (0.5 * var(--spaceBetweenSlashesWidth)) +
               var(--preSplit1DigitEntry2DigitWidth)
           );
 

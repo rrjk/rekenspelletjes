@@ -51,7 +51,7 @@ export function klikFotoOpGetallenlijnLink(
   minumum: NumberLineBoundaries,
   maximum: NumberLineBoundaries,
   helpers: Helpers[],
-  time: number
+  time: number,
 ) {
   let params = `time=${time}&minumum=${minumum}&maximum=${maximum}`;
   for (const h of helpers) params += `&${h}`;
@@ -153,7 +153,7 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
   handlePhotoClicked(event: CustomEvent) {
     if (event.detail.position !== this.numberToClick) {
       this.disabledPositions = this.disabledPositions.concat(
-        event.detail.position
+        event.detail.position,
       );
       this._numberNok += 1;
     } else {
@@ -188,7 +188,7 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
     if (ret === null) {
       throw new ChildNotFoundError(
         'scoreBox',
-        'ClickTheRightPhotoOnNumberLineApp'
+        'ClickTheRightPhotoOnNumberLineApp',
       );
     }
     return ret;
@@ -204,7 +204,7 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
     if (ret === null) {
       throw new ChildNotFoundError(
         'progressBar',
-        'ClickTheRightPhotoOnNumberLineApp'
+        'ClickTheRightPhotoOnNumberLineApp',
       );
     }
     return ret;
@@ -220,7 +220,7 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
     if (ret === null) {
       throw new ChildNotFoundError(
         'numberLine',
-        'ClickTheRightPhotoOnNumberLineApp'
+        'ClickTheRightPhotoOnNumberLineApp',
       );
     }
     return ret;
@@ -236,7 +236,7 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
     if (ret === null) {
       throw new ChildNotFoundError(
         'messageDialog',
-        'ClickTheRightPhotoOnNumberLineApp'
+        'ClickTheRightPhotoOnNumberLineApp',
       );
     }
     return ret;
@@ -252,7 +252,7 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
     if (ret === null) {
       throw new ChildNotFoundError(
         'gameOverDialog',
-        'ClickTheRightPhotoOnNumberLineApp'
+        'ClickTheRightPhotoOnNumberLineApp',
       );
     }
     return ret;
@@ -279,7 +279,7 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
     return this._messageDialog.show(
       'De juiste foto kiezen',
       html`<p>Kies de juiste foto op de getallenlijn.</p>
-        <p>Dit spel kun je op de telefoon het beste horizontaal spelen.</p>`
+        <p>Dit spel kun je op de telefoon het beste horizontaal spelen.</p>`,
     );
   }
 
@@ -295,7 +295,7 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
           <p>
             Je hebt ${this._numberNok === 0 ? 'geen' : this._numberNok}
             ${this._numberNok === 1 ? 'fout' : 'fouten'} gemaakt.
-          </p>`
+          </p>`,
       )
       .then(result => {
         if (result === 'again') this.startNewGame();
@@ -350,5 +350,5 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
 
 customElements.define(
   'click-correct-photo-on-numberline-app',
-  ClickTheRightPhotoOnNumberLineApp
+  ClickTheRightPhotoOnNumberLineApp,
 );

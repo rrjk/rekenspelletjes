@@ -24,7 +24,7 @@ type HandIds = 0 | 1;
 export function welkeHandHeeftMeerStippenLink(
   countOnly: boolean,
   includeDifference: boolean,
-  time: number
+  time: number,
 ) {
   return `../Rekenspelletjes/WelkeHandHeeftMeerStippen.html?countOnly=${countOnly}&includeDifference=${includeDifference}&time=${time}`;
 }
@@ -164,7 +164,7 @@ export class WhichIsBiggerApp extends TimeLimitedGame2 {
       this.handDisabled = [true, true];
     } else {
       possibleNumberDots = possibleNumberDots.filter(
-        x => Math.abs(x - this.numberDotsHands[0]) <= this.maxDifference
+        x => Math.abs(x - this.numberDotsHands[0]) <= this.maxDifference,
       );
 
       do {
@@ -249,7 +249,7 @@ export class WhichIsBiggerApp extends TimeLimitedGame2 {
         <digit-keyboard showTen ?disabled=${
           this.keyboardDisabled
         } @digit-entered="${(evt: CustomEvent<Digit>) =>
-        this.handleDigit(evt.detail)}">
+          this.handleDigit(evt.detail)}">
         </digit-keyboad>
       </div>`;
     }

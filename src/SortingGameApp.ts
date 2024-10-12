@@ -49,7 +49,7 @@ export function sorterenLink(
   maximumValue: number,
   divider: number,
   boxColor: BoxColor,
-  time: number
+  time: number,
 ) {
   return `../Rekenspelletjes/Sorteren.html?numberBoxes=${numberBoxes}&minimumValue=${minimumValue}&maximumValue=${maximumValue}&divider=${divider}&boxColor=${boxColor}&time=${time}`;
 }
@@ -94,7 +94,7 @@ export class SortingGameApp extends TimeLimitedGame2 {
     super();
     this.welcomeDialogImageUrl = new URL(
       '../images/Mompitz7.png',
-      import.meta.url
+      import.meta.url,
     );
     this.parseUrl();
   }
@@ -264,7 +264,7 @@ export class SortingGameApp extends TimeLimitedGame2 {
     while (newValues.length !== this.numbers.length) {
       const proposedValue = randomIntFromRange(
         this.minimumValue,
-        this.maximumValue
+        this.maximumValue,
       );
       if (newValues.find(value => value === proposedValue) === undefined)
         newValues.push(proposedValue);
@@ -300,12 +300,12 @@ export class SortingGameApp extends TimeLimitedGame2 {
         .querySelectorAll('drop-target-box')
         .forEach(dropTarget => {
           (<DraggableElement>draggable).addDropElement(
-            <DropTargetBox>dropTarget
+            <DropTargetBox>dropTarget,
           );
         });
 
       draggable.addEventListener('dropped', event =>
-        this.handleDropped(<DropEvent>event)
+        this.handleDropped(<DropEvent>event),
       );
     });
 
@@ -333,7 +333,7 @@ export class SortingGameApp extends TimeLimitedGame2 {
           // Mark this target as a wrong drop target for all numbers
           for (const numberToMark of this.numbers) {
             this.getNumber(`#${numberToMark.id}`).markAsWrongDrop(
-              this.getBox(`#${evt.dropTargetId}`)
+              this.getBox(`#${evt.dropTargetId}`),
             );
           }
           this.handleCorrectDrag();
@@ -344,7 +344,7 @@ export class SortingGameApp extends TimeLimitedGame2 {
           this.getNumber(`#${number.id}`).resetDrag();
           // A wrong drop was done, this target is marked as a wrong drop to prevent repeated wrong drops.
           this.getNumber(`#${number.id}`).markAsWrongDrop(
-            this.getBox(`#${evt.dropTargetId}`)
+            this.getBox(`#${evt.dropTargetId}`),
           );
         } else {
           this.getNumber(`#${number.id}`).resetDrag();
@@ -376,25 +376,26 @@ export class SortingGameApp extends TimeLimitedGame2 {
                   divider="${this.divider}"
                   class="number"
                 ></mompitz-number>
-              </draggable-element>`
+              </draggable-element>`,
           )}
         </div>
 
         <div class="boxes">
           ${this.boxes.map(
-            elt => html`<drop-target-box
-              class="box"
-              id="${elt.id}"
-              size="${elt.size}"
-              boxColor="${this.boxColor}"
-            >
-              <mompitz-number
-                number="${elt.intendedValue}"
-                class="number ${elt.numberVisible === false ? 'hidden' : ''}"
-                divider="${this.divider}"
-                minimumNumberDigitsForSize="${this.maxNumberDigits}"
-              ></mompitz-number>
-            </drop-target-box>`
+            elt =>
+              html`<drop-target-box
+                class="box"
+                id="${elt.id}"
+                size="${elt.size}"
+                boxColor="${this.boxColor}"
+              >
+                <mompitz-number
+                  number="${elt.intendedValue}"
+                  class="number ${elt.numberVisible === false ? 'hidden' : ''}"
+                  divider="${this.divider}"
+                  minimumNumberDigitsForSize="${this.maxNumberDigits}"
+                ></mompitz-number>
+              </drop-target-box>`,
           )}
         </div>
       </div>

@@ -64,7 +64,7 @@ export class Platform extends LitElement {
       //      this.style.transform = `translate(${this.cummulativeDeltaX}vw, 0px)`;
       this.style.setProperty(
         '--cummulativeDeltaX',
-        `${this.cummulativeDeltaX}vw`
+        `${this.cummulativeDeltaX}vw`,
       );
     }
   }
@@ -81,7 +81,7 @@ export class Platform extends LitElement {
       else if (this.cummulativeDeltaX < 0) this.cummulativeDeltaX = 0;
       this.style.setProperty(
         '--cummulativeDeltaX',
-        `${this.cummulativeDeltaX}vw`
+        `${this.cummulativeDeltaX}vw`,
       );
       //    this.style.transform = `translate(${this.cummulativeDeltaX}vw, 0px)`;
     }

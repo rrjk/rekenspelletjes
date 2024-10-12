@@ -92,7 +92,7 @@ export class DraggableElement extends LitElement {
 
   removeDropElements(elementIds: string[]): void {
     this.dropTargets = this.dropTargets.filter(
-      elm => !elementIds.includes(elm.element.id)
+      elm => !elementIds.includes(elm.element.id),
     );
   }
 
@@ -102,7 +102,7 @@ export class DraggableElement extends LitElement {
 
   markAsWrongDrop(element: DropTargetElement): void {
     const targetToUpdate = this.dropTargets.find(
-      target => element === target.element
+      target => element === target.element,
     );
     if (targetToUpdate !== undefined) targetToUpdate.dropType = 'dropWrong';
   }

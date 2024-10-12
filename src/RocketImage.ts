@@ -1,6 +1,6 @@
 export function getRocketAsSvgString(
   lineColor: string,
-  wingColor: string
+  wingColor: string,
 ): string {
   return (
     `<svg version="1.1" viewBox="0 0 128 128" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">` +
@@ -14,7 +14,7 @@ export function getRocketAsSvgString(
 
 export function getRocketAsSvgUrl(
   lineColor: string,
-  wingColor: string
+  wingColor: string,
 ): string {
   return encodeURIComponent(getRocketAsSvgString(lineColor, wingColor));
 }

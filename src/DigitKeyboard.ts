@@ -72,14 +72,14 @@ export class DigitKeyboard
       .DigitKeyboardDisabled {
         --digit-color: lightgrey;
         background-image: url(${unsafeCSS(
-          new URL('../images/greyCircle.svg', import.meta.url)
+          new URL('../images/greyCircle.svg', import.meta.url),
         )});
       }
 
       .DigitKeyboardEnabled {
         --digit-color: black;
         background-image: url(${unsafeCSS(
-          new URL('../images/ball-blue.svg', import.meta.url)
+          new URL('../images/ball-blue.svg', import.meta.url),
         )});
       }
 

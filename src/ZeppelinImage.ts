@@ -1,7 +1,7 @@
 export function getZeppelinAsSvgString(
   wingColor: string,
   fillColor1: string,
-  fillColor2: string
+  fillColor2: string,
 ): string {
   return (
     `<svg version="1.1" viewBox="0 0 453.48 453.48" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">` +
@@ -19,9 +19,9 @@ export function getZeppelinAsSvgString(
 export function getZeppelinAsSvgUrl(
   wingColor: string,
   fillColor1: string,
-  fillColor2: string
+  fillColor2: string,
 ): string {
   return encodeURIComponent(
-    getZeppelinAsSvgString(wingColor, fillColor1, fillColor2)
+    getZeppelinAsSvgString(wingColor, fillColor1, fillColor2),
   );
 }

@@ -42,7 +42,7 @@ export function getHeartAsSvgUrl(color: Color, text: string): string {
  */
 export function getHeartasHTMLTemplateResult(
   color: Color,
-  text: string
+  text: string,
 ): HTMLTemplateResult {
   return html`${unsafeHTML(getHeartAsSvgString(`${color}`, `${text}`))}`;
 }

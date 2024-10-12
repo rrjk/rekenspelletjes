@@ -148,16 +148,18 @@ export class DigitFillin extends LitElement {
       else if (index === this.numberDigits - 1)
         fillInType = 'fillinMultiDigitRight';
       else fillInType = 'fillinMultiDigitMid';
-      digitsHtml.push(html`<div
-        class="fillinDigit ${fillInType} ${index === this.digitVisible + 1 &&
-        this.fillinActive
-          ? 'fillinActive'
-          : ''}"
-      >
-        ${index <= this.digitVisible && !Number.isNaN(digit)
-          ? digit
-          : html`&nbsp;`}
-      </div>`);
+      digitsHtml.push(
+        html`<div
+          class="fillinDigit ${fillInType} ${index === this.digitVisible + 1 &&
+          this.fillinActive
+            ? 'fillinActive'
+            : ''}"
+        >
+          ${index <= this.digitVisible && !Number.isNaN(digit)
+            ? digit
+            : html`&nbsp;`}
+        </div>`,
+      );
     });
 
     return html`${digitsHtml}`;

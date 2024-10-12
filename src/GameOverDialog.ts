@@ -46,7 +46,7 @@ export class GameOverDialog extends LitElement {
         e => {
           resolve((<CustomEvent<string>>e).detail);
         },
-        { once: true }
+        { once: true },
       );
       this._dialog.show();
     });

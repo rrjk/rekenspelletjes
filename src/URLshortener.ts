@@ -129,37 +129,37 @@ const urls: (() => string)[] = [
     plusMinBinnenTientalLink(
       [0, 10, 20, 30, 40, 50, 60, 70, 80, 90],
       ['plus'],
-      60
+      60,
     ),
   () =>
     plusMinBinnenTientalLink(
       [0, 10, 20, 30, 40, 50, 60, 70, 80, 90],
       ['plus'],
-      180
+      180,
     ),
   () =>
     plusMinBinnenTientalLink(
       [0, 10, 20, 30, 40, 50, 60, 70, 80, 90],
       ['minus'],
-      60
+      60,
     ),
   () =>
     plusMinBinnenTientalLink(
       [0, 10, 20, 30, 40, 50, 60, 70, 80, 90],
       ['minus'],
-      180
+      180,
     ),
   () =>
     plusMinBinnenTientalLink(
       [0, 10, 20, 30, 40, 50, 60, 70, 80, 90],
       ['plus', 'minus'],
-      60
+      60,
     ),
   () =>
     plusMinBinnenTientalLink(
       [0, 10, 20, 30, 40, 50, 60, 70, 80, 90],
       ['plus', 'minus'],
-      180
+      180,
     ),
   // de - indexKlikFotoOpGetallenlijn.html - Getallenlijn van 0 tot 20
   () =>
@@ -172,7 +172,7 @@ const urls: (() => string)[] = [
         'show1TickMarks',
         'showAll10Numbers',
       ],
-      60
+      60,
     ),
   () =>
     klikFotoOpGetallenlijnLink(
@@ -184,35 +184,35 @@ const urls: (() => string)[] = [
         'show1TickMarks',
         'showAll10Numbers',
       ],
-      180
+      180,
     ),
   () =>
     klikFotoOpGetallenlijnLink(
       0,
       20,
       ['show10TickMarks', 'show5TickMarks', 'showAll10Numbers'],
-      60
+      60,
     ),
   () =>
     klikFotoOpGetallenlijnLink(
       0,
       20,
       ['show10TickMarks', 'show5TickMarks', 'showAll10Numbers'],
-      180
+      180,
     ),
   () =>
     klikFotoOpGetallenlijnLink(
       0,
       20,
       ['show10TickMarks', 'showAll10Numbers'],
-      60
+      60,
     ),
   () =>
     klikFotoOpGetallenlijnLink(
       0,
       20,
       ['show10TickMarks', 'showAll10Numbers'],
-      180
+      180,
     ),
   () => klikFotoOpGetallenlijnLink(0, 20, ['show10TickMarks'], 60),
   () => klikFotoOpGetallenlijnLink(0, 20, ['show10TickMarks'], 180),
@@ -227,7 +227,7 @@ const urls: (() => string)[] = [
         'show1TickMarks',
         'showAll10Numbers',
       ],
-      60
+      60,
     ),
   () =>
     klikFotoOpGetallenlijnLink(
@@ -239,35 +239,35 @@ const urls: (() => string)[] = [
         'show1TickMarks',
         'showAll10Numbers',
       ],
-      180
+      180,
     ),
   () =>
     klikFotoOpGetallenlijnLink(
       0,
       100,
       ['show10TickMarks', 'show5TickMarks', 'showAll10Numbers'],
-      60
+      60,
     ),
   () =>
     klikFotoOpGetallenlijnLink(
       0,
       100,
       ['show10TickMarks', 'show5TickMarks', 'showAll10Numbers'],
-      180
+      180,
     ),
   () =>
     klikFotoOpGetallenlijnLink(
       0,
       100,
       ['show10TickMarks', 'showAll10Numbers'],
-      60
+      60,
     ),
   () =>
     klikFotoOpGetallenlijnLink(
       0,
       100,
       ['show10TickMarks', 'showAll10Numbers'],
-      180
+      180,
     ),
   () => klikFotoOpGetallenlijnLink(0, 100, ['show10TickMarks'], 60),
   () => klikFotoOpGetallenlijnLink(0, 100, ['show10TickMarks'], 180),
@@ -282,7 +282,7 @@ const urls: (() => string)[] = [
         'show1TickMarks',
         'showAll10Numbers',
       ],
-      60
+      60,
     ),
   () =>
     springOpGetallenlijnLink(
@@ -294,35 +294,35 @@ const urls: (() => string)[] = [
         'show1TickMarks',
         'showAll10Numbers',
       ],
-      180
+      180,
     ),
   () =>
     springOpGetallenlijnLink(
       0,
       20,
       ['show10TickMarks', 'show5TickMarks', 'showAll10Numbers'],
-      60
+      60,
     ),
   () =>
     springOpGetallenlijnLink(
       0,
       20,
       ['show10TickMarks', 'show5TickMarks', 'showAll10Numbers'],
-      180
+      180,
     ),
   () =>
     springOpGetallenlijnLink(
       0,
       20,
       ['show10TickMarks', 'showAll10Numbers'],
-      60
+      60,
     ),
   () =>
     springOpGetallenlijnLink(
       0,
       20,
       ['show10TickMarks', 'showAll10Numbers'],
-      180
+      180,
     ),
   () => springOpGetallenlijnLink(0, 20, ['show10TickMarks'], 60),
   () => springOpGetallenlijnLink(0, 20, ['show10TickMarks'], 180),
@@ -337,7 +337,7 @@ const urls: (() => string)[] = [
         'show1TickMarks',
         'showAll10Numbers',
       ],
-      60
+      60,
     ),
   () =>
     springOpGetallenlijnLink(
@@ -349,35 +349,35 @@ const urls: (() => string)[] = [
         'show1TickMarks',
         'showAll10Numbers',
       ],
-      180
+      180,
     ),
   () =>
     springOpGetallenlijnLink(
       0,
       100,
       ['show10TickMarks', 'show5TickMarks', 'showAll10Numbers'],
-      60
+      60,
     ),
   () =>
     springOpGetallenlijnLink(
       0,
       100,
       ['show10TickMarks', 'show5TickMarks', 'showAll10Numbers'],
-      180
+      180,
     ),
   () =>
     springOpGetallenlijnLink(
       0,
       100,
       ['show10TickMarks', 'showAll10Numbers'],
-      60
+      60,
     ),
   () =>
     springOpGetallenlijnLink(
       0,
       100,
       ['show10TickMarks', 'showAll10Numbers'],
-      180
+      180,
     ),
   () => springOpGetallenlijnLink(0, 100, ['show10TickMarks'], 60),
   () => springOpGetallenlijnLink(0, 100, ['show10TickMarks'], 180),
@@ -390,37 +390,37 @@ const urls: (() => string)[] = [
     klokPaartjesLink(
       ['QuarterHour', 'HalfHour', 'Hour'],
       ['Analog', 'Sentence'],
-      60
+      60,
     ),
   () =>
     klokPaartjesLink(
       ['QuarterHour', 'HalfHour', 'Hour'],
       ['Analog', 'Sentence'],
-      180
+      180,
     ),
   () =>
     klokPaartjesLink(
       ['10Minute', 'QuarterHour', 'HalfHour', 'Hour'],
       ['Analog', 'Sentence'],
-      60
+      60,
     ),
   () =>
     klokPaartjesLink(
       ['10Minute', 'QuarterHour', 'HalfHour', 'Hour'],
       ['Analog', 'Sentence'],
-      180
+      180,
     ),
   () =>
     klokPaartjesLink(
       ['Minute', '10Minute', 'QuarterHour', 'HalfHour', 'Hour'],
       ['Analog', 'Sentence'],
-      60
+      60,
     ),
   () =>
     klokPaartjesLink(
       ['Minute', '10Minute', 'QuarterHour', 'HalfHour', 'Hour'],
       ['Analog', 'Sentence'],
-      180
+      180,
     ),
   // eu -- indexKlokPaartjesDigitaalZin.html
   () => klokPaartjesLink(['Hour'], ['Sentence', 'Digital'], 60),
@@ -431,37 +431,37 @@ const urls: (() => string)[] = [
     klokPaartjesLink(
       ['QuarterHour', 'HalfHour', 'Hour'],
       ['Sentence', 'Digital'],
-      60
+      60,
     ),
   () =>
     klokPaartjesLink(
       ['QuarterHour', 'HalfHour', 'Hour'],
       ['Sentence', 'Digital'],
-      180
+      180,
     ),
   () =>
     klokPaartjesLink(
       ['10Minute', 'QuarterHour', 'HalfHour', 'Hour'],
       ['Sentence', 'Digital'],
-      60
+      60,
     ),
   () =>
     klokPaartjesLink(
       ['10Minute', 'QuarterHour', 'HalfHour', 'Hour'],
       ['Sentence', 'Digital'],
-      180
+      180,
     ),
   () =>
     klokPaartjesLink(
       ['Minute', '10Minute', 'QuarterHour', 'HalfHour', 'Hour'],
       ['Sentence', 'Digital'],
-      60
+      60,
     ),
   () =>
     klokPaartjesLink(
       ['Minute', '10Minute', 'QuarterHour', 'HalfHour', 'Hour'],
       ['Sentence', 'Digital'],
-      180
+      180,
     ),
   // fe -- indexKlokPaartjesAnaloogDigitaal.html
   () => klokPaartjesLink(['Hour'], ['Analog', 'Digital'], 60),
@@ -472,37 +472,37 @@ const urls: (() => string)[] = [
     klokPaartjesLink(
       ['QuarterHour', 'HalfHour', 'Hour'],
       ['Analog', 'Digital'],
-      60
+      60,
     ),
   () =>
     klokPaartjesLink(
       ['QuarterHour', 'HalfHour', 'Hour'],
       ['Analog', 'Digital'],
-      180
+      180,
     ),
   () =>
     klokPaartjesLink(
       ['10Minute', 'QuarterHour', 'HalfHour', 'Hour'],
       ['Analog', 'Digital'],
-      60
+      60,
     ),
   () =>
     klokPaartjesLink(
       ['10Minute', 'QuarterHour', 'HalfHour', 'Hour'],
       ['Analog', 'Digital'],
-      180
+      180,
     ),
   () =>
     klokPaartjesLink(
       ['Minute', '10Minute', 'QuarterHour', 'HalfHour', 'Hour'],
       ['Analog', 'Digital'],
-      60
+      60,
     ),
   () =>
     klokPaartjesLink(
       ['Minute', '10Minute', 'QuarterHour', 'HalfHour', 'Hour'],
       ['Analog', 'Digital'],
-      180
+      180,
     ),
   // fo -- indexKlokPaartjesAnaloogDigitaalZin.html
   () => klokPaartjesLink(['Hour'], ['Analog', 'Digital', 'Sentence'], 60),
@@ -511,49 +511,49 @@ const urls: (() => string)[] = [
     klokPaartjesLink(
       ['HalfHour', 'Hour'],
       ['Analog', 'Digital', 'Sentence'],
-      60
+      60,
     ),
   () =>
     klokPaartjesLink(
       ['HalfHour', 'Hour'],
       ['Analog', 'Digital', 'Sentence'],
-      180
+      180,
     ),
   () =>
     klokPaartjesLink(
       ['QuarterHour', 'HalfHour', 'Hour'],
       ['Analog', 'Digital', 'Sentence'],
-      60
+      60,
     ),
   () =>
     klokPaartjesLink(
       ['QuarterHour', 'HalfHour', 'Hour'],
       ['Analog', 'Digital', 'Sentence'],
-      180
+      180,
     ),
   () =>
     klokPaartjesLink(
       ['10Minute', 'QuarterHour', 'HalfHour', 'Hour'],
       ['Analog', 'Digital', 'Sentence'],
-      60
+      60,
     ),
   () =>
     klokPaartjesLink(
       ['10Minute', 'QuarterHour', 'HalfHour', 'Hour'],
       ['Analog', 'Digital', 'Sentence'],
-      180
+      180,
     ),
   () =>
     klokPaartjesLink(
       ['Minute', '10Minute', 'QuarterHour', 'HalfHour', 'Hour'],
       ['Analog', 'Digital', 'Sentence'],
-      60
+      60,
     ),
   () =>
     klokPaartjesLink(
       ['Minute', '10Minute', 'QuarterHour', 'HalfHour', 'Hour'],
       ['Analog', 'Digital', 'Sentence'],
-      180
+      180,
     ),
   // fy - indexSplitsenOpwaarde.html
   () => splitsenOpWaardeLink(60),

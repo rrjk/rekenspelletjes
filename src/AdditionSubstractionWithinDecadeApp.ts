@@ -26,7 +26,7 @@ type OperatorParam = 'plus' | 'minus';
 export function plusMinBinnenTientalLink(
   decades: Decade[],
   operators: OperatorParam[],
-  time: number
+  time: number,
 ) {
   let params = `time=${time}`;
   for (const d of decades) params += `&decade=${d}`;
@@ -141,7 +141,7 @@ export class AdditionSubstractionWithinDecadeApp extends TimeLimitedGame2 {
     if (exerciseExamples.length <= 0) throw new Error('Internal error');
     else if (exerciseExamples.length === 1)
       exerciseExamplesAsScentence = exerciseExamplesAsScentence.concat(
-        `${exerciseExamples[0]}.`
+        `${exerciseExamples[0]}.`,
       );
     else {
       exerciseExamples.forEach((value, index) => {
@@ -150,11 +150,11 @@ export class AdditionSubstractionWithinDecadeApp extends TimeLimitedGame2 {
             exerciseExamplesAsScentence.concat(value);
         } else if (index === exerciseExamples.length - 1) {
           exerciseExamplesAsScentence = exerciseExamplesAsScentence.concat(
-            ` en ${value}.`
+            ` en ${value}.`,
           );
         } else {
           exerciseExamplesAsScentence = exerciseExamplesAsScentence.concat(
-            `, ${value}`
+            `, ${value}`,
           );
         }
       });
@@ -209,7 +209,7 @@ export class AdditionSubstractionWithinDecadeApp extends TimeLimitedGame2 {
       this.firstNumber = randomIntFromRange(0 + decade, 9 + decade);
       this.secondNumber = randomIntFromRange(
         0,
-        10 - (this.firstNumber - decade)
+        10 - (this.firstNumber - decade),
       );
       answer = this.firstNumber + this.secondNumber;
     } else if (this.operator === '-') {

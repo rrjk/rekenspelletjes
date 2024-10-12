@@ -95,7 +95,7 @@ export class NumberLine extends LitElement {
   translateWidthFractionToPosition(widthFraction: number): number {
     return (
       this.translateDeltaWidthFractionToDeltaPosition(
-        widthFraction - NumberLine.widthFractionMinimum
+        widthFraction - NumberLine.widthFractionMinimum,
       ) + this.minimum
     );
   }
@@ -162,7 +162,7 @@ export class NumberLine extends LitElement {
     for (let i = 0; i < numberTickMarks; i++) {
       positions.push(
         this.translatePosition(this.minimum) +
-          i * this.numberDistanceToViewportDistance(10)
+          i * this.numberDistanceToViewportDistance(10),
       );
     }
     return svg`
@@ -238,8 +238,8 @@ export class NumberLine extends LitElement {
   renderNumber(number: number): SVGTemplateResult {
     return svg`
         <text x="${this.translatePosition(number)}" y="${
-      this.yPosLine + 10
-    }" dominant-baseline="hanging" text-anchor="middle">${number}</text>
+          this.yPosLine + 10
+        }" dominant-baseline="hanging" text-anchor="middle">${number}</text>
       `;
   }
 
