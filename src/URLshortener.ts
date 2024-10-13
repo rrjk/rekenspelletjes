@@ -4,7 +4,7 @@ import {
   aanklikkenInTafelVolgordeLink,
   aanklikkenInVolgordeLink,
 } from './ClickInOrderApp';
-import { klikFotoOpGetallenlijnLink } from './ClickTheRightPhotoOnNumberLineApp';
+import { klikFotoOpGetallenlijnLink } from './ClickTheRightPhotoOnNumberLineAppLink';
 import { klokPaartjesLink } from './ClockPairingApp';
 import { springOpGetallenlijnLink } from './JumpOnNumberLineApp';
 import { ballonnenSpelLink } from './MultiplicationTablesBalloonGame';
