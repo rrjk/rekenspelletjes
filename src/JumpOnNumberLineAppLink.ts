@@ -30,5 +30,5 @@ export function springOpGetallenlijnLink(
 ) {
   let params = `time=${time}&minumum=${minumum}&maximum=${maximum}`;
   for (const h of helpers) params += `&${h}`;
-  return `../Rekenspelletjes/springOpGetallenlijn.html?${params}`;
+  return `../Rekenspelletjes/SpringOpGetallenlijn.html?${params}`;
 }
