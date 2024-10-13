@@ -28,13 +28,13 @@ export function splitsenLink(numbers: number[], time: number) {
 export class SplitApp extends TimeLimitedGame2 {
   numbersToSplit: SplittableNumber[] = [];
   @state()
-  private numberToSplit: SplittableNumber = 7;
+  private accessor numberToSplit: SplittableNumber = 7;
   @state()
-  private firstNumber: SplittableNumber = 3;
+  private accessor firstNumber: SplittableNumber = 3;
   @state()
-  private answers: Answers = { correct: 1, incorrect: [2, 3, 4] };
+  private accessor answers: Answers = { correct: 1, incorrect: [2, 3, 4] };
   @state()
-  private gameElementsDisabled = true;
+  private accessor gameElementsDisabled = true;
 
   private gameLogger = new GameLogger('R', 'a');
 

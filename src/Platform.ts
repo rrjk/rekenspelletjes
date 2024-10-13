@@ -7,14 +7,14 @@ import type { TemplateResult, CSSResultGroup } from 'lit';
 
 export class Platform extends LitElement {
   @property({ type: Boolean })
-  dragDisabled = false;
+  accessor dragDisabled = false;
   @property({ type: Number })
-  cummulativeDeltaX = 0;
+  accessor cummulativeDeltaX = 0;
   mouseDrag = false;
   touchDrag = false;
   touchPreviousScreenX = 0;
   @property({ type: Number })
-  maxDeltaX = 0;
+  accessor maxDeltaX = 0;
 
   static get styles(): CSSResultGroup {
     return css`

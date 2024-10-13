@@ -10,14 +10,14 @@ type TimeEnum = '1min' | '3min' | '5min';
 @customElement('icon-hourglass-button')
 export class IconHourglassButton extends LitElement {
   @property()
-  time: TimeEnum = '1min';
+  accessor time: TimeEnum = '1min';
 
   // href for the link to be created. Not needed when a shortCode is provided
   @property()
-  href = '';
+  accessor href = '';
   // shortCode to use to create the link. href should be set to empty when used.
   @property()
-  shortCode = '';
+  accessor shortCode = '';
 
   static get styles(): CSSResultGroup {
     return css`

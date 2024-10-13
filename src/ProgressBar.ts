@@ -14,11 +14,11 @@ import { ChildNotFoundError } from './ChildNotFoundError';
 @customElement('progress-bar')
 export class ProgressBar extends LitElement {
   @property({ type: Number })
-  numberOk = 0;
+  accessor numberOk = 0;
   @property({ type: Number })
-  numberNok = 0;
+  accessor numberNok = 0;
   @property({ type: Boolean })
-  integrateScoreBox = false;
+  accessor integrateScoreBox = false;
 
   static height = 20;
 

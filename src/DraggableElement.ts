@@ -41,19 +41,19 @@ type DropTarget = {
 @customElement('draggable-element')
 export class DraggableElement extends LitElement {
   @property({ type: Boolean })
-  private resetDragAfterDrop = false;
+  private accessor resetDragAfterDrop = false;
   @property({ type: Number })
-  private dropAreaPercentage = 20; // Area in the draggable element that needs to be over the drop target, measured as percentage of total width and height
+  private accessor dropAreaPercentage = 20; // Area in the draggable element that needs to be over the drop target, measured as percentage of total width and height
   @state()
-  private cummulativeDeltaX = 0; // expressed as percentage of the viewport width
+  private accessor cummulativeDeltaX = 0; // expressed as percentage of the viewport width
   @state()
-  private cummulativeDeltaY = 0; // expressed as percentage of the viewport height
+  private accessor cummulativeDeltaY = 0; // expressed as percentage of the viewport height
 
   @property({ type: String })
-  value = '';
+  accessor value = '';
 
   @state()
-  protected content = html`<slot> </slot>`; // Content of the draggeble element, default a slot but can be overruled in derived classes
+  protected accessor content = html`<slot> </slot>`; // Content of the draggeble element, default a slot but can be overruled in derived classes
 
   private dragActive = false;
   private touchPreviousScreenX = 0;

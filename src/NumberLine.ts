@@ -15,17 +15,17 @@ export type TickMarkType = 1 | 5 | 10;
 
 export class NumberLine extends LitElement {
   @property({ type: Boolean })
-  show1TickMarks: boolean;
+  accessor show1TickMarks: boolean;
   @property({ type: Boolean })
-  show5TickMarks: boolean;
+  accessor show5TickMarks: boolean;
   @property({ type: Boolean })
-  show10TickMarks: boolean;
+  accessor show10TickMarks: boolean;
   @property({ type: Boolean })
-  showAll10Numbers: boolean;
+  accessor showAll10Numbers: boolean;
   @property({ type: Number })
-  minimum: number;
+  accessor minimum: number;
   @property({ type: Number })
-  maximum: number;
+  accessor maximum: number;
   static margin = 15;
   static viewBoxHeight = 35;
   static lineLength = 1000;

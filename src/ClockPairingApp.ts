@@ -76,11 +76,11 @@ export class ClockPairingApp extends TimeLimitedGame2 {
   private selectedClockTypes: ClockTypes[] = [];
 
   @state()
-  clockLocations: number[] = [];
+  accessor clockLocations: number[] = [];
   @state()
-  clockInformation: ClockInformationType[] = [];
+  accessor clockInformation: ClockInformationType[] = [];
   @state()
-  selectedClock: ClockInformationType | null = null; // Selected clock equals null to indicate no clock is selected.
+  accessor selectedClock: ClockInformationType | null = null; // Selected clock equals null to indicate no clock is selected.
 
   constructor() {
     super();

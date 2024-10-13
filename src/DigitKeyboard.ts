@@ -17,9 +17,9 @@ export class DigitKeyboard
   implements ResizeObserverClientInterface
 {
   @state()
-  wideTallClass = 'WideContainer';
+  accessor wideTallClass = 'WideContainer';
   @property({ attribute: false })
-  disabledDigits = [
+  accessor disabledDigits = [
     false,
     false,
     false,
@@ -32,9 +32,9 @@ export class DigitKeyboard
     false,
   ];
   @property({ type: Boolean })
-  disabled = false;
+  accessor disabled = false;
   @property({ type: Boolean })
-  showTen = false;
+  accessor showTen = false;
 
   static get styles(): CSSResultGroup {
     return css`

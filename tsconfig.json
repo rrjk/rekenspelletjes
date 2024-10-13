@@ -8,7 +8,7 @@
     "target": "ES2020",
     "strict": true,
     "useDefineForClassFields": false,
-    "experimentalDecorators": true,
+    "experimentalDecorators": false,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true
   },

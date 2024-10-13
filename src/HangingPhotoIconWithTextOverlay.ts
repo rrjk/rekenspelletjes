@@ -9,24 +9,24 @@ type TickMarkType = 'noTickMark' | 'tickMark1' | 'tickMark5' | 'tickMark10';
 @customElement('hanging-photo-icon-with-text-overlay')
 export class HangingPhotoIconWithTextOverlay extends LitElement {
   @property({ type: Number })
-  numberLeft = 0;
+  accessor numberLeft = 0;
   @property({ type: Number })
-  numberMiddle = 10;
+  accessor numberMiddle = 10;
   @property({ type: Number })
-  numberRight = 20;
+  accessor numberRight = 20;
 
   @property({ type: String })
-  smallestTickmark: TickMarkType = 'noTickMark';
+  accessor smallestTickmark: TickMarkType = 'noTickMark';
   @property({ type: Boolean })
-  showNumberMiddle = false;
+  accessor showNumberMiddle = false;
   @property({ type: Boolean })
-  brokenLine = false;
+  accessor brokenLine = false;
 
   @property({ type: String })
-  photoId: PhotoId = 'Frank';
+  accessor photoId: PhotoId = 'Frank';
 
   @state()
-  framedPhoto = new FramedPhotoSVG();
+  accessor framedPhoto = new FramedPhotoSVG();
 
   constructor() {
     super();

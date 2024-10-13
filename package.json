@@ -72,6 +72,7 @@
     "@babel/core": "^7.25.7",
     "@babel/plugin-proposal-class-properties": "^7.18.6",
     "@babel/plugin-proposal-decorators": "^7.25.7",
+    "@babel/plugin-transform-class-static-block": "^7.25.8",
     "@babel/preset-env": "^7.25.7",
     "@babel/preset-typescript": "^7.25.7",
     "@open-wc/eslint-config": "^12.0.3",
@@ -103,8 +104,13 @@
   "dependencies": {
     "@lit-labs/observers": "^2.0.4",
     "color2k": "^2.0.3",
-    "lit": "^2.8.0",
+    "lit": "^3.2.1",
     "web-dialog": "^0.0.11"
+  },
+  "overrides": {
+    "@web/dev-server-esbuild": {
+      "esbuild": ">=0.24.0"
+    }
   },
   "lint-staged": {
     "*.ts": [

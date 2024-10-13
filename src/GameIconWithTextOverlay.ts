@@ -11,17 +11,17 @@ import { getIconStyles } from './GameIcons';
 @customElement('game-icon-with-text-overlay')
 export class BalloonIndex extends LitElement {
   @property()
-  iconcolor: Color = 'yellow';
+  accessor iconcolor: Color = 'yellow';
   @property()
-  image: GameIcon = 'balloon';
+  accessor image: GameIcon = 'balloon';
   @property()
-  text1 = '';
+  accessor text1 = '';
   @property()
-  text2 = '';
+  accessor text2 = '';
   @property()
-  text3 = '';
+  accessor text3 = '';
   @property()
-  text4 = '';
+  accessor text4 = '';
 
   static get styles(): CSSResult[] {
     const styles: CSSResult[] = [

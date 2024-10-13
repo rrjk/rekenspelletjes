@@ -10,17 +10,17 @@ import { Color, getColorInfo, stringToColor } from './Colors';
 @customElement('icon-clock-pair')
 export class IconClockPair extends LitElement {
   @property({ type: Boolean })
-  private analog = false;
+  private accessor analog = false;
   @property({ type: Boolean })
-  private digital = false;
+  private accessor digital = false;
   @property({ type: Boolean })
-  private sentence = false;
+  private accessor sentence = false;
   @property({ type: Number })
-  private hours = 7;
+  private accessor hours = 7;
   @property({ type: Number })
-  private minutes = 10;
+  private accessor minutes = 10;
   @property({ type: String, converter: stringToColor })
-  private color: Color = 'grey';
+  private accessor color: Color = 'grey';
 
   static get styles(): CSSResultGroup {
     return css`

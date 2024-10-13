@@ -122,26 +122,26 @@ export class AscendingBalloons extends LitElement {
 
   /** Answers for the balloons, 1 correct answer and 3 incorrect answers. */
   @property({ attribute: false })
-  answers: Answers = { correct: 12, incorrect: [1, 3, 74] };
+  accessor answers: Answers = { correct: 12, incorrect: [1, 3, 74] };
 
   /** Disabled state of the balloons.
    * If disabled, the balloons do not show their label, do not react to clicks
    * and do not ascend.
    */
   @property({ type: Boolean })
-  disabled = false;
+  accessor disabled = false;
 
   /** Ascension state */
   @state()
-  private ascension = false;
+  private accessor ascension = false;
   /** Balloon info for each of 4 balloons.
    * Is refreshed each time new answers are set.
    */
   @state()
-  balloonInfoList: BalloonInfo[] = [];
+  accessor balloonInfoList: BalloonInfo[] = [];
 
   @property()
-  imageType: ImageType = 'balloon';
+  accessor imageType: ImageType = 'balloon';
 
   constructor() {
     super();

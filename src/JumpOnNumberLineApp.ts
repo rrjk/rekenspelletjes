@@ -75,33 +75,33 @@ export class JumpOnNumberLineApp extends LitElement {
 
   /** Number correct answers */
   @state()
-  private numberOk = 0;
+  private accessor numberOk = 0;
   /** Number incorrect answers */
   @state()
-  private numberNok = 0;
+  private accessor numberNok = 0;
 
   /** Number to set by student */
   @state()
-  private numberToSet = 0;
+  private accessor numberToSet = 0;
   /** Show the number or not, useful in the beginning and end of the game. */
   @state()
-  private showNumber = false;
+  private accessor showNumber = false;
 
   /** The desired position of Jan in vw units. */
   @state()
-  private desiredPosition = 0;
+  private accessor desiredPosition = 0;
 
   /** Numberline properties */
   @state()
-  private numberLineProperties: NumberLineParameters;
+  private accessor numberLineProperties: NumberLineParameters;
 
   /** Hide Jan or not. Jan is hidden when the student is setting the platform correctly. */
   @state()
-  private hideJan = true;
+  private accessor hideJan = true;
 
   /** Animation to apply to Jan, depends on whether the student put the platform correctly or not. */
   @state()
-  private janAnimation:
+  private accessor janAnimation:
     | 'moveDownCorrect'
     | 'moveDownInCorrect'
     | 'moveDownAlmostCorrectLeftSide'
@@ -110,11 +110,11 @@ export class JumpOnNumberLineApp extends LitElement {
 
   /** Is dragging the platform disabled/ */
   @state()
-  private dragDisabled = false;
+  private accessor dragDisabled = false;
 
   /** Gametime in number of seconds */
   @state()
-  private gameTime: number;
+  private accessor gameTime: number;
 
   /** Width of the number line in vw units */
   private static readonly numberLineWidth = 94;

@@ -15,21 +15,21 @@ import { customElement, property } from 'lit/decorators.js';
 export class AnalogClock extends LitElement {
   /** Color permutation to use, index into ballColorPermutations */
   @property({ type: Number })
-  hours = 0;
+  accessor hours = 0;
   @property({ type: Number })
-  minutes = 0;
+  accessor minutes = 0;
   @property({ type: Boolean })
-  showAllTickMarks = false;
+  accessor showAllTickMarks = false;
   @property({ type: Boolean })
-  showHourTickMarks = false;
+  accessor showHourTickMarks = false;
   @property({ type: Boolean })
-  showQuarterTickMarks = false;
+  accessor showQuarterTickMarks = false;
   @property({ type: Boolean })
-  showAllNumbers = false;
+  accessor showAllNumbers = false;
   @property({ type: Boolean })
-  showQuarterNumbers = false;
+  accessor showQuarterNumbers = false;
   @property({ type: Boolean })
-  useRomanNumerals = false;
+  accessor useRomanNumerals = false;
 
   static get styles(): CSSResultGroup {
     return css``;

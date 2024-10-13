@@ -34,7 +34,7 @@ export class BallFieldEntry extends LitElement {
   balls: (BallInfo | NotShownBallInfo)[];
 
   @property({ type: Array })
-  labels: string[];
+  accessor labels: string[];
 
   static get styles(): CSSResultGroup {
     return css`

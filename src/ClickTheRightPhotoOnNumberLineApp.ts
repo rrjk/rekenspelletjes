@@ -60,29 +60,29 @@ export function klikFotoOpGetallenlijnLink(
 
 class ClickTheRightPhotoOnNumberLineApp extends LitElement {
   @property({ type: Number })
-  numberToClick: number;
+  accessor numberToClick: number;
   @property({ type: Number })
-  minimum: number;
+  accessor minimum: number;
   @property({ type: Number })
-  maximum: number;
+  accessor maximum: number;
   @property({ type: Boolean })
-  show10TickMarks: boolean;
+  accessor show10TickMarks: boolean;
   @property({ type: Boolean })
-  show5TickMarks: boolean;
+  accessor show5TickMarks: boolean;
   @property({ type: Boolean })
-  show1TickMarks: boolean;
+  accessor show1TickMarks: boolean;
   @property({ type: Boolean })
-  _showAll10Numbers: boolean;
+  accessor _showAll10Numbers: boolean;
   @property({ type: Array })
-  positions: number[];
+  accessor positions: number[];
   @property({ type: Array })
-  disabledPositions: number[];
+  accessor disabledPositions: number[];
   @state()
-  _numberOk: number;
+  accessor _numberOk: number;
   @state()
-  _numberNok: number;
+  accessor _numberNok: number;
   @property({ type: Number })
-  time: number;
+  accessor time: number;
 
   private gameLogger = new GameLogger('T', 'a');
 

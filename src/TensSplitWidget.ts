@@ -10,9 +10,9 @@ import { customElement, property } from 'lit/decorators.js';
 @customElement('tens-split-widget')
 export class TensSplitWidget extends LitElement {
   @property({ type: Number })
-  numberToSplit = 28;
+  accessor numberToSplit = 28;
   @property({ type: Number })
-  activeDigit = 0; // Which digit should be active, counting starts at 0
+  accessor activeDigit = 0; // Which digit should be active, counting starts at 0
 
   static get styles(): CSSResultArray {
     return [

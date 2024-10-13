@@ -11,12 +11,12 @@ export type { PhotoId };
 @customElement('framed-photo')
 export class FramedPhoto extends LitElement {
   @property({ type: String })
-  photoId: PhotoId = 'Frank';
+  accessor photoId: PhotoId = 'Frank';
   @property({ type: Boolean })
-  disabled = false;
+  accessor disabled = false;
 
   @state()
-  framedPhoto = new FramedPhotoSVG();
+  accessor framedPhoto = new FramedPhotoSVG();
 
   willUpdate(_changedProperties: Map<string | number | symbol, unknown>): void {
     if (_changedProperties.has('photoId')) {

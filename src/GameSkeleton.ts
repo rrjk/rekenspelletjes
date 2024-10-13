@@ -14,13 +14,13 @@ import { ChildNotFoundError } from './ChildNotFoundError';
 export abstract class GameSkeleton extends LitElement {
   /** Number correct answers */
   @state()
-  protected numberOk = 0;
+  protected accessor numberOk = 0;
   /** Number incorrect answers */
   @state()
-  protected numberNok = 0;
+  protected accessor numberNok = 0;
   /** Image to use for the welcome diaglog, can be overruled in the constructor of children */
   @state()
-  protected welcomeDialogImageUrl = new URL(
+  protected accessor welcomeDialogImageUrl = new URL(
     '../images/Mompitz Otto.png',
     import.meta.url,
   );

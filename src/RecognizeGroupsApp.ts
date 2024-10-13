@@ -46,22 +46,23 @@ export function groepjesVanHerkennenLink(
 export class RecognizeGroupsApp extends TimeLimitedGame2 {
   private gameLogger = new GameLogger('F', '');
   @state()
-  private numberOfGroups = 0;
+  private accessor numberOfGroups = 0;
   @state()
-  private groupSize = 0;
+  private accessor groupSize = 0;
   @state()
-  private image: ImageEnum = GroupOfImages.possibleImages[0];
+  private accessor image: ImageEnum = GroupOfImages.possibleImages[0];
   @state()
-  private activeFillIn = 0;
+  private accessor activeFillIn = 0;
   @state()
-  private usedFillIns: string[] = [];
+  private accessor usedFillIns: string[] = [];
 
   private groupsSize1Seen = false;
   private numberOfGroups1Seen = false;
+
   @state()
-  private includeAnswer = true;
+  private accessor includeAnswer = true;
   @state()
-  private includeLongAddition = true;
+  private accessor includeLongAddition = true;
 
   constructor() {
     super();

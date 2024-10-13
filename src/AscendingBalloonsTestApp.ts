@@ -12,9 +12,9 @@ import { ChildNotFoundError } from './ChildNotFoundError';
 @customElement('ascending-balloons-test-app')
 export class AscendingBalloonsTestApp extends LitElement {
   @state()
-  disabled = true;
+  accessor disabled = true;
   @state()
-  answers = <Answers>{ correct: 13, incorrect: [67, 45, 3] };
+  accessor answers = <Answers>{ correct: 13, incorrect: [67, 45, 3] };
 
   /** Helper function to easily query for an element.
    *  @param query Querystring for the element.

@@ -30,11 +30,11 @@ export class SentenceClock extends LitElement {
   static widthHeightRatio = 1.5;
 
   @property({ type: Number })
-  hours = 0;
+  accessor hours = 0;
   @property({ type: Number })
-  minutes = 0;
+  accessor minutes = 0;
   @property({ type: Boolean })
-  useWords = false;
+  accessor useWords = false;
 
   static get styles(): CSSResultGroup {
     return css`

@@ -53,15 +53,15 @@ const ballColorPermutations = [
 export class BalloonIndex extends LitElement {
   /** Color permutation to use, index into ballColorPermutations */
   @property({ type: Number })
-  colorPermutation = 0;
+  accessor colorPermutation = 0;
   @property({ type: String })
-  alt = '';
+  accessor alt = '';
   @property({ type: String })
-  text = '';
+  accessor text = '';
   @property({ type: Boolean })
-  twoBalls = false;
+  accessor twoBalls = false;
   @property({ type: Boolean })
-  smallFont = false;
+  accessor smallFont = false;
 
   static get styles(): CSSResultGroup {
     return css``;

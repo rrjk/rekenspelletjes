@@ -25,17 +25,17 @@ export class DynamicGrid
 {
   /** Padding applied to the children, as percentage of the width of the dynamic grid. */
   @property({ type: Number })
-  padding = 2;
+  accessor padding = 2;
   /** The aspect ratio of the elements that are placed inside the grid. */
   @property({ type: Number })
-  contentAspectRatio = 1;
+  accessor contentAspectRatio = 1;
 
   /** Number of cells per row, calculated automatically */
   @state()
-  perRow = 0;
+  accessor perRow = 0;
   /** Number of cells per column, calculated automatically */
   @state()
-  perColumn = 0;
+  accessor perColumn = 0;
 
   static get styles(): CSSResultGroup {
     return css`

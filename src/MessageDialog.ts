@@ -14,11 +14,11 @@ import { ChildNotFoundError } from './ChildNotFoundError';
 
 export class MessageDialog extends LitElement {
   @property({ type: String })
-  dialogTitle: string;
+  accessor dialogTitle: string;
   @property({ attribute: false })
-  text: HTMLTemplateResult;
+  accessor text: HTMLTemplateResult;
   @property({ attribute: false })
-  imageUrl: URL;
+  accessor imageUrl: URL;
 
   static get styles(): CSSResultGroup {
     return RKdialogStyles;

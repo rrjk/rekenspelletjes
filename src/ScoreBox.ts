@@ -6,9 +6,9 @@ import type { HTMLTemplateResult, CSSResultGroup } from 'lit';
 
 export class ScoreBox extends LitElement {
   @property({ type: Number })
-  numberOk: number;
+  accessor numberOk: number;
   @property({ type: Number })
-  numberNok: number;
+  accessor numberNok: number;
 
   static get styles(): CSSResultGroup {
     return css`

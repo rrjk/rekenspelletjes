@@ -9,11 +9,11 @@ type TickMarkType = 'noTickMark' | 'tickMark1' | 'tickMark5' | 'tickMark10';
 @customElement('jumping-jan-with-text-overlay')
 export class JumpingJanWithTextOverlay extends LitElement {
   @property()
-  text1 = '';
+  accessor text1 = '';
   @property()
-  text2 = '';
+  accessor text2 = '';
   @property()
-  smallestTickmark: TickMarkType = 'noTickMark';
+  accessor smallestTickmark: TickMarkType = 'noTickMark';
 
   static get styles(): CSSResultGroup {
     return css`

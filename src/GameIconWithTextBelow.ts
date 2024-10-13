@@ -11,13 +11,13 @@ import { getIconStyles } from './GameIcons';
 @customElement('game-icon-with-text-below')
 export class GameIconWithTextOnBelow extends LitElement {
   @property()
-  iconcolor: Color = 'yellow';
+  accessor iconcolor: Color = 'yellow';
   @property()
-  image: GameIcon = 'balloon';
+  accessor image: GameIcon = 'balloon';
   @property()
-  textM = '';
+  accessor textM = '';
   @property()
-  textB = '';
+  accessor textB = '';
 
   static get styles(): CSSResult[] {
     const styles: CSSResult[] = [
