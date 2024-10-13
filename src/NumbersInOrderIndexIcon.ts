@@ -10,9 +10,9 @@ import { customElement, property } from 'lit/decorators.js';
 @customElement('numbers-in-order-index-icon')
 export class NumbersInOrderIndexIcon extends LitElement {
   @property({ type: String })
-  text = '';
+  accessor text = '';
   @property({ type: Boolean })
-  die = false;
+  accessor die = false;
 
   dieImage = new URL('../images/die200.png', import.meta.url);
 

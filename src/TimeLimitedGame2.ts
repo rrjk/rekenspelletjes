@@ -17,7 +17,7 @@ export abstract class TimeLimitedGame2 extends GameSkeleton {
    * Number of seconds the game was played, correct at the end of the game.
    */
   @state()
-  protected gameTime = 0;
+  protected accessor gameTime = 0;
 
   /** Constructor, parse URL parameters */
   constructor() {

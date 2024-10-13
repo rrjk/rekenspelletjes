@@ -78,26 +78,26 @@ export function aanklikkenInVolgordeLink(
 @customElement('click-in-order-app')
 export class ClickInOrderApp extends TimeCountingGame {
   @state()
-  labelsInOrder: string[] = [];
+  accessor labelsInOrder: string[] = [];
   @state()
-  disabledBallLabels: string[] = [];
+  accessor disabledBallLabels: string[] = [];
   @state()
-  invisibleBallLabels: string[] = [];
+  accessor invisibleBallLabels: string[] = [];
   @state()
-  showSum = false;
+  accessor showSum = false;
   @state()
-  tables = [1];
+  accessor tables = [1];
   @state()
-  multipliersInOrder: number[] = [];
+  accessor multipliersInOrder: number[] = [];
   @state()
-  tablesInOrder: number[] = [];
+  accessor tablesInOrder: number[] = [];
 
   nmbrBalls = 10;
 
   welcomeMessageString = '';
 
   @state()
-  gameElementsDisabled = true;
+  accessor gameElementsDisabled = true;
 
   private nextBallToClick = 0;
   private gameLogger = new GameLogger('H', '');

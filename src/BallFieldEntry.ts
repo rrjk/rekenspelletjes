@@ -35,34 +35,34 @@ export class BallFieldEntry
   implements ResizeObserverClientInterface
 {
   @property({ attribute: false })
-  ballLabels: string[] = [];
+  accessor ballLabels: string[] = [];
   @property({ attribute: false })
-  disabledBallLabels: string[] = [];
+  accessor disabledBallLabels: string[] = [];
   @property({ attribute: false })
-  invisibleBallLabels: string[] = [];
+  accessor invisibleBallLabels: string[] = [];
 
   @property({ type: String })
-  exercise = '';
+  accessor exercise = '';
   @property({ type: Number })
-  minimumExerciseAspectRatio = 2;
+  accessor minimumExerciseAspectRatio = 2;
 
   @property({ type: Boolean })
-  disabled = false;
+  accessor disabled = false;
 
   @state()
-  selectedExerciseAspectRatio = 0;
+  accessor selectedExerciseAspectRatio = 0;
   @state()
-  randomizedBallInfoList: BallInformation[] = [];
+  accessor randomizedBallInfoList: BallInformation[] = [];
   @state()
-  ballHeightWidth = 0;
+  accessor ballHeightWidth = 0;
   @state()
-  perRow = 0;
+  accessor perRow = 0;
   @state()
-  perColumn = 0;
+  accessor perColumn = 0;
   @state()
-  exerciseIndex = 0;
+  accessor exerciseIndex = 0;
   @state()
-  numberExerciseCells = 0;
+  accessor numberExerciseCells = 0;
 
   static get styles(): CSSResultGroup {
     return css`

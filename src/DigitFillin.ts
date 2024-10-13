@@ -11,20 +11,20 @@ type ProcessInputResultEnum = 'fillinComplete' | 'inputOk' | 'inputNok';
 export class DigitFillin extends LitElement {
   /** Desired number to show */
   @property({ type: Number })
-  desiredNumber = 0;
+  accessor desiredNumber = 0;
   /** Number of digits to show */
   @property({ type: Number })
-  numberDigits = 1;
+  accessor numberDigits = 1;
   /** Should the fillin be shown as active (if not all numbers shown yet) */
   @property({ type: Boolean })
-  fillinActive = false;
+  accessor fillinActive = false;
 
   /** Digit up and until the digitVisible number will be visible. Counting starts at 0, -1 means no digit is visible */
   @state()
-  digitVisible = -1;
+  accessor digitVisible = -1;
   /** The actual digits */
   @state()
-  digits: number[] = [];
+  accessor digits: number[] = [];
 
   /** First digit that can actually be made visibe, the trailing zeros can't be made visible */
   private firstPossibleVisible = 0;

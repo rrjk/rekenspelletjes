@@ -11,13 +11,13 @@ type DigitInfo = {
 @customElement('mompitz-number')
 export class MompitzNumber extends LitElement {
   @property({ type: Number })
-  number = 23;
+  accessor number = 23;
 
   @property({ type: Number })
-  divider = 1;
+  accessor divider = 1;
 
   @property({ type: Number })
-  minimumNumberDigitsForSize = 1;
+  accessor minimumNumberDigitsForSize = 1;
 
   static digitImagesNormal: URL[] = [
     new URL('../images/Mompitz0.png', import.meta.url),

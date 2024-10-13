@@ -16,10 +16,10 @@ export class DraggableTargetHeart
   implements DropTargetElement
 {
   @state()
-  private backgroundColor = 'transparent';
+  private accessor backgroundColor = 'transparent';
 
   @state()
-  private heartColor: Color = 'red';
+  private accessor heartColor: Color = 'red';
 
   /** Get all static styles */
   static get styles(): CSSResultArray {

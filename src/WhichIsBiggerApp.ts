@@ -32,17 +32,17 @@ export function welkeHandHeeftMeerStippenLink(
 @customElement('which-is-bigger-app')
 export class WhichIsBiggerApp extends TimeLimitedGame2 {
   @state()
-  private numberDotsHands: PossibleNumberDots[] = [0, 0];
+  private accessor numberDotsHands: PossibleNumberDots[] = [0, 0];
   @state()
-  private handStyle: ('handCorrect' | 'handWrong' | '')[] = ['', ''];
+  private accessor handStyle: ('handCorrect' | 'handWrong' | '')[] = ['', ''];
   @state()
-  private handDisabled = [false, false];
+  private accessor handDisabled = [false, false];
   @state()
-  private keyboardDisabled = true;
+  private accessor keyboardDisabled = true;
   @state()
-  private includeDifference = true;
+  private accessor includeDifference = true;
   @state()
-  private countOnly = false;
+  private accessor countOnly = false;
 
   private maxDifference = 9;
   private wrongHandSelected = false;

@@ -54,9 +54,9 @@ export function getTextWidth(text: string, font?: string) {
 export class SumsWithDoubleSplitApp extends TimeLimitedGame2 {
   private gameLogger = new GameLogger('G', '');
   @state()
-  private activeFillIn = 0;
+  private accessor activeFillIn = 0;
   @state()
-  private usedFillIns = [
+  private accessor usedFillIns = [
     'split1Left',
     'split1Right',
     /*    'split2Left',
@@ -64,31 +64,31 @@ export class SumsWithDoubleSplitApp extends TimeLimitedGame2 {
     'result',
   ];
   @state()
-  private leftOperand = 0;
+  private accessor leftOperand = 0;
   @state()
-  private rightOperand = 0;
+  private accessor rightOperand = 0;
   @state()
-  private result = 0;
+  private accessor result = 0;
   @state()
-  private left1Split = 0;
+  private accessor left1Split = 0;
   @state()
-  private right1Split = 0;
+  private accessor right1Split = 0;
   @state()
-  private left2Split = 0;
+  private accessor left2Split = 0;
   @state()
-  private right2Split = 0;
+  private accessor right2Split = 0;
   @state()
-  private operators: OperatorType[] = [];
+  private accessor operators: OperatorType[] = [];
   @state()
-  private selectedOperator: OperatorType = '+';
+  private accessor selectedOperator: OperatorType = '+';
   @state()
-  private game: GameRangeType = 'split1Till20';
+  private accessor game: GameRangeType = 'split1Till20';
   @state()
-  private gameEnabled = false;
+  private accessor gameEnabled = false;
   @state()
-  private slashWidth = 0;
+  private accessor slashWidth = 0;
   @state()
-  private digitWidth = 0;
+  private accessor digitWidth = 0;
 
   constructor() {
     super();

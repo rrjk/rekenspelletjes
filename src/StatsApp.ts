@@ -26,10 +26,10 @@ type CountInfo = {
 @customElement('stats-app')
 export class StatsApp extends LitElement {
   @state()
-  private stats: GameStatsType[] = [];
+  private accessor stats: GameStatsType[] = [];
 
   @state()
-  private totalsPerMonth: CountPerMonthType[] = [
+  private accessor totalsPerMonth: CountPerMonthType[] = [
     { month: 1, count: 0 },
     { month: 2, count: 0 },
     { month: 3, count: 0 },

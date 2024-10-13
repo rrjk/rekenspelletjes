@@ -67,15 +67,15 @@ export class GroupOfImages
   implements ResizeObserverClientInterface
 {
   @property({ type: String })
-  image: ImageEnum = 'box';
+  accessor image: ImageEnum = 'box';
   @property({ type: Number })
-  numberInGroup = 1;
+  accessor numberInGroup = 1;
   @state()
-  perRow = 0;
+  accessor perRow = 0;
   @state()
-  perColumn = 0;
+  accessor perColumn = 0;
   @state()
-  tallWideFlexItem: 'tall' | 'wide' = 'tall';
+  accessor tallWideFlexItem: 'tall' | 'wide' = 'tall';
 
   static possibleImages: ImageEnum[] = [
     'box',

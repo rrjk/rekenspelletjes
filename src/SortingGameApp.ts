@@ -63,20 +63,20 @@ export class SortingGameApp extends TimeLimitedGame2 {
   ]);
 
   @state()
-  private boxColor: BoxColor = 'red';
+  private accessor boxColor: BoxColor = 'red';
 
   @state()
-  private numbers: NumberInformation[] = [];
+  private accessor numbers: NumberInformation[] = [];
 
   @state()
-  private boxes: BoxInformation[] = [];
+  private accessor boxes: BoxInformation[] = [];
 
   private minimumValue = 1;
   private maximumValue = 10;
   private divider = 1;
 
   @state()
-  private maxNumberDigits = 1.5;
+  private accessor maxNumberDigits = 1.5;
 
   private gameLogger = new GameLogger('E', 'a');
 

@@ -8,11 +8,11 @@ export class TimedScoreBox extends LitElement {
   paused: boolean;
 
   @property({ type: Number })
-  numberNok: number;
+  accessor numberNok: number;
   @property({ type: Number })
-  minutes: number;
+  accessor minutes: number;
   @property({ type: Number })
-  seconds: number;
+  accessor seconds: number;
 
   static get styles(): CSSResultGroup {
     return css`

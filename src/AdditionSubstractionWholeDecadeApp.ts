@@ -36,15 +36,15 @@ export function plusMinHeleTientallenLink(
 @customElement('addition-substraction-whole-decade-app')
 export class AdditionSubstractionWholeDecadeApp extends TimeLimitedGame2 {
   @state()
-  private firstNumber = 1;
+  private accessor firstNumber = 1;
   @state()
-  private secondNumber = 10;
+  private accessor secondNumber = 10;
   @state()
-  private operator: Operator = '+';
+  private accessor operator: Operator = '+';
   @state()
-  private answers: Answers = { correct: 21, incorrect: [22, 23, 41] };
+  private accessor answers: Answers = { correct: 21, incorrect: [22, 23, 41] };
   @state()
-  private gameElementsDisabled = true;
+  private accessor gameElementsDisabled = true;
 
   private operators: Operator[] = [];
   private decadeFirst = false;

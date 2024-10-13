@@ -10,16 +10,16 @@ type BoxSize = 'Smallest' | 'Small' | 'Big' | 'Biggest';
 @customElement('drop-target-box')
 export class DropTargetBox extends LitElement implements DropTargetElement {
   @property({ type: String })
-  size: BoxSize = 'Smallest';
+  accessor size: BoxSize = 'Smallest';
 
   @property({ type: String })
-  boxColor = 'red';
+  accessor boxColor = 'red';
 
   @state()
-  tallWide: 'Tall' | 'Wide' = 'Tall';
+  accessor tallWide: 'Tall' | 'Wide' = 'Tall';
 
   @state()
-  highlighted: HighlightType = 'none';
+  accessor highlighted: HighlightType = 'none';
 
   highlightForDrop(newState: HighlightType): void {
     this.highlighted = newState;

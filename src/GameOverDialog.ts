@@ -16,7 +16,7 @@ export class GameOverDialog extends LitElement {
   static gameOverImage = new URL('../images/Mompitz Anne.png', import.meta.url);
 
   @state()
-  text: HTMLTemplateResult;
+  accessor text: HTMLTemplateResult;
 
   static get styles(): CSSResultGroup {
     return RKdialogStyles;

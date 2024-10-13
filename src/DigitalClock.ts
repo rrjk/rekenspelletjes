@@ -146,9 +146,9 @@ const positionToBasePosition = [
 @customElement('digital-clock')
 export class DigitalClock extends LitElement {
   @property({ type: Number })
-  hours = 0;
+  accessor hours = 0;
   @property({ type: Number })
-  minutes = 0;
+  accessor minutes = 0;
 
   /** Table for the relative positions for the segment svg lines */
   static segmentXYOffsets: segmentXYOffsetsType = {

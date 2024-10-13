@@ -36,11 +36,11 @@ export function splitsenOpWaardeLink(time: number) {
 @customElement('tens-split-app')
 export class TensSplitApp extends TimeLimitedGame2 {
   @state()
-  numberToSplit = 96;
+  accessor numberToSplit = 96;
   @state()
-  activeDigit = 0;
+  accessor activeDigit = 0;
   @state()
-  disabledDigits = allEnabledDigits;
+  accessor disabledDigits = allEnabledDigits;
 
   private gameLogger = new GameLogger('W', 'a');
   private eligibleNumbersToSplit: number[] = [];

@@ -12,16 +12,16 @@ import type { CSSResultGroup, HTMLTemplateResult } from 'lit';
 export class TimerBar extends LitElement {
   static height = 20;
   @property({ type: Number })
-  numberOk = 0;
+  accessor numberOk = 0;
   @property({ type: Number })
-  numberNok = 0;
+  accessor numberNok = 0;
   @property({ type: Boolean })
-  paused = false;
+  accessor paused = false;
 
   @state()
-  minutes = 0;
+  accessor minutes = 0;
   @state()
-  seconds = 0;
+  accessor seconds = 0;
 
   constructor() {
     super();

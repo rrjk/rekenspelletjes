@@ -43,7 +43,7 @@ export class CombineToSolveSumApp extends TimeCountingGame {
   private nextHeartId = 0;
 
   @state()
-  cells: (CellType | null)[] = [];
+  accessor cells: (CellType | null)[] = [];
 
   constructor() {
     super();

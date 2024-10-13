@@ -8,11 +8,11 @@ export type SplittableNumber = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 @customElement('split-digit')
 export class SplitDigit extends LitElement {
   @property({ attribute: false })
-  numberToSplit: SplittableNumber = 1;
+  accessor numberToSplit: SplittableNumber = 1;
   @property({ attribute: false })
-  firstNumber: SplittableNumber = 7;
+  accessor firstNumber: SplittableNumber = 7;
   @property({ type: Boolean })
-  disabled = false;
+  accessor disabled = false;
 
   static get styles(): CSSResultGroup {
     return css`

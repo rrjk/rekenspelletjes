@@ -48,17 +48,17 @@ export function ballonnenSpelLink(
 @customElement('mutiplication-tables-balloon-game-app')
 export class MultiplicationTablesBalloonGameApp extends TimeLimitedGame2 {
   @state()
-  private firstNumber = 1;
+  private accessor firstNumber = 1;
   @state()
-  private secondNumber = 1;
+  private accessor secondNumber = 1;
   @state()
-  private answers: Answers = { correct: 1, incorrect: [2, 3, 4] };
+  private accessor answers: Answers = { correct: 1, incorrect: [2, 3, 4] };
   @state()
-  private gameElementsDisabled = true;
+  private accessor gameElementsDisabled = true;
   @state()
-  private operator: Operator = '×';
+  private accessor operator: Operator = '×';
   @state()
-  private image: ImageType = 'balloon';
+  private accessor image: ImageType = 'balloon';
 
   private operators: Operator[] = [];
   private tablesToUse: number[] = [];

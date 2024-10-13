@@ -7,7 +7,7 @@ import './GameIconWithTextOverlay';
 @customElement('icon-label-button')
 export class IconLabelButton extends LitElement {
   @property()
-  href = '';
+  accessor href = '';
 
   static get styles(): CSSResultGroup {
     return css`

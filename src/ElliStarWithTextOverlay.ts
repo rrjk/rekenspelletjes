@@ -18,15 +18,15 @@ export type ImageColors =
 @customElement('elli-star-with-text-overlay')
 export class BalloonIndex extends LitElement {
   @property()
-  imageColor: ImageColors = 'yellow';
+  accessor imageColor: ImageColors = 'yellow';
   @property()
-  text1 = '';
+  accessor text1 = '';
   @property()
-  text2 = '';
+  accessor text2 = '';
   @property()
-  text3 = '';
+  accessor text3 = '';
   @property()
-  text4 = '';
+  accessor text4 = '';
 
   static get styles(): CSSResultGroup {
     return css`

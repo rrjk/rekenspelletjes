@@ -231,7 +231,7 @@ export function getHandAsSvgUrl(
 export class HandWithDots extends LitElement {
   /** Number of dots to show */
   @property({ type: Number, converter: numberToPossibleNumberDots })
-  numberDots: PossibleNumberDots = 5;
+  accessor numberDots: PossibleNumberDots = 5;
 
   static get styles(): CSSResultGroup {
     return css`

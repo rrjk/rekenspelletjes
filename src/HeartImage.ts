@@ -50,7 +50,7 @@ export function getHeartasHTMLTemplateResult(
 @customElement('heart-image')
 export class HeartImage extends LitElement {
   @property({ type: String })
-  value = '';
+  accessor value = '';
 
   static get styles(): CSSResultGroup {
     return css`
