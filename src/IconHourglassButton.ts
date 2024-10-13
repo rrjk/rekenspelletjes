@@ -2,7 +2,6 @@ import { LitElement, html, css } from 'lit';
 import type { HTMLTemplateResult, CSSResultGroup } from 'lit';
 // eslint-disable-next-line import/extensions
 import { customElement, property } from 'lit/decorators.js';
-import './GameIconWithTextOverlay';
 
 /** Possible balloon colors */
 type TimeEnum = '1min' | '3min' | '5min';

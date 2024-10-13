@@ -19,9 +19,8 @@ import './SentenceClock';
 import './DynamicGrid';
 
 import './RealHeight';
+import { ClockTypes, TimeTypes } from './ClockPairingAppLink';
 
-type TimeTypes = 'Hour' | 'HalfHour' | 'QuarterHour' | '10Minute' | 'Minute';
-type ClockTypes = 'Analog' | 'Digital' | 'Sentence';
 const AvailableImageUrls = [
   new URL('../images/Mompitz Anne.png', import.meta.url),
   new URL('../images/Mompitz Frank.png', import.meta.url),
@@ -48,23 +47,6 @@ interface ClockInformationType {
   left: number;
   top: number;
   addImage: ImageInfo | null;
-}
-
-/** Create link for clock pairing game.
- * @param timeTypes - Timetypes to use in the game. If none are provided, hour, halfhour and quaterhour are mixed.
- * @param clockType - Clocktypes to use in the game. If none are provided, analog and setence are used.
- * @param showHelpers - What helpers to show
- * @param time - Game length
- */
-export function klokPaartjesLink(
-  timeTypes: TimeTypes[],
-  clockTypes: ClockTypes[],
-  time: number,
-) {
-  let params = `time=${time}`;
-  for (const t of timeTypes) params += `&${t}`;
-  for (const c of clockTypes) params += `&${c}`;
-  return `../Rekenspelletjes/KlokPaartjes.html?${params}`;
 }
 
 @customElement('clock-pairing-app')
