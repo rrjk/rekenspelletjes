@@ -3,17 +3,18 @@ import { plusMinBinnenTientalLink } from './AdditionSubstractionWithinDecadeAppL
 import {
   aanklikkenInTafelVolgordeLink,
   aanklikkenInVolgordeLink,
-} from './ClickInOrderApp';
+} from './ClickInOrderAppLink';
 import { klikFotoOpGetallenlijnLink } from './ClickTheRightPhotoOnNumberLineAppLink';
-import { klokPaartjesLink } from './ClockPairingApp';
-import { springOpGetallenlijnLink } from './JumpOnNumberLineApp';
-import { ballonnenSpelLink } from './MultiplicationTablesBalloonGame';
-import { groepjesVanHerkennenLink } from './RecognizeGroupsApp';
-import { sorterenLink } from './SortingGameApp';
-import { splitsenLink } from './SplitApp';
-import { sommenMetSplitsenLink } from './SumsWithSplitApp';
-import { splitsenOpWaardeLink } from './TensSplitApp';
-import { welkeHandHeeftMeerStippenLink } from './WhichIsBiggerApp';
+import { klokPaartjesLink } from './ClockPairingAppLink';
+import { somPaartjesLink } from './CombineToSolveSumAppLink';
+import { springOpGetallenlijnLink } from './JumpOnNumberLineAppLink';
+import { ballonnenSpelLink } from './MultiplicationTablesBalloonGameLink';
+import { groepjesVanHerkennenLink } from './RecognizeGroupsAppLink';
+import { sorterenLink } from './SortingGameAppLink';
+import { splitsenLink } from './SplitAppLink';
+import { sommenMetSplitsenLink } from './SumsWithSplitAppLink';
+import { splitsenOpWaardeLink } from './TensSplitAppLink';
+import { welkeHandHeeftMeerStippenLink } from './WhichIsBiggerAppLink';
 
 /** Function to determine the number belonging to a string of lower case letters
  * a equals 0, b equals 1 etc
@@ -109,7 +110,7 @@ const urls: (() => string)[] = [
   () => splitsenLink([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 60),
   () => splitsenLink([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 180),
   // cl - indexVerliefdeharten.html
-  () => `../Rekenspelletjes/SomPaartjes.html`,
+  () => somPaartjesLink(),
   // cm - indexBinnenTiental.html - Sommen tot 10
   () => plusMinBinnenTientalLink([0], ['plus'], 60),
   () => plusMinBinnenTientalLink([0], ['plus'], 180),

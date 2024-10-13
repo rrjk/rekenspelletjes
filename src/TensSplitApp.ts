@@ -25,14 +25,6 @@ const allEnabledDigits = [
   false,
 ];
 
-/** Create link for ten split game.
- * @param time - Game length
- */
-export function splitsenOpWaardeLink(time: number) {
-  const params = `time=${time}`;
-  return `../Rekenspelletjes/SplitsenOpWaarde.html?${params}`;
-}
-
 @customElement('tens-split-app')
 export class TensSplitApp extends TimeLimitedGame2 {
   @state()
