@@ -14,6 +14,7 @@ import { randomFromSet } from './Randomizer';
 import './RealHeight';
 import './DraggableElement';
 import './DropTargetEgg';
+import './DropTargetTrashcan';
 import './DynamicGrid';
 import type {
   DraggableElement,
@@ -34,6 +35,9 @@ export class EggCountingApp extends TimeLimitedGame2 {
   @state()
   accessor eggCartonTarget: readonly DropTarget[] = [];
 
+  @state()
+  accessor trashcanTarget: readonly DropTarget[] = [];
+
   eggCartonSource: DraggableElement | null = null;
 
   private gameLogger = new GameLogger('J', 'a');
@@ -51,8 +55,23 @@ export class EggCountingApp extends TimeLimitedGame2 {
     } else this.eggCartonTarget = [];
   }
 
+  trashcanTargetChange(trashcanTarget: Element | undefined) {
+    /* If we already have an eggCartonTarget dropzone, then we make it a target 
+       for the eggCartons in the eggCarton source area, otherwise we don't 
+       assign any targets
+    */
+    if (trashcanTarget) {
+      this.trashcanTarget = [
+        { element: <DropTargetElement>trashcanTarget, dropType: 'dropOk' },
+      ];
+    } else this.trashcanTarget = [];
+  }
+
   eggCartonDrop() {
     if (this.numberVisibleEggCartons < 10) this.numberVisibleEggCartons += 1;
+  }
+  eggCartonTrashed() {
+    if (this.numberVisibleEggCartons > 0) this.numberVisibleEggCartons -= 1;
   }
 
   constructor() {
@@ -115,7 +134,7 @@ export class EggCountingApp extends TimeLimitedGame2 {
             '. ............... ............... ............. ............. .'
             '. numberToSplit   numberToSplit   numberToSplit numberToSplit .'
             '. eggCartonTarget eggCartonTarget eggTarget     eggTarget     .'
-            '. ............... eggCartonSource eggSource     checkButton    .'
+            '. trashcan        eggCartonSource eggSource     checkButton    .'
             '. ............... ............... ............. ............. .';
           row-gap: 1%;
           column-gap: 1%;
@@ -182,6 +201,11 @@ export class EggCountingApp extends TimeLimitedGame2 {
           background-color: purple;
         }
 
+        .trashcanArea {
+          grid-area: trashcan;
+          background-color: pink;
+        }
+
         img {
           object-fit: contain;
         }
@@ -211,6 +235,7 @@ export class EggCountingApp extends TimeLimitedGame2 {
           itemType="eggCarton"
           numberItemsToShow="${this.numberVisibleEggCartons}"
           ${ref(this.eggCartonTargetChange)}
+          @itemTrashed="${this.eggCartonTrashed}"
         ></drop-target-egg>
       </div>
       <div class="eggTargetArea">
@@ -235,6 +260,10 @@ export class EggCountingApp extends TimeLimitedGame2 {
         </draggable-element>
       </div>
       <div class="checkButtonArea"></div>
+      <drop-target-trashcan
+        class="trashcanArea"
+        ${ref(this.trashcanTargetChange)}
+      ></drop-target-trashcan>
     `;
   }
 }

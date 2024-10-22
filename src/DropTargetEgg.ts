@@ -10,10 +10,16 @@ type ItemType = 'egg' | 'eggCarton';
 @customElement('drop-target-egg')
 export class DropTargetEgg extends LitElement implements DropTargetElement {
   @property({ type: Number })
-  accessor numberItemsToShow: number = 8;
+  accessor numberItemsToShow = 8;
+
+  @property({ type: Number })
+  accessor maxNumberItemsToShow = 10;
 
   @property({ type: String })
   accessor itemType: ItemType = 'eggCarton';
+
+  @property({ attribute: false })
+  accessor trashcanAreas: DropTargetElement[] = [];
 
   @state()
   accessor highlighted: HighlightType = 'none';
@@ -21,6 +27,11 @@ export class DropTargetEgg extends LitElement implements DropTargetElement {
   highlightForDrop(newState: HighlightType): void {
     console.log(`highlightForDrop, newState = ${newState}`);
     this.highlighted = newState;
+  }
+
+  dropInTrashcan(): void {
+    const event = new Event('itemTrashed');
+    this.dispatchEvent(event);
   }
 
   /** Get all static styles */
@@ -35,6 +46,10 @@ export class DropTargetEgg extends LitElement implements DropTargetElement {
         justify-content: center;
         align-items: center;
         background-color: orange;
+      }
+
+      .hidden {
+        visibility: hidden;
       }
 
       img.eggCarton {
@@ -67,17 +82,23 @@ export class DropTargetEgg extends LitElement implements DropTargetElement {
 
   render(): HTMLTemplateResult {
     const eggElements: HTMLTemplateResult[] = [];
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < this.maxNumberItemsToShow; i++) {
+      let hiddenClass = '';
+      if (i >= this.numberItemsToShow) hiddenClass = 'hidden';
       eggElements.push(
-        html` <div class="eggElement">
-          ${i < this.numberItemsToShow
-            ? html`<img
-                draggable="false"
-                class="${this.itemType}"
-                alt="${this.itemType}"
-                src="../images/${this.itemType}.png"
-              />`
-            : html``}
+        html` <div class="eggElement ${hiddenClass}">
+          <draggable-element
+            resetDragAfterDrop
+            .dropTargetList="${this.trashcanAreas}"
+            @dropped="${this.dropInTrashcan}"
+          >
+            <img
+              draggable="false"
+              class="${this.itemType}"
+              alt="${this.itemType}"
+              src="../images/${this.itemType}.png"
+            />
+          </draggable-element>
         </div>`,
       );
     }
