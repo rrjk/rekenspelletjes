@@ -41,9 +41,9 @@ type DropTarget = {
 @customElement('draggable-element')
 export class DraggableElement extends LitElement {
   @property({ type: Boolean })
-  private accessor resetDragAfterDrop = false;
+  accessor resetDragAfterDrop = false;
   @property({ type: Number })
-  private accessor dropAreaPercentage = 20; // Area in the draggable element that needs to be over the drop target, measured as percentage of total width and height
+  accessor dropAreaPercentage = 20; // Area in the draggable element that needs to be over the drop target, measured as percentage of total width and height
   @state()
   private accessor cummulativeDeltaX = 0; // expressed as percentage of the viewport width
   @state()
