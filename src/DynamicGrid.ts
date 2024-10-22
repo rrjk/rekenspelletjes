@@ -8,6 +8,8 @@ import {
   addResizeObserverClient,
 } from './ResizeObserver';
 
+type FillDirection = 'topbottom' | 'bottomtop';
+
 /** A custom element that places it's children in a dynamic grid. Based on the provided
  * contentAspectRatio the optimal number of rows and columns is determined based on the
  * number of children.
@@ -29,6 +31,9 @@ export class DynamicGrid
   /** The aspect ratio of the elements that are placed inside the grid. */
   @property({ type: Number })
   accessor contentAspectRatio = 1;
+  /** Direction to fill grid */
+  @property({ type: String })
+  accessor fillDirection: FillDirection = 'topbottom';
 
   /** Number of cells per row, calculated automatically */
   @state()
@@ -41,7 +46,6 @@ export class DynamicGrid
     return css`
       :host {
         display: flex;
-        flex-wrap: wrap;
         justify-content: space-around;
         align-content: space-around;
       }
@@ -124,6 +128,9 @@ export class DynamicGrid
           --perRow: ${this.perRow};
           --perColumn: ${this.perColumn};
           --padding: ${this.padding}%;
+          flex-wrap: ${this.fillDirection === 'topbottom'
+            ? css`wrap`
+            : css`wrap-reverse`};
         }
       </style>
       <slot @slotchange=${this.handleSlottedElementsChange}></slot>
