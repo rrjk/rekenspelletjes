@@ -74,29 +74,6 @@ export class DraggableElement extends LitElement {
   @property()
   accessor dropTargetList: readonly DropTarget[] = [];
 
-  /*
-  public get dropTargetList(): readonly DropTarget[] {
-    console.log(`get dropTargetList`);
-    return this.dropTargetInfoList.map(e => ({
-      element: e.element,
-      dropType: e.dropType,
-    }));
-  }
-
-  @property({ attribute: false })
-  public set dropTargetList(dropTargetList: readonly DropTarget[]) {
-    console.log(`set dropTargetList`);
-    console.log(dropTargetList);
-    this.dropTargetInfoList = dropTargetList.map(e => ({
-      element: e.element,
-      dropType: e.dropType,
-      minDeltaX: 0,
-      maxDeltaX: 0,
-      minDeltaY: 0,
-      maxDeltaY: 0,
-    }));
-  }
-*/
   protected willUpdate(changedProperties: PropertyValues): void {
     console.log(`will update`);
     if (changedProperties.has('dropTargetList')) {
