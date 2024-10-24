@@ -119,6 +119,10 @@ export class EggCountingApp extends TimeLimitedGame2 {
     this.gameLogger.logGameOver();
   }
 
+  handleCheckAnswer(): void {
+    console.log('handleCheckAnswer');
+  }
+
   static get styles(): CSSResultArray {
     return [
       ...super.styles,
@@ -195,10 +199,30 @@ export class EggCountingApp extends TimeLimitedGame2 {
         }
 
         .checkButtonArea {
-          height: 100%;
-          width: 100%;
           grid-area: checkButton;
           background-color: purple;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 80%;
+        }
+
+        svg {
+          width: 90%;
+          aspect-ratio: 3;
+          font-size: 80;
+          border: 4px solid black;
+          border-radius: 20%;
+          background-color: magenta;
+        }
+
+        text {
+          dominant-baseline: middle;
+          font-size: 80px;
+        }
+
+        .middleAligned {
+          text-anchor: middle;
         }
 
         .trashcanArea {
@@ -259,7 +283,11 @@ export class EggCountingApp extends TimeLimitedGame2 {
           <img draggable="false" alt="egg Carton" src="../images/egg.png" />
         </draggable-element>
       </div>
-      <div class="checkButtonArea"></div>
+      <div class="checkButtonArea">
+        <svg viewbox="-150 -50 300 100">
+          <text class="middleAligned" x="0" y="0">Kijk na</text>
+        </svg>
+      </div>
       <drop-target-trashcan
         class="trashcanArea"
         ${ref(this.trashcanTargetChange)}
