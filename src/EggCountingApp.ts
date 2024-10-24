@@ -38,16 +38,23 @@ export class EggCountingApp extends TimeLimitedGame2 {
   @state()
   accessor trashcanTarget: readonly DropTarget[] = [];
 
+  @state()
+  accessor eggTarget: readonly DropTarget[] = [];
+
   eggCartonSource: DraggableElement | null = null;
 
   private gameLogger = new GameLogger('J', 'a');
   private eligibleNumbersToSplit: number[] = [];
 
+  eggTargetChange(eggTarget: Element | undefined) {
+    if (eggTarget) {
+      this.eggTarget = [
+        { element: <DropTargetElement>eggTarget, dropType: 'dropOk' },
+      ];
+    } else this.eggTarget = [];
+  }
+
   eggCartonTargetChange(eggCartonTarget: Element | undefined) {
-    /* If we already have an eggCartonTarget dropzone, then we make it a target 
-       for the eggCartons in the eggCarton source area, otherwise we don't 
-       assign any targets
-    */
     if (eggCartonTarget) {
       this.eggCartonTarget = [
         { element: <DropTargetElement>eggCartonTarget, dropType: 'dropOk' },
@@ -56,10 +63,6 @@ export class EggCountingApp extends TimeLimitedGame2 {
   }
 
   trashcanTargetChange(trashcanTarget: Element | undefined) {
-    /* If we already have an eggCartonTarget dropzone, then we make it a target 
-       for the eggCartons in the eggCarton source area, otherwise we don't 
-       assign any targets
-    */
     if (trashcanTarget) {
       this.trashcanTarget = [
         { element: <DropTargetElement>trashcanTarget, dropType: 'dropOk' },
@@ -72,6 +75,13 @@ export class EggCountingApp extends TimeLimitedGame2 {
   }
   eggCartonTrashed() {
     if (this.numberVisibleEggCartons > 0) this.numberVisibleEggCartons -= 1;
+  }
+
+  eggDrop() {
+    if (this.numberVisibleEggs < 10) this.numberVisibleEggs += 1;
+  }
+  eggTrashed() {
+    if (this.numberVisibleEggs > 0) this.numberVisibleEggs -= 1;
   }
 
   constructor() {
@@ -128,8 +138,6 @@ export class EggCountingApp extends TimeLimitedGame2 {
       ...super.styles,
       css`
         .gameContent {
-          height: 100%;
-          width: 100%;
           background-color: grey;
           display: grid;
           grid-template-rows: 0 18% 53% 25% 0;
@@ -243,6 +251,23 @@ export class EggCountingApp extends TimeLimitedGame2 {
           height: 90%;
           width: 90%;
         }
+
+        img.egg {
+          height: 25%;
+          width: 25%;
+        }
+        img.eggCarton {
+          height: 60%;
+          width: 60%;
+        }
+
+        draggable-element {
+          height: 100%;
+          width: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
       `,
     ];
   }
@@ -260,10 +285,17 @@ export class EggCountingApp extends TimeLimitedGame2 {
           numberItemsToShow="${this.numberVisibleEggCartons}"
           ${ref(this.eggCartonTargetChange)}
           @itemTrashed="${this.eggCartonTrashed}"
+          .trashcanAreas="${this.trashcanTarget}"
         ></drop-target-egg>
       </div>
       <div class="eggTargetArea">
-        <drop-target-egg itemType="egg" numberItemsToShow="4"></drop-target-egg>
+        <drop-target-egg
+          itemType="egg"
+          numberItemsToShow="${this.numberVisibleEggs}"
+          ${ref(this.eggTargetChange)}
+          @itemTrashed="${this.eggTrashed}"
+          .trashcanAreas="${this.trashcanTarget}"
+        ></drop-target-egg>
       </div>
       <div class="eggCartonSourceArea">
         <draggable-element
@@ -272,6 +304,7 @@ export class EggCountingApp extends TimeLimitedGame2 {
           @dropped="${this.eggCartonDrop}"
         >
           <img
+            class="eggCarton"
             draggable="false"
             alt="egg Carton"
             src="../images/eggCarton.png"
@@ -279,8 +312,17 @@ export class EggCountingApp extends TimeLimitedGame2 {
         </draggable-element>
       </div>
       <div class="eggSourceArea">
-        <draggable-element resetDragAfterDrop>
-          <img draggable="false" alt="egg Carton" src="../images/egg.png" />
+        <draggable-element
+          resetDragAfterDrop
+          .dropTargetList="${this.eggTarget}"
+          @dropped="${this.eggDrop}"
+        >
+          <img
+            class="egg"
+            draggable="false"
+            alt="egg Carton"
+            src="../images/egg.png"
+          />
         </draggable-element>
       </div>
       <div class="checkButtonArea">

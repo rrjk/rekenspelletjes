@@ -1,6 +1,6 @@
 /* eslint-disable max-classes-per-file */
 import { LitElement, html, css } from 'lit';
-import type { HTMLTemplateResult, CSSResultGroup } from 'lit';
+import type { HTMLTemplateResult, CSSResultGroup, PropertyValues } from 'lit';
 // eslint-disable-next-line import/extensions
 import { customElement, property, state } from 'lit/decorators.js';
 import { getRealViewportHeight, getRealViewportWidth } from './RealHeight';
@@ -71,7 +71,12 @@ export class DraggableElement extends LitElement {
 
   private dropTargetInfoList: DropTargetInfo[] = [];
 
+  @property()
+  accessor dropTargetList: readonly DropTarget[] = [];
+
+  /*
   public get dropTargetList(): readonly DropTarget[] {
+    console.log(`get dropTargetList`);
     return this.dropTargetInfoList.map(e => ({
       element: e.element,
       dropType: e.dropType,
@@ -91,9 +96,25 @@ export class DraggableElement extends LitElement {
       maxDeltaY: 0,
     }));
   }
+*/
+  protected willUpdate(changedProperties: PropertyValues): void {
+    console.log(`will update`);
+    if (changedProperties.has('dropTargetList')) {
+      console.log(`will update - droptargetlist changed`);
+      this.dropTargetInfoList = this.dropTargetList.map(e => ({
+        element: e.element,
+        dropType: e.dropType,
+        minDeltaX: 0,
+        maxDeltaX: 0,
+        minDeltaY: 0,
+        maxDeltaY: 0,
+      }));
+    }
+  }
 
   constructor() {
     super();
+    console.log(`draggable-element created`);
     window.addEventListener('mousemove', evt => this.mouseMove(evt));
     window.addEventListener('touchmove', evt => this.touchMove(evt));
     window.addEventListener('mouseup', () => this.mouseUp());
@@ -320,6 +341,7 @@ export class DraggableElement extends LitElement {
   }
 
   render(): HTMLTemplateResult {
+    console.log('render draggable element');
     return html`
       <style>
         :host {

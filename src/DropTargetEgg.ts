@@ -77,6 +77,14 @@ export class DropTargetEgg extends LitElement implements DropTargetElement {
         width: 100%;
         box-sizing: border-box;
       }
+
+      draggable-element {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
     `;
   }
 
