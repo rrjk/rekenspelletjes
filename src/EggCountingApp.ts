@@ -25,31 +25,29 @@ import type {
 } from './DraggableElement';
 // import type { DropTargetEgg } from './DropTargetEgg';
 
-type ItemType = 'egg' | 'eggCarton';
-type NumberVisibleItems = Record<ItemType, number>;
-
 @customElement('eggcarton-counting-app')
 export class EggCountingApp extends TimeLimitedGame2 {
   @state()
   accessor numberToSplit = 96;
-
   @state()
-  accessor numberVisibleItems: NumberVisibleItems = { egg: 0, eggCarton: 0 };
-
+  accessor numberVisibleEggCartons = 0;
   @state()
-  accessor targetAreaHighlightWrong: Record<ItemType, boolean> = {
-    egg: false,
-    eggCarton: false,
-  };
+  accessor numberVisibleEggs = 0;
 
   @state()
   accessor eggCartonTarget: readonly DropTarget[] = [];
+
+  @state()
+  accessor eggCartonTargetAreaHighlightWrong: boolean = false;
 
   @state()
   accessor trashcanTarget: readonly DropTarget[] = [];
 
   @state()
   accessor eggTarget: readonly DropTarget[] = [];
+
+  @state()
+  accessor eggTargetAreaHighlightWrong: boolean = false;
 
   eggCartonSource: DraggableElement | null = null;
 
@@ -81,8 +79,6 @@ export class EggCountingApp extends TimeLimitedGame2 {
       ];
     } else this.trashcanTarget = [];
   }
-
-  itemDrop(itemType: ItemType);
 
   eggCartonDrop() {
     if (this.numberVisibleEggCartons < this.maxNumberItemsToShow)
@@ -354,15 +350,18 @@ export class EggCountingApp extends TimeLimitedGame2 {
     </div>`;
   }
 
-  private renderTargetArea(itemType: ItemType): HTMLTemplateResult {
+  private renderGameContent(): HTMLTemplateResult {
     return html`
+      ${this.renderNumberToSplitArea()} ${this.renderTrashcanArea()}
+      ${this.renderCheckButtonArea()}
+
       <div id="eggCartonTargetArea">
         <drop-target-egg
           class="${classMap({
-            wrongTargetArea: this.targetAreaHighlightWrong[itemType],
+            wrongTargetArea: this.eggCartonTargetAreaHighlightWrong,
           })}"
           itemType="eggCarton"
-          numberItemsToShow="${this.numberVisibleItems[itemType]}"
+          numberItemsToShow="${this.numberVisibleEggCartons}"
           maxNumberItemsToShow="${this.maxNumberItemsToShow}"
           ${ref(this.eggCartonTargetChange)}
           @itemTrashed="${this.eggCartonTrashed}"
@@ -370,14 +369,6 @@ export class EggCountingApp extends TimeLimitedGame2 {
           .trashcanAreas="${this.trashcanTarget}"
         ></drop-target-egg>
       </div>
-    `;
-  }
-
-  renderGameContent(): HTMLTemplateResult {
-    return html`
-      ${this.renderNumberToSplitArea()} ${this.renderTrashcanArea()}
-      ${this.renderCheckButtonArea()} ${this.renderEggCartonTargetArea()}
-
       <div id="eggTargetArea">
         <drop-target-egg
           class="${classMap({
