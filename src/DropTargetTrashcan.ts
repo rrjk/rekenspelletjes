@@ -2,6 +2,8 @@ import { LitElement, html, css } from 'lit';
 import type { HTMLTemplateResult, CSSResultGroup } from 'lit';
 // eslint-disable-next-line import/extensions
 import { customElement, state } from 'lit/decorators.js';
+// eslint-disable-next-line import/extensions
+import { classMap } from 'lit/directives/class-map.js';
 
 import { DropTargetElement, HighlightType } from './DraggableElement';
 
@@ -14,7 +16,6 @@ export class DropTargetTrashcan
   accessor highlighted: HighlightType = 'none';
 
   highlightForDrop(newState: HighlightType): void {
-    console.log(`highlightForDrop (trashcan), newState = ${newState}`);
     this.highlighted = newState;
   }
 
@@ -32,23 +33,22 @@ export class DropTargetTrashcan
       }
 
       .highlightDroppable {
-        background-color: cyan;
-      }
-
-      .highlightWrong {
-        background-color: red;
+        background-color: lightgrey;
       }
     `;
   }
 
   render(): HTMLTemplateResult {
-    let highlightClass = ``;
-    if (this.highlighted === 'droppable') highlightClass = `highlightDroppable`;
-    else if (this.highlighted === 'wrong') highlightClass = `highlightWrong`;
-    console.log(`highlightClass = ${highlightClass}`);
-
     return html`
-      <img alt="trashcan" class="trashcan" src="../images/trashcan.png" />
+      <img
+        draggable="false"
+        alt="trashcan"
+        class="trashcan ${classMap({
+          trashcan: true,
+          highlightDroppable: this.highlighted === 'droppable',
+        })}"
+        src="../images/trashcan.png"
+      />
     `;
   }
 }

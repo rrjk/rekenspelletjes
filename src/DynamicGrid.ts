@@ -129,8 +129,8 @@ export class DynamicGrid
           --perColumn: ${this.perColumn};
           --padding: ${this.padding}%;
           flex-wrap: ${this.fillDirection === 'topbottom'
-            ? css`wrap`
-            : css`wrap-reverse`};
+            ? `wrap`
+            : `wrap-reverse`};
         }
       </style>
       <slot @slotchange=${this.handleSlottedElementsChange}></slot>

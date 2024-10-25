@@ -13,7 +13,7 @@ export class DropTargetEgg extends LitElement implements DropTargetElement {
   accessor numberItemsToShow = 8;
 
   @property({ type: Number })
-  accessor maxNumberItemsToShow = 10;
+  accessor maxNumberItemsToShow = 12;
 
   @property({ type: String })
   accessor itemType: ItemType = 'eggCarton';
@@ -25,12 +25,16 @@ export class DropTargetEgg extends LitElement implements DropTargetElement {
   accessor highlighted: HighlightType = 'none';
 
   highlightForDrop(newState: HighlightType): void {
-    console.log(`highlightForDrop, newState = ${newState}`);
     this.highlighted = newState;
   }
 
   dropInTrashcan(): void {
     const event = new Event('itemTrashed');
+    this.dispatchEvent(event);
+  }
+
+  handleDragStarted(): void {
+    const event = new Event('dragStarted');
     this.dispatchEvent(event);
   }
 
@@ -45,7 +49,6 @@ export class DropTargetEgg extends LitElement implements DropTargetElement {
         display: flex;
         justify-content: center;
         align-items: center;
-        background-color: orange;
       }
 
       .hidden {
@@ -65,7 +68,7 @@ export class DropTargetEgg extends LitElement implements DropTargetElement {
       }
 
       .highlightDroppable {
-        background-color: cyan;
+        background-color: lightgrey;
       }
 
       .highlightWrong {
@@ -99,6 +102,7 @@ export class DropTargetEgg extends LitElement implements DropTargetElement {
             resetDragAfterDrop
             .dropTargetList="${this.trashcanAreas}"
             @dropped="${this.dropInTrashcan}"
+            @dragStarted="${this.handleDragStarted}"
           >
             <img
               draggable="false"
@@ -114,7 +118,6 @@ export class DropTargetEgg extends LitElement implements DropTargetElement {
     let highlightClass = ``;
     if (this.highlighted === 'droppable') highlightClass = `highlightDroppable`;
     else if (this.highlighted === 'wrong') highlightClass = `highlightWrong`;
-    console.log(`highlightClass = ${highlightClass}`);
 
     return html`
       <dynamic-grid

@@ -75,9 +75,7 @@ export class DraggableElement extends LitElement {
   accessor dropTargetList: readonly DropTarget[] = [];
 
   protected willUpdate(changedProperties: PropertyValues): void {
-    console.log(`will update`);
     if (changedProperties.has('dropTargetList')) {
-      console.log(`will update - droptargetlist changed`);
       this.dropTargetInfoList = this.dropTargetList.map(e => ({
         element: e.element,
         dropType: e.dropType,
@@ -91,7 +89,6 @@ export class DraggableElement extends LitElement {
 
   constructor() {
     super();
-    console.log(`draggable-element created`);
     window.addEventListener('mousemove', evt => this.mouseMove(evt));
     window.addEventListener('touchmove', evt => this.touchMove(evt));
     window.addEventListener('mouseup', () => this.mouseUp());
@@ -242,6 +239,9 @@ export class DraggableElement extends LitElement {
           100 +
         this.cummulativeDeltaY;
     }
+
+    const event = new Event('dragStarted');
+    this.dispatchEvent(event);
   }
 
   private handleEndOfDrag(): void {
@@ -311,14 +311,12 @@ export class DraggableElement extends LitElement {
   static get styles(): CSSResultGroup {
     return css`
       :host {
-        display: block-inline;
-        );
+        display: inline-block;
       }
     `;
   }
 
   render(): HTMLTemplateResult {
-    console.log('render draggable element');
     return html`
       <style>
         :host {
