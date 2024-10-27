@@ -7,6 +7,11 @@ import { DropTargetElement, HighlightType } from './DraggableElement';
 
 type ItemType = 'egg' | 'eggCarton';
 
+const imageURLs: Record<ItemType, URL> = {
+  egg: new URL('../images/egg.png', import.meta.url),
+  eggCarton: new URL('../images/eggCarton.png', import.meta.url),
+};
+
 @customElement('drop-target-egg')
 export class DropTargetEgg extends LitElement implements DropTargetElement {
   @property({ type: Number })
@@ -68,7 +73,7 @@ export class DropTargetEgg extends LitElement implements DropTargetElement {
       }
 
       .highlightDroppable {
-        background-color: lightgrey;
+        background-color: var(--highlightBackgroundColor, lightgrey);
       }
 
       .highlightWrong {
@@ -108,7 +113,7 @@ export class DropTargetEgg extends LitElement implements DropTargetElement {
               draggable="false"
               class="${this.itemType}"
               alt="${this.itemType}"
-              src="../images/${this.itemType}.png"
+              src="${imageURLs[this.itemType]}"
             />
           </draggable-element>
         </div>`,

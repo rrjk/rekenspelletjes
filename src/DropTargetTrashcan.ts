@@ -7,6 +7,8 @@ import { classMap } from 'lit/directives/class-map.js';
 
 import { DropTargetElement, HighlightType } from './DraggableElement';
 
+const trashcanUrl = new URL('../images/trashcan.png', import.meta.url);
+
 @customElement('drop-target-trashcan')
 export class DropTargetTrashcan
   extends LitElement
@@ -33,7 +35,7 @@ export class DropTargetTrashcan
       }
 
       .highlightDroppable {
-        background-color: lightgrey;
+        background-color: var(--highlightBackgroundColor, lightgrey);
       }
     `;
   }
@@ -47,7 +49,7 @@ export class DropTargetTrashcan
           trashcan: true,
           highlightDroppable: this.highlighted === 'droppable',
         })}"
-        src="../images/trashcan.png"
+        src="${trashcanUrl.href}"
       />
     `;
   }

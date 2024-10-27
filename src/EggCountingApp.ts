@@ -1,4 +1,4 @@
-import { html, css } from 'lit';
+import { html, css, unsafeCSS } from 'lit';
 
 // eslint-disable-next-line import/extensions
 import { customElement, state } from 'lit/decorators.js';
@@ -23,7 +23,11 @@ import type {
   DropTargetElement,
   DropTarget,
 } from './DraggableElement';
+import { getColorInfo } from './Colors';
 // import type { DropTargetEgg } from './DropTargetEgg';
+
+const eggUrl = new URL('../images/egg.png', import.meta.url);
+const eggCartonUrl = new URL('../images/eggCarton.png', import.meta.url);
 
 @customElement('eggcarton-counting-app')
 export class EggCountingApp extends TimeLimitedGame2 {
@@ -181,10 +185,17 @@ export class EggCountingApp extends TimeLimitedGame2 {
           display: grid;
           row-gap: 1%;
           column-gap: 1%;
-          background-color: #ffff8f;
+          --backgroundColor: ${unsafeCSS(getColorInfo('beige').mainColorCode)};
+          --highlightBackgroundColor: ${unsafeCSS(
+            getColorInfo('beige').accentColorCode,
+          )};
+          --wrongBackgroundColor: ${unsafeCSS(
+            getColorInfo('maroon').mainColorCode,
+          )};
+          background-color: var(--backgroundColor);
         }
 
-        @media (min-aspect-ratio: 0.7) {
+        @media (min-aspect-ratio: 0.9) {
           .gameContent {
             grid-template-rows: 0 18% 53% 25% 0;
             grid-template-columns: 0 23% 24% 24% 24% 0;
@@ -197,7 +208,7 @@ export class EggCountingApp extends TimeLimitedGame2 {
           }
         }
 
-        @media (max-aspect-ratio: 0.7) {
+        @media (max-aspect-ratio: 0.9) {
           .gameContent {
             grid-template-rows: 0 15% 53% 10% 17% 0;
             grid-template-columns: 0 47.5% 47.5% 0;
@@ -217,15 +228,10 @@ export class EggCountingApp extends TimeLimitedGame2 {
 
         #eggCartonTargetArea {
           grid-area: eggCartonTarget;
-          display: flex;
-          justify-content: flex-end;
-          align-items: center;
         }
 
-        #eggElement {
-          display: flex;
-          justify-content: center;
-          align-items: center;
+        #eggTargetArea {
+          grid-area: eggTarget;
         }
 
         drop-target-egg {
@@ -235,33 +241,29 @@ export class EggCountingApp extends TimeLimitedGame2 {
           box-sizing: border-box;
         }
 
-        #eggTargetArea {
-          grid-area: eggTarget;
+        #eggCartonSourceArea,
+        #eggSourceArea,
+        #checkButtonArea,
+        #trashcanArea {
+          display: flex;
+          justify-content: center;
+          align-items: center;
         }
 
         #eggCartonSourceArea {
           grid-area: eggCartonSource;
-          display: flex;
-          justify-content: center;
-          align-items: center;
         }
 
         #eggSourceArea {
           grid-area: eggSource;
-          display: flex;
-          justify-content: center;
-          align-items: center;
         }
 
         .wrongTargetArea {
-          background-color: red;
+          background-color: var(--wrongBackgroundColor);
         }
 
         #checkButtonArea {
           grid-area: checkButton;
-          display: flex;
-          justify-content: center;
-          align-items: center;
         }
 
         button {
@@ -289,9 +291,6 @@ export class EggCountingApp extends TimeLimitedGame2 {
 
         #trashcanArea {
           grid-area: trashcan;
-          display: flex;
-          justify-content: center;
-          align-items: center;
         }
 
         img {
@@ -350,25 +349,46 @@ export class EggCountingApp extends TimeLimitedGame2 {
     </div>`;
   }
 
-  private renderGameContent(): HTMLTemplateResult {
-    return html`
-      ${this.renderNumberToSplitArea()} ${this.renderTrashcanArea()}
-      ${this.renderCheckButtonArea()}
+  private renderEggCartonTargetArea(): HTMLTemplateResult {
+    return html` <div id="eggCartonTargetArea">
+      <drop-target-egg
+        class="${classMap({
+          wrongTargetArea: this.eggCartonTargetAreaHighlightWrong,
+        })}"
+        itemType="eggCarton"
+        numberItemsToShow="${this.numberVisibleEggCartons}"
+        maxNumberItemsToShow="${this.maxNumberItemsToShow}"
+        ${ref(this.eggCartonTargetChange)}
+        @itemTrashed="${this.eggCartonTrashed}"
+        @dragStarted="${this.resetWrongHighlights}"
+        .trashcanAreas="${this.trashcanTarget}"
+      ></drop-target-egg>
+    </div>`;
+  }
 
-      <div id="eggCartonTargetArea">
-        <drop-target-egg
-          class="${classMap({
-            wrongTargetArea: this.eggCartonTargetAreaHighlightWrong,
-          })}"
-          itemType="eggCarton"
-          numberItemsToShow="${this.numberVisibleEggCartons}"
-          maxNumberItemsToShow="${this.maxNumberItemsToShow}"
-          ${ref(this.eggCartonTargetChange)}
-          @itemTrashed="${this.eggCartonTrashed}"
+  private renderEggCartonSourceArea(): HTMLTemplateResult {
+    return html`
+      <div id="eggCartonSourceArea">
+        <draggable-element
+          class="eggCarton"
+          resetDragAfterDrop
+          .dropTargetList="${this.eggCartonTarget}"
+          @dropped="${this.eggCartonDrop}"
           @dragStarted="${this.resetWrongHighlights}"
-          .trashcanAreas="${this.trashcanTarget}"
-        ></drop-target-egg>
+        >
+          <img
+            class="eggCarton"
+            draggable="false"
+            alt="egg Carton"
+            src="${eggCartonUrl.href}"
+          />
+        </draggable-element>
       </div>
+    `;
+  }
+
+  private renderEggTargetArea(): HTMLTemplateResult {
+    return html`
       <div id="eggTargetArea">
         <drop-target-egg
           class="${classMap({
@@ -383,22 +403,11 @@ export class EggCountingApp extends TimeLimitedGame2 {
           .trashcanAreas="${this.trashcanTarget}"
         ></drop-target-egg>
       </div>
-      <div id="eggCartonSourceArea">
-        <draggable-element
-          class="eggCarton"
-          resetDragAfterDrop
-          .dropTargetList="${this.eggCartonTarget}"
-          @dropped="${this.eggCartonDrop}"
-          @dragStarted="${this.resetWrongHighlights}"
-        >
-          <img
-            class="eggCarton"
-            draggable="false"
-            alt="egg Carton"
-            src="../images/eggCarton.png"
-          />
-        </draggable-element>
-      </div>
+    `;
+  }
+
+  private renderEggSourceArea(): HTMLTemplateResult {
+    return html`
       <div id="eggSourceArea">
         <draggable-element
           class="egg"
@@ -411,10 +420,19 @@ export class EggCountingApp extends TimeLimitedGame2 {
             class="egg"
             draggable="false"
             alt="egg Carton"
-            src="../images/egg.png"
+            src="${eggUrl.href}"
           />
         </draggable-element>
       </div>
+    `;
+  }
+
+  renderGameContent(): HTMLTemplateResult {
+    return html`
+      ${this.renderNumberToSplitArea()} ${this.renderTrashcanArea()}
+      ${this.renderCheckButtonArea()} ${this.renderEggCartonTargetArea()}
+      ${this.renderEggCartonSourceArea()} ${this.renderEggTargetArea()}
+      ${this.renderEggSourceArea()}
     `;
   }
 }
