@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Eierdoos tellen</title>
+  </head>
+  <style>
+    html {
+      font-size: x-large;
+    }
+    .buttonTable {
+      position: relative;
+      display: flex;
+      gap: 10px 10px;
+      flex-wrap: wrap;
+      width: 410px;
+    }
+
+    img {
+      width: 100px;
+    }
+  </style>
+  <body>
+    <script type="module" src="../src/IconHourglassButton.ts"></script>
+    <script type="module" src="../src/GameIconWithTextBelow.ts"></script>
+
+    <h2>Eierdoos tellen.</h2>
+    <div class="buttonTable">
+      <icon-hourglass-button title="Eierdoos tellen" time="1min" shortCode="lx">
+        <img src="../images/eggCarton.png" />
+      </icon-hourglass-button>
+      <icon-hourglass-button title="Eierdoos tellen" time="3min" shortCode="ly"
+        ><img src="../images/eggCarton.png" />
+      </icon-hourglass-button>
+    </div>
+
+    <p>
+      <a href="index.html">Terug naar het hoofdmenu</a>
+    </p>
+  </body>
+</html>

@@ -7,6 +7,7 @@ import {
 import { klikFotoOpGetallenlijnLink } from './ClickTheRightPhotoOnNumberLineAppLink';
 import { klokPaartjesLink } from './ClockPairingAppLink';
 import { somPaartjesLink } from './CombineToSolveSumAppLink';
+import { eierdoosTellenLink } from './EggCountingAppLink';
 import { springOpGetallenlijnLink } from './JumpOnNumberLineAppLink';
 import { ballonnenSpelLink } from './MultiplicationTablesBalloonGameLink';
 import { groepjesVanHerkennenLink } from './RecognizeGroupsAppLink';
@@ -731,7 +732,10 @@ const urls: (() => string)[] = [
   () => sorterenLink(4, 1, 100, 100, 'purple', 180),
   () => sorterenLink(4, 1, 1000, 1000, 'purple', 60),
   () => sorterenLink(4, 1, 1000, 1000, 'purple', 180),
-  // lx
+  // lx - indexEierdoosTellen.html
+  () => eierdoosTellenLink(60),
+  () => eierdoosTellenLink(180),
+  // lz
 ];
 
 const urlParams = new URLSearchParams(window.location.search);
