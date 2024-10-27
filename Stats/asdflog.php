@@ -27,6 +27,7 @@ if (!file_exists('./log_'.date("Ym").'.log')){
 file_put_contents('./log_'.date("Ym").'.log', $log, FILE_APPEND);
 
 
+if ($refCode == "J"){
 $count_file_name = "./count_".$game."_".date("Ym").".txt";
 
 if (file_exists($count_file_name)){
@@ -39,5 +40,5 @@ else {
 }
 
 file_put_contents($count_file_name, $count);
-
+}
 ?>
