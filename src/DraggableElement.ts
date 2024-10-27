@@ -1,6 +1,6 @@
 /* eslint-disable max-classes-per-file */
 import { LitElement, html, css } from 'lit';
-import type { HTMLTemplateResult, CSSResultGroup } from 'lit';
+import type { HTMLTemplateResult, CSSResultGroup, PropertyValues } from 'lit';
 // eslint-disable-next-line import/extensions
 import { customElement, property, state } from 'lit/decorators.js';
 import { getRealViewportHeight, getRealViewportWidth } from './RealHeight';
@@ -25,7 +25,12 @@ export class DropEvent extends Event {
   }
 }
 
-type DropTarget = {
+export type DropTarget = {
+  element: DropTargetElement;
+  dropType: DropType;
+};
+
+type DropTargetInfo = {
   element: DropTargetElement;
   dropType: DropType;
   minDeltaX: number;
@@ -41,9 +46,9 @@ type DropTarget = {
 @customElement('draggable-element')
 export class DraggableElement extends LitElement {
   @property({ type: Boolean })
-  private accessor resetDragAfterDrop = false;
+  accessor resetDragAfterDrop = false;
   @property({ type: Number })
-  private accessor dropAreaPercentage = 20; // Area in the draggable element that needs to be over the drop target, measured as percentage of total width and height
+  accessor dropAreaPercentage = 20; // Area in the draggable element that needs to be over the drop target, measured as percentage of total width and height
   @state()
   private accessor cummulativeDeltaX = 0; // expressed as percentage of the viewport width
   @state()
@@ -64,7 +69,23 @@ export class DraggableElement extends LitElement {
   private maxCummalativeDeltaY = 0; // expressed as percentage of the viewport height
   private minCummalativeDeltaY = 0; // expressed as percentage of the viewport height
 
-  private dropTargets: DropTarget[] = [];
+  private dropTargetInfoList: DropTargetInfo[] = [];
+
+  @property()
+  accessor dropTargetList: readonly DropTarget[] = [];
+
+  protected willUpdate(changedProperties: PropertyValues): void {
+    if (changedProperties.has('dropTargetList')) {
+      this.dropTargetInfoList = this.dropTargetList.map(e => ({
+        element: e.element,
+        dropType: e.dropType,
+        minDeltaX: 0,
+        maxDeltaX: 0,
+        minDeltaY: 0,
+        maxDeltaY: 0,
+      }));
+    }
+  }
 
   constructor() {
     super();
@@ -80,7 +101,7 @@ export class DraggableElement extends LitElement {
   }
 
   addDropElement(element: DropTargetElement): void {
-    this.dropTargets.push({
+    this.dropTargetInfoList.push({
       element,
       dropType: 'dropOk',
       minDeltaX: 0,
@@ -91,24 +112,24 @@ export class DraggableElement extends LitElement {
   }
 
   removeDropElements(elementIds: string[]): void {
-    this.dropTargets = this.dropTargets.filter(
+    this.dropTargetInfoList = this.dropTargetInfoList.filter(
       elm => !elementIds.includes(elm.element.id),
     );
   }
 
   clearDropElements(): void {
-    this.dropTargets.length = 0; // Setting the length of an array to 0 clears the array
+    this.dropTargetInfoList.length = 0; // Setting the length of an array to 0 clears the array
   }
 
   markAsWrongDrop(element: DropTargetElement): void {
-    const targetToUpdate = this.dropTargets.find(
+    const targetToUpdate = this.dropTargetInfoList.find(
       target => element === target.element,
     );
     if (targetToUpdate !== undefined) targetToUpdate.dropType = 'dropWrong';
   }
 
   markAllTargetsAsDropOk(): void {
-    for (const dropTarget of this.dropTargets) {
+    for (const dropTarget of this.dropTargetInfoList) {
       dropTarget.dropType = 'dropOk';
     }
   }
@@ -194,7 +215,7 @@ export class DraggableElement extends LitElement {
         (rectDraggable.bottom - rectDraggable.top);
 
     // For each drop target, determine when the draggable is over the drop target
-    for (const target of this.dropTargets) {
+    for (const target of this.dropTargetInfoList) {
       const rectTarget = target.element.getBoundingClientRect();
 
       target.maxDeltaX =
@@ -218,10 +239,13 @@ export class DraggableElement extends LitElement {
           100 +
         this.cummulativeDeltaY;
     }
+
+    const event = new Event('dragStarted');
+    this.dispatchEvent(event);
   }
 
   private handleEndOfDrag(): void {
-    for (const target of this.dropTargets) {
+    for (const target of this.dropTargetInfoList) {
       target.element.highlightForDrop('none');
       if (
         this.cummulativeDeltaX > target.minDeltaX &&
@@ -260,7 +284,7 @@ export class DraggableElement extends LitElement {
       this.cummulativeDeltaY = this.maxCummalativeDeltaY;
 
     // For each of the drop targets, check whether it's touched and if so highlight it appropriately.
-    for (const target of this.dropTargets) {
+    for (const target of this.dropTargetInfoList) {
       if (
         this.cummulativeDeltaX > target.minDeltaX &&
         this.cummulativeDeltaX < target.maxDeltaX &&
@@ -287,8 +311,7 @@ export class DraggableElement extends LitElement {
   static get styles(): CSSResultGroup {
     return css`
       :host {
-        display: block-inline;
-        );
+        display: inline-block;
       }
     `;
   }
