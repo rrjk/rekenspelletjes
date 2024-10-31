@@ -3,6 +3,7 @@ import type { HTMLTemplateResult, CSSResultGroup } from 'lit';
 // eslint-disable-next-line import/extensions
 import { customElement, property, state } from 'lit/decorators.js';
 import { FramedPhotoSVG, PhotoId } from './FramedPhotoSVG';
+import { getColorInfo, Color } from './Colors';
 
 type TickMarkType = 'noTickMark' | 'tickMark1' | 'tickMark5' | 'tickMark10';
 
@@ -24,6 +25,9 @@ export class HangingPhotoIconWithTextOverlay extends LitElement {
 
   @property({ type: String })
   accessor photoId: PhotoId = 'Frank';
+
+  @property({ type: String })
+  accessor background: Color = 'apricot';
 
   @state()
   accessor framedPhoto = new FramedPhotoSVG();
@@ -162,7 +166,15 @@ export class HangingPhotoIconWithTextOverlay extends LitElement {
 
     return html`
       <div style="width: 110px; height: 70px; position; absolute;">
-        <svg viewBox="0 0 110 70">
+        <svg viewBox="-7 -7 124 84">
+          <rect
+            x="-7"
+            y="-7"
+            rx="15"
+            width="120"
+            height="80"
+            fill="${getColorInfo(this.background).mainColorCode}"
+          />
           ${this.renderNumberLine()}
           ${tickMarks10Positions.map(pos => this.render10TickMark(pos))}
           ${tickMarks5Positions.map(pos => this.render5TickMark(pos))}
