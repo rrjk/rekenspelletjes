@@ -3,6 +3,7 @@ import type { HTMLTemplateResult, CSSResultGroup } from 'lit';
 // eslint-disable-next-line import/extensions
 import { customElement, property } from 'lit/decorators.js';
 import './NumberLine';
+import { Color, getColorInfo } from './Colors';
 
 type TickMarkType = 'noTickMark' | 'tickMark1' | 'tickMark5' | 'tickMark10';
 
@@ -14,12 +15,16 @@ export class JumpingJanWithTextOverlay extends LitElement {
   accessor text2 = '';
   @property()
   accessor smallestTickmark: TickMarkType = 'noTickMark';
+  @property()
+  accessor background: Color = 'teal';
 
   static get styles(): CSSResultGroup {
     return css`
       .container {
         display: grid;
         grid-template-columns: 40px 60px;
+        border: black solid 1px;
+        border-radius: 15px;
       }
       .numberline {
         display: inline-block;
@@ -114,7 +119,11 @@ export class JumpingJanWithTextOverlay extends LitElement {
     else numberlineTickMarkclass = 'numberlineNoTickMark';
 
     return html`
-      <div class="container">
+      <div
+        class="container"
+        style="background-color: ${getColorInfo(this.background)
+          .mainColorCode};"
+      >
         <div class="jan"></div>
         <div class="numberline ${numberlineTickMarkclass}">${text}</div>
       </div>
