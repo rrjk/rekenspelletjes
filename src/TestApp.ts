@@ -26,20 +26,58 @@ export class TestApp extends LitElement {
   protected render(): HTMLTemplateResult {
     return html`<p>Test</p>
       <number-line-v2
+        min="100"
+        max="180"
+        tickMarks="upToSingles"
+        .arches=${[
+          { from: 103, to: 105 },
+          { from: 115, to: 125 },
+        ]}
+        .fixedNumbers=${[100, 116, 120, 180]}
+        .numberBoxes=${[
+          { nmbr: 104, visible: 'show' },
+          { nmbr: 101, visible: 'show' },
+          { nmbr: 102, visible: 'show' },
+          { nmbr: 103, visible: 'show' },
+          { nmbr: 115, visible: 'show' },
+          { nmbr: 117, visible: 'show' },
+          { nmbr: 118, visible: 'show' },
+          { nmbr: 119, visible: 'show' },
+          { nmbr: 121, visible: 'show' },
+          { nmbr: 178, visible: 'show' },
+          { nmbr: 179, visible: 'show' },
+          { nmbr: 150, visible: 'show' },
+          { nmbr: 151, visible: 'show' },
+          { nmbr: 152, visible: 'show' },
+          { nmbr: 153, visible: 'show' },
+          { nmbr: 154, visible: 'show' },
+          { nmbr: 155, visible: 'show' },
+          { nmbr: 156, visible: 'show' },
+          { nmbr: 157, visible: 'show' },
+          { nmbr: 125, visible: 'show' },
+          { nmbr: 123, visible: 'show' },
+        ]}
+      ></number-line-v2>`;
+  }
+
+  protected renderSimple(): HTMLTemplateResult {
+    return html`<p>Test</p>
+      <number-line-v2
         min="0"
         max="100"
-        tickMarks1="show"
-        tickMarks5="show"
-        tickMarks10="show"
+        tickMarks="upToSingles"
+        numbers="hideAll"
         .arches=${[
-          { from: 10, to: 18 },
-          { from: 34, to: 48 },
-          { from: 56, to: 48 },
-          { from: 60, to: 61 },
-          { from: 70, to: 68 },
-          { from: 75, to: 80 },
-          { from: 80, to: 90 },
-          { from: 90, to: 92 },
+          { from: 47, to: 40 },
+          { from: 40, to: 38 },
+          { from: 38, to: 28 },
+        ]}
+        .fixedNumbers=${[0, 50, 100]}
+        .numberBoxes=${[
+          { nmbr: 47, visible: 'show' },
+          { nmbr: 40, visible: 'show' },
+          { nmbr: 28, visible: 'show' },
+          { nmbr: 38, visible: 'show' },
         ]}
       ></number-line-v2>`;
   }

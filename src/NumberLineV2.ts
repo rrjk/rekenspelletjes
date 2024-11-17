@@ -3,7 +3,7 @@
 // SVG editor
 // https://boxy-svg.com/
 
-import { LitElement, html, css, svg } from 'lit';
+import { LitElement, html, css, svg, nothing } from 'lit';
 import type {
   HTMLTemplateResult,
   CSSResultGroup,
@@ -12,34 +12,67 @@ import type {
 } from 'lit';
 
 // eslint-disable-next-line import/extensions
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
 
 import { Bezier } from 'bezier-js';
 
-export type TickMarkType = 1 | 5 | 10;
+export type ShowHideNumbers = 'hideAll' | 'showAll' | 'showFirstLast';
 export type ShowHide = 'show' | 'hide';
-export type ShowHideNumbers = 'showAll' | 'showFirstLast';
-export type ArchType = { from: number; to: number };
+export interface ArchType {
+  from: number;
+  to: number;
+}
+export interface NumberBoxInfo {
+  nmbr: number;
+  visible: ShowHide;
+}
+
+export type TickMarks =
+  | 'noTickMarks'
+  | 'boundaryOnly'
+  | 'upToTens'
+  | 'upToFives'
+  | 'upToSingles';
+
+/** Customer element to create numberline
+ * Possible numberlines range from -100 to 100
+ * Numberlines have to start and end at a multiple of 10
+ *
+ * @property tickMarks - what tickmarks to show
+ */
 
 @customElement('number-line-v2')
 export class NumberLineV2 extends LitElement {
+  static numberBoxSvgWidthMinusSign = 6;
+  static numberBoxSvgWidthDigit = 11;
+  static numberBoxSvgWidthOverhead = 2;
+
   @property({ type: String })
-  accessor tickMarks1: ShowHide = 'hide';
-  @property({ type: String })
-  accessor tickMarks5: ShowHide = 'hide';
-  @property({ type: String })
-  accessor tickMarks10: ShowHide = 'show';
-  @property({ type: String })
-  accessor numbers: ShowHideNumbers = 'showFirstLast';
+  accessor tickMarks: TickMarks = 'boundaryOnly';
   @property({ type: Number })
   accessor min = 0;
   @property({ type: Number })
   accessor max = 100;
   @property({ attribute: false })
   accessor arches: ArchType[] = [];
+  @property({ attribute: false })
+  accessor numberBoxes: NumberBoxInfo[] = [];
+  @property({ attribute: false })
+  accessor fixedNumbers: number[] = [];
 
-  private roundedMin = 0;
-  private roundedMax = 100;
+  @state()
+  private accessor sortedNumberBoxesPerLevel: NumberBoxInfo[][] = [[]];
+  @state()
+  private accessor minusArches = false;
+
+  @state()
+  private accessor roundedMin = 0;
+  @state()
+  private accessor roundedMax = 100;
+  @state()
+  private accessor boxWidth =
+    2 * NumberLineV2.numberBoxSvgWidthDigit +
+      NumberLineV2.numberBoxSvgWidthOverhead;
 
   static get styles(): CSSResultGroup {
     return css`
@@ -51,13 +84,20 @@ export class NumberLineV2 extends LitElement {
 
       svg {
         width: 100%;
-        aspect-ratio: 10;
+        aspect-ratio: 5;
       }
 
       .number {
         text-anchor: middle;
         dominant-baseline: hanging;
-        font-size: 25px;
+        font-size: 20px;
+      }
+
+      .boxNumberText {
+        text-anchor: middle;
+        dominant-baseline: mathematical;
+        font-size: 20px;
+        fill: purple;
       }
 
       .additionNumber,
@@ -89,10 +129,86 @@ export class NumberLineV2 extends LitElement {
   }
 
   protected willUpdate(changedProperties: PropertyValues): void {
-    if (changedProperties.has('min'))
-      this.roundedMin = Math.floor(this.min / 10) * 10;
-    if (changedProperties.has('max'))
-      this.roundedMax = Math.ceil(this.max / 10) * 10;
+    if (changedProperties.has('min') || changedProperties.has('max')) {
+      if (changedProperties.has('min')) {
+        this.roundedMin = Math.floor(this.min / 10) * 10;
+      }
+      if (changedProperties.has('max')) {
+        this.roundedMax = Math.ceil(this.max / 10) * 10;
+      }
+      const maxNumberDigits = Math.ceil(
+        Math.max(
+          Math.log10(Math.abs(this.roundedMin + 1)),
+          Math.log10(Math.abs(this.roundedMax - 1)),
+        ),
+      );
+      let minusSignPossible = false;
+      if (this.roundedMin < 0 || this.roundedMax < 0) minusSignPossible = true;
+
+      this.boxWidth =
+        maxNumberDigits * NumberLineV2.numberBoxSvgWidthDigit +
+        NumberLineV2.numberBoxSvgWidthOverhead +
+        (minusSignPossible ? NumberLineV2.numberBoxSvgWidthMinusSign : 0);
+    }
+    if (
+      changedProperties.has('numberBoxes') ||
+      changedProperties.has('fixedNumber')
+    )
+      this.sortAndProcessNumberBoxes();
+    if (changedProperties.has('arches')) {
+      this.checkForMinusArches();
+    }
+  }
+
+  checkForMinusArches() {
+    this.minusArches = false;
+    for (const arch of this.arches) {
+      if (arch.from > arch.to) this.minusArches = true;
+    }
+  }
+
+  sortAndProcessNumberBoxes() {
+    /* We need to sort the numberBoxes to ensure that comparing with just the last 
+       numberbox in a level is sufficient to check whether the level can be used
+     */
+    const sortedNumberBoxes = this.numberBoxes.sort(
+      (a: NumberBoxInfo, b: NumberBoxInfo) => a.nmbr - b.nmbr,
+    );
+
+    for (const nb of sortedNumberBoxes) {
+      // First determine minimal distance to a fixed number
+      let possDiffToFixed = 1000;
+      for (const fixedNumber of this.fixedNumbers) {
+        possDiffToFixed = Math.min(
+          possDiffToFixed,
+          this.numberDiffToPositionDiff(Math.abs(nb.nmbr - fixedNumber)),
+        );
+      }
+      const minDepth = possDiffToFixed < this.boxWidth ? 1 : 0;
+
+      let depthFound = false;
+      let depthToInvestigate = minDepth;
+      while (!depthFound) {
+        if (this.sortedNumberBoxesPerLevel.length < depthToInvestigate + 1)
+          this.sortedNumberBoxesPerLevel.push([]);
+        const levelLength =
+          this.sortedNumberBoxesPerLevel[depthToInvestigate].length;
+        if (
+          levelLength === 0 ||
+          this.numberDiffToPositionDiff(
+            nb.nmbr -
+              this.sortedNumberBoxesPerLevel[depthToInvestigate][
+                levelLength - 1
+              ].nmbr,
+          ) > this.boxWidth
+        ) {
+          depthFound = true;
+          this.sortedNumberBoxesPerLevel[depthToInvestigate].push(nb);
+        } else {
+          depthToInvestigate += 1;
+        }
+      }
+    }
   }
 
   /** Transform a number into a position in the svg axis.
@@ -105,30 +221,26 @@ export class NumberLineV2 extends LitElement {
     return (deltaMinNmbr / numberLineLength) * 1000;
   }
 
+  numberDiffToPositionDiff(nmbrDiff: number) {
+    const numberLineLength = this.roundedMax - this.roundedMin;
+    return (nmbrDiff / numberLineLength) * 1000;
+  }
+
   renderNumberLine(): SVGTemplateResult {
     return svg`
       <line x1="0" y1="0" x2="1000" y2="0" stroke="black" stroke-width="3"/>
     `;
   }
 
-  renderBoundaryNumbers(): SVGTemplateResult {
-    return svg`
-      <text x="0" y="20" class="number">${this.min}</text>
-      <text x="1000" y="20" class="number">${this.max}</text>
-    `;
-  }
-
-  renderNonBoundaryNumbers(): SVGTemplateResult[] {
-    if (this.numbers === 'showFirstLast') return [];
+  renderNumbers(): SVGTemplateResult[] {
     const ret: SVGTemplateResult[] = [];
-    for (let i = this.roundedMin + 10; i < this.max; i += 10) {
+    for (const fixedNumber of this.fixedNumbers) {
       ret.push(
-        svg`<text x="${this.numberToPosition(i)}" y="20" class="number">${i}</text>`,
+        svg`<text x="${this.numberToPosition(fixedNumber)}" y="17" class="number">${fixedNumber}</text>`,
       );
     }
     return ret;
   }
-
   renderBoundaryTickMarks(): SVGTemplateResult {
     return svg`
       <line x1="0" x2="0" y1="-15" y2="15" stroke="black" stroke-width="2"/>
@@ -137,7 +249,6 @@ export class NumberLineV2 extends LitElement {
   }
 
   render10TickMarks(): SVGTemplateResult[] {
-    if (this.tickMarks10 === 'hide') return [];
     const ret: SVGTemplateResult[] = [];
     for (let i = this.roundedMin + 10; i < this.max; i += 10) {
       const pos = this.numberToPosition(i);
@@ -149,7 +260,6 @@ export class NumberLineV2 extends LitElement {
   }
 
   render5TickMarks(): SVGTemplateResult[] {
-    if (this.tickMarks5 === 'hide') return [];
     const ret: SVGTemplateResult[] = [];
     for (let i = this.roundedMin + 5; i < this.max; i += 10) {
       const pos = this.numberToPosition(i);
@@ -161,7 +271,6 @@ export class NumberLineV2 extends LitElement {
   }
 
   render1TickMarks(): SVGTemplateResult[] {
-    if (this.tickMarks5 === 'hide') return [];
     const ret: SVGTemplateResult[] = [];
     for (let i = this.roundedMin + 1; i < this.max; i += 1) {
       if (i % 5 !== 0) {
@@ -171,6 +280,28 @@ export class NumberLineV2 extends LitElement {
         );
       }
     }
+    return ret;
+  }
+
+  renderTickMarks(): SVGTemplateResult[] {
+    const ret: SVGTemplateResult[] = [];
+    const boundaryTickMarks: TickMarks[] = [
+      'boundaryOnly',
+      'upToTens',
+      'upToFives',
+      'upToSingles',
+    ];
+    const tenTickMarks: TickMarks[] = ['upToTens', 'upToFives', 'upToSingles'];
+    const fiveTickMarks: TickMarks[] = ['upToFives', 'upToSingles'];
+    const singleTickMarks: TickMarks[] = ['upToSingles'];
+    if (boundaryTickMarks.includes(this.tickMarks))
+      ret.push(this.renderBoundaryTickMarks());
+    if (tenTickMarks.includes(this.tickMarks))
+      ret.push(...this.render10TickMarks());
+    if (fiveTickMarks.includes(this.tickMarks))
+      ret.push(...this.render5TickMarks());
+    if (singleTickMarks.includes(this.tickMarks))
+      ret.push(...this.render1TickMarks());
     return ret;
   }
 
@@ -228,13 +359,43 @@ export class NumberLineV2 extends LitElement {
     return ret;
   }
 
+  renderNumberBox(nb: NumberBoxInfo, depth: number): SVGTemplateResult {
+    const basicDepth = this.minusArches ? 45 : 18; // 45 suffices for arches below the number line, otherwise 18 suffices
+
+    const additionDepths = 22;
+    const boxHeight = 20;
+    const numberBaselineOffset = 8;
+    const lineLength = basicDepth + depth * additionDepths;
+    return svg`
+      <line x1="${this.numberToPosition(nb.nmbr)}" x2="${this.numberToPosition(nb.nmbr)}" y1="0" y2="${lineLength}" stroke="red"/>
+      <rect x="${this.numberToPosition(nb.nmbr) - this.boxWidth / 2}" y="${lineLength}" width="${this.boxWidth}" height="${boxHeight}" stroke="purple" fill="white"/>
+      ${nb.visible === 'show' ? svg`<text x="${this.numberToPosition(nb.nmbr)}" y="${lineLength + numberBaselineOffset}" class="boxNumberText">${nb.nmbr}</text>` : nothing}
+    `;
+  }
+
+  renderNumberBoxes(): SVGTemplateResult[] {
+    const ret: SVGTemplateResult[] = [];
+
+    // Per level we will render the number boxes
+    // We start with the deepest level, to ensure that the less deper levels are rendered on top
+    for (
+      let level = this.sortedNumberBoxesPerLevel.length - 1;
+      level >= 0;
+      level--
+    ) {
+      for (const nb of this.sortedNumberBoxesPerLevel[level]) {
+        ret.push(this.renderNumberBox(nb, level));
+      }
+    }
+    return ret;
+  }
+
   render(): HTMLTemplateResult {
     return html`
-      <svg viewBox="-25 -50 1050 100" xmlns="http://www.w3.org/2000/svg">
-        ${this.renderNumberLine()}${this.renderBoundaryNumbers()}
-        ${this.renderBoundaryTickMarks()} ${this.renderNonBoundaryNumbers()}
-        ${this.render10TickMarks()} ${this.render5TickMarks()}
-        ${this.render1TickMarks()} ${this.renderArches()}
+      <svg viewBox="-25 -50 1050 200" xmlns="http://www.w3.org/2000/svg">
+        ${this.renderNumberLine()} ${this.renderTickMarks()}
+        ${this.renderNumberBoxes()} ${this.renderArches()}
+        ${this.renderNumbers()}
       </svg>
     `;
   }
