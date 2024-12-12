@@ -98,7 +98,7 @@ export class TestApp extends LitElement {
           { position: 7, nmbr: 7, active: 'wrong' },
           { position: 10, nmbr: 10, active: 'active' },
           { position: 20, nmbr: 20, active: 'notActive' },
-          { position: 30, nmbr: 30 },
+          { position: 30, nmbr: undefined, active: 'active' },
           { position: 35, nmbr: 35 },
         ]}
       ></number-line-v2>`;

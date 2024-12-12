@@ -44,6 +44,11 @@ export type TickMarks =
   | 'upToFives'
   | 'upToSingles';
 
+/** Return number of decimal digits in number */
+function numberDigitsInNumber(nmbr: number): number {
+  return Math.log10(Math.abs(nmbr));
+}
+
 /** Customer element to create numberline
  * Possible numberlines range from -100 to 100
  * Numberlines have to start and end at a multiple of 10
@@ -83,6 +88,9 @@ export class NumberLineV2 extends LitElement {
   private accessor boxWidth =
     2 * NumberLineV2.numberBoxSvgWidthDigit +
       NumberLineV2.numberBoxSvgWidthOverhead;
+
+  maxNumberDigits: number = 0;
+  minusSignPossible: boolean = false;
 
   static get styles(): CSSResultGroup {
     return css`
@@ -164,19 +172,25 @@ export class NumberLineV2 extends LitElement {
       if (changedProperties.has('max')) {
         this.roundedMax = Math.ceil(this.max / 10) * 10;
       }
-      const maxNumberDigits = Math.ceil(
+      if (this.roundedMin > this.roundedMax) {
+        throw new Error(
+          `minimum for numberline (${this.roundedMin}) is larger than the maximum (${this.roundedMax})`,
+        );
+      }
+      this.maxNumberDigits = Math.ceil(
         Math.max(
-          Math.log10(Math.abs(this.roundedMin + 1)),
-          Math.log10(Math.abs(this.roundedMax - 1)),
+          numberDigitsInNumber(this.roundedMin + 1),
+          numberDigitsInNumber(this.roundedMax - 1),
         ),
       );
-      let minusSignPossible = false;
-      if (this.roundedMin < 0 || this.roundedMax < 0) minusSignPossible = true;
+      this.minusSignPossible = false;
+      if (this.roundedMin < 0 || this.roundedMax < 0)
+        this.minusSignPossible = true;
 
       this.boxWidth =
-        maxNumberDigits * NumberLineV2.numberBoxSvgWidthDigit +
+        this.maxNumberDigits * NumberLineV2.numberBoxSvgWidthDigit +
         NumberLineV2.numberBoxSvgWidthOverhead +
-        (minusSignPossible ? NumberLineV2.numberBoxSvgWidthMinusSign : 0);
+        (this.minusSignPossible ? NumberLineV2.numberBoxSvgWidthMinusSign : 0);
     }
     if (
       changedProperties.has('numberBoxes') ||
@@ -202,6 +216,23 @@ export class NumberLineV2 extends LitElement {
     const sortedNumberBoxes = this.numberBoxes.sort(
       (a: NumberBoxInfo, b: NumberBoxInfo) => a.position - b.position,
     );
+
+    for (const nb of sortedNumberBoxes) {
+      if (nb.position < this.roundedMin || nb.position > this.roundedMax) {
+        throw new Error(
+          `Position ${nb.position} is outside numberline range, reset to ${this.roundedMin}`,
+        );
+      }
+      if (
+        nb.nmbr &&
+        (numberDigitsInNumber(nb.nmbr) > this.maxNumberDigits ||
+          (!this.minusSignPossible && nb.nmbr < 0))
+      ) {
+        throw new Error(
+          `${nb.nmbr} doesn't fit in numberbox, reset to position (${nb.position})`,
+        );
+      }
+    }
 
     for (const nb of sortedNumberBoxes) {
       // First determine minimal distance to a fixed number
@@ -244,6 +275,11 @@ export class NumberLineV2 extends LitElement {
    * @returns - position in svg axis
    */
   numberToPosition(nmbr: number) {
+    if (nmbr < this.roundedMin || nmbr > this.roundedMax) {
+      throw new Error(
+        `A number (${nmbr}) outside the numberline range is asked to be translated into a position`,
+      );
+    }
     const numberLineLength = this.roundedMax - this.roundedMin;
     const deltaMinNmbr = nmbr - this.roundedMin;
     return (deltaMinNmbr / numberLineLength) * 1000;
