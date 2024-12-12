@@ -23,15 +23,15 @@ export class TestApp extends LitElement {
     ];
   }
 
-  protected render(): HTMLTemplateResult {
+  protected renderComplex(): HTMLTemplateResult {
     return html`<p>Test</p>
       <number-line-v2
         min="100"
         max="180"
         tickMarks="upToSingles"
         .arches=${[
-          { from: 103, to: 105 },
-          { from: 115, to: 125 },
+          { from: 105, to: 103 },
+          { from: 125, to: 115 },
         ]}
         .fixedNumbers=${[100, 116, 120, 180]}
         .numberBoxes=${[
@@ -60,13 +60,12 @@ export class TestApp extends LitElement {
       ></number-line-v2>`;
   }
 
-  protected renderSimple(): HTMLTemplateResult {
+  protected renderComplex2(): HTMLTemplateResult {
     return html`<p>Test</p>
       <number-line-v2
         min="0"
         max="100"
         tickMarks="upToSingles"
-        numbers="hideAll"
         .arches=${[
           { from: 47, to: 40 },
           { from: 40, to: 38 },
@@ -78,6 +77,29 @@ export class TestApp extends LitElement {
           { nmbr: 40, visible: 'show' },
           { nmbr: 28, visible: 'show' },
           { nmbr: 38, visible: 'show' },
+        ]}
+      ></number-line-v2>`;
+  }
+
+  protected render(): HTMLTemplateResult {
+    return html`<p>Test</p>
+      <number-line-v2
+        min="0"
+        max="100"
+        tickMarks="upToSingles"
+        .arches=${[
+          { from: 7, to: 10 },
+          { from: 10, to: 20 },
+          { from: 20, to: 30 },
+          { from: 30, to: 35 },
+        ]}
+        .fixedNumbers=${[0, 100]}
+        .numberBoxes=${[
+          { position: 7, nmbr: 7, active: 'wrong' },
+          { position: 10, nmbr: 10, active: 'active' },
+          { position: 20, nmbr: 20, active: 'notActive' },
+          { position: 30, nmbr: 30 },
+          { position: 35, nmbr: 35 },
         ]}
       ></number-line-v2>`;
   }

@@ -3,7 +3,7 @@
 // SVG editor
 // https://boxy-svg.com/
 
-import { LitElement, html, css, svg, nothing } from 'lit';
+import { LitElement, html, css, svg } from 'lit';
 import type {
   HTMLTemplateResult,
   CSSResultGroup,
@@ -16,15 +16,25 @@ import { customElement, property, state } from 'lit/decorators.js';
 
 import { Bezier } from 'bezier-js';
 
-export type ShowHideNumbers = 'hideAll' | 'showAll' | 'showFirstLast';
 export type ShowHide = 'show' | 'hide';
+export type ActiveEnum = 'active' | 'wrong' | 'notActive';
 export interface ArchType {
   from: number;
   to: number;
 }
+
+/** Type for the number box.
+ *
+ * Information to create the numberboxes.
+ *
+ * @field position - position for the numberbox
+ * @field nmbr - number to show in the numberbox, if not present no number is shown
+ * @field active -  whether the numberbox should be styles as active, wrong or normal, if not present notActive is assumed
+ */
 export interface NumberBoxInfo {
-  nmbr: number;
-  visible: ShowHide;
+  position: number;
+  nmbr?: number;
+  active?: ActiveEnum;
 }
 
 export type TickMarks =
@@ -97,7 +107,25 @@ export class NumberLineV2 extends LitElement {
         text-anchor: middle;
         dominant-baseline: mathematical;
         font-size: 20px;
-        fill: purple;
+        fill: black;
+      }
+
+      .boxActive,
+      .boxWrong,
+      .boxNotActive {
+        stroke: purple;
+      }
+
+      .boxActive {
+        fill: lightblue;
+      }
+
+      .boxWrong {
+        fill: red;
+      }
+
+      .boxNotActive {
+        fill: white;
       }
 
       .additionNumber,
@@ -172,7 +200,7 @@ export class NumberLineV2 extends LitElement {
        numberbox in a level is sufficient to check whether the level can be used
      */
     const sortedNumberBoxes = this.numberBoxes.sort(
-      (a: NumberBoxInfo, b: NumberBoxInfo) => a.nmbr - b.nmbr,
+      (a: NumberBoxInfo, b: NumberBoxInfo) => a.position - b.position,
     );
 
     for (const nb of sortedNumberBoxes) {
@@ -181,7 +209,7 @@ export class NumberLineV2 extends LitElement {
       for (const fixedNumber of this.fixedNumbers) {
         possDiffToFixed = Math.min(
           possDiffToFixed,
-          this.numberDiffToPositionDiff(Math.abs(nb.nmbr - fixedNumber)),
+          this.numberDiffToPositionDiff(Math.abs(nb.position - fixedNumber)),
         );
       }
       const minDepth = possDiffToFixed < this.boxWidth ? 1 : 0;
@@ -196,10 +224,10 @@ export class NumberLineV2 extends LitElement {
         if (
           levelLength === 0 ||
           this.numberDiffToPositionDiff(
-            nb.nmbr -
+            nb.position -
               this.sortedNumberBoxesPerLevel[depthToInvestigate][
                 levelLength - 1
-              ].nmbr,
+              ].position,
           ) > this.boxWidth
         ) {
           depthFound = true;
@@ -366,11 +394,19 @@ export class NumberLineV2 extends LitElement {
     const boxHeight = 20;
     const numberBaselineOffset = 8;
     const lineLength = basicDepth + depth * additionDepths;
+
+    console.log(`active = ${nb.active}`);
+
+    let classes = '';
+
+    if (nb.active === 'active') classes = 'boxActive';
+    else if (nb.active === 'wrong') classes = 'boxWrong';
+    else classes = 'boxNotActive';
+
     return svg`
-      <line x1="${this.numberToPosition(nb.nmbr)}" x2="${this.numberToPosition(nb.nmbr)}" y1="0" y2="${lineLength}" stroke="red"/>
-      <rect x="${this.numberToPosition(nb.nmbr) - this.boxWidth / 2}" y="${lineLength}" width="${this.boxWidth}" height="${boxHeight}" stroke="purple" fill="white"/>
-      ${nb.visible === 'show' ? svg`<text x="${this.numberToPosition(nb.nmbr)}" y="${lineLength + numberBaselineOffset}" class="boxNumberText">${nb.nmbr}</text>` : nothing}
-    `;
+      <line x1="${this.numberToPosition(nb.position)}" x2="${this.numberToPosition(nb.position)}" y1="0" y2="${lineLength}" stroke="red"/>
+      <rect x="${this.numberToPosition(nb.position) - this.boxWidth / 2}" y="${lineLength}" width="${this.boxWidth}" height="${boxHeight}" class="${classes}"/>
+      <text x="${this.numberToPosition(nb.position)}" y="${lineLength + numberBaselineOffset}" class="boxNumberText">${nb.nmbr}</text>`;
   }
 
   renderNumberBoxes(): SVGTemplateResult[] {
