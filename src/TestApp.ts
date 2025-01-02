@@ -16,8 +16,12 @@ export class TestApp extends LitElement {
     return [
       css`
         number-line-v2 {
-          width: 100%;
+          width: 25%;
           border: 1px solid blue;
+        }
+        .small {
+          width: 100%;
+          border: 2px solid black;
         }
       `,
     ];
@@ -81,9 +85,30 @@ export class TestApp extends LitElement {
       ></number-line-v2>`;
   }
 
-  protected render(): HTMLTemplateResult {
+  protected renderSmall(): HTMLTemplateResult {
+    return html`
+      <number-line-v2
+        aspectRatio="2"
+        min="0"
+        max="10"
+        tickMarks="upToSingles"
+        .belowArches=${[{ from: 7, to: 0 }]}
+        .fixedNumbers=${[0, 7]}
+        maxNumberboxDepth="3"
+        .numberBoxes=${[
+          { position: 1, nmbr: 1, active: 'active' },
+          { position: 1, nmbr: 3, active: 'notActive' },
+          { position: 1, nmbr: 7, active: 'wrong' },
+          { position: 1, nmbr: 5, active: 'wrong' },
+        ]}
+      ></numberline>
+    `;
+  }
+
+  protected renderTest(): HTMLTemplateResult {
     return html`<p>Test</p>
       <number-line-v2
+        class="small"
         min="0"
         max="100"
         tickMarks="upToSingles"
@@ -93,7 +118,7 @@ export class TestApp extends LitElement {
           { from: 20, to: 30 },
           { from: 30, to: 35 },
         ]}
-        .fixedNumbers=${[0, 100]}
+        .fixedNumbers=${[0]}
         .numberBoxes=${[
           { position: 7, nmbr: 7, active: 'wrong' },
           { position: 10, nmbr: 10, active: 'active' },
@@ -102,5 +127,9 @@ export class TestApp extends LitElement {
           { position: 35, nmbr: 35 },
         ]}
       ></number-line-v2>`;
+  }
+
+  protected render(): HTMLTemplateResult {
+    return this.renderSmall();
   }
 }

@@ -44,6 +44,8 @@ export type TickMarks =
   | 'upToFives'
   | 'upToSingles';
 
+type AboveBelowType = 'above' | 'below';
+
 /** Return number of decimal digits in number */
 function numberDigitsInNumber(nmbr: number): number {
   return Math.log10(Math.abs(nmbr));
@@ -54,6 +56,12 @@ function numberDigitsInNumber(nmbr: number): number {
  * Numberlines have to start and end at a multiple of 10
  *
  * @property tickMarks - what tickmarks to show
+ * @property numberBoxes - Numberboxes to show below the numberline. If left out, no vertical space is
+ *  allocated for numberBoxes, if it's set to an empty list, vertical space is allocated for the numberBoxes,
+ *  such that they can be added later.
+ * @property fixedNumbers - Fixed numbers to show below the numberline. If left out, no vertical space is
+ *  allocated for fixed numbers, if it's set to an empty list, vertical space is allocated for the fixed numbers,
+ *  such that they can be added later.
  */
 
 @customElement('number-line-v2')
@@ -61,6 +69,9 @@ export class NumberLineV2 extends LitElement {
   static numberBoxSvgWidthMinusSign = 6;
   static numberBoxSvgWidthDigit = 11;
   static numberBoxSvgWidthOverhead = 2;
+  static numberBoxHeight = 20;
+  static minSvgYTickmarks = -20;
+  static maxSvgYTickmarks = +20;
 
   @property({ type: String })
   accessor tickMarks: TickMarks = 'boundaryOnly';
@@ -69,16 +80,22 @@ export class NumberLineV2 extends LitElement {
   @property({ type: Number })
   accessor max = 100;
   @property({ attribute: false })
-  accessor arches: ArchType[] = [];
+  accessor aboveArches: ArchType[] | null = null;
   @property({ attribute: false })
-  accessor numberBoxes: NumberBoxInfo[] = [];
+  accessor belowArches: ArchType[] | null = null;
   @property({ attribute: false })
-  accessor fixedNumbers: number[] = [];
+  accessor numberBoxes: NumberBoxInfo[] | null = null;
+  @property({ type: Number })
+  accessor maxNumberBoxDepth = 2;
 
   @state()
   private accessor sortedNumberBoxesPerLevel: NumberBoxInfo[][] = [[]];
+  @property({ attribute: false })
+  accessor fixedNumbers: number[] | null = null;
   @state()
-  private accessor minusArches = false;
+  private accessor processedFixedNumbers: number[] = [];
+  @property({ type: Number })
+  accessor aspectRatio = 10;
 
   @state()
   private accessor roundedMin = 0;
@@ -102,7 +119,6 @@ export class NumberLineV2 extends LitElement {
 
       svg {
         width: 100%;
-        aspect-ratio: 5;
       }
 
       .number {
@@ -136,18 +152,18 @@ export class NumberLineV2 extends LitElement {
         fill: white;
       }
 
-      .additionNumber,
-      .substractionNumber {
+      .aboveArchNumber,
+      .belowArchNumber {
         text-anchor: middle;
         font-size: 15px;
         fill: blue;
       }
 
-      .additionNumber {
+      .aboveArchNumber {
         dominant-baseline: auto;
       }
 
-      .substractionNumber {
+      .belowArchNumber {
         dominant-baseline: hanging;
       }
 
@@ -195,17 +211,10 @@ export class NumberLineV2 extends LitElement {
     if (
       changedProperties.has('numberBoxes') ||
       changedProperties.has('fixedNumber')
-    )
+    ) {
+      if (this.fixedNumbers === null) this.processedFixedNumbers = [];
+      else this.processedFixedNumbers = this.fixedNumbers;
       this.sortAndProcessNumberBoxes();
-    if (changedProperties.has('arches')) {
-      this.checkForMinusArches();
-    }
-  }
-
-  checkForMinusArches() {
-    this.minusArches = false;
-    for (const arch of this.arches) {
-      if (arch.from > arch.to) this.minusArches = true;
     }
   }
 
@@ -213,9 +222,12 @@ export class NumberLineV2 extends LitElement {
     /* We need to sort the numberBoxes to ensure that comparing with just the last 
        numberbox in a level is sufficient to check whether the level can be used
      */
-    const sortedNumberBoxes = this.numberBoxes.sort(
-      (a: NumberBoxInfo, b: NumberBoxInfo) => a.position - b.position,
-    );
+    let sortedNumberBoxes: NumberBoxInfo[] = [];
+    if (this.numberBoxes !== null) {
+      sortedNumberBoxes = this.numberBoxes.sort(
+        (a: NumberBoxInfo, b: NumberBoxInfo) => a.position - b.position,
+      );
+    }
 
     for (const nb of sortedNumberBoxes) {
       if (nb.position < this.roundedMin || nb.position > this.roundedMax) {
@@ -237,7 +249,7 @@ export class NumberLineV2 extends LitElement {
     for (const nb of sortedNumberBoxes) {
       // First determine minimal distance to a fixed number
       let possDiffToFixed = 1000;
-      for (const fixedNumber of this.fixedNumbers) {
+      for (const fixedNumber of this.processedFixedNumbers) {
         possDiffToFixed = Math.min(
           possDiffToFixed,
           this.numberDiffToPositionDiff(Math.abs(nb.position - fixedNumber)),
@@ -270,6 +282,66 @@ export class NumberLineV2 extends LitElement {
     }
   }
 
+  /** Get processed below arches. Will return the below arches when they are not null,
+   * return an empty list otherwise
+   */
+  get processedBelowArches(): ArchType[] {
+    if (this.belowArches === null) return [];
+    return this.belowArches;
+  }
+
+  /** Get processed above  arches. Will return the above arches when they are not null,
+   * return an empty list otherwise
+   */
+  get processedAboveArches(): ArchType[] {
+    if (this.aboveArches === null) return [];
+    return this.aboveArches;
+  }
+
+  /** Determine the numberline width in SVG units
+   *  This is based on the provided aspect ratio
+   */
+  get basicNumberlineWidth(): number {
+    return (
+      this.aspectRatio *
+      (NumberLineV2.maxSvgYTickmarks - NumberLineV2.minSvgYTickmarks)
+    );
+  }
+
+  /** Determine the gap on the left side of the numberline in SVG units
+   *  This is based on the provided aspect ratio
+   */
+  get leftGap(): number {
+    return 0.05 * this.basicNumberlineWidth;
+  }
+
+  /** Determine the gap on the left side of the numberline in SVG units
+   *  This is based on the provided aspect ratio
+   */
+  get rightGap(): number {
+    return 0.1 * this.basicNumberlineWidth;
+  }
+
+  /** Determine minimum y-value in SVG units
+   *
+   */
+  get minSvgY() {
+    if (this.aboveArches !== null) return -50;
+    return NumberLineV2.minSvgYTickmarks;
+  }
+
+  /** Determine maximum y-value in SVG units */
+  get maxSvgY() {
+    if (this.numberBoxes !== null)
+      return (
+        this.getNumberNumberBoxTop(this.maxNumberBoxDepth) +
+        NumberLineV2.numberBoxHeight +
+        5
+      );
+    if (this.belowArches !== null) return 50;
+    if (this.fixedNumbers !== null) return 40;
+    return NumberLineV2.minSvgYTickmarks;
+  }
   /** Transform a number into a position in the svg axis.
    * @param nmbr - number to convert
    * @returns - position in svg axis
@@ -282,23 +354,23 @@ export class NumberLineV2 extends LitElement {
     }
     const numberLineLength = this.roundedMax - this.roundedMin;
     const deltaMinNmbr = nmbr - this.roundedMin;
-    return (deltaMinNmbr / numberLineLength) * 1000;
+    return (deltaMinNmbr / numberLineLength) * this.basicNumberlineWidth;
   }
 
   numberDiffToPositionDiff(nmbrDiff: number) {
     const numberLineLength = this.roundedMax - this.roundedMin;
-    return (nmbrDiff / numberLineLength) * 1000;
+    return (nmbrDiff / numberLineLength) * this.basicNumberlineWidth;
   }
 
   renderNumberLine(): SVGTemplateResult {
     return svg`
-      <line x1="0" y1="0" x2="1000" y2="0" stroke="black" stroke-width="3"/>
+      <line x1="0" y1="0" x2="${this.basicNumberlineWidth}" y2="0" stroke="black" stroke-width="3"/>
     `;
   }
 
   renderNumbers(): SVGTemplateResult[] {
     const ret: SVGTemplateResult[] = [];
-    for (const fixedNumber of this.fixedNumbers) {
+    for (const fixedNumber of this.processedFixedNumbers) {
       ret.push(
         svg`<text x="${this.numberToPosition(fixedNumber)}" y="17" class="number">${fixedNumber}</text>`,
       );
@@ -308,7 +380,7 @@ export class NumberLineV2 extends LitElement {
   renderBoundaryTickMarks(): SVGTemplateResult {
     return svg`
       <line x1="0" x2="0" y1="-15" y2="15" stroke="black" stroke-width="2"/>
-      <line x1="1000" x2="1000" y1="-15" y2="15" stroke="black" stroke-width="2"/>
+      <line x1="${this.basicNumberlineWidth}" x2="${this.basicNumberlineWidth}" y1="-15" y2="15" stroke="black" stroke-width="2"/>
     `;
   }
 
@@ -369,15 +441,20 @@ export class NumberLineV2 extends LitElement {
     return ret;
   }
 
-  renderArch(from: number, to: number): SVGTemplateResult {
+  renderArch(
+    from: number,
+    to: number,
+    position: AboveBelowType,
+  ): SVGTemplateResult {
     const distance = to - from;
     let distanceLabel = '';
     if (distance > 0) distanceLabel = `+${distance}`;
     else distanceLabel = `${distance}`;
 
-    const midYPosition = distance > 0 ? -60 : 60;
-    const textYPosition = distance > 0 ? -33 : 33;
-    const textClass = distance > 0 ? 'additionNumber' : 'substractionNumber';
+    const midYPosition = position === 'above' ? -60 : 60;
+    const textYPosition = position === 'above' ? -33 : 33;
+    const textClass =
+      position === 'above' ? 'aboveArchNumber' : 'belowArchNumber';
 
     const mid = (to + from) / 2;
 
@@ -417,21 +494,32 @@ export class NumberLineV2 extends LitElement {
 
   renderArches(): SVGTemplateResult[] {
     const ret: SVGTemplateResult[] = [this.renderArrowHeadDef()];
-    for (const a of this.arches) {
-      ret.push(this.renderArch(a.from, a.to));
+    for (const a of this.processedAboveArches) {
+      ret.push(this.renderArch(a.from, a.to, 'above'));
+    }
+    for (const a of this.processedBelowArches) {
+      ret.push(this.renderArch(a.from, a.to, 'below'));
     }
     return ret;
   }
 
-  renderNumberBox(nb: NumberBoxInfo, depth: number): SVGTemplateResult {
-    const basicDepth = this.minusArches ? 45 : 18; // 45 suffices for arches below the number line, otherwise 18 suffices
-
+  getNumberNumberBoxTop(depth: number) {
+    const basicDepth = this.belowArches !== null ? 45 : 18; // 45 suffices for arches below the number line, otherwise 18 suffices
     const additionDepths = 22;
-    const boxHeight = 20;
-    const numberBaselineOffset = 8;
-    const lineLength = basicDepth + depth * additionDepths;
+    return basicDepth + depth * additionDepths;
+  }
 
-    console.log(`active = ${nb.active}`);
+  renderNumberBox(nb: NumberBoxInfo, depth: number): SVGTemplateResult {
+    const numberBaselineOffset = 8;
+
+    let cappedDepth = depth;
+
+    if (depth > this.maxNumberBoxDepth) {
+      console.warn(
+        `Numberbox depth (${depth}) capped to max depth (${this.maxNumberBoxDepth})`,
+      );
+      cappedDepth = this.maxNumberBoxDepth;
+    }
 
     let classes = '';
 
@@ -440,9 +528,21 @@ export class NumberLineV2 extends LitElement {
     else classes = 'boxNotActive';
 
     return svg`
-      <line x1="${this.numberToPosition(nb.position)}" x2="${this.numberToPosition(nb.position)}" y1="0" y2="${lineLength}" stroke="red"/>
-      <rect x="${this.numberToPosition(nb.position) - this.boxWidth / 2}" y="${lineLength}" width="${this.boxWidth}" height="${boxHeight}" class="${classes}"/>
-      <text x="${this.numberToPosition(nb.position)}" y="${lineLength + numberBaselineOffset}" class="boxNumberText">${nb.nmbr}</text>`;
+      <line x1="${this.numberToPosition(nb.position)}" 
+            x2="${this.numberToPosition(nb.position)}" 
+            y1="0" 
+            y2="${this.getNumberNumberBoxTop(cappedDepth)}" 
+            stroke="red"/>
+      <rect x="${this.numberToPosition(nb.position) - this.boxWidth / 2}" 
+            y="${this.getNumberNumberBoxTop(cappedDepth)}" 
+            width="${this.boxWidth}" 
+            height="${NumberLineV2.numberBoxHeight}" 
+            class="${classes}"/>
+      <text x="${this.numberToPosition(nb.position)}" 
+            y="${this.getNumberNumberBoxTop(cappedDepth) + numberBaselineOffset}" 
+            class="boxNumberText">
+        ${nb.nmbr}
+      </text>`;
   }
 
   renderNumberBoxes(): SVGTemplateResult[] {
@@ -464,7 +564,27 @@ export class NumberLineV2 extends LitElement {
 
   render(): HTMLTemplateResult {
     return html`
-      <svg viewBox="-25 -50 1050 200" xmlns="http://www.w3.org/2000/svg">
+      <style>
+        svg {
+          aspect-ratio: ${(this.leftGap +
+            this.basicNumberlineWidth +
+            this.rightGap) /
+          250};
+        }
+      </style>
+      <svg
+        viewBox="-${this.leftGap} ${this.minSvgY} ${this.basicNumberlineWidth +
+        this.rightGap} ${this.maxSvgY}"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <rect
+          x="-${this.leftGap}"
+          y="${this.minSvgY}"
+          width="${this.leftGap + this.basicNumberlineWidth + this.rightGap}"
+          height="${this.maxSvgY - this.minSvgY}"
+          fill="lightgrey"
+          stroke="red"
+        />
         ${this.renderNumberLine()} ${this.renderTickMarks()}
         ${this.renderNumberBoxes()} ${this.renderArches()}
         ${this.renderNumbers()}
