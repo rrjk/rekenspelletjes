@@ -48,7 +48,8 @@ type AboveBelowType = 'above' | 'below';
 
 /** Return number of decimal digits in number */
 function numberDigitsInNumber(nmbr: number): number {
-  return Math.log10(Math.abs(nmbr));
+  if (nmbr === 0) return 1;
+  return Math.ceil(Math.log10(Math.abs(nmbr) + 1));
 }
 
 /** Customer element to create numberline
@@ -193,11 +194,9 @@ export class NumberLineV2 extends LitElement {
           `minimum for numberline (${this.roundedMin}) is larger than the maximum (${this.roundedMax})`,
         );
       }
-      this.maxNumberDigits = Math.ceil(
-        Math.max(
-          numberDigitsInNumber(this.roundedMin + 1),
-          numberDigitsInNumber(this.roundedMax - 1),
-        ),
+      this.maxNumberDigits = Math.max(
+        numberDigitsInNumber(this.roundedMin + 1),
+        numberDigitsInNumber(this.roundedMax - 1),
       );
       this.minusSignPossible = false;
       if (this.roundedMin < 0 || this.roundedMax < 0)
@@ -312,14 +311,31 @@ export class NumberLineV2 extends LitElement {
    *  This is based on the provided aspect ratio
    */
   get leftGap(): number {
-    return 0.05 * this.basicNumberlineWidth;
+    const digitsInLeftNumber = numberDigitsInNumber(this.min);
+    console.log(`digitsInLeftNumber = ${digitsInLeftNumber}`);
+    let ret =
+      2 + 0.5 * digitsInLeftNumber * NumberLineV2.numberBoxSvgWidthDigit;
+    console.log(`left gap based on digits = ${ret} `);
+    if (this.min < 0) ret += NumberLineV2.numberBoxSvgWidthMinusSign;
+    console.log(`left gap based on digits and sign = ${ret} `);
+    return ret;
   }
 
   /** Determine the gap on the left side of the numberline in SVG units
    *  This is based on the provided aspect ratio
    */
   get rightGap(): number {
-    return 0.1 * this.basicNumberlineWidth;
+    const digitsInRightNumber = numberDigitsInNumber(this.max);
+    console.log(`digitsInRightNumber = ${digitsInRightNumber}`);
+    let ret =
+      2 + 0.5 * digitsInRightNumber * NumberLineV2.numberBoxSvgWidthDigit;
+    if (this.max < 0) ret += NumberLineV2.numberBoxSvgWidthMinusSign;
+
+    return ret;
+  }
+
+  get svgWidth() {
+    return this.basicNumberlineWidth + this.leftGap + this.rightGap;
   }
 
   /** Determine minimum y-value in SVG units
@@ -341,6 +357,10 @@ export class NumberLineV2 extends LitElement {
     if (this.belowArches !== null) return 50;
     if (this.fixedNumbers !== null) return 40;
     return NumberLineV2.minSvgYTickmarks;
+  }
+
+  get svgHeight() {
+    return this.maxSvgY - this.minSvgY;
   }
   /** Transform a number into a position in the svg axis.
    * @param nmbr - number to convert
@@ -566,15 +586,12 @@ export class NumberLineV2 extends LitElement {
     return html`
       <style>
         svg {
-          aspect-ratio: ${(this.leftGap +
-            this.basicNumberlineWidth +
-            this.rightGap) /
-          250};
+          aspect-ratio: ${this.svgWidth / this.svgHeight};
         }
       </style>
       <svg
-        viewBox="-${this.leftGap} ${this.minSvgY} ${this.basicNumberlineWidth +
-        this.rightGap} ${this.maxSvgY}"
+        viewBox="-${this.leftGap} ${this.minSvgY} ${this.svgWidth} ${this
+          .svgHeight} "
         xmlns="http://www.w3.org/2000/svg"
       >
         <rect

@@ -16,8 +16,7 @@ export class TestApp extends LitElement {
     return [
       css`
         number-line-v2 {
-          width: 25%;
-          border: 1px solid blue;
+          width: 10%;
         }
         .small {
           width: 100%;
@@ -85,22 +84,35 @@ export class TestApp extends LitElement {
       ></number-line-v2>`;
   }
 
-  protected renderSmall(): HTMLTemplateResult {
+  protected renderSmall1(): HTMLTemplateResult {
+    return html`
+      <number-line-v2
+        aspectRatio="2"
+        min="-10"
+        max="0"
+        tickMarks="upToSingles"
+        .aboveArches=${[{ from: -7, to: 0 }]}
+        .fixedNumbers=${[0, -7, -10]}
+        maxNumberboxDepth="2"
+        .numberBoxes=${[
+          { position: -1, nmbr: -1, active: 'active' },
+          { position: -2, nmbr: -2, active: 'active' },
+          { position: -3, nmbr: -3, active: 'notActive' },
+          { position: -7, nmbr: 7, active: 'wrong' },
+        ]}
+      ></numberline>
+    `;
+  }
+
+  protected renderButtonSmall(): HTMLTemplateResult {
     return html`
       <number-line-v2
         aspectRatio="2"
         min="0"
         max="10"
         tickMarks="upToSingles"
-        .belowArches=${[{ from: 7, to: 0 }]}
+        .aboveArches=${[{ from: 0, to: 7 }]}
         .fixedNumbers=${[0, 7]}
-        maxNumberboxDepth="3"
-        .numberBoxes=${[
-          { position: 1, nmbr: 1, active: 'active' },
-          { position: 1, nmbr: 3, active: 'notActive' },
-          { position: 1, nmbr: 7, active: 'wrong' },
-          { position: 1, nmbr: 5, active: 'wrong' },
-        ]}
       ></numberline>
     `;
   }
@@ -130,6 +142,6 @@ export class TestApp extends LitElement {
   }
 
   protected render(): HTMLTemplateResult {
-    return this.renderSmall();
+    return this.renderButtonSmall();
   }
 }
