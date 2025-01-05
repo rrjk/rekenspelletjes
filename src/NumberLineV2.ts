@@ -96,7 +96,7 @@ export class NumberLineV2 extends LitElement {
   @state()
   private accessor processedFixedNumbers: number[] = [];
   @property({ type: Number })
-  accessor aspectRatio = 10;
+  accessor aspectRatio = 20;
 
   @state()
   private accessor roundedMin = 0;
@@ -312,12 +312,9 @@ export class NumberLineV2 extends LitElement {
    */
   get leftGap(): number {
     const digitsInLeftNumber = numberDigitsInNumber(this.min);
-    console.log(`digitsInLeftNumber = ${digitsInLeftNumber}`);
     let ret =
       2 + 0.5 * digitsInLeftNumber * NumberLineV2.numberBoxSvgWidthDigit;
-    console.log(`left gap based on digits = ${ret} `);
     if (this.min < 0) ret += NumberLineV2.numberBoxSvgWidthMinusSign;
-    console.log(`left gap based on digits and sign = ${ret} `);
     return ret;
   }
 
@@ -326,7 +323,6 @@ export class NumberLineV2 extends LitElement {
    */
   get rightGap(): number {
     const digitsInRightNumber = numberDigitsInNumber(this.max);
-    console.log(`digitsInRightNumber = ${digitsInRightNumber}`);
     let ret =
       2 + 0.5 * digitsInRightNumber * NumberLineV2.numberBoxSvgWidthDigit;
     if (this.max < 0) ret += NumberLineV2.numberBoxSvgWidthMinusSign;
@@ -594,14 +590,6 @@ export class NumberLineV2 extends LitElement {
           .svgHeight} "
         xmlns="http://www.w3.org/2000/svg"
       >
-        <rect
-          x="-${this.leftGap}"
-          y="${this.minSvgY}"
-          width="${this.leftGap + this.basicNumberlineWidth + this.rightGap}"
-          height="${this.maxSvgY - this.minSvgY}"
-          fill="lightgrey"
-          stroke="red"
-        />
         ${this.renderNumberLine()} ${this.renderTickMarks()}
         ${this.renderNumberBoxes()} ${this.renderArches()}
         ${this.renderNumbers()}

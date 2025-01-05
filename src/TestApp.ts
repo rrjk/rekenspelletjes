@@ -130,7 +130,7 @@ export class TestApp extends LitElement {
           { from: 20, to: 30 },
           { from: 30, to: 35 },
         ]}
-        .fixedNumbers=${[0]}
+        .fixedNumbers=${[0, 100]}
         .numberBoxes=${[
           { position: 7, nmbr: 7, active: 'wrong' },
           { position: 10, nmbr: 10, active: 'active' },
@@ -142,6 +142,6 @@ export class TestApp extends LitElement {
   }
 
   protected render(): HTMLTemplateResult {
-    return this.renderButtonSmall();
+    return this.renderTest();
   }
 }
