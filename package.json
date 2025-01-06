@@ -39,6 +39,15 @@
     "rules": {
       "wc/guard-super-call": "off",
       "lines-between-class-members": "off",
+      "no-console": [
+        "warn",
+        {
+          "allow": [
+            "warn",
+            "error"
+          ]
+        }
+      ],
       "no-plusplus": [
         "error",
         {
