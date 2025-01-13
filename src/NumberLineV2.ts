@@ -120,6 +120,7 @@ export class NumberLineV2 extends LitElement {
 
       svg {
         width: 100%;
+        height: 100%;
       }
 
       .number {
@@ -258,6 +259,7 @@ export class NumberLineV2 extends LitElement {
 
       let depthFound = false;
       let depthToInvestigate = minDepth;
+      this.sortedNumberBoxesPerLevel = [[]];
       while (!depthFound) {
         if (this.sortedNumberBoxesPerLevel.length < depthToInvestigate + 1)
           this.sortedNumberBoxesPerLevel.push([]);
@@ -352,7 +354,7 @@ export class NumberLineV2 extends LitElement {
       );
     if (this.belowArches !== null) return 50;
     if (this.fixedNumbers !== null) return 40;
-    return NumberLineV2.minSvgYTickmarks;
+    return NumberLineV2.maxSvgYTickmarks;
   }
 
   get svgHeight() {
