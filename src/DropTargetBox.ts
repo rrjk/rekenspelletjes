@@ -3,12 +3,15 @@ import type { HTMLTemplateResult, CSSResultGroup } from 'lit';
 // eslint-disable-next-line import/extensions
 import { customElement, property, state } from 'lit/decorators.js';
 
-import { DropTargetElement, HighlightType } from './DraggableElement';
+import { DropTargetElementInterface, HighlightType } from './DraggableElement';
 
 type BoxSize = 'Smallest' | 'Small' | 'Big' | 'Biggest';
 
 @customElement('drop-target-box')
-export class DropTargetBox extends LitElement implements DropTargetElement {
+export class DropTargetBox
+  extends LitElement
+  implements DropTargetElementInterface
+{
   @property({ type: String })
   accessor size: BoxSize = 'Smallest';
 

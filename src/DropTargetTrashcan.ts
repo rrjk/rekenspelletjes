@@ -5,14 +5,14 @@ import { customElement, state } from 'lit/decorators.js';
 // eslint-disable-next-line import/extensions
 import { classMap } from 'lit/directives/class-map.js';
 
-import { DropTargetElement, HighlightType } from './DraggableElement';
+import { DropTargetElementInterface, HighlightType } from './DraggableElement';
 
 const trashcanUrl = new URL('../images/trashcan.png', import.meta.url);
 
 @customElement('drop-target-trashcan')
 export class DropTargetTrashcan
   extends LitElement
-  implements DropTargetElement
+  implements DropTargetElementInterface
 {
   @state()
   accessor highlighted: HighlightType = 'none';

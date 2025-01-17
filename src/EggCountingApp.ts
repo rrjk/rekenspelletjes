@@ -20,7 +20,7 @@ import './DropTargetTrashcan';
 import './DynamicGrid';
 import type {
   DraggableElement,
-  DropTargetElement,
+  DropTargetElementInterface,
   DropTarget,
 } from './DraggableElement';
 import { getColorInfo } from './Colors';
@@ -63,7 +63,7 @@ export class EggCountingApp extends TimeLimitedGame2 {
   eggTargetChange(eggTarget: Element | undefined) {
     if (eggTarget) {
       this.eggTarget = [
-        { element: <DropTargetElement>eggTarget, dropType: 'dropOk' },
+        { element: <DropTargetElementInterface>eggTarget, dropType: 'dropOk' },
       ];
     } else this.eggTarget = [];
   }
@@ -71,7 +71,10 @@ export class EggCountingApp extends TimeLimitedGame2 {
   eggCartonTargetChange(eggCartonTarget: Element | undefined) {
     if (eggCartonTarget) {
       this.eggCartonTarget = [
-        { element: <DropTargetElement>eggCartonTarget, dropType: 'dropOk' },
+        {
+          element: <DropTargetElementInterface>eggCartonTarget,
+          dropType: 'dropOk',
+        },
       ];
     } else this.eggCartonTarget = [];
   }
@@ -79,7 +82,10 @@ export class EggCountingApp extends TimeLimitedGame2 {
   trashcanTargetChange(trashcanTarget: Element | undefined) {
     if (trashcanTarget) {
       this.trashcanTarget = [
-        { element: <DropTargetElement>trashcanTarget, dropType: 'dropOk' },
+        {
+          element: <DropTargetElementInterface>trashcanTarget,
+          dropType: 'dropOk',
+        },
       ];
     } else this.trashcanTarget = [];
   }

@@ -3,7 +3,7 @@ import type { HTMLTemplateResult, CSSResultGroup } from 'lit';
 // eslint-disable-next-line import/extensions
 import { customElement, property, state } from 'lit/decorators.js';
 
-import { DropTargetElement, HighlightType } from './DraggableElement';
+import { DropTargetElementInterface, HighlightType } from './DraggableElement';
 
 type ItemType = 'egg' | 'eggCarton';
 
@@ -13,7 +13,10 @@ const imageURLs: Record<ItemType, URL> = {
 };
 
 @customElement('drop-target-egg')
-export class DropTargetEgg extends LitElement implements DropTargetElement {
+export class DropTargetEgg
+  extends LitElement
+  implements DropTargetElementInterface
+{
   @property({ type: Number })
   accessor numberItemsToShow = 8;
 
@@ -24,7 +27,7 @@ export class DropTargetEgg extends LitElement implements DropTargetElement {
   accessor itemType: ItemType = 'eggCarton';
 
   @property({ attribute: false })
-  accessor trashcanAreas: DropTargetElement[] = [];
+  accessor trashcanAreas: DropTargetElementInterface[] = [];
 
   @state()
   accessor highlighted: HighlightType = 'none';

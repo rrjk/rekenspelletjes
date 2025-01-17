@@ -8,7 +8,7 @@ import { getRealViewportHeight, getRealViewportWidth } from './RealHeight';
 export type HighlightType = 'none' | 'droppable' | 'wrong';
 export type DropType = 'dropOk' | 'dropWrong';
 
-export interface DropTargetElement extends HTMLElement {
+export interface DropTargetElementInterface extends HTMLElement {
   highlightForDrop(newState: HighlightType): void;
   value?: string;
 }
@@ -26,12 +26,12 @@ export class DropEvent extends Event {
 }
 
 export type DropTarget = {
-  element: DropTargetElement;
+  element: DropTargetElementInterface;
   dropType: DropType;
 };
 
 type DropTargetInfo = {
-  element: DropTargetElement;
+  element: DropTargetElementInterface;
   dropType: DropType;
   minDeltaX: number;
   maxDeltaX: number;
@@ -100,7 +100,7 @@ export class DraggableElement extends LitElement {
     this.cummulativeDeltaY = 0;
   }
 
-  addDropElement(element: DropTargetElement): void {
+  addDropElement(element: DropTargetElementInterface): void {
     this.dropTargetInfoList.push({
       element,
       dropType: 'dropOk',
@@ -121,7 +121,7 @@ export class DraggableElement extends LitElement {
     this.dropTargetInfoList.length = 0; // Setting the length of an array to 0 clears the array
   }
 
-  markAsWrongDrop(element: DropTargetElement): void {
+  markAsWrongDrop(element: DropTargetElementInterface): void {
     const targetToUpdate = this.dropTargetInfoList.find(
       target => element === target.element,
     );

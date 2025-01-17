@@ -4,7 +4,7 @@ import { customElement, state } from 'lit/decorators.js';
 import type { HTMLTemplateResult } from 'lit';
 import {
   DraggableElement,
-  DropTargetElement,
+  DropTargetElementInterface,
   HighlightType,
 } from './DraggableElement';
 import { getHeartasHTMLTemplateResult } from './HeartImage';
@@ -13,7 +13,7 @@ import { Color } from './Colors';
 @customElement('draggable-target-heart')
 export class DraggableTargetHeart
   extends DraggableElement
-  implements DropTargetElement
+  implements DropTargetElementInterface
 {
   @state()
   private accessor backgroundColor = 'transparent';
