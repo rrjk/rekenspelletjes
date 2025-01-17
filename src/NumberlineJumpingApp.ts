@@ -3,7 +3,7 @@ import { html, css } from 'lit';
 // eslint-disable-next-line import/extensions
 import { customElement, property, state } from 'lit/decorators.js';
 // eslint-disable-next-line import/extensions
-// import { ref } from 'lit/directives/ref.js';
+import { ref } from 'lit/directives/ref.js';
 
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
@@ -13,9 +13,17 @@ import { randomIntFromRange } from './Randomizer';
 
 import './RealHeight';
 import './DynamicGrid';
+import './DraggableElement';
+import './DropTargetContainer';
 
 import type { ArchType, NumberBoxInfo } from './NumberLineV2';
 import type { AboveBelowType } from './Arch';
+import type {
+  DropTargetElementInterface,
+  DropTarget,
+  DropEvent,
+} from './DraggableElement';
+
 import './NumberLineV2';
 import './Arch';
 
@@ -48,6 +56,8 @@ export class NumberlineJumpingApp extends TimeLimitedGame2 {
   private accessor arches: ArchType[] = [];
   @state()
   private accessor numberBoxes: NumberBoxInfo[] = [];
+  @state()
+  private accessor numberLineArea: DropTarget[] = [];
 
   private gameLogger = new GameLogger('J', 'a');
 
@@ -125,6 +135,22 @@ export class NumberlineJumpingApp extends TimeLimitedGame2 {
     }
   }
 
+  numberLineAreaChange(numberLineArea: Element | undefined) {
+    console.log(`numberLineAreaChange numberLineArea = ${numberLineArea}`);
+    if (numberLineArea) {
+      this.numberLineArea = [
+        {
+          element: <DropTargetElementInterface>numberLineArea,
+          dropType: 'dropOk',
+        },
+      ];
+    } else this.numberLineArea = [];
+  }
+
+  archDrop(evt: DropEvent) {
+    console.log(`archDrop evt = ${JSON.stringify(evt)}`);
+  }
+
   static get styles(): CSSResultArray {
     return [
       ...super.styles,
@@ -193,6 +219,12 @@ export class NumberlineJumpingApp extends TimeLimitedGame2 {
           width: 100%;
         }
 
+        number-line-arch {
+          display: block;
+          height: 100%;
+          width: 100%;
+        }
+
         digit-keyboard {
           height: 100%;
         }
@@ -208,10 +240,18 @@ export class NumberlineJumpingApp extends TimeLimitedGame2 {
   renderArch(width: number, position: AboveBelowType): HTMLTemplateResult {
     console.assert(width > 0 && width <= 10);
     return html`
-      <number-line-arch
-        width="${width}"
-        position="${position}"
-      ></number-line-arch>
+      <draggable-element
+        class="arch"
+        resetDragAfterDrop
+        value="${width}"
+        .dropTargetList=${this.numberLineArea}
+        @dropped="${this.archDrop}"
+      >
+        <number-line-arch
+          width="${width}"
+          position="${position}"
+        ></number-line-arch>
+      </draggable-element>
     `;
   }
 
@@ -233,7 +273,10 @@ export class NumberlineJumpingApp extends TimeLimitedGame2 {
     return html`
       <div id="exerciseArea">${this.leftOperand} + ${this.rightOperand} =</div>
       <div id="expandedSumArea"></div>
-      <div id="numberlineArea">
+      <drop-target-container
+        id="numberlineArea"
+        ${ref(this.numberLineAreaChange)}
+      >
         <number-line-v2
           min="${this.minNumber}"
           max="${this.maxNumber}"
@@ -243,7 +286,7 @@ export class NumberlineJumpingApp extends TimeLimitedGame2 {
           tickMarks="upToSingles"
           aspectRatio="30"
         ></number-line-v2>
-      </div>
+      </drop-target-container>
       <div id="archesBoxArea">${this.renderArchesBox()}</div>
       <div id="keypadArea">
         <digit-keyboard
