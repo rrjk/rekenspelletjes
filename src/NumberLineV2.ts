@@ -246,6 +246,8 @@ export class NumberLineV2 extends LitElement {
       }
     }
 
+    this.sortedNumberBoxesPerLevel = [[]];
+
     for (const nb of sortedNumberBoxes) {
       // First determine minimal distance to a fixed number
       let possDiffToFixed = 1000;
@@ -259,7 +261,6 @@ export class NumberLineV2 extends LitElement {
 
       let depthFound = false;
       let depthToInvestigate = minDepth;
-      this.sortedNumberBoxesPerLevel = [[]];
       while (!depthFound) {
         if (this.sortedNumberBoxesPerLevel.length < depthToInvestigate + 1)
           this.sortedNumberBoxesPerLevel.push([]);
@@ -564,6 +565,9 @@ export class NumberLineV2 extends LitElement {
   }
 
   renderNumberBoxes(): SVGTemplateResult[] {
+    console.log(
+      `renderNumberBoxes - this.sortedNumberBoxesPerLevel = ${JSON.stringify(this.sortedNumberBoxesPerLevel)}`,
+    );
     const ret: SVGTemplateResult[] = [];
 
     // Per level we will render the number boxes
