@@ -59,6 +59,8 @@ export class NumberlineJumpingApp extends TimeLimitedGame2 {
   @state()
   private accessor numberLineArea: DropTarget[] = [];
 
+  private currentNumberlineNumber = 0;
+
   private gameLogger = new GameLogger('J', 'a');
 
   async firstUpdated(): Promise<void> {
@@ -101,8 +103,11 @@ export class NumberlineJumpingApp extends TimeLimitedGame2 {
 
   newRound() {
     if (this.operator === 'plus') {
-      this.leftOperand = randomIntFromRange(this.minNumber, this.maxNumber - 1);
-      this.answer = randomIntFromRange(this.leftOperand + 1, this.maxNumber);
+      this.leftOperand = randomIntFromRange(this.minNumber + 1, this.maxNumber); // We don't want the left most number on the numberline.
+      this.answer = randomIntFromRange(
+        this.leftOperand + 1,
+        this.maxNumber - 1, // We don't want the right most number of the numberline.
+      );
       this.rightOperand = this.answer - this.leftOperand;
       /// Now we have to find the required arches
       const singlesInLeftOperand = this.leftOperand % 10;
@@ -123,6 +128,14 @@ export class NumberlineJumpingApp extends TimeLimitedGame2 {
       this.numberBoxes = [
         { position: this.leftOperand, nmbr: this.leftOperand },
       ];
+
+      this.currentNumberlineNumber = this.leftOperand;
+
+      this.arches = [];
+
+      console.log(
+        `firstArch = ${this.firstArch}, lastArch = ${this.lastArch}, numberTenArches = ${this.numberTenArches}`,
+      );
     }
   }
 
@@ -133,6 +146,10 @@ export class NumberlineJumpingApp extends TimeLimitedGame2 {
     } else {
       this.numberNok += 1;
     }
+  }
+
+  processWrongAnswer(): void {
+    this.numberNok += 1;
   }
 
   numberLineAreaChange(numberLineArea: Element | undefined) {
@@ -149,6 +166,42 @@ export class NumberlineJumpingApp extends TimeLimitedGame2 {
 
   archDrop(evt: DropEvent) {
     console.log(`archDrop evt = ${JSON.stringify(evt)}`);
+
+    const previousNumberlineNumber = this.currentNumberlineNumber;
+
+    if (evt.draggableValue === '10' && this.numberTenArches > 0) {
+      this.currentNumberlineNumber += 10;
+      this.numberTenArches -= 1;
+    } else if (
+      this.firstArch === 0 &&
+      evt.draggableValue === this.lastArch.toString()
+    ) {
+      this.currentNumberlineNumber += this.lastArch;
+      this.lastArch = 0;
+    } else if (evt.draggableValue === this.firstArch.toString()) {
+      this.currentNumberlineNumber += this.firstArch;
+      this.firstArch = 0;
+    } else {
+      this.processWrongAnswer();
+    }
+
+    if (this.currentNumberlineNumber !== previousNumberlineNumber) {
+      this.numberBoxes = [
+        ...this.numberBoxes,
+        {
+          position: this.currentNumberlineNumber,
+          nmbr: this.currentNumberlineNumber,
+        },
+      ];
+      this.arches = [
+        ...this.arches,
+        { from: previousNumberlineNumber, to: this.currentNumberlineNumber },
+      ];
+    }
+
+    console.log(
+      `archDrop this.numberBoxes = ${JSON.stringify(this.numberBoxes)}`,
+    );
   }
 
   static get styles(): CSSResultArray {
@@ -269,7 +322,9 @@ export class NumberlineJumpingApp extends TimeLimitedGame2 {
   }
 
   renderGameContent(): HTMLTemplateResult {
-    console.log(JSON.stringify(this.numberBoxes));
+    console.log(
+      `renderGameContent: this.numberBoxes = ${JSON.stringify(this.numberBoxes)}`,
+    );
     return html`
       <div id="exerciseArea">${this.leftOperand} + ${this.rightOperand} =</div>
       <div id="expandedSumArea"></div>
