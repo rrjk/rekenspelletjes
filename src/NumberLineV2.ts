@@ -15,6 +15,7 @@ import type {
 import { customElement, property, state } from 'lit/decorators.js';
 
 import { Bezier } from 'bezier-js';
+import { numberDigitsInNumber } from './numberHelperFunctions';
 
 export type ShowHide = 'show' | 'hide';
 export type ActiveEnum = 'active' | 'wrong' | 'notActive';
@@ -45,12 +46,6 @@ export type TickMarks =
   | 'upToSingles';
 
 type AboveBelowType = 'above' | 'below';
-
-/** Return number of decimal digits in number */
-function numberDigitsInNumber(nmbr: number): number {
-  if (nmbr === 0) return 1;
-  return Math.ceil(Math.log10(Math.abs(nmbr) + 1));
-}
 
 /** Customer element to create numberline
  * Possible numberlines range from -100 to 100
