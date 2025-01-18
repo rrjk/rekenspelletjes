@@ -15,7 +15,7 @@ import type {
 import { customElement, property, state } from 'lit/decorators.js';
 
 import { Bezier } from 'bezier-js';
-import { numberDigitsInNumber } from './numberHelperFunctions';
+import { numberDigitsInNumber } from './NumberHelperFunctions';
 
 export type ShowHide = 'show' | 'hide';
 export type ActiveEnum = 'active' | 'wrong' | 'notActive';

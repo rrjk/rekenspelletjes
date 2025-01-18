@@ -30,6 +30,9 @@ export class NumberLineArch extends LitElement {
   @property({ type: String })
   accessor position: AboveBelowType = 'above';
 
+  @property({ type: Boolean })
+  accessor disabled: boolean = false;
+
   static get styles(): CSSResultGroup {
     return css`
       svg {
@@ -40,13 +43,13 @@ export class NumberLineArch extends LitElement {
       .number {
         text-anchor: middle;
         font-size: 30px;
-        fill: blue;
+        fill: var(--color);
         dominant-baseline: mathematical;
       }
 
       .archStart,
       .archEnd {
-        stroke: blue;
+        stroke: var(--color);
         stroke-width: 2px;
         fill: transparent;
       }
@@ -104,6 +107,11 @@ export class NumberLineArch extends LitElement {
 
   render(): HTMLTemplateResult {
     return html`
+      <style>
+        :host {
+          --color: ${this.disabled ? html`grey` : html`blue`};
+        }
+      </style>
       <svg
         viewBox="${NumberLineArch.svgLeft} ${NumberLineArch.svgTop} ${NumberLineArch.svgWidth} ${NumberLineArch.svgHeight}"
         xmlns="http://www.w3.org/2000/svg"

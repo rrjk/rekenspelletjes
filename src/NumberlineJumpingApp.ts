@@ -5,6 +5,8 @@ import { customElement, property, state } from 'lit/decorators.js';
 // eslint-disable-next-line import/extensions
 import { ref } from 'lit/directives/ref.js';
 
+import { create } from 'mutative';
+
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
 import { TimeLimitedGame2 } from './TimeLimitedGame2';
@@ -16,7 +18,7 @@ import './DynamicGrid';
 import './DraggableElement';
 import './DropTargetContainer';
 
-import type { ArchType, NumberBoxInfo } from './NumberLineV2';
+import type { ActiveEnum, ArchType, NumberBoxInfo } from './NumberLineV2';
 import type { AboveBelowType } from './Arch';
 import type {
   DropTargetElementInterface,
@@ -28,6 +30,8 @@ import './NumberLineV2';
 import './Arch';
 
 import './DigitKeyboard';
+
+import { determineRequiredDigit } from './NumberHelperFunctions';
 
 type OperatorType = 'plus' | 'minus';
 
@@ -58,6 +62,10 @@ export class NumberlineJumpingApp extends TimeLimitedGame2 {
   private accessor numberBoxes: NumberBoxInfo[] = [];
   @state()
   private accessor numberLineArea: DropTarget[] = [];
+  @state()
+  private accessor keyPadActive: boolean = false;
+  @state()
+  private accessor archesPadActive: boolean = false;
 
   private currentNumberlineNumber = 0;
 
@@ -103,7 +111,10 @@ export class NumberlineJumpingApp extends TimeLimitedGame2 {
 
   newRound() {
     if (this.operator === 'plus') {
-      this.leftOperand = randomIntFromRange(this.minNumber + 1, this.maxNumber); // We don't want the left most number on the numberline.
+      this.leftOperand = randomIntFromRange(
+        this.minNumber + 1,
+        this.maxNumber - 2,
+      ); // We don't want the left most number on the numberline.
       this.answer = randomIntFromRange(
         this.leftOperand + 1,
         this.maxNumber - 1, // We don't want the right most number of the numberline.
@@ -133,9 +144,12 @@ export class NumberlineJumpingApp extends TimeLimitedGame2 {
 
       this.arches = [];
 
+      this.archesPadActive = true;
+
       console.log(
-        `firstArch = ${this.firstArch}, lastArch = ${this.lastArch}, numberTenArches = ${this.numberTenArches}`,
+        `newRound(): firstArch = ${this.firstArch}, lastArch = ${this.lastArch}, numberTenArches = ${this.numberTenArches}`,
       );
+      console.log(`this.numberBoxes = ${JSON.stringify(this.numberBoxes)}`);
     }
   }
 
@@ -181,8 +195,6 @@ export class NumberlineJumpingApp extends TimeLimitedGame2 {
     } else if (evt.draggableValue === this.firstArch.toString()) {
       this.currentNumberlineNumber += this.firstArch;
       this.firstArch = 0;
-    } else {
-      this.processWrongAnswer();
     }
 
     if (this.currentNumberlineNumber !== previousNumberlineNumber) {
@@ -190,18 +202,59 @@ export class NumberlineJumpingApp extends TimeLimitedGame2 {
         ...this.numberBoxes,
         {
           position: this.currentNumberlineNumber,
-          nmbr: this.currentNumberlineNumber,
+          nmbr: undefined,
+          active: 'active',
         },
       ];
       this.arches = [
         ...this.arches,
         { from: previousNumberlineNumber, to: this.currentNumberlineNumber },
       ];
+      this.archesPadActive = false;
+      this.keyPadActive = true;
+    } else {
+      this.processWrongAnswer();
     }
 
     console.log(
       `archDrop this.numberBoxes = ${JSON.stringify(this.numberBoxes)}`,
     );
+  }
+
+  handleDigit(evt: CustomEvent) {
+    console.log(`handleDigit: ${JSON.stringify(evt.detail)}`);
+    const digit: number = evt.detail;
+    const partialNumberlineNumber =
+      this.numberBoxes[this.numberBoxes.length - 1].nmbr;
+    if (
+      digit ===
+      determineRequiredDigit(
+        this.currentNumberlineNumber,
+        partialNumberlineNumber,
+      )
+    ) {
+      const newPartialNumberlineNumber =
+        partialNumberlineNumber === undefined
+          ? digit
+          : partialNumberlineNumber * 10 + digit;
+
+      let newActiveState: ActiveEnum = 'active';
+      if (newPartialNumberlineNumber === this.currentNumberlineNumber) {
+        newActiveState = 'notActive';
+        this.keyPadActive = false;
+        this.archesPadActive = true;
+      }
+      this.numberBoxes = create(this.numberBoxes, draft => {
+        draft[draft.length - 1].nmbr = newPartialNumberlineNumber;
+        draft[draft.length - 1].active = newActiveState;
+      });
+      if (newPartialNumberlineNumber === this.answer) {
+        this.numberOk += 1;
+        this.newRound();
+      }
+    } else {
+      this.numberNok += 1;
+    }
   }
 
   static get styles(): CSSResultArray {
@@ -296,6 +349,7 @@ export class NumberlineJumpingApp extends TimeLimitedGame2 {
       <draggable-element
         class="arch"
         resetDragAfterDrop
+        ?dragDisabled=${!this.archesPadActive}
         value="${width}"
         .dropTargetList=${this.numberLineArea}
         @dropped="${this.archDrop}"
@@ -303,6 +357,7 @@ export class NumberlineJumpingApp extends TimeLimitedGame2 {
         <number-line-arch
           width="${width}"
           position="${position}"
+          ?disabled=${!this.archesPadActive}
         ></number-line-arch>
       </draggable-element>
     `;
@@ -345,7 +400,7 @@ export class NumberlineJumpingApp extends TimeLimitedGame2 {
       <div id="archesBoxArea">${this.renderArchesBox()}</div>
       <div id="keypadArea">
         <digit-keyboard
-          disabled
+          ?disabled=${!this.keyPadActive}
           .disabledDigits="${[
             false,
             false,
@@ -358,6 +413,7 @@ export class NumberlineJumpingApp extends TimeLimitedGame2 {
             false,
             false,
           ]}"
+          @digit-entered="${this.handleDigit}"
         ></digit-keyboard>
       </div>
     `;

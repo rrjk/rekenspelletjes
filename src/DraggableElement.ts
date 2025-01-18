@@ -49,6 +49,8 @@ export class DraggableElement extends LitElement {
   accessor resetDragAfterDrop = false;
   @property({ type: Number })
   accessor dropAreaPercentage = 20; // Area in the draggable element that needs to be over the drop target, measured as percentage of total width and height
+  @property({ type: Boolean })
+  accessor dragDisabled = false;
   @state()
   private accessor cummulativeDeltaX = 0; // expressed as percentage of the viewport width
   @state()
@@ -136,12 +138,12 @@ export class DraggableElement extends LitElement {
 
   private mouseDown() {
     this.determineDragBoundaries();
-    this.dragActive = true;
+    this.dragActive = !this.dragDisabled;
   }
 
   private touchStart(evt: TouchEvent): void {
     this.determineDragBoundaries();
-    this.dragActive = true;
+    this.dragActive = !this.dragDisabled;
     this.touchPreviousScreenX = evt.changedTouches[0].screenX;
     this.touchPreviousScreenY = evt.changedTouches[0].screenY;
   }
