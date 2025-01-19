@@ -66,6 +66,8 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
   private accessor keyPadActive: boolean = false;
   @state()
   private accessor archesPadActive: boolean = false;
+  @state()
+  private accessor gameActive: boolean = false;
 
   private currentNumberlineNumber = 0;
 
@@ -145,20 +147,7 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
       this.arches = [];
 
       this.archesPadActive = true;
-
-      console.log(
-        `newRound(): firstArch = ${this.firstArch}, lastArch = ${this.lastArch}, numberTenArches = ${this.numberTenArches}`,
-      );
-      console.log(`this.numberBoxes = ${JSON.stringify(this.numberBoxes)}`);
-    }
-  }
-
-  handleCheckAnswer(): void {
-    if (true) {
-      this.numberOk += 1;
-      this.newRound();
-    } else {
-      this.numberNok += 1;
+      this.gameActive = true;
     }
   }
 
@@ -269,12 +258,11 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
 
         @media (min-aspect-ratio: 0.9) {
           .gameContent {
-            grid-template-rows: 0 11.5% 11.5% 24% 48% 0;
+            grid-template-rows: 0 12% 36% 48% 0;
             grid-template-columns: 0 48.5% 48.5% 0;
             grid-template-areas:
               '. ............... ............... .'
               '. exercise        exercise        .'
-              '. expandedSum     expandedSum     .'
               '. numberline      numberline      .'
               '. archesBox       keypad          .'
               '. ............... ............... .';
@@ -283,12 +271,11 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
 
         @media (max-aspect-ratio: 0.9) {
           .gameContent {
-            grid-template-rows: 0 11.5% 11.5% 24% 48% 0;
+            grid-template-rows: 0 12% 36% 48% 0;
             grid-template-columns: 0 48.5% 48.5% 0;
             grid-template-areas:
               '. ............... ............... .'
               '. exercise        exercise        .'
-              '. expandedSum     expandedSum     .'
               '. numberline      numberline      .'
               '. archesBox       keypad          .'
               '. ............... ............... .';
@@ -297,27 +284,22 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
 
         #exerciseArea {
           grid-area: exercise;
-          background-color: yellow;
         }
 
         #expandedSumArea {
           grid-area: expandedSum;
-          background-color: red;
         }
 
         #numberlineArea {
           grid-area: numberline;
-          background-color: green;
         }
 
         #archesBoxArea {
           grid-area: archesBox;
-          background-color: lightgrey;
         }
 
         #keypadArea {
           grid-area: keypad;
-          background-color: purple;
         }
 
         number-line-v2 {
@@ -338,6 +320,18 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
         dynamic-grid {
           width: 100%;
           height: 100%;
+        }
+
+        svg#exercise {
+          width: 100%;
+          height: 100%;
+        }
+
+        svg#exercise text {
+          text-anchor: middle;
+          dominant-baseline: mathematical;
+          font-size: 60px;
+          fill: black;
         }
       `,
     ];
@@ -376,12 +370,23 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
     `;
   }
 
+  renderExerciseArea(): HTMLTemplateResult {
+    let exercise = '';
+    if (this.gameActive)
+      exercise = `${this.leftOperand} + ${this.rightOperand} =`;
+    return html` <div id="exerciseArea">
+      <svg id="exercise" viewbox="-125 -30 250 60">
+        <text>${exercise}</text>
+      </svg>
+    </div>`;
+  }
+
   renderGameContent(): HTMLTemplateResult {
     console.log(
       `renderGameContent: this.numberBoxes = ${JSON.stringify(this.numberBoxes)}`,
     );
     return html`
-      <div id="exerciseArea">${this.leftOperand} + ${this.rightOperand} =</div>
+      ${this.renderExerciseArea()}
       <div id="expandedSumArea"></div>
       <drop-target-container
         id="numberlineArea"
@@ -394,7 +399,7 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
           .aboveArches="${this.arches}"
           .numberBoxes="${this.numberBoxes}"
           tickMarks="upToSingles"
-          aspectRatio="30"
+          aspectRatio="10"
         ></number-line-v2>
       </drop-target-container>
       <div id="archesBoxArea">${this.renderArchesBox()}</div>
