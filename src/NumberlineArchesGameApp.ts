@@ -35,8 +35,8 @@ import { determineRequiredDigit } from './NumberHelperFunctions';
 
 type OperatorType = 'plus' | 'minus';
 
-@customElement('numberline-jumping-app')
-export class NumberlineJumpingApp extends TimeLimitedGame2 {
+@customElement('numberline-arches-game-app')
+export class NumberlineArchesGameApp extends TimeLimitedGame2 {
   @property()
   accessor minNumber = 0;
   @property()
