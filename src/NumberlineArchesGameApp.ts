@@ -11,7 +11,7 @@ import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
 import { TimeLimitedGame2 } from './TimeLimitedGame2';
 import { GameLogger } from './GameLogger';
-import { randomIntFromRange } from './Randomizer';
+import { randomFromSet, randomIntFromRange } from './Randomizer';
 
 import './RealHeight';
 import './DynamicGrid';
@@ -37,6 +37,22 @@ type OperatorType = 'plus' | 'minus';
 
 @customElement('numberline-arches-game-app')
 export class NumberlineArchesGameApp extends TimeLimitedGame2 {
+  static happyFaces = [
+    '😀',
+    '😄',
+    '😃',
+    '😁',
+    '🙂',
+    '😉',
+    '😊',
+    '🤩',
+    '🥳',
+    '🤪',
+    '🤗',
+  ];
+  static sadFaces = ['😕', '😟', '😮', '😲', '🥹', '😧', '😢', '😞', '😭'];
+  static neutralEmoji = '⚜️';
+
   @property()
   accessor minNumber = 0;
   @property()
@@ -68,6 +84,21 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
   private accessor archesPadActive: boolean = false;
   @state()
   private accessor gameActive: boolean = false;
+  @state()
+  private accessor disabledDigits = [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+  ];
+  @state()
+  private accessor emoji: string = NumberlineArchesGameApp.neutralEmoji;
 
   private currentNumberlineNumber = 0;
 
@@ -146,13 +177,20 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
 
       this.arches = [];
 
+      this.emoji = NumberlineArchesGameApp.neutralEmoji;
+
       this.archesPadActive = true;
       this.gameActive = true;
     }
   }
 
   processWrongAnswer(): void {
+    this.emoji = randomFromSet(NumberlineArchesGameApp.sadFaces);
     this.numberNok += 1;
+  }
+
+  processCorrectSubAnswer(): void {
+    this.emoji = randomFromSet(NumberlineArchesGameApp.happyFaces);
   }
 
   numberLineAreaChange(numberLineArea: Element | undefined) {
@@ -168,8 +206,6 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
   }
 
   archDrop(evt: DropEvent) {
-    console.log(`archDrop evt = ${JSON.stringify(evt)}`);
-
     const previousNumberlineNumber = this.currentNumberlineNumber;
 
     if (evt.draggableValue === '10' && this.numberTenArches > 0) {
@@ -199,6 +235,7 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
         ...this.arches,
         { from: previousNumberlineNumber, to: this.currentNumberlineNumber },
       ];
+      this.processCorrectSubAnswer();
       this.archesPadActive = false;
       this.keyPadActive = true;
     } else {
@@ -222,6 +259,19 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
         partialNumberlineNumber,
       )
     ) {
+      this.processCorrectSubAnswer();
+      this.disabledDigits = [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+      ];
       const newPartialNumberlineNumber =
         partialNumberlineNumber === undefined
           ? digit
@@ -242,7 +292,10 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
         this.newRound();
       }
     } else {
-      this.numberNok += 1;
+      this.processWrongAnswer();
+      this.disabledDigits = create(this.disabledDigits, draft => {
+        draft[digit] = true;
+      });
     }
   }
 
@@ -330,7 +383,7 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
         svg#exercise text {
           text-anchor: middle;
           dominant-baseline: mathematical;
-          font-size: 60px;
+          font-size: 40px;
           fill: black;
         }
       `,
@@ -373,9 +426,9 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
   renderExerciseArea(): HTMLTemplateResult {
     let exercise = '';
     if (this.gameActive)
-      exercise = `${this.leftOperand} + ${this.rightOperand} =`;
+      exercise = `${this.emoji} ${this.leftOperand} + ${this.rightOperand} = ${this.emoji}`;
     return html` <div id="exerciseArea">
-      <svg id="exercise" viewbox="-125 -30 250 60">
+      <svg id="exercise" viewbox="-150 -30 300 60">
         <text>${exercise}</text>
       </svg>
     </div>`;
@@ -406,18 +459,7 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
       <div id="keypadArea">
         <digit-keyboard
           ?disabled=${!this.keyPadActive}
-          .disabledDigits="${[
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-          ]}"
+          .disabledDigits="${this.disabledDigits}"
           @digit-entered="${this.handleDigit}"
         ></digit-keyboard>
       </div>
