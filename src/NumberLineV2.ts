@@ -17,6 +17,12 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { Bezier } from 'bezier-js';
 import { numberDigitsInNumber } from './NumberHelperFunctions';
 
+import {
+  addResizeObserverClient,
+  removeResizeObserverClient,
+  ResizeObserverClientInterface,
+} from './ResizeObserver';
+
 export type ShowHide = 'show' | 'hide';
 export type ActiveEnum = 'active' | 'wrong' | 'notActive';
 export interface ArchType {
@@ -61,7 +67,10 @@ type AboveBelowType = 'above' | 'below';
  */
 
 @customElement('number-line-v2')
-export class NumberLineV2 extends LitElement {
+export class NumberLineV2
+  extends LitElement
+  implements ResizeObserverClientInterface
+{
   static numberBoxSvgWidthMinusSign = 6;
   static numberBoxSvgWidthDigit = 11;
   static numberBoxSvgWidthOverhead = 2;
@@ -90,7 +99,7 @@ export class NumberLineV2 extends LitElement {
   accessor fixedNumbers: number[] | null = null;
   @state()
   private accessor processedFixedNumbers: number[] = [];
-  @property({ type: Number })
+  @state()
   accessor aspectRatio = 20;
 
   @state()
@@ -175,6 +184,24 @@ export class NumberLineV2 extends LitElement {
         marker-end: url(#arrow);
       }
     `;
+  }
+
+  handleResize() {
+    console.log(
+      `handleResize numberlineV2 width = ${this.clientWidth}, height = ${this.clientHeight}`,
+    );
+    const clientAspectRatio = this.clientWidth / this.clientHeight;
+    this.aspectRatio = Math.max(3, clientAspectRatio);
+  }
+
+  connectedCallback(): void {
+    super.connectedCallback();
+    addResizeObserverClient(this);
+  }
+
+  disconnectedCallback(): void {
+    super.disconnectedCallback();
+    removeResizeObserverClient(this);
   }
 
   protected willUpdate(changedProperties: PropertyValues): void {
@@ -299,10 +326,11 @@ export class NumberLineV2 extends LitElement {
    *  This is based on the provided aspect ratio
    */
   get basicNumberlineWidth(): number {
-    return (
-      this.aspectRatio *
-      (NumberLineV2.maxSvgYTickmarks - NumberLineV2.minSvgYTickmarks)
+    console.log(
+      `basicNumberlineWidth - numberline viewport width = ${this.clientWidth}`,
     );
+    console.log(`basicNumberlineWidth - aspect ratio = ${this.aspectRatio}`);
+    return this.aspectRatio * this.svgHeight;
   }
 
   /** Determine the gap on the left side of the numberline in SVG units
