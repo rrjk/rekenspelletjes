@@ -187,9 +187,6 @@ export class NumberLineV2
   }
 
   handleResize() {
-    console.log(
-      `handleResize numberlineV2 width = ${this.clientWidth}, height = ${this.clientHeight}`,
-    );
     const clientAspectRatio = this.clientWidth / this.clientHeight;
     this.aspectRatio = Math.max(3, clientAspectRatio);
   }
@@ -326,10 +323,6 @@ export class NumberLineV2
    *  This is based on the provided aspect ratio
    */
   get basicNumberlineWidth(): number {
-    console.log(
-      `basicNumberlineWidth - numberline viewport width = ${this.clientWidth}`,
-    );
-    console.log(`basicNumberlineWidth - aspect ratio = ${this.aspectRatio}`);
     return this.aspectRatio * this.svgHeight;
   }
 
@@ -588,9 +581,6 @@ export class NumberLineV2
   }
 
   renderNumberBoxes(): SVGTemplateResult[] {
-    console.log(
-      `renderNumberBoxes - this.sortedNumberBoxesPerLevel = ${JSON.stringify(this.sortedNumberBoxesPerLevel)}`,
-    );
     const ret: SVGTemplateResult[] = [];
 
     // Per level we will render the number boxes

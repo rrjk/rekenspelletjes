@@ -53,6 +53,8 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
   static sadFaces = ['😕', '😟', '😮', '😲', '🥹', '😧', '😢', '😞', '😭'];
   static neutralEmoji = '⚜️';
 
+  private gameLogger = new GameLogger('F', '');
+
   @property()
   accessor minNumber = 0;
   @property()
@@ -104,8 +106,6 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
 
   private currentNumberlineNumber = 0;
 
-  private gameLogger = new GameLogger('J', 'a');
-
   async firstUpdated(): Promise<void> {
     await this.getUpdateComplete();
 
@@ -142,6 +142,28 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
 
   executeGameOverActions(): void {
     this.gameLogger.logGameOver();
+  }
+
+  constructor() {
+    super();
+    this.parseUrl();
+  }
+
+  protected parseUrl(): void {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('min')) {
+      const parsedMin = parseInt(urlParams.get('min') || '', 10);
+      if (!parsedMin) this.minNumber = 0;
+      else this.minNumber = Math.floor(parsedMin / 10) * 10;
+      if (this.minNumber < 0) this.minNumber = 0;
+    }
+    if (urlParams.has('max')) {
+      const parsedMax = parseInt(urlParams.get('max') || '', 10);
+      if (!parsedMax) this.maxNumber = 100;
+      else this.maxNumber = Math.ceil(parsedMax / 10) * 10;
+      if (this.maxNumber <= this.minNumber)
+        this.maxNumber = this.minNumber + 10;
+    }
   }
 
   newRound() {

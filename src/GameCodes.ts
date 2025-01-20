@@ -44,6 +44,7 @@ export const gameCodes: GameInfoType[] = [
   { gameCode: 'U', name: 'Jan op de getallenlijn laten springen' },
   { gameCode: 'V', name: 'Sommen met dubbel splitsen' },
   { gameCode: 'W', name: 'Tiental Afsplitsen' },
+  { gameCode: 'X', name: 'Getallenlijn boogjes spel' },
 ];
 
 export function getGameDescription(gameCode: string): string {
