@@ -218,7 +218,6 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
   }
 
   numberLineAreaChange(numberLineArea: Element | undefined) {
-    console.log(`numberLineAreaChange numberLineArea = ${numberLineArea}`);
     if (numberLineArea) {
       this.numberLineArea = [
         {
@@ -267,14 +266,9 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
         draft.push(archWidth);
       });
     }
-
-    console.log(
-      `archDrop this.numberBoxes = ${JSON.stringify(this.numberBoxes)}`,
-    );
   }
 
   handleDigit(evt: CustomEvent) {
-    console.log(`handleDigit: ${JSON.stringify(evt.detail)}`);
     const digit: number = evt.detail;
     const partialNumberlineNumber =
       this.numberBoxes[this.numberBoxes.length - 1].nmbr;
@@ -417,7 +411,6 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
   }
 
   renderArch(width: number, position: AboveBelowType): HTMLTemplateResult {
-    console.assert(width > 0 && width <= 10);
     const disabled = !this.archesPadActive;
     const crossedOut =
       this.crossedOutArches.find(val => val === width) !== undefined;
@@ -465,9 +458,6 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
   }
 
   renderGameContent(): HTMLTemplateResult {
-    console.log(
-      `renderGameContent: this.numberBoxes = ${JSON.stringify(this.numberBoxes)}`,
-    );
     return html`
       ${this.renderExerciseArea()}
       <div id="expandedSumArea"></div>

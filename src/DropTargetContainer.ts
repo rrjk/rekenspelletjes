@@ -39,7 +39,6 @@ export class DropTargetContainer
   }
 
   render(): HTMLTemplateResult {
-    console.log(`highlight = ${this.highlighted}`);
     return html`
       <div
         class="${this.highlighted === 'droppable'
