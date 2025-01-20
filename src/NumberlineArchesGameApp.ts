@@ -98,6 +98,8 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
     false,
   ];
   @state()
+  private accessor crossedOutArches: number[] = [];
+  @state()
   private accessor emoji: string = NumberlineArchesGameApp.neutralEmoji;
 
   private currentNumberlineNumber = 0;
@@ -207,17 +209,15 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
 
   archDrop(evt: DropEvent) {
     const previousNumberlineNumber = this.currentNumberlineNumber;
+    const archWidth = parseInt(evt.draggableValue, 10);
 
-    if (evt.draggableValue === '10' && this.numberTenArches > 0) {
+    if (archWidth === 10 && this.numberTenArches > 0) {
       this.currentNumberlineNumber += 10;
       this.numberTenArches -= 1;
-    } else if (
-      this.firstArch === 0 &&
-      evt.draggableValue === this.lastArch.toString()
-    ) {
+    } else if (this.firstArch === 0 && archWidth === this.lastArch) {
       this.currentNumberlineNumber += this.lastArch;
       this.lastArch = 0;
-    } else if (evt.draggableValue === this.firstArch.toString()) {
+    } else if (archWidth === this.firstArch) {
       this.currentNumberlineNumber += this.firstArch;
       this.firstArch = 0;
     }
@@ -238,8 +238,12 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
       this.processCorrectSubAnswer();
       this.archesPadActive = false;
       this.keyPadActive = true;
+      this.crossedOutArches = [];
     } else {
       this.processWrongAnswer();
+      this.crossedOutArches = create(this.crossedOutArches, draft => {
+        draft.push(archWidth);
+      });
     }
 
     console.log(
@@ -392,11 +396,14 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
 
   renderArch(width: number, position: AboveBelowType): HTMLTemplateResult {
     console.assert(width > 0 && width <= 10);
+    const disabled = !this.archesPadActive;
+    const crossedOut =
+      this.crossedOutArches.find(val => val === width) !== undefined;
     return html`
       <draggable-element
         class="arch"
         resetDragAfterDrop
-        ?dragDisabled=${!this.archesPadActive}
+        ?dragDisabled=${disabled || crossedOut}
         value="${width}"
         .dropTargetList=${this.numberLineArea}
         @dropped="${this.archDrop}"
@@ -404,7 +411,8 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
         <number-line-arch
           width="${width}"
           position="${position}"
-          ?disabled=${!this.archesPadActive}
+          ?disabled=${disabled}
+          ?crossedOut=${crossedOut}
         ></number-line-arch>
       </draggable-element>
     `;

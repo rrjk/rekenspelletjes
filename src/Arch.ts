@@ -33,6 +33,9 @@ export class NumberLineArch extends LitElement {
   @property({ type: Boolean })
   accessor disabled: boolean = false;
 
+  @property({ type: Boolean })
+  accessor crossedOut: boolean = false;
+
   static get styles(): CSSResultGroup {
     return css`
       svg {
@@ -40,11 +43,19 @@ export class NumberLineArch extends LitElement {
         height: 100%;
       }
 
-      .number {
+      text {
         text-anchor: middle;
-        font-size: 30px;
         fill: var(--color);
+      }
+
+      text.number {
+        font-size: 30px;
         dominant-baseline: mathematical;
+      }
+
+      text.cross {
+        font-size: 50px;
+        dominant-baseline: middle;
       }
 
       .archStart,
@@ -58,6 +69,10 @@ export class NumberLineArch extends LitElement {
         marker-end: url(#arrow);
       }
     `;
+  }
+
+  renderCross(): SVGTemplateResult {
+    return svg`<text class="cross" x="0" y="0" stroke="black">✗</text>`;
   }
 
   renderArch(distance: number, position: AboveBelowType): SVGTemplateResult {
@@ -106,6 +121,15 @@ export class NumberLineArch extends LitElement {
   }
 
   render(): HTMLTemplateResult {
+    let content: SVGTemplateResult[] = [];
+    if (this.crossedOut) content = [this.renderCross()];
+    else {
+      content = [
+        this.renderArrowHeadDef(),
+        this.renderArch(this.width, this.position),
+      ];
+    }
+
     return html`
       <style>
         :host {
@@ -116,9 +140,10 @@ export class NumberLineArch extends LitElement {
         viewBox="${NumberLineArch.svgLeft} ${NumberLineArch.svgTop} ${NumberLineArch.svgWidth} ${NumberLineArch.svgHeight}"
         xmlns="http://www.w3.org/2000/svg"
       >
-        ${this.renderArrowHeadDef()}
-        ${this.renderArch(this.width, this.position)}
+        ${content};
       </svg>
     `;
+    // ${this.renderArrowHeadDef()}
+    // ${this.renderArch(this.width, this.position)}
   }
 }
