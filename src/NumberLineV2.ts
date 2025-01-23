@@ -15,7 +15,7 @@ import type {
 import { customElement, property, state } from 'lit/decorators.js';
 
 import { Bezier } from 'bezier-js';
-import { numberDigitsInNumber } from './NNumberHelperFunctions';
+import { numberDigitsInNumber } from './NumberHelperFunctions';
 
 import {
   addResizeObserverClient,

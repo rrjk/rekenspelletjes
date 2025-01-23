@@ -31,7 +31,7 @@ import './Arch';
 
 import './DigitKeyboard';
 
-import { determineRequiredDigit } from './NNumberHelperFunctions';
+import { determineRequiredDigit } from './NumberHelperFunctions';
 
 type OperatorType = 'plus' | 'minus';
 
