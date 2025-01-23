@@ -960,9 +960,11 @@ const urls: (() => string)[] = [
   () => springOpGetallenlijnLink(0, 50, ['show10TickMarks'], 60),
   () => springOpGetallenlijnLink(0, 50, ['show10TickMarks'], 180),
   // nf
+  () => getallenlijnBoogjesSpelLink(0, 20, 180),
+  () => getallenlijnBoogjesSpelLink(0, 20, 300),
   () => getallenlijnBoogjesSpelLink(0, 100, 180),
   () => getallenlijnBoogjesSpelLink(0, 100, 300),
-  // nh
+  // nj
 ];
 
 const urlParams = new URLSearchParams(window.location.search);
