@@ -10,6 +10,7 @@ import { somPaartjesLink } from './CombineToSolveSumAppLink';
 import { eierdoosTellenLink } from './EggCountingAppLink';
 import { springOpGetallenlijnLink } from './JumpOnNumberLineAppLink';
 import { ballonnenSpelLink } from './MultiplicationTablesBalloonGameLink';
+import { getallenlijnBoogjesSpelLink } from './NumberlineArchesGameAppLink';
 import { groepjesVanHerkennenLink } from './RecognizeGroupsAppLink';
 import { sorterenLink } from './SortingGameAppLink';
 import { splitsenLink } from './SplitAppLink';
@@ -959,6 +960,9 @@ const urls: (() => string)[] = [
   () => springOpGetallenlijnLink(0, 50, ['show10TickMarks'], 60),
   () => springOpGetallenlijnLink(0, 50, ['show10TickMarks'], 180),
   // nf
+  () => getallenlijnBoogjesSpelLink(0, 100, 180),
+  () => getallenlijnBoogjesSpelLink(0, 100, 300),
+  // nh
 ];
 
 const urlParams = new URLSearchParams(window.location.search);

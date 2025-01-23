@@ -53,10 +53,20 @@ export type TickMarks =
 
 type AboveBelowType = 'above' | 'below';
 
+function convertArchAttribute(value: string | null): ArchType[] {
+  if (value !== null) {
+    const parsedValue = JSON.parse(value);
+    return parsedValue;
+  }
+  return [];
+}
+
 /** Customer element to create numberline
  * Possible numberlines range from -100 to 100
  * Numberlines have to start and end at a multiple of 10
  *
+ * @property min - minimum number of the numberline (needs to be a multiple of 10)
+ * @property MAX - maximum number of the numberline (needs to be a multiple of 10)
  * @property tickMarks - what tickmarks to show
  * @property numberBoxes - Numberboxes to show below the numberline. If left out, no vertical space is
  *  allocated for numberBoxes, if it's set to an empty list, vertical space is allocated for the numberBoxes,
@@ -64,6 +74,10 @@ type AboveBelowType = 'above' | 'below';
  * @property fixedNumbers - Fixed numbers to show below the numberline. If left out, no vertical space is
  *  allocated for fixed numbers, if it's set to an empty list, vertical space is allocated for the fixed numbers,
  *  such that they can be added later.
+ * @property aboveArches - Arches to show above the numberline.
+ * @propetty belowArches - Arches to show below the numberline.
+ * @property maxNumberBoxDepth - maximum depth of the numberboxes, used to calculate the height of the element. Level counting starts at 0.
+ * @property arch - Textual representation of one arch - used to be able to add one arch without using javascript.
  */
 
 @customElement('number-line-v2')
@@ -84,7 +98,7 @@ export class NumberLineV2
   accessor min = 0;
   @property({ type: Number })
   accessor max = 100;
-  @property({ attribute: false })
+  @property({ converter: convertArchAttribute })
   accessor aboveArches: ArchType[] | null = null;
   @property({ attribute: false })
   accessor belowArches: ArchType[] | null = null;
@@ -188,7 +202,7 @@ export class NumberLineV2
 
   handleResize() {
     const clientAspectRatio = this.clientWidth / this.clientHeight;
-    this.aspectRatio = Math.max(3, clientAspectRatio);
+    this.aspectRatio = Math.max((this.max - this.min) / 30, clientAspectRatio);
   }
 
   connectedCallback(): void {
@@ -307,16 +321,16 @@ export class NumberLineV2
    * return an empty list otherwise
    */
   get processedBelowArches(): ArchType[] {
-    if (this.belowArches === null) return [];
-    return this.belowArches;
+    if (this.belowArches !== null) return this.belowArches;
+    return [];
   }
 
   /** Get processed above  arches. Will return the above arches when they are not null,
    * return an empty list otherwise
    */
   get processedAboveArches(): ArchType[] {
-    if (this.aboveArches === null) return [];
-    return this.aboveArches;
+    if (this.aboveArches !== null) return this.aboveArches;
+    return [];
   }
 
   /** Determine the numberline width in SVG units

@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Getallenlijn boogjes spel</title>
+  </head>
+  <style>
+    html {
+      font-size: x-large;
+    }
+    .buttonTable {
+      position: relative;
+      display: flex;
+      gap: 10px 10px;
+      flex-wrap: wrap;
+      width: 410px;
+    }
+    number-line-v2 {
+      width: 100px;
+      height: 65px;
+      border-radius: 10px;
+    }
+
+    img {
+      width: 100px;
+    }
+  </style>
+  <body>
+    <script type="module" src="../src/IconHourglassButton.ts"></script>
+    <script type="module" src="../src/NumberLineV2.ts"></script>
+
+    <h2>Getallenlijn boogjes spel</h2>
+    <h3>Van 0 tot 20</h3>
+    <div class="buttonTable">
+      <icon-hourglass-button
+        title="Getallenlijn boogjes spel"
+        time="3min"
+        shortCode="nf"
+      >
+        <number-line-v2
+          min="0"
+          max="10"
+          tickMarks="upToSingles"
+          aboveArches='[{"from":1,"to":8}]'
+          style="background-color: #ffe119"
+        ></number-line-v2>
+      </icon-hourglass-button>
+      <icon-hourglass-button
+        title="Getallenlijn boogjes spel"
+        time="5min"
+        shortCode="ng"
+      >
+        <number-line-v2
+          min="0"
+          max="10"
+          tickMarks="upToSingles"
+          aboveArches='[{"from":1,"to":8}]'
+          style="background-color: #ffe119"
+        ></number-line-v2>
+      </icon-hourglass-button>
+    </div>
+    <h3>Van 0 tot 100</h3>
+    <div class="buttonTable">
+      <icon-hourglass-button
+        title="Getallenlijn boogjes spel"
+        time="3min"
+        shortCode="nf"
+      >
+        <number-line-v2
+          min="0"
+          max="10"
+          tickMarks="upToSingles"
+          aboveArches='[{"from":1,"to":8}]'
+          style="width: 100px; height: 65px; background-color: #911eb4"
+        ></number-line-v2>
+      </icon-hourglass-button>
+      <icon-hourglass-button
+        title="Getallenlijn boogjes spel"
+        time="5min"
+        shortCode="ng"
+      >
+        <number-line-v2
+          min="0"
+          max="10"
+          tickMarks="upToSingles"
+          aboveArches='[{"from":1,"to":8}]'
+          style="width: 100px; height: 65px; background-color: #911eb4"
+        ></number-line-v2>
+      </icon-hourglass-button>
+    </div>
+
+    <p>
+      <a href="index.html">Terug naar het hoofdmenu</a>
+    </p>
+  </body>
+</html>

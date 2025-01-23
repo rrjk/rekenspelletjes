@@ -44,7 +44,8 @@
         {
           "allow": [
             "warn",
-            "error"
+            "error",
+            "assert"
           ]
         }
       ],
