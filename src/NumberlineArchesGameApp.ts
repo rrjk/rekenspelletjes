@@ -35,6 +35,13 @@ import { determineRequiredDigit } from './NumberHelperFunctions';
 
 type OperatorType = 'plus' | 'minus';
 
+interface LeftRightOperandSplitType {
+  tensInLeftOperand: number;
+  singlesInLeftOperand: number;
+  tensInRightOperand: number;
+  singlesInRightOperand: number;
+}
+
 @customElement('numberline-arches-game-app')
 export class NumberlineArchesGameApp extends TimeLimitedGame2 {
   static happyFaces = [
@@ -131,7 +138,7 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
   /** Get the text to show in the game over dialog */
   get welcomeMessage(): HTMLTemplateResult {
     return html`<p>
-      Voeg de juiste boogjes toe op de getallenlijn om de som op te lossen.
+      Sleep de juiste boogjes naar de getallenlijn om de som op te lossen.
     </p>`;
   }
 
@@ -166,32 +173,69 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
     }
   }
 
+  determineLeftRightOperandAlwaysCrossTenPlus(): LeftRightOperandSplitType {
+    const tensInMin = Math.floor(this.minNumber / 10);
+    const tensInMax = Math.floor(this.maxNumber / 10);
+
+    /* First we determine how many singles we want in the right operand
+     * As we always want to cross tens, one doesn't work as it can't be split
+     * By starting with determining the number of singles in the right operand, we make
+     * these truely random
+     */
+    const singlesInRightOperand = randomIntFromRange(2, 9);
+
+    /** Then we determine the number of singles in the left operand, taking into
+     * account we also want to cross a ten.
+     */
+    const singlesInLeftOperand = randomIntFromRange(
+      11 - singlesInRightOperand,
+      9,
+    );
+
+    /** Then we determine the number of tens in the left operand, taking into account we always
+     * need to cross a ten and the minimum on the numberline
+     */
+    const tensInLeftOperand = randomIntFromRange(tensInMin, tensInMax - 2);
+
+    /** Then we determine the number of tens in the right operand */
+    const tensInRightOperand = randomIntFromRange(
+      0,
+      tensInMax - 1 - tensInLeftOperand - 1,
+    );
+    return {
+      tensInLeftOperand,
+      singlesInLeftOperand,
+      tensInRightOperand,
+      singlesInRightOperand,
+    };
+  }
+
   newRound() {
     if (this.operator === 'plus') {
-      this.leftOperand = randomIntFromRange(
-        this.minNumber + 1,
-        this.maxNumber - 2,
-      ); // We don't want the left most number on the numberline.
-      this.answer = randomIntFromRange(
-        this.leftOperand + 1,
-        this.maxNumber - 1, // We don't want the right most number of the numberline.
-      );
-      this.rightOperand = this.answer - this.leftOperand;
+      const leftRightOperand =
+        this.determineLeftRightOperandAlwaysCrossTenPlus();
+
+      this.leftOperand =
+        leftRightOperand.tensInLeftOperand * 10 +
+        leftRightOperand.singlesInLeftOperand;
+      this.rightOperand =
+        leftRightOperand.tensInRightOperand * 10 +
+        leftRightOperand.singlesInRightOperand;
+      this.answer = this.leftOperand + this.rightOperand;
+
       /// Now we have to find the required arches
-      const singlesInLeftOperand = this.leftOperand % 10;
+      const leftOperandToNextMultipleOfTen =
+        10 - leftRightOperand.singlesInLeftOperand;
 
-      const singlesInRightOperand = this.rightOperand % 10;
-      const tensInRightOperand = Math.floor(this.rightOperand / 10);
-
-      const leftOperandToNextMultipleOfTen = 10 - singlesInLeftOperand;
-
-      if (leftOperandToNextMultipleOfTen <= singlesInRightOperand)
+      if (
+        leftOperandToNextMultipleOfTen <= leftRightOperand.singlesInRightOperand
+      )
         this.firstArch = leftOperandToNextMultipleOfTen;
-      else this.firstArch = singlesInRightOperand;
+      else this.firstArch = leftRightOperand.singlesInRightOperand;
 
-      this.lastArch = singlesInRightOperand - this.firstArch;
+      this.lastArch = leftRightOperand.singlesInRightOperand - this.firstArch;
 
-      this.numberTenArches = tensInRightOperand;
+      this.numberTenArches = leftRightOperand.tensInRightOperand;
 
       this.numberBoxes = [
         { position: this.leftOperand, nmbr: this.leftOperand },
