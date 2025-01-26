@@ -34,6 +34,7 @@ import './DigitKeyboard';
 import { determineRequiredDigit } from './NumberHelperFunctions';
 
 type OperatorType = 'plus' | 'minus';
+type crossTenType = 'never' | 'always' | 'optional';
 
 interface LeftRightOperandSplitType {
   tensInLeftOperand: number;
@@ -81,6 +82,8 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
   private accessor numberTenArches: number = 0;
   @state()
   private accessor operator: OperatorType = 'plus';
+  @state()
+  private accessor crossTen: crossTenType = 'always';
   @state()
   private accessor arches: ArchType[] = [];
   @state()
@@ -212,8 +215,18 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
 
   newRound() {
     if (this.operator === 'plus') {
-      const leftRightOperand =
-        this.determineLeftRightOperandAlwaysCrossTenPlus();
+      let leftRightOperand: LeftRightOperandSplitType = {
+        tensInLeftOperand: 0,
+        singlesInLeftOperand: 0,
+        tensInRightOperand: 0,
+        singlesInRightOperand: 0,
+      };
+
+      if (this.crossTen === 'always') {
+        leftRightOperand = this.determineLeftRightOperandAlwaysCrossTenPlus();
+      } else {
+        console.assert(false);
+      }
 
       this.leftOperand =
         leftRightOperand.tensInLeftOperand * 10 +
@@ -249,6 +262,8 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
 
       this.archesPadActive = true;
       this.gameActive = true;
+    } else {
+      console.assert(false);
     }
   }
 
