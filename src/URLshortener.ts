@@ -960,11 +960,23 @@ const urls: (() => string)[] = [
   () => springOpGetallenlijnLink(0, 50, ['show10TickMarks'], 60),
   () => springOpGetallenlijnLink(0, 50, ['show10TickMarks'], 180),
   // nf
-  () => getallenlijnBoogjesSpelLink(0, 20, 180),
-  () => getallenlijnBoogjesSpelLink(0, 20, 300),
-  () => getallenlijnBoogjesSpelLink(0, 100, 180),
-  () => getallenlijnBoogjesSpelLink(0, 100, 300),
-  // nj
+  () => getallenlijnBoogjesSpelLink(0, 10, 'never', 180),
+  () => getallenlijnBoogjesSpelLink(0, 10, 'never', 300),
+  // nh
+  () => getallenlijnBoogjesSpelLink(0, 20, 'never', 180),
+  () => getallenlijnBoogjesSpelLink(0, 20, 'never', 300),
+  () => getallenlijnBoogjesSpelLink(0, 20, 'noSplitAndTens', 180),
+  () => getallenlijnBoogjesSpelLink(0, 20, 'noSplitAndTens', 300),
+  () => getallenlijnBoogjesSpelLink(0, 20, 'always', 180),
+  () => getallenlijnBoogjesSpelLink(0, 20, 'always', 300),
+  // nn
+  () => getallenlijnBoogjesSpelLink(0, 100, 'never', 180),
+  () => getallenlijnBoogjesSpelLink(0, 100, 'never', 300),
+  () => getallenlijnBoogjesSpelLink(0, 100, 'noSplitAndTens', 180),
+  () => getallenlijnBoogjesSpelLink(0, 100, 'noSplitAndTens', 300),
+  () => getallenlijnBoogjesSpelLink(0, 100, 'always', 180),
+  () => getallenlijnBoogjesSpelLink(0, 100, 'always', 300),
+  // nt
 ];
 
 const urlParams = new URLSearchParams(window.location.search);
