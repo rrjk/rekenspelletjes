@@ -1,4 +1,6 @@
 export type OperatorType = 'plus' | 'minus';
+export type SplitType = 'split' | 'noSplit';
+export type JumpsOfTenType = 'jumpsOfTen' | 'noJumpsOfTen';
 export type CrossTenType = 'never' | 'noSplitAndTens' | 'always' | 'optional';
 
 /** Create link for numberline arches game.
@@ -10,12 +12,13 @@ export type CrossTenType = 'never' | 'noSplitAndTens' | 'always' | 'optional';
 export function getallenlijnBoogjesSpelLink(
   min: number,
   max: number,
-  crossTen: CrossTenType,
+  split: SplitType,
+  jumpsOfTen: JumpsOfTenType,
   time: number,
 ) {
   console.assert(min % 10 === 0);
   console.assert(max % 10 === 0);
   console.assert(max > min);
-  const params = `time=${time}&min=${min}&max=${max}&crossTen=${crossTen}`;
+  const params = `time=${time}&min=${min}&max=${max}&split=${split}&jumpsOfTen=${jumpsOfTen}`;
   return `../Rekenspelletjes/GetallenlijnBoogjesSpel.html?${params}`;
 }

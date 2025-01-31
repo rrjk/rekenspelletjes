@@ -33,7 +33,11 @@ import './DigitKeyboard';
 
 import { determineRequiredDigit } from './NumberHelperFunctions';
 
-import type { CrossTenType, OperatorType } from './NumberlineArchesGameAppLink';
+import type {
+  JumpsOfTenType,
+  OperatorType,
+  SplitType,
+} from './NumberlineArchesGameAppLink';
 
 interface LeftRightOperandSplitType {
   tensInLeftOperand: number;
@@ -82,7 +86,9 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
   @state()
   private accessor operator: OperatorType = 'plus';
   @state()
-  private accessor crossTen: CrossTenType = 'always';
+  private accessor split: SplitType = 'noSplit';
+  @state()
+  private accessor jumpsOfTen: JumpsOfTenType = 'noJumpsOfTen';
   @state()
   private accessor arches: ArchType[] = [];
   @state()
@@ -173,25 +179,42 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
       if (this.maxNumber <= this.minNumber)
         this.maxNumber = this.minNumber + 10;
     }
-    if (urlParams.has('crossTen')) {
-      const crossTen = urlParams.get('crossTen');
-      if (
-        crossTen === 'always' ||
-        crossTen === 'never' ||
-        crossTen === 'noSplitAndTens'
-      )
-        this.crossTen = crossTen;
+    if (urlParams.has('split')) {
+      const split = urlParams.get('split');
+      if (split === 'split' || split === 'noSplit') this.split = split;
       // If not, we ignore the crossTen parameter.
     }
-    if (this.crossTen !== 'never' && this.maxNumber - this.minNumber < 20) {
+    if (urlParams.has('jumpsOfTen')) {
+      const jumpsOfTen = urlParams.get('jumpsOfTen');
+      if (jumpsOfTen === 'jumpsOfTen' || jumpsOfTen === 'noJumpsOfTen')
+        this.jumpsOfTen = jumpsOfTen;
+      // If not, we ignore the crossTen parameter.
+    }
+
+    if (
+      (this.split === 'split' || this.jumpsOfTen === 'jumpsOfTen') &&
+      this.maxNumber - this.minNumber === 10
+    ) {
       console.error(
-        'A numberline of length 10 cannot be combined with crossTen = always or crosTen === noSplitAndTens, falling back to crossTen = never',
+        'A numberline of length 10 cannot be combined with split === split or jumpsOfTen === jumpsOfTen, falling back to no jumps of ten and no splitting.',
       );
-      this.crossTen = 'never';
+      this.split = 'noSplit';
+      this.jumpsOfTen = 'noJumpsOfTen';
+    }
+
+    if (
+      this.split === 'split' &&
+      this.jumpsOfTen === 'jumpsOfTen' &&
+      this.maxNumber - this.minNumber === 20
+    ) {
+      console.error(
+        'A numberline of length 20 cannot be combined with split === split and jumpsOfTen === jumpsOfTen, falling back to no jumps of ten.',
+      );
+      this.jumpsOfTen = 'noJumpsOfTen';
     }
   }
 
-  determineLeftRightOperandNeverCrossTenPlus(): LeftRightOperandSplitType {
+  determineLeftRightOperandNoSplitPlus(): LeftRightOperandSplitType {
     const tensInMin = Math.floor(this.minNumber / 10);
     const tensInMax = Math.floor(this.maxNumber / 10);
 
@@ -200,52 +223,20 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
     const singlesInRightOperand = randomIntFromRange(1, 9);
 
     /** Then we determine the number of singles in the left operand, taking into
-     * account we never want to cross a ten.
+     * account we do not want to split the singles.
      */
     const singlesInLeftOperand = randomIntFromRange(
       1,
       10 - singlesInRightOperand,
     );
 
-    /** Then we determine the number of tens in the left operand, taking into account we always
-     * need to cross a ten and the minimum on the numberline
-     */
-    const tensInLeftOperand = randomIntFromRange(tensInMin, tensInMax - 1);
-
-    const tensInRightOperand = 0;
-
-    return {
-      tensInLeftOperand,
-      singlesInLeftOperand,
-      tensInRightOperand,
-      singlesInRightOperand,
-    };
-  }
-
-  determineLeftRightOperandNoSplitCrossTenPlus(): LeftRightOperandSplitType {
-    const tensInMin = Math.floor(this.minNumber / 10);
-    const tensInMax = Math.floor(this.maxNumber / 10);
-
-    /* First we determine how many singles we want in the right operand
-     */
-    const singlesInRightOperand = randomIntFromRange(1, 9);
-
-    /** Then we determine the number of singles in the left operand, taking into
-     * account we never want to cross a ten.
-     */
-    const singlesInLeftOperand = randomIntFromRange(
-      1,
-      10 - singlesInRightOperand,
-    );
-
-    /** Then we determine the number of tens in the left operand, taking into account we always
-     * need to cross a ten and the minimum on the numberline
-     */
-    const tensInLeftOperand = randomIntFromRange(tensInMin, tensInMax - 2);
-
-    const tensInRightOperand = randomIntFromRange(
-      1,
-      tensInMax - 1 - tensInLeftOperand,
+    let tensInRightOperand = 0;
+    if (this.jumpsOfTen === 'jumpsOfTen') {
+      tensInRightOperand = randomIntFromRange(1, tensInMax - tensInMin - 1);
+    }
+    const tensInLeftOperand = randomIntFromRange(
+      tensInMin,
+      tensInMax - tensInRightOperand - 1,
     );
 
     return {
@@ -256,7 +247,7 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
     };
   }
 
-  determineLeftRightOperandAlwaysCrossTenPlus(): LeftRightOperandSplitType {
+  determineLeftRightOperandWithSplitPlus(): LeftRightOperandSplitType {
     const tensInMin = Math.floor(this.minNumber / 10);
     const tensInMax = Math.floor(this.maxNumber / 10);
 
@@ -275,15 +266,13 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
       9,
     );
 
-    /** Then we determine the number of tens in the left operand, taking into account we always
-     * need to cross a ten and the minimum on the numberline
-     */
-    const tensInLeftOperand = randomIntFromRange(tensInMin, tensInMax - 2);
-
-    /** Then we determine the number of tens in the right operand */
-    const tensInRightOperand = randomIntFromRange(
-      0,
-      tensInMax - 1 - tensInLeftOperand - 1,
+    let tensInRightOperand = 0;
+    if (this.jumpsOfTen === 'jumpsOfTen') {
+      tensInRightOperand = randomIntFromRange(1, tensInMax - tensInMin - 2);
+    }
+    const tensInLeftOperand = randomIntFromRange(
+      tensInMin,
+      tensInMax - tensInRightOperand - 2,
     );
     return {
       tensInLeftOperand,
@@ -302,14 +291,10 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
         singlesInRightOperand: 0,
       };
 
-      if (this.crossTen === 'always') {
-        leftRightOperand = this.determineLeftRightOperandAlwaysCrossTenPlus();
-      } else if (this.crossTen === 'never') {
-        leftRightOperand = this.determineLeftRightOperandNeverCrossTenPlus();
-      } else if (this.crossTen === 'noSplitAndTens') {
-        leftRightOperand = this.determineLeftRightOperandNoSplitCrossTenPlus();
-      } else {
-        console.assert(false);
+      if (this.split === 'noSplit') {
+        leftRightOperand = this.determineLeftRightOperandNoSplitPlus();
+      } else if (this.split === 'split') {
+        leftRightOperand = this.determineLeftRightOperandWithSplitPlus();
       }
 
       this.leftOperand =
