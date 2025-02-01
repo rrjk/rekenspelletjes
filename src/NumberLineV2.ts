@@ -100,7 +100,7 @@ export class NumberLineV2
   accessor max = 100;
   @property({ converter: convertArchAttribute })
   accessor aboveArches: ArchType[] | null = null;
-  @property({ attribute: false })
+  @property({ converter: convertArchAttribute })
   accessor belowArches: ArchType[] | null = null;
   @property({ attribute: false })
   accessor numberBoxes: NumberBoxInfo[] | null = null;
