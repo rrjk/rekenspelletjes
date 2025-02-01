@@ -16,10 +16,22 @@
       flex-wrap: wrap;
       width: 410px;
     }
+    div.button {
+      display: grid;
+      grid-template-rows: 65px 25px;
+      justify-items: center;
+      width: 100px;
+      height: 90px;
+      border-radius: 10px;
+    }
+
+    span {
+      font-size: 20px;
+    }
+
     number-line-v2 {
       width: 100px;
       height: 65px;
-      border-radius: 10px;
     }
 
     img {
@@ -38,26 +50,30 @@
         time="3min"
         shortCode="nf"
       >
-        <number-line-v2
-          min="0"
-          max="10"
-          tickMarks="upToSingles"
-          aboveArches='[{"from":3,"to":7}]'
-          style="background-color: #808000"
-        ></number-line-v2>
+        <div style="background-color: #808000" class="button">
+          <number-line-v2
+            min="0"
+            max="10"
+            tickMarks="upToSingles"
+            aboveArches='[{"from":3,"to":7}]'
+          ></number-line-v2>
+          <span>0 － 10</span>
+        </div>
       </icon-hourglass-button>
       <icon-hourglass-button
         title="Getallenlijn boogjes spel 0 tot 10 zonder over het tiental heen gaan"
         time="5min"
         shortCode="ng"
       >
-        <number-line-v2
-          min="0"
-          max="10"
-          tickMarks="upToSingles"
-          aboveArches='[{"from":3,"to":7}]'
-          style="background-color: #808000"
-        ></number-line-v2>
+        <div style="background-color: #808000" class="button">
+          <number-line-v2
+            min="0"
+            max="10"
+            tickMarks="upToSingles"
+            aboveArches='[{"from":3,"to":7}]'
+          ></number-line-v2>
+          <span>0 － 10</span>
+        </div>
       </icon-hourglass-button>
     </div>
 
@@ -68,78 +84,90 @@
         time="3min"
         shortCode="nh"
       >
-        <number-line-v2
-          min="0"
-          max="20"
-          tickMarks="upToSingles"
-          aboveArches='[{"from":3,"to":8}]'
-          style="background-color: #dcbeff"
-        ></number-line-v2>
+        <div style="background-color: #dcbeff" class="button">
+          <number-line-v2
+            min="0"
+            max="20"
+            tickMarks="upToSingles"
+            aboveArches='[{"from":3,"to":8}]'
+          ></number-line-v2>
+          <span>0 － 20</span>
+        </div>
       </icon-hourglass-button>
       <icon-hourglass-button
         title="Getallenlijn boogjes spel 0 tot 20 zonder over het tiental heen gaan"
         time="5min"
         shortCode="ni"
       >
-        <number-line-v2
-          min="0"
-          max="20"
-          tickMarks="upToSingles"
-          aboveArches='[{"from":3,"to":8}]'
-          style="background-color: #dcbeff"
-        ></number-line-v2>
+        <div style="background-color: #dcbeff" class="button">
+          <number-line-v2
+            min="0"
+            max="20"
+            tickMarks="upToSingles"
+            aboveArches='[{"from":3,"to":8}]'
+          ></number-line-v2>
+          <span>0 － 20</span>
+        </div>
       </icon-hourglass-button>
       <icon-hourglass-button
         title="Getallenlijn boogjes spel 0 tot 20 zonder splitsen maar wel met een sprong van 10"
         time="3min"
         shortCode="nj"
       >
-        <number-line-v2
-          min="0"
-          max="20"
-          tickMarks="upToSingles"
-          aboveArches='[{"from":2,"to":12}, {"from":12,"to":16}]'
-          style="background-color: #fffac8"
-        ></number-line-v2>
+        <div style="background-color: #fffac8" class="button">
+          <number-line-v2
+            min="0"
+            max="20"
+            tickMarks="upToSingles"
+            aboveArches='[{"from":2,"to":12}, {"from":12,"to":16}]'
+          ></number-line-v2>
+          <span>0 － 20</span>
+        </div>
       </icon-hourglass-button>
       <icon-hourglass-button
         title="Getallenlijn boogjes spel 0 tot 20 zonder splitsen maar wel met een sprong van 10"
         time="5min"
         shortCode="nk"
       >
-        <number-line-v2
-          min="0"
-          max="20"
-          tickMarks="upToSingles"
-          aboveArches='[{"from":2,"to":12}, {"from":12,"to":16}]'
-          style="background-color: #fffac8"
-        ></number-line-v2>
+        <div style="background-color: #fffac8" class="button">
+          <number-line-v2
+            min="0"
+            max="20"
+            tickMarks="upToSingles"
+            aboveArches='[{"from":2,"to":12}, {"from":12,"to":16}]'
+          ></number-line-v2>
+          <span>0 － 20</span>
+        </div>
       </icon-hourglass-button>
       <icon-hourglass-button
         title="Getallenlijn boogjes spel 0 tot 20 met splitsen"
         time="3min"
         shortCode="nl"
       >
-        <number-line-v2
-          min="0"
-          max="20"
-          tickMarks="upToSingles"
-          aboveArches='[{"from":6,"to":10}, {"from":10,"to":15}]'
-          style="background-color: #ffd8b1"
-        ></number-line-v2>
+        <div style="background-color: #ffd8b1" class="button">
+          <number-line-v2
+            min="0"
+            max="20"
+            tickMarks="upToSingles"
+            aboveArches='[{"from":6,"to":10}, {"from":10,"to":15}]'
+          ></number-line-v2>
+          <span>0 － 20</span>
+        </div>
       </icon-hourglass-button>
       <icon-hourglass-button
         title="Getallenlijn boogjes spel 0 tot 20 met splitsen"
         time="5min"
         shortCode="nm"
       >
-        <number-line-v2
-          min="0"
-          max="20"
-          tickMarks="upToSingles"
-          aboveArches='[{"from":6,"to":10}, {"from":10,"to":15}]'
-          style="background-color: #ffd8b1"
-        ></number-line-v2>
+        <div style="background-color: #ffd8b1" class="button">
+          <number-line-v2
+            min="0"
+            max="20"
+            tickMarks="upToSingles"
+            aboveArches='[{"from":6,"to":10}, {"from":10,"to":15}]'
+          ></number-line-v2>
+          <span>0 － 20</span>
+        </div>
       </icon-hourglass-button>
     </div>
 
@@ -150,104 +178,120 @@
         time="3min"
         shortCode="nn"
       >
-        <number-line-v2
-          min="0"
-          max="30"
-          tickMarks="upToSingles"
-          aboveArches='[{"from":1,"to":8}]'
-          style="background-color: #3cb44b"
-        ></number-line-v2>
+        <div style="background-color: #3cb44b" class="button">
+          <number-line-v2
+            min="0"
+            max="30"
+            tickMarks="upToSingles"
+            aboveArches='[{"from":11,"to":18}]'
+          ></number-line-v2>
+          <span>0 － 100</span>
+        </div>
       </icon-hourglass-button>
       <icon-hourglass-button
         title="Getallenlijn boogjes spel 0 tot 100 zonder over het tiental heen gaan"
         time="5min"
         shortCode="no"
       >
-        <number-line-v2
-          min="0"
-          max="30"
-          tickMarks="upToSingles"
-          aboveArches='[{"from":1,"to":8}]'
-          style="background-color: #3cb44b"
-        ></number-line-v2>
+        <div style="background-color: #3cb44b" class="button">
+          <number-line-v2
+            min="0"
+            max="30"
+            tickMarks="upToSingles"
+            aboveArches='[{"from":11,"to":18}]'
+          ></number-line-v2>
+          <span>0 － 100</span>
+        </div>
       </icon-hourglass-button>
       <icon-hourglass-button
         title="Getallenlijn boogjes spel 0 tot 100 zonder splitsen maar wel met een sprong van 10"
         time="3min"
         shortCode="np"
       >
-        <number-line-v2
-          min="0"
-          max="30"
-          tickMarks="upToSingles"
-          aboveArches='[{"from":3,"to":13}, {"from":13,"to":17}]'
-          style="background-color: #bfef45"
-        ></number-line-v2>
+        <div style="background-color: #bfef45" class="button">
+          <number-line-v2
+            min="0"
+            max="30"
+            tickMarks="upToSingles"
+            aboveArches='[{"from":3,"to":13}, {"from":13,"to":19}]'
+          ></number-line-v2>
+          <span>0 － 100</span>
+        </div>
       </icon-hourglass-button>
       <icon-hourglass-button
         title="Getallenlijn boogjes spel 0 tot 100 zonder splitsen maar wel met een sprong van 10"
         time="5min"
         shortCode="nq"
       >
-        <number-line-v2
-          min="0"
-          max="30"
-          tickMarks="upToSingles"
-          aboveArches='[{"from":3,"to":13}, {"from":13,"to":17}]'
-          style="background-color: #bfef45"
-        ></number-line-v2>
+        <div style="background-color: #bfef45" class="button">
+          <number-line-v2
+            min="0"
+            max="30"
+            tickMarks="upToSingles"
+            aboveArches='[{"from":3,"to":13}, {"from":13,"to":19}]'
+          ></number-line-v2>
+          <span>0 － 100</span>
+        </div>
       </icon-hourglass-button>
       <icon-hourglass-button
         title="Getallenlijn boogjes spel 0 tot 100 met splitsen"
         time="3min"
         shortCode="nr"
       >
-        <number-line-v2
-          min="0"
-          max="30"
-          tickMarks="upToSingles"
-          aboveArches='[{"from":14,"to":20}, {"from":20,"to":23}]'
-          style="background-color: #aaffc3"
-        ></number-line-v2>
+        <div style="background-color: #aaffc3" class="button">
+          <number-line-v2
+            min="0"
+            max="30"
+            tickMarks="upToSingles"
+            aboveArches='[{"from":14,"to":20}, {"from":20,"to":23}]'
+          ></number-line-v2>
+          <span>0 － 100</span>
+        </div>
       </icon-hourglass-button>
       <icon-hourglass-button
         title="Getallenlijn boogjes spel 0 tot 100 met splitsen"
         time="5min"
         shortCode="ns"
       >
-        <number-line-v2
-          min="0"
-          max="30"
-          tickMarks="upToSingles"
-          aboveArches='[{"from":14,"to":20}, {"from":20,"to":23}]'
-          style="background-color: #aaffc3"
-        ></number-line-v2>
+        <div style="background-color: #aaffc3" class="button">
+          <number-line-v2
+            min="0"
+            max="30"
+            tickMarks="upToSingles"
+            aboveArches='[{"from":14,"to":20}, {"from":20,"to":23}]'
+          ></number-line-v2>
+          <span>0 － 100</span>
+        </div>
       </icon-hourglass-button>
       <icon-hourglass-button
         title="Getallenlijn boogjes spel 0 tot 100 met splitsen en sprongen van 10"
         time="3min"
         shortCode="nt"
       >
-        <number-line-v2
-          min="0"
-          max="30"
-          tickMarks="upToSingles"
-          aboveArches='[{"from":6,"to":16}, {"from":16,"to":20}, {"from":20,"to":25}]'
-          style="background-color: #42d4f4"
-        ></number-line-v2>
+        <div style="background-color: #42d4f4" class="button">
+          <number-line-v2
+            min="0"
+            max="30"
+            tickMarks="upToSingles"
+            aboveArches='[{"from":6,"to":16}, {"from":16,"to":20}, {"from":20,"to":25}]'
+          ></number-line-v2>
+          <span>0 － 100</span>
+        </div>
       </icon-hourglass-button>
       <icon-hourglass-button
         title="Getallenlijn boogjes spel 0 tot 100 met splitsen en sprongen van 10"
         time="5min"
         shortCode="nu"
       >
-        <number-line-v2
-          min="0"
-          max="30"
-          tickMarks="upToSingles"
-          aboveArches='[{"from":6,"to":16}, {"from":16,"to":20}, {"from":20,"to":25}]'
-          style="background-color: #42d4f4"
-        ></number-line-v2>
+        <div style="background-color: #42d4f4" class="button">
+          <number-line-v2
+            min="0"
+            max="30"
+            tickMarks="upToSingles"
+            aboveArches='[{"from":6,"to":16}, {"from":16,"to":20}, {"from":20,"to":25}]'
+          ></number-line-v2>
+          <span>0 － 100</span>
+        </div>
       </icon-hourglass-button>
     </div>
 
