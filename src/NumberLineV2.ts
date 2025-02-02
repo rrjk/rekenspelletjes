@@ -257,7 +257,7 @@ export class NumberLineV2
      */
     let sortedNumberBoxes: NumberBoxInfo[] = [];
     if (this.numberBoxes !== null) {
-      sortedNumberBoxes = this.numberBoxes.sort(
+      sortedNumberBoxes = this.numberBoxes.toSorted(
         (a: NumberBoxInfo, b: NumberBoxInfo) => a.position - b.position,
       );
     }

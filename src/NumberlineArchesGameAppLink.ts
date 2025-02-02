@@ -15,10 +15,11 @@ export function getallenlijnBoogjesSpelLink(
   split: SplitType,
   jumpsOfTen: JumpsOfTenType,
   time: number,
+  operator: OperatorType,
 ) {
   console.assert(min % 10 === 0);
   console.assert(max % 10 === 0);
   console.assert(max > min);
-  const params = `time=${time}&min=${min}&max=${max}&split=${split}&jumpsOfTen=${jumpsOfTen}`;
+  const params = `time=${time}&min=${min}&max=${max}&split=${split}&jumpsOfTen=${jumpsOfTen}&operator=${operator}`;
   return `../Rekenspelletjes/GetallenlijnBoogjesSpel.html?${params}`;
 }

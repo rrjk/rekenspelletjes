@@ -9,7 +9,9 @@ export function determineRequiredDigit(
   partialNumber: number | undefined,
 ) {
   if (finalNumber === partialNumber) {
-    throw Error(`final and partialNumber are equal in determineRequireDigit`);
+    throw Error(
+      `final (${finalNumber} and partialNumber (${partialNumber}) are equal in determineRequireDigit`,
+    );
   }
   const numberDigitsFinalNumber = numberDigitsInNumber(finalNumber);
   const numberDigitsPartialNumber =
