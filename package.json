@@ -39,6 +39,16 @@
     "rules": {
       "wc/guard-super-call": "off",
       "lines-between-class-members": "off",
+      "no-console": [
+        "warn",
+        {
+          "allow": [
+            "warn",
+            "error",
+            "assert"
+          ]
+        }
+      ],
       "no-plusplus": [
         "error",
         {
@@ -82,6 +92,7 @@
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^12.1.0",
     "@types/babel__core": "^7.20.5",
+    "@types/bezier-js": "^4.1.3",
     "@typescript-eslint/eslint-plugin": "^8.8.1",
     "@typescript-eslint/parser": "^8.8.1",
     "@web/dev-server": "^0.4.6",
@@ -103,8 +114,10 @@
   },
   "dependencies": {
     "@lit-labs/observers": "^2.0.4",
+    "bezier-js": "^6.1.4",
     "color2k": "^2.0.3",
     "lit": "^3.2.1",
+    "mutative": "^1.1.0",
     "web-dialog": "^0.0.11"
   },
   "overrides": {

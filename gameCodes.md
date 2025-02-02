@@ -45,14 +45,15 @@ Game codes
 <tr><td>Pa</td><td>Ballenknallen: Aanklikken in volgorde van een tafel (van laag naar hoog)</td></tr>
 <tr><td>Qa</td><td>Ballenknallen: met keersom</td></tr>
 <tr><td>R</td><td>Vogelspel (nu nog ballon): Splitsen van getallen</td></tr>
-<tr><td>Sa</td><td>Sorteerspel (tot 10000)</td/></tr>
-<tr><td>Sb</td><td>Sorteerspel (één cijfer achter de komma)</td/></tr>
-<tr><td>Sc</td><td>Sorteerspel (twee cijfers achter de komma)</td/></tr>
-<tr><td>Sd</td><td>Sorteerspel (drie cijfers achter de komma)</td/></tr>
-<tr><td>T</td><td>Foto kiezen die aan de getallenlijn hangt</td/></tr>
-<tr><td>U</td><td>Jan op de getallenlijn laten springen</td/></tr>
+<tr><td>Sa</td><td>Sorteerspel (tot 10000)</td></tr>
+<tr><td>Sb</td><td>Sorteerspel (één cijfer achter de komma)</td></tr>
+<tr><td>Sc</td><td>Sorteerspel (twee cijfers achter de komma)</td></tr>
+<tr><td>Sd</td><td>Sorteerspel (drie cijfers achter de komma)</td></tr>
+<tr><td>T</td><td>Foto kiezen die aan de getallenlijn hangt</td></tr>
+<tr><td>U</td><td>Jan op de getallenlijn laten springen</td></tr>
 <tr><td>Va</td><td>Sommen met dubbel splitsen tot 100 +</td></tr>
 <tr><td>Vb</td><td>Sommen met dubbel splitsen tot 100 -</td></tr>
 <tr><td>Vc</td><td>Sommen met dubbel splitsen tot 100 +-</td></tr>
 <tr><td>W</td><td>Splitsen in tiental en eenheden</td></tr>
+<tr><td>X</td><td>Getallenlijn boogjesspel</td></tr>
 </table>

@@ -4,8 +4,9 @@ import { customElement } from 'lit/decorators.js';
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
 // import { darken, lighten } from 'color2k';
+import './DigitFillin';
 
-import './HeartImage';
+import './Arch';
 
 // import './RealHeight';
 
@@ -14,17 +15,19 @@ export class TestApp extends LitElement {
   static get styles(): CSSResultArray {
     return [
       css`
-        heart-image {
-          width: 200px;
-          height: 150px;
-          border: 1px solid blue;
+        number-line-arch {
+          width: 250px;
         }
       `,
     ];
   }
 
-  protected render(): HTMLTemplateResult {
+  protected renderTest(): HTMLTemplateResult {
     return html`<p>Test</p>
-      <heart-image value="5"></heart-image>`;
+      <number-line-arch width="8" position="above"></number-line-arch>`;
+  }
+
+  protected render(): HTMLTemplateResult {
+    return this.renderTest();
   }
 }

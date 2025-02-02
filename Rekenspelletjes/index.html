@@ -47,6 +47,7 @@
     <script type="module" src="../src/HandImage.ts"></script>
     <script type="module" src="../src/HeartImage.ts"></script>
     <script type="module" src="../src/TensSplitWidget.ts"></script>
+    <script type="module" src="../src/NumberLineV2.ts"></script>
 
     <h1>Rekenspelletjes</h1>
     <div class="buttonTable">
@@ -140,6 +141,32 @@
           activeDigit="2"
         ></tens-split-widget>
       </icon-label-button>
+      <icon-label-button
+        title="Plussommen met boogjes op de getallenlijn"
+        href="indexGetallenlijnBoogjesSpel.html"
+      >
+        <number-line-v2
+          min="0"
+          max="10"
+          tickMarks="upToSingles"
+          aboveArches='[{"from":2,"to":9}]'
+          style="width: 100px; height: 95px"
+        ></number-line-v2>
+      </icon-label-button>
+
+      <icon-label-button
+        title="Minsommen met boogjes op de getallenlijn"
+        href="indexGetallenlijnBoogjesSpelMinus.html"
+      >
+        <number-line-v2
+          min="0"
+          max="10"
+          tickMarks="upToSingles"
+          belowArches='[{"from":8,"to":3}]'
+          style="width: 100px; height: 95px"
+        ></number-line-v2>
+      </icon-label-button>
+
       <icon-label-button
         title="Sommen tot de 20 met één keer splitsen"
         href="indexSommenTot20Splitsen.html"
