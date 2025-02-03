@@ -55,5 +55,6 @@ Game codes
 <tr><td>Vb</td><td>Sommen met dubbel splitsen tot 100 -</td></tr>
 <tr><td>Vc</td><td>Sommen met dubbel splitsen tot 100 +-</td></tr>
 <tr><td>W</td><td>Splitsen in tiental en eenheden</td></tr>
-<tr><td>X</td><td>Getallenlijn boogjesspel</td></tr>
+<tr><td>Xa</td><td>Getallenlijn boogjesspel - plus</td></tr>
+<tr><td>Xb</td><td>Getallenlijn boogjesspel - min</td></tr>
 </table>
