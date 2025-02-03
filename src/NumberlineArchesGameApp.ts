@@ -69,7 +69,7 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
   static sadFaces = ['😕', '😟', '😮', '😲', '🥹', '😧', '😢', '😞', '😭'];
   static neutralEmoji = '⚜️';
 
-  private gameLogger = new GameLogger('F', '');
+  private gameLogger = new GameLogger('X', '');
 
   @property()
   accessor minNumber = 0;
@@ -223,6 +223,8 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
       if (operator === 'plus' || operator === 'minus') this.operator = operator;
       // If not, we ignore the operator parameter.
     }
+    if (this.operator === 'plus') this.gameLogger.setSubCode('a');
+    if (this.operator === 'minus') this.gameLogger.setSubCode('b');
   }
 
   determineLeftRightOperandNoSplitMinus(): LeftRightOperandSplitType {
