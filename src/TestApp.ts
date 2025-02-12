@@ -4,7 +4,7 @@ import { customElement } from 'lit/decorators.js';
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
 // import { darken, lighten } from 'color2k';
-import './DigitFillin';
+import './DraggableTargetSlotted';
 
 import './Arch';
 
@@ -13,10 +13,12 @@ import './Arch';
 @customElement('test-app')
 export class TestApp extends LitElement {
   static get styles(): CSSResultArray {
+    console.log(`styles`);
     return [
       css`
-        number-line-arch {
-          width: 250px;
+        draggable-target-fraction {
+          width: 100px;
+          height: 100px;
         }
       `,
     ];
@@ -24,7 +26,10 @@ export class TestApp extends LitElement {
 
   protected renderTest(): HTMLTemplateResult {
     return html`<p>Test</p>
-      <number-line-arch width="8" position="above"></number-line-arch>`;
+      <draggable-target-slotted>
+        <div>BBB</div>
+        <div>CCC</div>
+      </draggable-target-slotted>`;
   }
 
   protected render(): HTMLTemplateResult {
