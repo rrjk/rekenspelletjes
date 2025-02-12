@@ -87,7 +87,6 @@ export class DigitFillin extends LitElement {
       if (input === this.digits[this.digitVisible + 1]) {
         this.digitVisible += 1;
         if (this.digitVisible === this.numberDigits - 1) {
-          this.fillinActive = false;
           ret = 'fillinComplete';
         } else {
           ret = 'inputOk';

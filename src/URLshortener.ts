@@ -1041,7 +1041,35 @@ const urls: (() => string)[] = [
     getallenlijnBoogjesSpelLink(0, 100, 'split', 'jumpsOfTen', 180, 'minus'),
   () =>
     getallenlijnBoogjesSpelLink(0, 100, 'split', 'jumpsOfTen', 300, 'minus'),
-  // ol
+  // ol indexSommenTot100DubbelSplitsen.html - sums without visible split
+  () => sommenMetSplitsenLink('split2Till100', ['plus'], 60, 'hideSplits'),
+  () => sommenMetSplitsenLink('split2Till100', ['plus'], 180, 'hideSplits'),
+  () => sommenMetSplitsenLink('split2Till100', ['minus'], 60, 'hideSplits'),
+  () => sommenMetSplitsenLink('split2Till100', ['minus'], 180, 'hideSplits'),
+  () =>
+    sommenMetSplitsenLink('split2Till100', ['plus', 'minus'], 60, 'hideSplits'),
+  () =>
+    sommenMetSplitsenLink(
+      'split2Till100',
+      ['plus', 'minus'],
+      180,
+      'hideSplits',
+    ),
+  // or indexSommenTot100EnkelSplitsen.html - sums without visible split
+  () => sommenMetSplitsenLink('split1Till100', ['plus'], 60, 'hideSplits'),
+  () => sommenMetSplitsenLink('split1Till100', ['plus'], 180, 'hideSplits'),
+  () => sommenMetSplitsenLink('split1Till100', ['minus'], 60, 'hideSplits'),
+  () => sommenMetSplitsenLink('split1Till100', ['minus'], 180, 'hideSplits'),
+  () =>
+    sommenMetSplitsenLink('split1Till100', ['plus', 'minus'], 60, 'hideSplits'),
+  () =>
+    sommenMetSplitsenLink(
+      'split1Till100',
+      ['plus', 'minus'],
+      180,
+      'hideSplits',
+    ),
+  // ox
 ];
 
 const urlParams = new URLSearchParams(window.location.search);
