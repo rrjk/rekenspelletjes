@@ -1,4 +1,4 @@
-import { html, css } from 'lit';
+import { html, css, nothing } from 'lit';
 // eslint-disable-next-line import/extensions
 import { customElement, state } from 'lit/decorators.js';
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
@@ -15,7 +15,7 @@ import type { DigitFillin } from './DigitFillin';
 import './DigitFillin';
 
 import './RealHeight';
-import { GameRangeType } from './SumsWithSplitAppLink';
+import type { GameRangeType, ShowSplitsType } from './SumsWithSplitAppLink';
 
 type OperatorType = '+' | '-';
 
@@ -37,6 +37,9 @@ export function getTextWidth(text: string, font?: string) {
 @customElement('sums-with-split-app')
 export class SumsWithDoubleSplitApp extends TimeLimitedGame2 {
   private gameLogger = new GameLogger('G', '');
+  @state()
+  private accessor showSplits: ShowSplitsType = 'showSplits';
+
   @state()
   private accessor activeFillIn = 0;
   @state()
@@ -170,6 +173,13 @@ export class SumsWithDoubleSplitApp extends TimeLimitedGame2 {
     } else if (this.game === 'split2Till100' && this.operators.length === 2) {
       this.gameLogger.setMainCode('V');
       this.gameLogger.setSubCode('c');
+    }
+
+    if (urlParams.has('splits')) {
+      const splits = urlParams.get('splits');
+      if (splits === 'showSplits' || splits === 'hideSplits')
+        this.showSplits = splits;
+      if (this.showSplits === 'hideSplits') this.usedFillIns = ['result'];
     }
   }
 
@@ -659,7 +669,8 @@ export class SumsWithDoubleSplitApp extends TimeLimitedGame2 {
         class="totalGame ${totalGameClass} ${this.gameEnabled ? '' : 'hidden'}"
         id="totalGame"
       >
-        ${excersize} ${split1} ${split2}
+        ${excersize} ${this.showSplits === 'showSplits' ? split1 : nothing}
+        ${this.showSplits === 'showSplits' ? split2 : nothing}
         <div class="keyboardArea">
           <digit-keyboard
             @digit-entered="${(evt: CustomEvent<Digit>) =>
