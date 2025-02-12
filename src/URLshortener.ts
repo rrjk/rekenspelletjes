@@ -1055,7 +1055,21 @@ const urls: (() => string)[] = [
       180,
       'hideSplits',
     ),
-  // vor
+  // or indexSommenTot100EnkelSplitsen.html - sums without visible split
+  () => sommenMetSplitsenLink('split1Till100', ['plus'], 60, 'hideSplits'),
+  () => sommenMetSplitsenLink('split1Till100', ['plus'], 180, 'hideSplits'),
+  () => sommenMetSplitsenLink('split1Till100', ['minus'], 60, 'hideSplits'),
+  () => sommenMetSplitsenLink('split1Till100', ['minus'], 180, 'hideSplits'),
+  () =>
+    sommenMetSplitsenLink('split1Till100', ['plus', 'minus'], 60, 'hideSplits'),
+  () =>
+    sommenMetSplitsenLink(
+      'split1Till100',
+      ['plus', 'minus'],
+      180,
+      'hideSplits',
+    ),
+  // ox
 ];
 
 const urlParams = new URLSearchParams(window.location.search);
