@@ -1069,7 +1069,16 @@ const urls: (() => string)[] = [
       180,
       'hideSplits',
     ),
-  // ox
+  // ox indexSommenTot20Splitsen.html - sums without visible split
+  () => sommenMetSplitsenLink('split1Till20', ['plus'], 60, 'hideSplits'),
+  () => sommenMetSplitsenLink('split1Till20', ['plus'], 180, 'hideSplits'),
+  () => sommenMetSplitsenLink('split1Till20', ['minus'], 60, 'hideSplits'),
+  () => sommenMetSplitsenLink('split1Till20', ['minus'], 180, 'hideSplits'),
+  () =>
+    sommenMetSplitsenLink('split1Till20', ['plus', 'minus'], 60, 'hideSplits'),
+  () =>
+    sommenMetSplitsenLink('split1Till20', ['plus', 'minus'], 180, 'hideSplits'),
+  // pd
 ];
 
 const urlParams = new URLSearchParams(window.location.search);

@@ -1,0 +1,8 @@
+<svg width="300" height="300" xmlns="http://www.w3.org/2000/svg" class="svg-icon" version="1.1">
+ <g id="Layer_1">
+  <title>Layer 1</title>
+  <rect stroke-width="0" rx="50" height="300" width="300" y="0" stroke="#000" fill="#A60020"/>
+  <text xml:space="preserve" text-anchor="start" font-family="Noto Sans JP" font-size="75" stroke-width="0"  y="125" x="28" stroke="#000" fill="#000000">6 + 8 =</text>
+  <text xml:space="preserve" text-anchor="start" font-family="Noto Sans JP" font-size="75" stroke-width="0"  y="68" x="10" stroke="#000" fill="#000000">12 - 3 =</text>
+ </g>
+</svg>
