@@ -1,43 +1,39 @@
 import { CSSResultArray, css } from 'lit';
 // eslint-disable-next-line import/extensions
-import { customElement, state } from 'lit/decorators.js';
-import type { PropertyValues } from 'lit';
+import { customElement } from 'lit/decorators.js';
 import {
   DraggableElement,
   DropTargetElementInterface,
   HighlightType,
 } from './DraggableElement';
 
+export interface HighlightableElement extends Element {
+  highlightState: HighlightType;
+}
+
 @customElement('draggable-target-slotted')
-export class DraggableTargetFraction
+export class DraggableTargetSlotted
   extends DraggableElement
   implements DropTargetElementInterface
 {
-  @state()
-  private accessor hightlighState: HighlightType = 'none';
-
   /** Get all static styles */
   static get styles(): CSSResultArray {
     return [super.styles, css``];
   }
 
-  protected updated(_changedProperties: PropertyValues): void {
-    if (_changedProperties.has('hightlighState')) {
-      const slot = this.renderRoot.querySelector('slot')!;
-      console.assert(slot !== null);
-
-      const slottedElements = slot.assignedElements();
-      console.log(`updated`);
-      console.log(slottedElements);
-
-      for (const elm of slottedElements) {
-        // ToDo: This does not work when there are text nodes in between, so I need to filter out the text nodes
-        elm.setAttribute('highlightState', this.hightlighState);
-      }
-    }
-  }
-
   highlightForDrop(newState: HighlightType): void {
-    this.hightlighState = newState;
+    const slot = this.renderRoot.querySelector('slot')!;
+    console.assert(slot !== null);
+
+    const slottedElements = slot.assignedElements() as HighlightableElement[];
+    // We don't check whether the assigned elements are indeed highlightable
+    // as we will only set the highlightState attribute, which is also possible
+    // if the element is not in fact a highlightable element.
+    for (const elm of slottedElements) {
+      // We set the highlightState attribute, just in case we have slotted a element that does react on programmatic attribute changes
+      elm.setAttribute('highlightState', newState);
+      // We set the highlightState property as a lit element will not pick up on a attribute change when this is done outside of lit element
+      elm.highlightState = newState;
+    }
   }
 }

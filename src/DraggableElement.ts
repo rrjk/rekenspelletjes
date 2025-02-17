@@ -74,10 +74,13 @@ export class DraggableElement extends LitElement {
   private dropTargetInfoList: DropTargetInfo[] = [];
 
   @property()
-  accessor dropTargetList: readonly DropTarget[] = [];
+  accessor dropTargetList: readonly DropTarget[] | undefined = undefined;
 
   protected willUpdate(changedProperties: PropertyValues): void {
-    if (changedProperties.has('dropTargetList')) {
+    if (
+      changedProperties.has('dropTargetList') &&
+      this.dropTargetList !== undefined
+    ) {
       this.dropTargetInfoList = this.dropTargetList.map(e => ({
         element: e.element,
         dropType: e.dropType,
@@ -284,7 +287,6 @@ export class DraggableElement extends LitElement {
       this.cummulativeDeltaY = this.minCummalativeDeltaY;
     else if (this.cummulativeDeltaY > this.maxCummalativeDeltaY)
       this.cummulativeDeltaY = this.maxCummalativeDeltaY;
-
     // For each of the drop targets, check whether it's touched and if so highlight it appropriately.
     for (const target of this.dropTargetInfoList) {
       if (
@@ -293,10 +295,11 @@ export class DraggableElement extends LitElement {
         this.cummulativeDeltaY > target.minDeltaY &&
         this.cummulativeDeltaY < target.maxDeltaY
       ) {
-        if (target.dropType === 'dropOk')
+        if (target.dropType === 'dropOk') {
           target.element.highlightForDrop('droppable');
-        else if (target.dropType === 'dropWrong')
+        } else if (target.dropType === 'dropWrong') {
           target.element.highlightForDrop('wrong');
+        }
       } else {
         target.element.highlightForDrop('none');
       }

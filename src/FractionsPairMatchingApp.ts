@@ -5,12 +5,10 @@ import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 // eslint-disable-next-line import/extensions
 import { customElement } from 'lit/decorators.js';
 
-// eslint-disable-next-line import/extensions
-import { range } from 'lit/directives/range.js';
-
 import { PairMatchingApp } from './PairMatchingApp';
-import { DraggableTargetFraction } from './DraggableTargetFraction';
 import { GameLogger } from './GameLogger';
+
+import './FractionElement';
 
 interface FractionInfo {
   denumerator: number;
@@ -18,10 +16,7 @@ interface FractionInfo {
 }
 
 @customElement('fraction-pair-matching-app')
-export class FractionMatchingGameApp extends PairMatchingApp<
-  DraggableTargetFraction,
-  FractionInfo
-> {
+export class FractionMatchingGameApp extends PairMatchingApp<FractionInfo> {
   private gameLogger = new GameLogger('I', '');
 
   async firstUpdated(): Promise<void> {
@@ -58,42 +53,32 @@ export class FractionMatchingGameApp extends PairMatchingApp<
     // const urlParams = new URLSearchParams(window.location.search);
   }
 
-  newRound() {
-    //
-  }
-
   static get styles(): CSSResultArray {
     return [
       ...super.styles,
       css`
-        draggable-target-fraction {
-          width: 50%;
+        fraction-element {
+          width: 100%;
           aspect-ratio: 1;
         }
       `,
     ];
   }
 
-  renderPairElement(id: string, info: FractionInfo): HTMLTemplateResult {
+  renderPairElement(info: FractionInfo): HTMLTemplateResult {
     return html`
-      <draggable-target-fraction
+      <fraction-element
         numerator="${info.numerator}"
         denumerator="${info.denumerator}"
-      ></draggable-target-fraction>
+      ></fraction-element>
     `;
   }
 
-  getPairs(numberPairs: number): FractionInfo[] {
-    const ret: FractionInfo[] = [];
-    for (const i of range(numberPairs)) {
-      ret.push({ numerator: i, denumerator: 2 });
-      ret.push({ numerator: i, denumerator: 4 });
-    }
+  getPair(): { exercise: FractionInfo; answer: FractionInfo } {
+    const ret = {
+      exercise: { numerator: 1, denumerator: 2 },
+      answer: { numerator: 2, denumerator: 4 },
+    };
     return ret;
   }
 }
-/*         .dropTargetList=${this.fractions.map(el => ({
-          element: el,
-          dropType: 'dropOk',
-        }))}
-*/
