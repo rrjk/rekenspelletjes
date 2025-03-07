@@ -14,14 +14,31 @@ export interface DropTargetElementInterface extends HTMLElement {
 }
 
 export class DropEvent extends Event {
-  draggableId = '';
-  draggableValue = '';
-  dropTargetId = '';
-  dropTargetValue = '';
-  dropType: DropType = 'dropOk';
+  draggableElement: HTMLElement;
+  draggableId: string;
+  draggableValue: string;
+  dropTargetElement: HTMLElement;
+  dropTargetId: string;
+  dropTargetValue: string;
+  dropType: DropType;
 
-  constructor() {
+  constructor(
+    draggableElement: HTMLElement,
+    draggableId: string,
+    draggableValue: string,
+    dropTargetElement: HTMLElement,
+    dropTargetId: string,
+    dropTargetValue: string,
+    dropType: DropType,
+  ) {
     super('dropped');
+    this.draggableElement = draggableElement;
+    this.draggableId = draggableId;
+    this.draggableValue = draggableValue;
+    this.dropTargetElement = dropTargetElement;
+    this.dropTargetId = dropTargetId;
+    this.dropTargetValue = dropTargetValue;
+    this.dropType = dropType;
   }
 }
 
@@ -258,12 +275,15 @@ export class DraggableElement extends LitElement {
         this.cummulativeDeltaY > target.minDeltaY &&
         this.cummulativeDeltaY < target.maxDeltaY
       ) {
-        const event = new DropEvent();
-        event.draggableId = this.id;
-        event.draggableValue = this.value;
-        event.dropTargetId = target.element.id;
-        event.dropTargetValue = target.element.value || '';
-        event.dropType = target.dropType;
+        const event = new DropEvent(
+          this,
+          this.id,
+          this.value,
+          target.element,
+          target.element.id,
+          target.element.value || '',
+          target.dropType,
+        );
         this.dispatchEvent(event);
         break;
       }

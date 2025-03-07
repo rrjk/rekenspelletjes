@@ -4,8 +4,7 @@ import { customElement, property, state } from 'lit/decorators.js';
 
 import type { HTMLTemplateResult, PropertyValues } from 'lit';
 import { HighlightType } from './DraggableElement';
-
-import { gcd } from './NumberHelperFunctions';
+import { Fraction } from './Fraction';
 
 @customElement('fraction-element')
 export class FractionElement extends LitElement {
@@ -13,14 +12,7 @@ export class FractionElement extends LitElement {
   private accessor highlightState: HighlightType = 'none';
 
   @property()
-  private accessor numerator = 1;
-  @property()
-  private accessor denumerator = 2;
-
-  get value() {
-    const _gcd = gcd(this.numerator, this.denumerator);
-    return `${this.numerator / _gcd}/${this.denumerator / _gcd}`;
-  }
+  private accessor fraction = new Fraction(1, 2);
 
   /** Get all static styles */
   static get styles(): CSSResultArray {
@@ -45,7 +37,7 @@ export class FractionElement extends LitElement {
 
   render(): HTMLTemplateResult {
     return html`<div>
-      ${this.numerator}/${this.denumerator} (${this.value}) </br> ${this.highlightState}
+      ${this.fraction.numerator}/${this.fraction.denumerator} (${this.fraction.value}) </br> ${this.highlightState}
     </div>`;
   }
 }
