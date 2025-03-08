@@ -6,7 +6,7 @@ import { state } from 'lit/decorators.js';
 // eslint-disable-next-line import/extensions
 import { range } from 'lit/directives/range.js';
 
-import { create } from 'mutative';
+import { castDraft, create } from 'mutative';
 
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
@@ -16,11 +16,7 @@ import './DraggableTargetSlotted';
 import './DynamicGrid';
 import type { DraggableTargetSlotted } from './DraggableTargetSlotted';
 import { ChildNotFoundError } from './ChildNotFoundError';
-import {
-  DraggableElement,
-  DropEvent,
-  DropTargetElementInterface,
-} from './DraggableElement';
+import { DropEvent } from './DraggableElement';
 import { shuffleArray } from './Randomizer';
 
 interface BasicCellInfo {
@@ -31,6 +27,18 @@ interface BasicCellInfo {
 }
 
 type CellType = 'exercise' | 'answer';
+const cellTypes: CellType[] = ['answer', 'exercise'];
+
+function oppositeCellType(cellType: CellType): CellType {
+  if (cellType === 'exercise') return 'answer';
+  return 'exercise';
+}
+
+type GridCellType = CellType | 'empty';
+// const gridCellTypes: GridCellType[] = ['answer', 'empty', 'exercise'];
+
+type DragElementType = 'draggable' | 'target';
+const dragElementTypes: DragElementType[] = ['draggable', 'target'];
 
 function cellTypeAbreviation(type: CellType) {
   return type === 'exercise' ? 'e' : 'a';
@@ -50,7 +58,7 @@ interface Cell<T> {
 }
 
 interface GridCellMapping {
-  cellType: CellType | 'empty';
+  cellType: GridCellType;
   cellIndex: number;
 }
 
@@ -58,23 +66,18 @@ export abstract class PairMatchingApp<
   CellInfo extends CellInfoInterface,
 > extends TimeLimitedGame2 {
   @state()
-  protected accessor exerciseCells: Cell<CellInfo>[] = [];
-
-  @state()
-  protected accessor answerCells: Cell<CellInfo>[] = [];
-
-  @state()
   protected accessor cells: {
-    exerciseCells: Cell<CellInfo>[];
-    answerCells: Cell<CellInfo>[];
-  } = { exerciseCells: [], answerCells: [] };
+    exercise: Cell<CellInfo>[];
+    answer: Cell<CellInfo>[];
+  } = { exercise: [], answer: [] };
 
   @state()
   protected accessor gridItems: GridCellMapping[] = [];
 
   private numberOfPairs = 10;
   private nextPairNmbr = 0;
-  private newlyAddedPairs: number[] = [];
+
+  private targetUpdateRequired = false;
 
   /* Control drop behavior - for child classes to override behavior
      allElements - All elements can be dropped on all other elements
@@ -114,13 +117,10 @@ export abstract class PairMatchingApp<
     );
     super.startNewGame();
     this.clearGridItems();
-    this.exerciseCells = [];
-    this.answerCells = [];
+    this.cells = { exercise: [], answer: [] };
     this.nextPairNmbr = 0;
     this.addNewCells(this.numberOfPairs / 2);
     this.addNewCells(this.numberOfPairs / 2);
-    console.log(`exerciseCells = ${JSON.stringify(this.exerciseCells)}`);
-    console.log(`answerCells = ${JSON.stringify(this.answerCells)}`);
   }
 
   constructor() {
@@ -140,42 +140,32 @@ export abstract class PairMatchingApp<
       ...range(this.nextPairNmbr, this.nextPairNmbr + nmbrPairs),
     ];
     this.nextPairNmbr += nmbrPairs;
+    this.targetUpdateRequired = true;
 
     const addedCellNmbrsAndTypes: { nmbr: number; type: CellType }[] = [];
 
-    console.log(`addNewCells`);
-    console.log(JSON.stringify(toBeAddedPairNmbrs));
-
     for (const i of toBeAddedPairNmbrs) {
-      this.newlyAddedPairs.push(i);
       const pair = this.getPair();
-      console.log(`pair = ${JSON.stringify(pair)}`);
-      this.exerciseCells.push({
-        basicInfo: {
-          cellId: this.serializeCellId(i, 'exercise'),
-          nmbr: i,
-          top: 0,
-          left: 0,
-        },
-        detailedInfo: pair.exercise,
+      this.cells = create(this.cells, draft => {
+        for (const cellType of cellTypes) {
+          draft[cellType].push({
+            basicInfo: {
+              cellId: this.serializeCellId(i, cellType),
+              nmbr: i,
+              top: 0,
+              left: 0,
+            },
+            detailedInfo: castDraft(pair[cellType]),
+          });
+          addedCellNmbrsAndTypes.push({ nmbr: i, type: cellType });
+        }
       });
-      this.answerCells.push({
-        basicInfo: {
-          cellId: this.serializeCellId(i, 'answer'),
-          nmbr: i,
-          top: 0,
-          left: 0,
-        },
-        detailedInfo: pair.answer,
-      });
-      addedCellNmbrsAndTypes.push({ nmbr: i, type: 'exercise' });
-      addedCellNmbrsAndTypes.push({ nmbr: i, type: 'answer' });
     }
 
     shuffleArray(addedCellNmbrsAndTypes);
 
     this.gridItems = create(this.gridItems, base => {
-      for (const gridItem of base) {
+      base.forEach(gridItem => {
         if (gridItem.cellType === 'empty') {
           const cellNmbrAndType = addedCellNmbrsAndTypes.pop();
           if (cellNmbrAndType !== undefined) {
@@ -183,27 +173,14 @@ export abstract class PairMatchingApp<
             gridItem.cellIndex = cellNmbrAndType.nmbr;
           }
         }
-      }
+      });
     });
-
-    console.log(
-      `addedCellNmbrsAndType : ${JSON.stringify(addedCellNmbrsAndTypes)}`,
-    );
-
-    /*
-    this.gridItems.push({ cellIndex: i, cellType: 'exercise' });
-    this.gridItems.push({ cellIndex: i, cellType: 'answer' });
-*/
-
-    console.log(`addNewCells`);
-    console.log(JSON.stringify(this.exerciseCells));
   }
 
   protected abstract getPair(): { exercise: CellInfo; answer: CellInfo };
   protected abstract renderPairElement(info: CellInfo): HTMLTemplateResult;
 
   protected parseUrl(): void {
-    console.log(`PairMatchingApp.parseUrl called`);
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.has('numberOfPairs')) {
       this.numberOfPairs = parseInt(urlParams.get('numberOfPairs') || '10', 10);
@@ -223,7 +200,21 @@ export abstract class PairMatchingApp<
     ];
   }
 
-  private getCellElement(nmbr: number, type: CellType): DraggableTargetSlotted {
+  private getCellElement(index: number): DraggableTargetSlotted {
+    const elementName = this.serializeGridId(index);
+    const cellElement = this.renderRoot.querySelector(
+      `draggable-target-slotted#${elementName}`,
+    );
+    if (cellElement === null) {
+      throw new ChildNotFoundError(elementName, 'PairMatchingApp');
+    }
+    return cellElement as DraggableTargetSlotted;
+  }
+
+  private getCellElementOld(
+    nmbr: number,
+    type: CellType,
+  ): DraggableTargetSlotted {
     const elementName = this.serializeCellId(nmbr, type);
     const cellElement = this.renderRoot.querySelector(
       `draggable-target-slotted#${elementName}`,
@@ -237,33 +228,14 @@ export abstract class PairMatchingApp<
     return `cell-${nmbr}-${cellTypeAbreviation(type)}`;
   }
 
-  private parseCellId(id: string): { nmbr: number; type: CellType } {
-    const splittedId = id.split('-');
-    if (splittedId.length !== 3 || splittedId[0] !== 'cell')
-      throw new Error('Non valid cell id encountered for parsing');
-    const nmbr = parseInt(splittedId[1], 10);
-    if (Number.isNaN(nmbr))
-      throw new Error('Non valid cell id encountered for parsing');
-    let type: CellType = 'answer';
-    if (splittedId[2] === 'a') type = 'answer';
-    else if (splittedId[2] === 'e') type = 'exercise';
-    else throw new Error('Non valid cell id encountered for parsing');
-    return { nmbr, type };
+  serializeGridId(gridIndex: number) {
+    return `grid-${gridIndex}`;
   }
 
   private getDetailedCellInfo(nmbr: number, type: CellType): CellInfo {
-    let ret: CellInfo | undefined;
-    console.log(`getDetailedCellInfo nmbr=${nmbr}, type=${type}`);
-    if (type === 'exercise') {
-      ret = this.exerciseCells.find(
-        elm => elm.basicInfo.nmbr === nmbr,
-      )?.detailedInfo;
-    }
-    if (type === 'answer') {
-      ret = this.answerCells.find(
-        elm => elm.basicInfo.nmbr === nmbr,
-      )?.detailedInfo;
-    }
+    const ret = this.cells[type].find(
+      elm => elm.basicInfo.nmbr === nmbr,
+    )?.detailedInfo;
     if (ret === undefined) {
       throw new Error('Information for a non-existing cell requested');
     }
@@ -271,184 +243,100 @@ export abstract class PairMatchingApp<
   }
 
   protected updated(): void {
-    console.log(`newlyAddedCells = ${this.newlyAddedPairs}`);
-    if (this.newlyAddedPairs.length !== 0) this.addTargetsForNewCells();
+    if (this.targetUpdateRequired) {
+      this.setTargetsForCells();
+      this.targetUpdateRequired = false;
+    }
   }
 
-  /** Add all targets as drop targets to all recipients
-   *  This function prevents adding x as a target for x, targets and recipients may have overlap
-   */
-  private addTargets(
-    targets: DropTargetElementInterface[],
-    recipients: DraggableElement[],
-  ) {
-    console.log('addTargets');
-    console.log(targets);
-    console.log(recipients);
-    for (const target of targets) {
-      for (const recipient of recipients) {
-        if (<Element>target !== <Element>recipient)
-          recipient.addDropElement(target);
+  private setTargetsForCells() {
+    const cellElements: {
+      exercise: DraggableTargetSlotted[];
+      answer: DraggableTargetSlotted[];
+    } = { exercise: [], answer: [] };
+
+    this.gridItems.forEach((gridItem, index) => {
+      if (gridItem.cellType !== 'empty') {
+        cellElements[gridItem.cellType].push(this.getCellElement(index));
       }
-    }
-  }
+    });
 
-  private addTargetsForNewCells() {
-    // First we make arrays of all existing and new cell elements.
-    const newExerciseCellElms: DraggableTargetSlotted[] = [];
-    const newAnswerCellElms: DraggableTargetSlotted[] = [];
-    const existingExerciseCellElms: DraggableTargetSlotted[] = [];
-    const existingAnswerCellElms: DraggableTargetSlotted[] = [];
-
-    for (const cellNmbr of this.newlyAddedPairs) {
-      newExerciseCellElms.push(this.getCellElement(cellNmbr, 'exercise'));
-      newAnswerCellElms.push(this.getCellElement(cellNmbr, 'answer'));
-    }
-
-    for (const gridItem of this.gridItems) {
-      if (!this.newlyAddedPairs.includes(gridItem.cellIndex)) {
-        if (gridItem.cellType === 'exercise') {
-          existingExerciseCellElms.push(
-            this.getCellElement(gridItem.cellIndex, 'exercise'),
-          );
-        } else if (gridItem.cellType === 'answer') {
-          existingAnswerCellElms.push(
-            this.getCellElement(gridItem.cellIndex, 'answer'),
-          );
+    for (const cellType of cellTypes) {
+      for (const cellElement of cellElements[cellType]) {
+        cellElement.clearDropElements();
+        for (const oppositeCellElement of cellElements[
+          oppositeCellType(cellType)
+        ]) {
+          cellElement.addDropElement(oppositeCellElement);
+        }
+        if (this.dropAllowed === 'allElements') {
+          for (const otherSameTypeCellElement of cellElements[cellType]) {
+            if (cellElement !== otherSameTypeCellElement) {
+              cellElement.addDropElement(otherSameTypeCellElement);
+            }
+          }
         }
       }
     }
-    /*
-    for (const cell of this.exerciseCells) {
-      if (!this.newlyAddedPairs.includes(cell.basicInfo.nmbr)) {
-        existingExerciseCellElms.push(
-          this.getCellElement(cell.basicInfo.nmbr, 'exercise'),
-        );
-      }
-    }
-*/
-
-    for (const cell of this.answerCells) {
-      if (!this.newlyAddedPairs.includes(cell.basicInfo.nmbr)) {
-        existingAnswerCellElms.push(
-          this.getCellElement(cell.basicInfo.nmbr, 'answer'),
-        );
-      }
-    }
-
-    if (this.dropAllowed === 'opositeElements') {
-      // First we add all new cells elements as targets to all existing oposite cell elements
-      this.addTargets(newExerciseCellElms, existingAnswerCellElms);
-      this.addTargets(newAnswerCellElms, existingExerciseCellElms);
-      // Then we add all new and exising cell elements to all new oposite cell elements
-      this.addTargets(
-        [...newExerciseCellElms, ...existingExerciseCellElms],
-        newAnswerCellElms,
-      );
-      this.addTargets(
-        [...newAnswerCellElms, ...existingAnswerCellElms],
-        existingExerciseCellElms,
-      );
-    } else if (this.dropAllowed === 'allElements') {
-      // First we add all new cells elements as targets to all existing cell elements
-      this.addTargets(
-        [...newExerciseCellElms, ...newAnswerCellElms],
-        [...existingAnswerCellElms, ...existingExerciseCellElms],
-      );
-      // Then we add all new and existing cell elements to all new cell elements
-      this.addTargets(
-        [
-          ...newExerciseCellElms,
-          ...newAnswerCellElms,
-          ...existingExerciseCellElms,
-          ...existingAnswerCellElms,
-        ],
-        [...newAnswerCellElms, ...newExerciseCellElms],
-      );
-    } else {
-      throw Error(
-        `dropAllowed = ${this.dropAllowed} is not supported for PairMatchingApp yet`,
-      );
-    }
-    this.newlyAddedPairs = [];
   }
 
   handleDropped(evt: DropEvent): void {
-    console.log('handleExerciseDropped');
-    console.log(evt);
-    console.log(
-      `draggableId = ${evt.draggableId}, dropTargetId = ${evt.dropTargetId}`,
-    );
+    const involvedElements = {
+      draggable: <CellElement>evt.draggableElement,
+      target: <CellElement>evt.dropTargetElement,
+    };
+    const involvedGridIndexes = {
+      draggable: involvedElements.draggable.gridIndex,
+      target: involvedElements.target.gridIndex,
+    };
 
-    const draggableElement = <CellElement>evt.draggableElement;
-    const targetElement = <CellElement>evt.dropTargetElement;
+    const cellInfo: {
+      draggable?: CellInfo;
+      target?: CellInfo;
+    } = {};
 
-    const gridIndexDraggable = draggableElement.gridIndex;
-    const gridIndexTarget = targetElement.gridIndex;
+    for (const elementType of dragElementTypes) {
+      const { cellType, cellIndex } =
+        this.gridItems[involvedGridIndexes[elementType]];
 
-    let cellInfoDraggable: CellInfo;
-    const draggableCellType = this.gridItems[gridIndexDraggable].cellType;
-    console.assert(
-      draggableCellType === 'answer' || draggableCellType === 'exercise',
-      'An empty grid element should not be draggable',
-    );
-    if (draggableCellType === 'exercise') {
-      cellInfoDraggable =
-        this.exerciseCells[this.gridItems[gridIndexDraggable].cellIndex]
-          .detailedInfo;
-    } else {
-      cellInfoDraggable =
-        this.answerCells[this.gridItems[gridIndexDraggable].cellIndex]
-          .detailedInfo;
+      if (cellType === 'answer' || cellType === 'exercise') {
+        cellInfo[elementType] = this.cells[cellType][cellIndex].detailedInfo;
+      } else {
+        console.error('An empty grid element should not be draggable');
+      }
     }
 
-    let cellInfoTarget: CellInfo;
-    const targetCellType = this.gridItems[gridIndexTarget].cellType;
-    console.assert(
-      targetCellType === 'answer' || targetCellType === 'exercise',
-      'An empty grid element should not be targettable',
-    );
-    if (targetCellType === 'exercise') {
-      cellInfoTarget =
-        this.exerciseCells[this.gridItems[gridIndexTarget].cellIndex]
-          .detailedInfo;
-    } else {
-      cellInfoTarget =
-        this.answerCells[this.gridItems[gridIndexTarget].cellIndex]
-          .detailedInfo;
-    }
-
-    const equal = cellInfoDraggable.equal(cellInfoTarget);
+    // Given the code above, we now for sure there will be a draggable and a target in cellInfo
+    const equal = cellInfo.draggable!.equal(cellInfo.target!);
 
     if (equal) {
-      console.log(`TODO: we should remove the pair`);
-    }
+      this.numberOk += 1;
 
-    console.log(
-      `cellInfo draggable=${JSON.stringify(cellInfoDraggable)}, target=${JSON.stringify(cellInfoTarget)}, equal=${cellInfoDraggable.equal(cellInfoTarget)}`,
-    );
-
-    if (equal) {
       this.gridItems = create(this.gridItems, draft => {
-        draft[gridIndexDraggable].cellType = 'empty';
-        draft[gridIndexTarget].cellType = 'empty';
+        for (const dragElemenType of dragElementTypes) {
+          draft[involvedGridIndexes[dragElemenType]].cellType = 'empty';
+        }
       });
+
+      this.targetUpdateRequired = true;
+
+      // this.addNewCells(1);
     }
   }
 
-  renderCellElement(
-    cell?: Cell<CellInfo>,
-    cellType?: CellType,
-    gridIndex?: number,
-  ) {
-    if (cell === undefined || cellType === undefined || gridIndex === undefined)
-      return html`<div class="gridElement"></div>`;
+  renderCellElement(gridIndex: number) {
+    const { cellIndex, cellType } = this.gridItems[gridIndex];
+    if (cellType === 'empty') return html`<div class="gridElement"></div>`;
+
+    const cell = this.cells[cellType][cellIndex];
 
     return html` <div class="gridElement">
       <draggable-target-slotted
-        id="${this.serializeCellId(cell.basicInfo.nmbr, cellType)}"
+        cellId="${this.serializeCellId(cellIndex, cellType)}"
+        id=${this.serializeGridId(gridIndex)}
         .gridIndex="${gridIndex}"
         @dropped="${this.handleDropped}"
+        resetDragAfterDrop
       >
         ${this.renderPairElement(cell.detailedInfo)}
       </draggable-target-slotted>
@@ -459,45 +347,16 @@ export abstract class PairMatchingApp<
   renderGameContent(): HTMLTemplateResult {
     const cellElements: HTMLTemplateResult[] = [];
 
-    console.log(`renderGameContent`);
-    console.log(`exerciseCells = ${JSON.stringify(this.exerciseCells)}`);
-    console.log(`answerCells = ${JSON.stringify(this.answerCells)}`);
-
     this.gridItems.forEach((gridItem, index) => {
-      let cell: Cell<CellInfo>;
       if (gridItem.cellType === 'answer') {
-        cell = this.exerciseCells[gridItem.cellIndex];
-        cellElements.push(
-          this.renderCellElement(cell, gridItem.cellType, index),
-        );
+        cellElements.push(this.renderCellElement(index));
       } else if (gridItem.cellType === 'exercise') {
-        cell = this.answerCells[gridItem.cellIndex];
-        cellElements.push(
-          this.renderCellElement(cell, gridItem.cellType, index),
-        );
+        cellElements.push(this.renderCellElement(index));
       } else {
-        cellElements.push(this.renderCellElement());
+        cellElements.push(this.renderCellElement(index));
       }
     });
 
-    /*
-    for (const gridItem of this.gridItems) {
-      let cell: Cell<CellInfo>;
-      if (gridItem.cellType === 'answer')
-        cell = this.exerciseCells[gridItem.cellIndex];
-      else cell = this.answerCells[gridItem.cellIndex];
-      cellElements.push(this.renderCellElement(cell, gridItem.cellType));
-    }
-*/
-    /*
-    for (const cell of this.exerciseCells) {
-      cellElements.push(this.renderCellElement(cell, 'exercise'));
-    }
-
-    for (const cell of this.answerCells) {
-      cellElements.push(this.renderCellElement(cell, 'answer'));
-    }
-*/
     return html`
         <dynamic-grid
           contentAspectRatio="1"
