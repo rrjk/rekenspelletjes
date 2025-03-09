@@ -18,7 +18,14 @@ export class DraggableTargetSlotted
 {
   /** Get all static styles */
   static get styles(): CSSResultArray {
-    return [super.styles, css``];
+    return [
+      super.styles,
+      css`
+        :host {
+          border: 1px red solid;
+        }
+      `,
+    ];
   }
 
   highlightForDrop(newState: HighlightType): void {

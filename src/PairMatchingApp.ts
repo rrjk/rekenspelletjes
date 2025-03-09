@@ -19,12 +19,34 @@ import { ChildNotFoundError } from './ChildNotFoundError';
 import { DropEvent } from './DraggableElement';
 import { randomIntFromRange, shuffleArray } from './Randomizer';
 
-interface BasicCellInfo {
-  cellId: string;
-  nmbr: number; // The cellnumber - use to construct element ids
-  left: number; // Left position within the cell as percentage (0-40%)
-  top: number; // Top position within the cell as percentage (0-40%)
-}
+/**
+ * The game builds up a simple grid to keep numberOfPairs *2 gridElement. This grid will resize automatically.
+ * Grid elements are indexes from 0 upwards, starting in the top left and going first horizontally and subsequently vertically
+ * *---*---*---*
+ * | 0 | 1 | 2 |
+ * | 3 | 4 | 5 |
+ * | 6 | 7 | 8 |
+ * *---*---*---*
+ *
+ * Inside the grid elements, cells or Mompitz figures are rendered.
+ * Cells we have in two different types see CellType: 'exercise' | 'answer'.
+ *
+ * To be able to also distinguish this on grid level, we also have GridType: CellType | 'mompitz'
+ *
+ * To render 'exercise' and 'answer' cells, information is needed,
+ * this information is stored in cells, one array for the exercises and one array for the answers.
+ *
+ * A cell does not fill the entire grid element, it's set to always be square and takeup at most 50% of height or width.
+ * In the basicinfo of a cell it stored where in the grid element, the cell is rendered.
+ * More detailed info is set in detailedInfo, of type T, which needs to be specified by a child class of PairMatchingApp.
+ * This detailed info is passed on to render a cell content via the abstract function this.renderPairElement, which needs to be
+ * filled in by a child class
+ *
+ * Cell information are stored in the cells propert, and during a game never removed.
+ * In gridItems, a mapping from a grid element to the proper cell and cell type is kept track of.
+ * For 'mompitz' grid items, the mapping is to the set of image URL for the Mompitz figures.
+ *
+ */
 
 type CellType = 'exercise' | 'answer';
 const cellTypes: CellType[] = ['answer', 'exercise'];
@@ -34,14 +56,15 @@ function oppositeCellType(cellType: CellType): CellType {
   return 'exercise';
 }
 
-type GridCellType = CellType | 'empty';
-// const gridCellTypes: GridCellType[] = ['answer', 'empty', 'exercise'];
+type GridCellType = CellType | 'mompitz';
+// const gridCellTypes: GridCellType[] = ['answer', 'mompitz', 'exercise'];
 
 type DragElementType = 'draggable' | 'target';
 const dragElementTypes: DragElementType[] = ['draggable', 'target'];
 
-function cellTypeAbreviation(type: CellType) {
-  return type === 'exercise' ? 'e' : 'a';
+interface BasicCellInfo {
+  left: number; // Left position within the cell as percentage (0-40%)
+  top: number; // Top position within the cell as percentage (0-40%)
 }
 
 interface CellInfoInterface {
@@ -66,19 +89,40 @@ interface GridCellMapping {
 export abstract class PairMatchingApp<
   CellInfo extends CellInfoInterface,
 > extends TimeLimitedGame2 {
+  /** Images for the Mompitz grid elements */
+  static imagesFormompitzCells: URL[] = [
+    new URL('../images/Mompitz Anne.png', import.meta.url),
+    new URL('../images/Mompitz Frank.png', import.meta.url),
+    new URL('../images/Mompitz Jan-500.png', import.meta.url),
+    new URL('../images/Mompitz Johannes.png', import.meta.url),
+    new URL('../images/Mompitz Lisa.png', import.meta.url),
+    new URL('../images/Mompitz Lisa_Lupe.png', import.meta.url),
+    new URL('../images/Mompitz Manfred.png', import.meta.url),
+    new URL('../images/Mompitz Rosa_Stifte.png', import.meta.url),
+    new URL('../images/Mompitz Willi_Geschenk.png', import.meta.url),
+  ];
+
+  /** Cell information */
   @state()
-  protected accessor cells: {
+  private accessor cells: {
     exercise: Cell<CellInfo>[];
     answer: Cell<CellInfo>[];
   } = { exercise: [], answer: [] };
 
+  /** Grid to cell mapping */
   @state()
-  protected accessor gridItems: GridCellMapping[] = [];
+  private accessor gridItems: GridCellMapping[] = [];
 
+  /** Maximum number of pairs to show (set via URL parameter) */
   private maxNumberOfPairs = 10;
+  /** Number of pairs currently visible */
   private currentNumberOfPairs = 0;
+  /** Next pair number, used as index in cells */
   private nextPairNmbr = 0;
+  /** Next image to use for Mompitz grid elements */
+  private nextImageFormompitzCellIndex = 0;
 
+  /** Is an update of the drop targets required */
   private targetUpdateRequired = false;
 
   /* Control drop behavior - for child classes to override behavior
@@ -92,6 +136,9 @@ export abstract class PairMatchingApp<
     | 'opositeElements'
     | 'answerOnExercise'
     | 'exerciseOnAnswer' = 'allElements';
+
+  protected abstract getPair(): { exercise: CellInfo; answer: CellInfo };
+  protected abstract renderPairElement(info: CellInfo): HTMLTemplateResult;
 
   async firstUpdated(): Promise<void> {
     await this.getUpdateComplete();
@@ -133,7 +180,13 @@ export abstract class PairMatchingApp<
   private clearGridItems() {
     this.gridItems = [];
     for (let i = 0; i < this.maxNumberOfPairs * 2; i++) {
-      this.gridItems.push({ cellIndex: 0, cellType: 'empty', wrongDrops: [] });
+      const mompitzImageIndex =
+        i % PairMatchingApp.imagesFormompitzCells.length;
+      this.gridItems.push({
+        cellIndex: mompitzImageIndex,
+        cellType: 'mompitz',
+        wrongDrops: [],
+      });
     }
   }
 
@@ -157,8 +210,6 @@ export abstract class PairMatchingApp<
         for (const cellType of cellTypes) {
           draft[cellType].push({
             basicInfo: {
-              cellId: this.serializeCellId(i, cellType),
-              nmbr: i,
               top: randomIntFromRange(0, 40),
               left: randomIntFromRange(0, 40),
             },
@@ -173,7 +224,7 @@ export abstract class PairMatchingApp<
 
     this.gridItems = create(this.gridItems, base => {
       base.forEach(gridItem => {
-        if (gridItem.cellType === 'empty') {
+        if (gridItem.cellType === 'mompitz') {
           const cellNmbrAndType = addedCellNmbrsAndTypes.pop();
           if (cellNmbrAndType !== undefined) {
             gridItem.cellType = cellNmbrAndType.type;
@@ -184,9 +235,6 @@ export abstract class PairMatchingApp<
       });
     });
   }
-
-  protected abstract getPair(): { exercise: CellInfo; answer: CellInfo };
-  protected abstract renderPairElement(info: CellInfo): HTMLTemplateResult;
 
   protected parseUrl(): void {
     const urlParams = new URLSearchParams(window.location.search);
@@ -203,11 +251,25 @@ export abstract class PairMatchingApp<
     return [
       ...super.styles,
       css`
+        .gridElement {
+          border: 1px purple solid;
+        }
+
         draggable-target-slotted {
           width: 50%;
           height: 50%;
+          max-width: 50%;
+          max-height: 50%;
           display: block;
           position: relative;
+        }
+        img {
+          width: 50%;
+          height: 50%;
+          top: 25%;
+          left: 25%;
+          position: relative;
+          display: block;
         }
       `,
     ];
@@ -224,35 +286,8 @@ export abstract class PairMatchingApp<
     return cellElement as DraggableTargetSlotted;
   }
 
-  private getCellElementOld(
-    nmbr: number,
-    type: CellType,
-  ): DraggableTargetSlotted {
-    const elementName = this.serializeCellId(nmbr, type);
-    const cellElement = this.renderRoot.querySelector(
-      `draggable-target-slotted#${elementName}`,
-    );
-    if (cellElement === null) {
-      throw new ChildNotFoundError(elementName, 'PairMatchingApp');
-    } else return cellElement as DraggableTargetSlotted;
-  }
-
-  serializeCellId(nmbr: number, type: CellType) {
-    return `cell-${nmbr}-${cellTypeAbreviation(type)}`;
-  }
-
   serializeGridId(gridIndex: number) {
     return `grid-${gridIndex}`;
-  }
-
-  private getDetailedCellInfo(nmbr: number, type: CellType): CellInfo {
-    const ret = this.cells[type].find(
-      elm => elm.basicInfo.nmbr === nmbr,
-    )?.detailedInfo;
-    if (ret === undefined) {
-      throw new Error('Information for a non-existing cell requested');
-    }
-    return ret;
   }
 
   protected updated(): void {
@@ -269,7 +304,7 @@ export abstract class PairMatchingApp<
     } = { exercise: [], answer: [] };
 
     this.gridItems.forEach((gridItem, index) => {
-      if (gridItem.cellType !== 'empty') {
+      if (gridItem.cellType !== 'mompitz') {
         cellElements[gridItem.cellType].push(this.getCellElement(index));
       }
     });
@@ -304,7 +339,7 @@ export abstract class PairMatchingApp<
     });
   }
 
-  handleDropped(evt: DropEvent): void {
+  private handleDropped(evt: DropEvent): void {
     if (evt.dropType === 'dropWrong') return;
 
     const involvedElements = {
@@ -328,7 +363,7 @@ export abstract class PairMatchingApp<
       if (cellType === 'answer' || cellType === 'exercise') {
         cellInfo[elementType] = this.cells[cellType][cellIndex].detailedInfo;
       } else {
-        console.error('An empty grid element should not be draggable');
+        console.error('An mompitz grid element should not be draggable');
       }
     }
 
@@ -340,8 +375,13 @@ export abstract class PairMatchingApp<
 
       this.gridItems = create(this.gridItems, draft => {
         for (const dragElemenType of dragElementTypes) {
-          draft[involvedGridIndexes[dragElemenType]].cellType = 'empty';
+          draft[involvedGridIndexes[dragElemenType]].cellType = 'mompitz';
+          draft[involvedGridIndexes[dragElemenType]].cellIndex =
+            this.nextImageFormompitzCellIndex;
           draft[involvedGridIndexes[dragElemenType]].wrongDrops = [];
+          this.nextImageFormompitzCellIndex =
+            (this.nextImageFormompitzCellIndex + 1) %
+            PairMatchingApp.imagesFormompitzCells.length;
         }
       });
 
@@ -361,15 +401,17 @@ export abstract class PairMatchingApp<
     }
   }
 
-  renderCellElement(gridIndex: number) {
+  private renderGridElement(gridIndex: number) {
     const { cellIndex, cellType } = this.gridItems[gridIndex];
-    if (cellType === 'empty') return html`<div class="gridElement"></div>`;
+    if (cellType === 'mompitz')
+      return html`<div class="gridElement">
+      <img alt="Mompitz figure" src="${PairMatchingApp.imagesFormompitzCells[cellIndex]}"></img>
+    </div>`;
 
     const cell = this.cells[cellType][cellIndex];
 
     return html` <div class="gridElement">
       <draggable-target-slotted
-        cellId="${this.serializeCellId(cellIndex, cellType)}"
         id=${this.serializeGridId(gridIndex)}
         .gridIndex="${gridIndex}"
         @dropped="${this.handleDropped}"
@@ -386,13 +428,7 @@ export abstract class PairMatchingApp<
     const cellElements: HTMLTemplateResult[] = [];
 
     this.gridItems.forEach((gridItem, index) => {
-      if (gridItem.cellType === 'answer') {
-        cellElements.push(this.renderCellElement(index));
-      } else if (gridItem.cellType === 'exercise') {
-        cellElements.push(this.renderCellElement(index));
-      } else {
-        cellElements.push(this.renderCellElement(index));
-      }
+      cellElements.push(this.renderGridElement(index));
     });
 
     return html`
