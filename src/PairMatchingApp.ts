@@ -48,7 +48,7 @@ interface CellInfoInterface {
   equal(other: CellInfoInterface): boolean;
 }
 
-interface CellElement extends HTMLElement {
+interface CellElement extends DraggableTargetSlotted {
   gridIndex: number;
 }
 
@@ -60,6 +60,7 @@ interface Cell<T> {
 interface GridCellMapping {
   cellType: GridCellType;
   cellIndex: number;
+  wrongDrops: DraggableTargetSlotted[];
 }
 
 export abstract class PairMatchingApp<
@@ -132,16 +133,14 @@ export abstract class PairMatchingApp<
   private clearGridItems() {
     this.gridItems = [];
     for (let i = 0; i < this.maxNumberOfPairs * 2; i++) {
-      this.gridItems.push({ cellIndex: 0, cellType: 'empty' });
+      this.gridItems.push({ cellIndex: 0, cellType: 'empty', wrongDrops: [] });
     }
   }
 
   private addNewCells() {
-    console.log(`addNewCells`);
     if (this.currentNumberOfPairs > this.maxNumberOfPairs / 2) return;
 
     const nmbrPairsToAdd = this.maxNumberOfPairs - this.currentNumberOfPairs;
-    console.log(`addNewCells - nmbrPairsToAdd = ${nmbrPairsToAdd}`);
 
     const toBeAddedPairNmbrs = [
       ...range(this.nextPairNmbr, this.nextPairNmbr + nmbrPairsToAdd),
@@ -179,6 +178,7 @@ export abstract class PairMatchingApp<
           if (cellNmbrAndType !== undefined) {
             gridItem.cellType = cellNmbrAndType.type;
             gridItem.cellIndex = cellNmbrAndType.nmbr;
+            gridItem.wrongDrops = [];
           }
         }
       });
@@ -289,9 +289,22 @@ export abstract class PairMatchingApp<
         }
       }
     }
+    this.updateWrongDrops();
+  }
+
+  private updateWrongDrops() {
+    this.gridItems.forEach((gridItem, index) => {
+      if (gridItem.wrongDrops.length !== 0) {
+        for (const wrongTarget of gridItem.wrongDrops) {
+          this.getCellElement(index).markAsWrongDrop(wrongTarget);
+        }
+      }
+    });
   }
 
   handleDropped(evt: DropEvent): void {
+    if (evt.dropType === 'dropWrong') return;
+
     const involvedElements = {
       draggable: <CellElement>evt.draggableElement,
       target: <CellElement>evt.dropTargetElement,
@@ -326,6 +339,7 @@ export abstract class PairMatchingApp<
       this.gridItems = create(this.gridItems, draft => {
         for (const dragElemenType of dragElementTypes) {
           draft[involvedGridIndexes[dragElemenType]].cellType = 'empty';
+          draft[involvedGridIndexes[dragElemenType]].wrongDrops = [];
         }
       });
 
@@ -333,6 +347,15 @@ export abstract class PairMatchingApp<
       this.targetUpdateRequired = true;
 
       this.addNewCells();
+    } else {
+      // not equal
+      this.numberNok += 1;
+
+      this.gridItems[involvedGridIndexes.draggable].wrongDrops.push(
+        involvedElements.target,
+      );
+
+      this.updateWrongDrops();
     }
   }
 
