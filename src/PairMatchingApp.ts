@@ -74,7 +74,8 @@ export abstract class PairMatchingApp<
   @state()
   protected accessor gridItems: GridCellMapping[] = [];
 
-  private numberOfPairs = 10;
+  private maxNumberOfPairs = 10;
+  private currentNumberOfPairs = 0;
   private nextPairNmbr = 0;
 
   private targetUpdateRequired = false;
@@ -119,8 +120,8 @@ export abstract class PairMatchingApp<
     this.clearGridItems();
     this.cells = { exercise: [], answer: [] };
     this.nextPairNmbr = 0;
-    this.addNewCells(this.numberOfPairs / 2);
-    this.addNewCells(this.numberOfPairs / 2);
+    this.currentNumberOfPairs = 0;
+    this.addNewCells();
   }
 
   constructor() {
@@ -130,17 +131,24 @@ export abstract class PairMatchingApp<
 
   private clearGridItems() {
     this.gridItems = [];
-    for (let i = 0; i < this.numberOfPairs * 2; i++) {
+    for (let i = 0; i < this.maxNumberOfPairs * 2; i++) {
       this.gridItems.push({ cellIndex: 0, cellType: 'empty' });
     }
   }
 
-  private addNewCells(nmbrPairs: number) {
+  private addNewCells() {
+    console.log(`addNewCells`);
+    if (this.currentNumberOfPairs > this.maxNumberOfPairs / 2) return;
+
+    const nmbrPairsToAdd = this.maxNumberOfPairs - this.currentNumberOfPairs;
+    console.log(`addNewCells - nmbrPairsToAdd = ${nmbrPairsToAdd}`);
+
     const toBeAddedPairNmbrs = [
-      ...range(this.nextPairNmbr, this.nextPairNmbr + nmbrPairs),
+      ...range(this.nextPairNmbr, this.nextPairNmbr + nmbrPairsToAdd),
     ];
-    this.nextPairNmbr += nmbrPairs;
+    this.nextPairNmbr += nmbrPairsToAdd;
     this.targetUpdateRequired = true;
+    this.currentNumberOfPairs = this.maxNumberOfPairs;
 
     const addedCellNmbrsAndTypes: { nmbr: number; type: CellType }[] = [];
 
@@ -183,8 +191,11 @@ export abstract class PairMatchingApp<
   protected parseUrl(): void {
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.has('numberOfPairs')) {
-      this.numberOfPairs = parseInt(urlParams.get('numberOfPairs') || '10', 10);
-      if (Number.isNaN(this.numberOfPairs)) this.numberOfPairs = 10;
+      this.maxNumberOfPairs = parseInt(
+        urlParams.get('numberOfPairs') || '10',
+        10,
+      );
+      if (Number.isNaN(this.maxNumberOfPairs)) this.maxNumberOfPairs = 10;
     }
   }
 
@@ -318,9 +329,10 @@ export abstract class PairMatchingApp<
         }
       });
 
+      this.currentNumberOfPairs -= 1;
       this.targetUpdateRequired = true;
 
-      // this.addNewCells(1);
+      this.addNewCells();
     }
   }
 
