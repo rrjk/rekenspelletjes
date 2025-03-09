@@ -17,7 +17,7 @@ import './DynamicGrid';
 import type { DraggableTargetSlotted } from './DraggableTargetSlotted';
 import { ChildNotFoundError } from './ChildNotFoundError';
 import { DropEvent } from './DraggableElement';
-import { shuffleArray } from './Randomizer';
+import { randomIntFromRange, shuffleArray } from './Randomizer';
 
 interface BasicCellInfo {
   cellId: string;
@@ -159,8 +159,8 @@ export abstract class PairMatchingApp<
             basicInfo: {
               cellId: this.serializeCellId(i, cellType),
               nmbr: i,
-              top: 0,
-              left: 0,
+              top: randomIntFromRange(0, 40),
+              left: randomIntFromRange(0, 40),
             },
             detailedInfo: castDraft(pair[cellType]),
           });
@@ -206,6 +206,8 @@ export abstract class PairMatchingApp<
         draggable-target-slotted {
           width: 50%;
           height: 50%;
+          display: block;
+          position: relative;
         }
       `,
     ];
@@ -372,6 +374,7 @@ export abstract class PairMatchingApp<
         .gridIndex="${gridIndex}"
         @dropped="${this.handleDropped}"
         resetDragAfterDrop
+        style="top: ${cell.basicInfo.top}%; left: ${cell.basicInfo.left}%;"
       >
         ${this.renderPairElement(cell.detailedInfo)}
       </draggable-target-slotted>
