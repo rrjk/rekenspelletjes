@@ -342,6 +342,7 @@ export class DraggableElement extends LitElement {
   }
 
   render(): HTMLTemplateResult {
+    const zIndex = this.dragActive ? 300 : 'auto';
     return html`
       <style>
         :host {
@@ -349,6 +350,7 @@ export class DraggableElement extends LitElement {
             calc(${this.cummulativeDeltaX} * var(--vw, 1vw)),
             calc(${this.cummulativeDeltaY} * var(--vh, 1vh))
           );
+          z-index: ${zIndex};
         }
       </style>
       ${this.content}
