@@ -252,17 +252,28 @@ export abstract class PairMatchingApp<
       ...super.styles,
       css`
         .gridElement {
-          border: 1px purple solid;
+          container-type: size;
+          container-name: draggable;
         }
 
         draggable-target-slotted {
-          width: 50%;
-          height: 50%;
-          max-width: 50%;
-          max-height: 50%;
+          aspect-ratio: 1/1;
           display: block;
           position: relative;
         }
+
+        @container draggable (aspect-ratio <= 1) {
+          draggable-target-slotted {
+            width: 50%;
+          }
+        }
+
+        @container draggable (aspect-ratio > 1) {
+          draggable-target-slotted {
+            height: 50%;
+          }
+        }
+
         img {
           width: 50%;
           height: 50%;
