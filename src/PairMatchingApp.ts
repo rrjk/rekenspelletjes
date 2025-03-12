@@ -215,7 +215,7 @@ export abstract class PairMatchingApp<
   }
 
   private addNewCells() {
-    // if (this.currentNumberOfPairs > this.maxNumberOfPairs / 2) return;
+    if (this.currentNumberOfPairs > this.maxNumberOfPairs / 2) return;
 
     const nmbrPairsToAdd = Math.floor(
       this.gridItems.reduce(
