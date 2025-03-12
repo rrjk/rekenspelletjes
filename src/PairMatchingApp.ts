@@ -5,6 +5,8 @@ import { state } from 'lit/decorators.js';
 
 // eslint-disable-next-line import/extensions
 import { range } from 'lit/directives/range.js';
+// eslint-disable-next-line import/extensions
+import { classMap } from 'lit/directives/class-map.js';
 
 import { castDraft, create } from 'mutative';
 
@@ -56,7 +58,7 @@ function oppositeCellType(cellType: CellType): CellType {
   return 'exercise';
 }
 
-type GridCellType = CellType | 'mompitz';
+type GridCellType = CellType | 'mompitz' | 'empty';
 // const gridCellTypes: GridCellType[] = ['answer', 'mompitz', 'exercise'];
 
 type DragElementType = 'draggable' | 'target';
@@ -84,13 +86,16 @@ interface GridCellMapping {
   cellType: GridCellType;
   cellIndex: number;
   wrongDrops: DraggableTargetSlotted[];
+  smallMompitzIndexes: number[];
+  nmbrVisibleMompitz: number;
+  animateMomptiz: number;
 }
 
 export abstract class PairMatchingApp<
   CellInfo extends CellInfoInterface,
 > extends TimeLimitedGame2 {
   /** Images for the Mompitz grid elements */
-  static imagesFormompitzCells: URL[] = [
+  static imagesForMompitzCells: URL[] = [
     new URL('../images/Mompitz Anne.png', import.meta.url),
     new URL('../images/Mompitz Frank.png', import.meta.url),
     new URL('../images/Mompitz Jan-500.png', import.meta.url),
@@ -124,6 +129,11 @@ export abstract class PairMatchingApp<
 
   /** Is an update of the drop targets required */
   private targetUpdateRequired = false;
+
+  /** Has the animation for one grid item ended
+   * Used to ensure we only fill new cells after both animation have ended
+   */
+  private firstGridItemAnimationEnded = false;
 
   /* Control drop behavior - for child classes to override behavior
      allElements - All elements can be dropped on all other elements
@@ -180,27 +190,46 @@ export abstract class PairMatchingApp<
   private clearGridItems() {
     this.gridItems = [];
     for (let i = 0; i < this.maxNumberOfPairs * 2; i++) {
-      const mompitzImageIndex =
-        i % PairMatchingApp.imagesFormompitzCells.length;
       this.gridItems.push({
-        cellIndex: mompitzImageIndex,
-        cellType: 'mompitz',
+        cellIndex: -1,
+        cellType: 'empty',
         wrongDrops: [],
+        smallMompitzIndexes: [
+          randomIntFromRange(
+            0,
+            PairMatchingApp.imagesForMompitzCells.length - 1,
+          ),
+          randomIntFromRange(
+            0,
+            PairMatchingApp.imagesForMompitzCells.length - 1,
+          ),
+          randomIntFromRange(
+            0,
+            PairMatchingApp.imagesForMompitzCells.length - 1,
+          ),
+        ],
+        nmbrVisibleMompitz: 0,
+        animateMomptiz: -1,
       });
     }
   }
 
   private addNewCells() {
-    if (this.currentNumberOfPairs > this.maxNumberOfPairs / 2) return;
+    // if (this.currentNumberOfPairs > this.maxNumberOfPairs / 2) return;
 
-    const nmbrPairsToAdd = this.maxNumberOfPairs - this.currentNumberOfPairs;
+    const nmbrPairsToAdd = Math.floor(
+      this.gridItems.reduce(
+        (n, val) => n + (val.cellType === 'empty' ? 1 : 0),
+        0,
+      ) / 2,
+    );
 
     const toBeAddedPairNmbrs = [
       ...range(this.nextPairNmbr, this.nextPairNmbr + nmbrPairsToAdd),
     ];
     this.nextPairNmbr += nmbrPairsToAdd;
     this.targetUpdateRequired = true;
-    this.currentNumberOfPairs = this.maxNumberOfPairs;
+    this.currentNumberOfPairs += nmbrPairsToAdd;
 
     const addedCellNmbrsAndTypes: { nmbr: number; type: CellType }[] = [];
 
@@ -223,8 +252,8 @@ export abstract class PairMatchingApp<
     shuffleArray(addedCellNmbrsAndTypes);
 
     this.gridItems = create(this.gridItems, base => {
-      base.forEach(gridItem => {
-        if (gridItem.cellType === 'mompitz') {
+      for (const gridItem of base) {
+        if (gridItem.cellType === 'empty') {
           const cellNmbrAndType = addedCellNmbrsAndTypes.pop();
           if (cellNmbrAndType !== undefined) {
             gridItem.cellType = cellNmbrAndType.type;
@@ -232,7 +261,7 @@ export abstract class PairMatchingApp<
             gridItem.wrongDrops = [];
           }
         }
-      });
+      }
     });
   }
 
@@ -245,45 +274,6 @@ export abstract class PairMatchingApp<
       );
       if (Number.isNaN(this.maxNumberOfPairs)) this.maxNumberOfPairs = 10;
     }
-  }
-
-  static get styles(): CSSResultArray {
-    return [
-      ...super.styles,
-      css`
-        .gridElement {
-          container-type: size;
-          container-name: draggable;
-        }
-
-        draggable-target-slotted {
-          aspect-ratio: 1/1;
-          display: block;
-          position: relative;
-        }
-
-        @container draggable (aspect-ratio <= 1) {
-          draggable-target-slotted {
-            width: 50%;
-          }
-        }
-
-        @container draggable (aspect-ratio > 1) {
-          draggable-target-slotted {
-            height: 50%;
-          }
-        }
-
-        img {
-          width: 50%;
-          height: 50%;
-          top: 25%;
-          left: 25%;
-          position: relative;
-          display: block;
-        }
-      `,
-    ];
   }
 
   private getCellElement(index: number): DraggableTargetSlotted {
@@ -315,7 +305,7 @@ export abstract class PairMatchingApp<
     } = { exercise: [], answer: [] };
 
     this.gridItems.forEach((gridItem, index) => {
-      if (gridItem.cellType !== 'mompitz') {
+      if (gridItem.cellType !== 'mompitz' && gridItem.cellType !== 'empty') {
         cellElements[gridItem.cellType].push(this.getCellElement(index));
       }
     });
@@ -386,20 +376,19 @@ export abstract class PairMatchingApp<
 
       this.gridItems = create(this.gridItems, draft => {
         for (const dragElemenType of dragElementTypes) {
-          draft[involvedGridIndexes[dragElemenType]].cellType = 'mompitz';
-          draft[involvedGridIndexes[dragElemenType]].cellIndex =
-            this.nextImageFormompitzCellIndex;
+          draft[involvedGridIndexes[dragElemenType]].cellType = 'empty';
+          draft[involvedGridIndexes[dragElemenType]].cellIndex = -1;
           draft[involvedGridIndexes[dragElemenType]].wrongDrops = [];
-          this.nextImageFormompitzCellIndex =
-            (this.nextImageFormompitzCellIndex + 1) %
-            PairMatchingApp.imagesFormompitzCells.length;
+          draft[involvedGridIndexes[dragElemenType]].nmbrVisibleMompitz += 1;
+          draft[involvedGridIndexes[dragElemenType]].animateMomptiz =
+            (draft[involvedGridIndexes[dragElemenType]].nmbrVisibleMompitz -
+              1) %
+            3;
         }
       });
 
       this.currentNumberOfPairs -= 1;
       this.targetUpdateRequired = true;
-
-      this.addNewCells();
     } else {
       // not equal
       this.numberNok += 1;
@@ -412,25 +401,210 @@ export abstract class PairMatchingApp<
     }
   }
 
-  private renderGridElement(gridIndex: number) {
-    const { cellIndex, cellType } = this.gridItems[gridIndex];
-    if (cellType === 'mompitz')
-      return html`<div class="gridElement">
-      <img alt="Mompitz figure" src="${PairMatchingApp.imagesFormompitzCells[cellIndex]}"></img>
+  static get styles(): CSSResultArray {
+    return [
+      ...super.styles,
+      css`
+        .gridElement {
+          container-type: size;
+          container-name: draggable;
+          display: grid;
+          grid-template-rows: 32% 68%;
+          grid-template-columns: 100%;
+          grid-template-areas:
+            'miniMompitzes'
+            'content';
+        }
+
+        div.miniMompitzes {
+          grid-area: miniMompitzes;
+          display: flex;
+          justify-content: space-around;
+          align-items: center;
+          flex-wrap: wrap;
+        }
+
+        div.content {
+          grid-area: content;
+        }
+
+        draggable-target-slotted {
+          aspect-ratio: 1/1;
+          display: block;
+          position: relative;
+        }
+
+        @container draggable (aspect-ratio <= 1) {
+          draggable-target-slotted {
+            width: 50%;
+          }
+        }
+
+        @container draggable (aspect-ratio > 1) {
+          draggable-target-slotted {
+            height: 50%;
+          }
+        }
+
+        img.miniMompitz {
+          object-fit: contain;
+          aspect-ratio: 1;
+          height: 80%;
+        }
+
+        img.moveShrink0,
+        img.moveShrink1,
+        img.moveShrink2 {
+          animation-duration: 1.5s;
+          animation-timing-function: linear;
+        }
+
+        img.moveShrink0 {
+          animation-name: moveShrink0;
+        }
+
+        img.moveShrink1 {
+          animation-name: moveShrink1;
+        }
+
+        img.moveShrink2 {
+          animation-name: moveShrink2;
+        }
+
+        .hidden {
+          visibility: hidden;
+        }
+
+        @keyframes moveShrink0 {
+          0% {
+            scale: 300%;
+            translate: 160% 200%;
+            opacity: 0;
+          }
+          25% {
+            scale: 250%;
+            translate: 120% 150%;
+            opacity: 0.5;
+          }
+          100% {
+            scale: 100%;
+            translate: 0 0;
+            opacity: 1;
+          }
+        }
+
+        @keyframes moveShrink1 {
+          from {
+            scale: 300%;
+            translate: 0% 200%;
+            opacity: 0;
+          }
+          25% {
+            scale: 250%;
+            translate: 0% 150%;
+            opacity: 0.5;
+          }
+          to {
+            scale: 100%;
+            translate: 0 0;
+            opacity: 1;
+          }
+        }
+
+        @keyframes moveShrink2 {
+          from {
+            scale: 300%;
+            translate: -160% 200%;
+            opacity: 0;
+          }
+          25% {
+            scale: 250%;
+            translate: -120% 150%;
+            opacity: 0.5;
+          }
+          to {
+            scale: 100%;
+            translate: 0 0;
+            opacity: 1;
+          }
+        }
+      `,
+    ];
+  }
+
+  private renderMiniMompitz(
+    indexes: number[],
+    nmbrVisible: number,
+    animateMomptiz: number,
+    gridIndex: number,
+  ): HTMLTemplateResult[] {
+    const ret: HTMLTemplateResult[] = [];
+
+    for (let i = 0; i < indexes.length; i++) {
+      const imgClass = {
+        hidden: i > nmbrVisible - 1,
+        moveShrink0: animateMomptiz === i && i === 0,
+        moveShrink1: animateMomptiz === i && i === 1,
+        moveShrink2: animateMomptiz === i && i === 2,
+      };
+
+      ret.push(
+        html`<img class="miniMompitz ${classMap(imgClass)}" 
+              alt="Mompitz figure" src="${PairMatchingApp.imagesForMompitzCells[indexes[i]]}"
+              @animationend=${() => this.animationend(gridIndex)}></img>`,
+      );
+    }
+    return ret;
+  }
+
+  animationend(gridIndex: number) {
+    this.gridItems[gridIndex].animateMomptiz = -1;
+    if (this.firstGridItemAnimationEnded === true) {
+      this.addNewCells();
+      this.firstGridItemAnimationEnded = false;
+    } else this.firstGridItemAnimationEnded = true;
+  }
+
+  private renderGridElement(gridIndex: number): HTMLTemplateResult {
+    const {
+      cellIndex,
+      cellType,
+      smallMompitzIndexes,
+      nmbrVisibleMompitz,
+      animateMomptiz,
+    } = this.gridItems[gridIndex];
+
+    const miniMompitz = html` <div class="miniMompitzes">
+      ${this.renderMiniMompitz(
+        smallMompitzIndexes,
+        nmbrVisibleMompitz,
+        animateMomptiz,
+        gridIndex,
+      )}
     </div>`;
+
+    if (cellType === 'mompitz' || cellType === 'empty')
+      return html`<div class="gridElement">
+        ${miniMompitz}
+        <div class="content"></div>
+      </div>`;
 
     const cell = this.cells[cellType][cellIndex];
 
     return html` <div class="gridElement">
-      <draggable-target-slotted
-        id=${this.serializeGridId(gridIndex)}
-        .gridIndex="${gridIndex}"
-        @dropped="${this.handleDropped}"
-        resetDragAfterDrop
-        style="top: ${cell.basicInfo.top}%; left: ${cell.basicInfo.left}%;"
-      >
-        ${this.renderPairElement(cell.detailedInfo)}
-      </draggable-target-slotted>
+        ${miniMompitz}
+        <div class="content">
+          <draggable-target-slotted
+            id=${this.serializeGridId(gridIndex)}
+            .gridIndex="${gridIndex}"
+            @dropped="${this.handleDropped}"
+            resetDragAfterDrop
+            style="top: ${cell.basicInfo.top}%; left: ${cell.basicInfo.left}%;"
+          >
+            ${this.renderPairElement(cell.detailedInfo)}
+          </draggable-target-slotted>
+        </div>
+      </div>
     </div>`;
   }
 
