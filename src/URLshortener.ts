@@ -1078,7 +1078,24 @@ const urls: (() => string)[] = [
     sommenMetSplitsenLink('split1Till20', ['plus', 'minus'], 60, 'hideSplits'),
   () =>
     sommenMetSplitsenLink('split1Till20', ['plus', 'minus'], 180, 'hideSplits'),
-  // pd
+  // pd indexZeppelinSpel.html
+  () => ballonnenSpelLink(['×'], [10, 11, 12, 13, 14], 'zeppelin', 60),
+  () => ballonnenSpelLink(['×'], [10, 11, 12, 13, 14], 'zeppelin', 180),
+  () =>
+    ballonnenSpelLink(
+      ['×'],
+      [10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
+      'zeppelin',
+      60,
+    ),
+  () =>
+    ballonnenSpelLink(
+      ['×'],
+      [10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
+      'zeppelin',
+      180,
+    ),
+  // ph
 ];
 
 const urlParams = new URLSearchParams(window.location.search);
