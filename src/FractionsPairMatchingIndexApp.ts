@@ -120,9 +120,9 @@ export class FractionsPairMatchingGameIndexApp extends LitElement {
       rightFraction = new Fraction(3, 5);
     } else if (gameType === 'fractionToPercentage') {
       leftRepresentation = 'fraction';
-      leftFraction = new Fraction(4, 10);
+      leftFraction = new Fraction(7, 10);
       rightRepresentation = 'percentage';
-      rightFraction = new Fraction(4, 10);
+      rightFraction = new Fraction(7, 10);
     } else if (gameType === 'fractionToPie') {
       leftRepresentation = 'fraction';
       leftFraction = new Fraction(2, 3);
@@ -135,9 +135,9 @@ export class FractionsPairMatchingGameIndexApp extends LitElement {
       rightFraction = new Fraction(1, 4);
     } else if (gameType === 'percentageToPie') {
       leftRepresentation = 'percentage';
-      leftFraction = new Fraction(1, 3);
+      leftFraction = new Fraction(2, 5);
       rightRepresentation = 'piechart';
-      rightFraction = new Fraction(1, 3);
+      rightFraction = new Fraction(2, 5);
     }
 
     return html`
