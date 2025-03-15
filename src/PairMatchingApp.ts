@@ -91,6 +91,11 @@ interface GridCellMapping {
   animateMomptiz: number;
 }
 
+export interface Pair<T> {
+  exercise: T;
+  answer: T;
+}
+
 export abstract class PairMatchingApp<
   CellInfo extends CellInfoInterface,
 > extends TimeLimitedGame2 {
@@ -147,7 +152,7 @@ export abstract class PairMatchingApp<
     | 'answerOnExercise'
     | 'exerciseOnAnswer' = 'allElements';
 
-  protected abstract getPair(): { exercise: CellInfo; answer: CellInfo };
+  protected abstract getPair(): Pair<CellInfo>;
   protected abstract renderPairElement(info: CellInfo): HTMLTemplateResult;
 
   async firstUpdated(): Promise<void> {

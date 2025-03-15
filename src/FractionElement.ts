@@ -1,12 +1,15 @@
-import { CSSResultArray, html, css, LitElement } from 'lit';
+import { CSSResultArray, html, css, LitElement, svg, unsafeCSS } from 'lit';
 // eslint-disable-next-line import/extensions
 import { customElement, property, state } from 'lit/decorators.js';
 // eslint-disable-next-line import/extensions
 import { classMap } from 'lit/directives/class-map.js';
 
-import type { HTMLTemplateResult, PropertyValues } from 'lit';
+import type { HTMLTemplateResult, SVGTemplateResult } from 'lit';
 import { HighlightType } from './DraggableElement';
 import { Fraction } from './Fraction';
+
+import type { FractionRepresentation } from './Fraction';
+import { getColorInfo } from './Colors';
 
 @customElement('fraction-element')
 export class FractionElement extends LitElement {
@@ -15,6 +18,9 @@ export class FractionElement extends LitElement {
 
   @property()
   private accessor fraction = new Fraction(1, 2);
+
+  @property()
+  private accessor representation: FractionRepresentation = 'fraction';
 
   private get barLength() {
     if (this.fraction.numerator > 99 || this.fraction.denumerator > 99)
@@ -53,38 +59,49 @@ export class FractionElement extends LitElement {
           height: 100%;
         }
 
-        .dropNone {
+        .dropNoneFraction {
           stroke: black;
           fill: black;
         }
 
-        line.dropNone {
-          stroke-width: 5px;
+        .dropOkFraction {
+          stroke: ${unsafeCSS(getColorInfo('blue').mainColorCode)};
+          fill: ${unsafeCSS(getColorInfo('blue').mainColorCode)};
         }
 
-        .dropOk {
-          stroke: blue;
-          fill: blue;
+        .dropWrongFraction {
+          stroke: ${unsafeCSS(getColorInfo('red').mainColorCode)};
+          fill: ${unsafeCSS(getColorInfo('red').mainColorCode)};
         }
 
-        .dropWrong {
-          stroke: red;
-          fill: red;
+        .dropNonePie {
+          stroke: black;
+          fill: ${unsafeCSS(getColorInfo('yellow').mainColorCode)};
+        }
+
+        .dropOkPie {
+          stroke: black;
+          fill: ${unsafeCSS(getColorInfo('blue').mainColorCode)};
+        }
+
+        .dropWrongPie {
+          stroke: black;
+          fill: ${unsafeCSS(getColorInfo('red').mainColorCode)};
         }
       `,
     ];
   }
 
-  protected willUpdate(_changedProperties: PropertyValues): void {
-    console.log(`FractionElement - willUpdate`);
-    console.log(_changedProperties);
+  /*
+  protected willUpdate(changedProperties: PropertyValues): void {
   }
+*/
 
-  render(): HTMLTemplateResult {
+  renderAsFraction(): HTMLTemplateResult {
     const classes = {
-      dropOk: this.highlightState === 'droppable',
-      dropWrong: this.highlightState === 'wrong',
-      dropNone: this.highlightState === 'none',
+      dropOkFraction: this.highlightState === 'droppable',
+      dropWrongFraction: this.highlightState === 'wrong',
+      dropNoneFraction: this.highlightState === 'none',
     };
     return html`
       <svg viewbox="-100 -100 200 200">
@@ -103,5 +120,69 @@ export class FractionElement extends LitElement {
         </text>
       </svg>
     `;
+  }
+
+  renderAsPiechart(): HTMLTemplateResult {
+    const classes = {
+      dropOkPie: this.highlightState === 'droppable',
+      dropWrongPie: this.highlightState === 'wrong',
+      dropNonePie: this.highlightState === 'none',
+    };
+
+    const arc =
+      (this.fraction.numerator / this.fraction.denumerator) * 2 * Math.PI;
+    const largeArcFilled = arc > Math.PI ? 1 : 0;
+    const largeArcNonFilled = arc > Math.PI ? 0 : 1;
+
+    const dividerLines: SVGTemplateResult[] = [];
+    for (let i = 1; i < this.fraction.numerator; i++) {
+      dividerLines.push(this.renderPieDivider(i));
+    }
+    for (
+      let i = this.fraction.numerator + 1;
+      i < this.fraction.denumerator;
+      i++
+    ) {
+      dividerLines.push(this.renderPieDivider(i));
+    }
+
+    return html`
+      <svg class="${classMap(classes)}" viewbox="-1100 -1100 2200 2200">
+        <path
+          d="M 0 0 L 0 -1000 A 1000 1000 0 ${largeArcFilled} 1 
+             ${this.arcToXPosition(arc)} ${this.arcToYPosition(arc)} L 0 0"
+          stroke-width="50"
+        />
+        <path
+          d="M 0 0 L 0 -1000 A 1000 1000 0 ${largeArcNonFilled} 0 
+             ${this.arcToXPosition(arc)} ${this.arcToYPosition(arc)} L 0 0"
+          stroke-width="50"
+          fill="none"
+        />
+        ${dividerLines}
+      </svg>
+    `;
+  }
+
+  renderPieDivider(numerator: number): SVGTemplateResult {
+    const arc = (numerator / this.fraction.denumerator) * 2 * Math.PI;
+    return svg`<path d="M 0 0 L ${this.arcToXPosition(arc)} ${this.arcToYPosition(arc)}" stroke-dasharray="50,50" stroke-width="50"/>`;
+  }
+
+  arcToXPosition(arc: number) {
+    return Math.sin(arc) * 1000;
+  }
+
+  arcToYPosition(arc: number) {
+    return -Math.cos(arc) * 1000;
+  }
+
+  render(): HTMLTemplateResult {
+    if (this.representation === 'fraction') return this.renderAsFraction();
+    if (this.representation === 'piechart') return this.renderAsPiechart();
+    console.error(
+      `Fraction representation ${this.representation} is not supported`,
+    );
+    return html``;
   }
 }
