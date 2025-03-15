@@ -32,6 +32,17 @@
       max-height: 100%;
       max-width: 100%;
     }
+
+    div.fractionPairGamesbutton {
+      width: 100px;
+      height: 100px;
+      display: grid;
+      grid-template-columns: 50px 50px;
+      grid-template-rows: 50px 50px;
+      justify-items: center;
+      align-items: center;
+      background-color: lightgrey;
+    }
   </style>
   <head>
     <meta charset="UTF-8" />
@@ -48,6 +59,7 @@
     <script type="module" src="../src/HeartImage.ts"></script>
     <script type="module" src="../src/TensSplitWidget.ts"></script>
     <script type="module" src="../src/NumberLineV2.ts"></script>
+    <script type="module" src="../src/FractionElement.ts"></script>
 
     <h1>Rekenspelletjes</h1>
     <div class="buttonTable">
@@ -278,6 +290,30 @@
         href="indexSorterenKommaGetallen.html"
       >
         <img src="../images/purple-box.png" height="95px" alt="Blue box" />
+      </icon-label-button>
+
+      <icon-label-button
+        title="Breukenspelletjes"
+        href="indexBreukenPaartjesSpel.html"
+      >
+        <div class="fractionPairGamesbutton">
+          <fraction-element
+            fraction='{"numerator":3, "denumerator":4}'
+            representation="fraction"
+          ></fraction-element>
+          <fraction-element
+            fraction='{"numerator":3, "denumerator":4}'
+            representation="piechart"
+          ></fraction-element>
+          <fraction-element
+            fraction='{"numerator":3, "denumerator":4}'
+            representation="decimal"
+          ></fraction-element>
+          <fraction-element
+            fraction='{"numerator":3, "denumerator":4}'
+            representation="percentage"
+          ></fraction-element>
+        </div>
       </icon-label-button>
     </div>
   </body>

@@ -11,13 +11,21 @@ import { Fraction } from './Fraction';
 import type { FractionRepresentation } from './Fraction';
 import { getColorInfo } from './Colors';
 
+function convertFractionAttribute(value: string | null): Fraction {
+  if (value !== null) {
+    const parsedValue = JSON.parse(value);
+    return parsedValue;
+  }
+  return new Fraction(3, 4);
+}
+
 @customElement('fraction-element')
 export class FractionElement extends LitElement {
   @state()
   private accessor highlightState: HighlightType = 'none';
 
-  @property()
-  private accessor fraction = new Fraction(1, 2);
+  @property({ converter: convertFractionAttribute })
+  private accessor fraction: Fraction = new Fraction(1, 2);
 
   @property()
   private accessor representation: FractionRepresentation = 'fraction';

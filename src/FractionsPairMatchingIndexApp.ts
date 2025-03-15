@@ -185,19 +185,22 @@ export class FractionsPairMatchingGameIndexApp extends LitElement {
       html`<h2>Breukenspelletjes</h2>`,
     ];
     for (const section of sections) {
-      renderItems.push(html`${section.title}`);
+      renderItems.push(html`<h3>${section.title}</h3>`);
       renderItems.push(
         html`<div class="buttonTable">
-          ${section.rows.map(row =>
-            this.renderRow(
-              ['1min', '3min'],
-              row.shortCodes,
-              row.gameType,
-              row.color,
-              row.description,
-            ),
-          )}
-        </div>`,
+            ${section.rows.map(row =>
+              this.renderRow(
+                ['1min', '3min'],
+                row.shortCodes,
+                row.gameType,
+                row.color,
+                row.description,
+              ),
+            )}
+          </div>
+          <p>
+            <a href="index.html">Terug naar het hoofdmenu</a>
+          </p>`,
       );
     }
     return renderItems;
