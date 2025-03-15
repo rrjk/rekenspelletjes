@@ -11,7 +11,7 @@ import './FractionElement';
 import type { Pair } from './PairMatchingApp';
 import { PairMatchingApp } from './PairMatchingApp';
 import { GameLogger } from './GameLogger';
-import { randomFromSetAndSplice } from './Randomizer';
+import { randomFromSet, randomFromSetAndSplice } from './Randomizer';
 import { FractionPairMatchingGameType } from './FractionsPairMatchingAppLink';
 
 type DenumeratorFrequecy = { denumerator: number; frequency: number };
@@ -131,7 +131,10 @@ export class FractionMatchingGameApp extends PairMatchingApp<FractionAndRepresen
       potentialNumerators = [];
       this.potentialNumerators.push({ denumerator, potentialNumerators });
     }
-    if (this.gameType === 'fractionToPie') {
+    if (
+      this.gameType === 'fractionToPie' ||
+      this.gameType === 'equalFractions'
+    ) {
       for (let numerator = 1; numerator < denumerator; numerator++) {
         potentialNumerators.push(numerator);
       }
@@ -212,11 +215,14 @@ export class FractionMatchingGameApp extends PairMatchingApp<FractionAndRepresen
     if (potentialNumerators.length < 1)
       this.fillPotentialNumerators(denumerator);
 
-    if (
-      this.representations.answer === this.representations.exercise &&
-      this.representations.answer !== 'decimal' &&
-      this.representations.answer !== 'percentage'
-    ) {
+    if (this.gameType === 'equalFractions') {
+      const possibleMultipliers = [];
+      let i = 2;
+      while (denumerator * i <= 10) {
+        possibleMultipliers.push(i);
+        i += 1;
+      }
+      const multiplier = randomFromSet(possibleMultipliers);
       ret = {
         exercise: new FractionAndRepresentation(
           numerator,
@@ -224,8 +230,8 @@ export class FractionMatchingGameApp extends PairMatchingApp<FractionAndRepresen
           this.representations.exercise,
         ),
         answer: new FractionAndRepresentation(
-          2 * numerator,
-          2 * denumerator,
+          multiplier * numerator,
+          multiplier * denumerator,
           this.representations.answer,
         ),
       };
