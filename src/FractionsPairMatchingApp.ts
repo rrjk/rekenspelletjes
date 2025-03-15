@@ -12,13 +12,12 @@ import type { Pair } from './PairMatchingApp';
 import { PairMatchingApp } from './PairMatchingApp';
 import { GameLogger } from './GameLogger';
 import { randomFromSetAndSplice } from './Randomizer';
-
-type GameType = 'fractionToPie' | 'equalFractions';
+import { FractionPairMatchingGameType } from './FractionsPairMatchingAppLink';
 
 type DenumeratorFrequecy = { denumerator: number; frequency: number };
 type DenumeratorFrequecies = DenumeratorFrequecy[];
 type GameToDenumeratorFrequencies = {
-  gameType: GameType;
+  gameType: FractionPairMatchingGameType;
   denumeratorFrequencies: DenumeratorFrequecies;
 }[];
 
@@ -70,7 +69,7 @@ export class FractionMatchingGameApp extends PairMatchingApp<FractionAndRepresen
     answer: FractionAndRepresentation;
   }[] = [];
 
-  gameType: GameType = 'fractionToPie';
+  gameType: FractionPairMatchingGameType = 'fractionToPie';
 
   async firstUpdated(): Promise<void> {
     await this.getUpdateComplete();
