@@ -50,6 +50,50 @@ const gameToDenumeratorFrequencies: GameToDenumeratorFrequencies = [
       { denumerator: 5, frequency: 1 },
     ],
   },
+  {
+    gameType: 'fractionToDecimal',
+    denumeratorFrequencies: [
+      { denumerator: 2, frequency: 1 },
+      { denumerator: 3, frequency: 1 },
+      { denumerator: 4, frequency: 2 },
+      { denumerator: 5, frequency: 2 },
+      { denumerator: 8, frequency: 3 },
+      { denumerator: 10, frequency: 2 },
+    ],
+  },
+  {
+    gameType: 'fractionToPercentage',
+    denumeratorFrequencies: [
+      { denumerator: 2, frequency: 1 },
+      { denumerator: 3, frequency: 1 },
+      { denumerator: 4, frequency: 2 },
+      { denumerator: 5, frequency: 2 },
+      { denumerator: 8, frequency: 3 },
+      { denumerator: 10, frequency: 2 },
+    ],
+  },
+  {
+    gameType: 'percentageToDecimal',
+    denumeratorFrequencies: [
+      { denumerator: 2, frequency: 1 },
+      { denumerator: 3, frequency: 1 },
+      { denumerator: 4, frequency: 2 },
+      { denumerator: 5, frequency: 2 },
+      { denumerator: 8, frequency: 3 },
+      { denumerator: 10, frequency: 2 },
+    ],
+  },
+  {
+    gameType: 'percentageToPie',
+    denumeratorFrequencies: [
+      { denumerator: 2, frequency: 1 },
+      { denumerator: 3, frequency: 1 },
+      { denumerator: 4, frequency: 2 },
+      { denumerator: 5, frequency: 2 },
+      { denumerator: 8, frequency: 3 },
+      { denumerator: 10, frequency: 2 },
+    ],
+  },
 ];
 
 @customElement('fraction-pair-matching-app')
@@ -131,13 +175,8 @@ export class FractionMatchingGameApp extends PairMatchingApp<FractionAndRepresen
       potentialNumerators = [];
       this.potentialNumerators.push({ denumerator, potentialNumerators });
     }
-    if (
-      this.gameType === 'fractionToPie' ||
-      this.gameType === 'equalFractions'
-    ) {
-      for (let numerator = 1; numerator < denumerator; numerator++) {
-        potentialNumerators.push(numerator);
-      }
+    for (let numerator = 1; numerator < denumerator; numerator++) {
+      potentialNumerators.push(numerator);
     }
   }
 
@@ -157,6 +196,26 @@ export class FractionMatchingGameApp extends PairMatchingApp<FractionAndRepresen
         this.representations.exercise = 'fraction';
         this.representations.answer = 'fraction';
         this.dropAllowed = 'allElements';
+      } else if (gameType === 'fractionToDecimal') {
+        this.gameType = 'fractionToDecimal';
+        this.representations.exercise = 'fraction';
+        this.representations.answer = 'decimal';
+        this.dropAllowed = 'opositeElements';
+      } else if (gameType === 'fractionToPercentage') {
+        this.gameType = 'fractionToPercentage';
+        this.representations.exercise = 'fraction';
+        this.representations.answer = 'percentage';
+        this.dropAllowed = 'opositeElements';
+      } else if (gameType === 'percentageToDecimal') {
+        this.gameType = 'percentageToDecimal';
+        this.representations.exercise = 'percentage';
+        this.representations.answer = 'decimal';
+        this.dropAllowed = 'opositeElements';
+      } else if (gameType === 'percentageToPie') {
+        this.gameType = 'percentageToPie';
+        this.representations.exercise = 'percentage';
+        this.representations.answer = 'piechart';
+        this.dropAllowed = 'opositeElements';
       } else {
         /* includes gameType === 'fractionToPie', which is default */
         this.gameType = 'fractionToPie';

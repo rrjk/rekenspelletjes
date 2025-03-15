@@ -52,7 +52,7 @@ export class FractionElement extends LitElement {
         }
 
         text.percentage {
-          font-size: 75px;
+          font-size: 70px;
           dominant-baseline: middle;
         }
 
@@ -157,10 +157,14 @@ export class FractionElement extends LitElement {
     const fractionAsDecimal =
       this.fraction.numerator / this.fraction.denumerator;
 
+    let numberOfDecimals = 3;
+    if (Number.isInteger(fractionAsDecimal * 100)) numberOfDecimals = 2;
+    if (Number.isInteger(fractionAsDecimal * 10)) numberOfDecimals = 1;
+
     return html`
       <svg viewbox="-100 -100 200 200">
         <text class="percentage ${classMap(classes)}" x="0" y="0">
-          ${fractionAsDecimal}
+          ${fractionAsDecimal.toFixed(numberOfDecimals)}
         </text>
       </svg>
     `;
