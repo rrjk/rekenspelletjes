@@ -38,16 +38,22 @@ export class FractionElement extends LitElement {
         }
 
         text {
-          font-size: 100px;
           text-anchor: middle;
         }
 
         text.numerator {
+          font-size: 100px;
           dominant-baseline: alphabetic;
         }
 
         text.denumerator {
+          font-size: 100px;
           dominant-baseline: hanging;
+        }
+
+        text.percentage {
+          font-size: 75px;
+          dominant-baseline: middle;
         }
 
         line.fractionBar {
@@ -122,6 +128,44 @@ export class FractionElement extends LitElement {
     `;
   }
 
+  renderAsPercentage(): HTMLTemplateResult {
+    const classes = {
+      dropOkFraction: this.highlightState === 'droppable',
+      dropWrongFraction: this.highlightState === 'wrong',
+      dropNoneFraction: this.highlightState === 'none',
+    };
+    const percentage =
+      (this.fraction.numerator / this.fraction.denumerator) * 100;
+
+    const numberOfDecimals = Number.isInteger(percentage) ? 0 : 1;
+
+    return html`
+      <svg viewbox="-100 -100 200 200">
+        <text class="percentage ${classMap(classes)}" x="0" y="0">
+          ${percentage.toFixed(numberOfDecimals)}%
+        </text>
+      </svg>
+    `;
+  }
+
+  renderAsDecimal(): HTMLTemplateResult {
+    const classes = {
+      dropOkFraction: this.highlightState === 'droppable',
+      dropWrongFraction: this.highlightState === 'wrong',
+      dropNoneFraction: this.highlightState === 'none',
+    };
+    const fractionAsDecimal =
+      this.fraction.numerator / this.fraction.denumerator;
+
+    return html`
+      <svg viewbox="-100 -100 200 200">
+        <text class="percentage ${classMap(classes)}" x="0" y="0">
+          ${fractionAsDecimal}
+        </text>
+      </svg>
+    `;
+  }
+
   renderAsPiechart(): HTMLTemplateResult {
     const classes = {
       dropOkPie: this.highlightState === 'droppable',
@@ -157,7 +201,7 @@ export class FractionElement extends LitElement {
           d="M 0 0 L 0 -1000 A 1000 1000 0 ${largeArcNonFilled} 0 
              ${this.arcToXPosition(arc)} ${this.arcToYPosition(arc)} L 0 0"
           stroke-width="50"
-          fill="none"
+          fill="white"
         />
         ${dividerLines}
       </svg>
@@ -180,6 +224,9 @@ export class FractionElement extends LitElement {
   render(): HTMLTemplateResult {
     if (this.representation === 'fraction') return this.renderAsFraction();
     if (this.representation === 'piechart') return this.renderAsPiechart();
+    if (this.representation === 'percentage') return this.renderAsPercentage();
+    if (this.representation === 'decimal') return this.renderAsDecimal();
+
     console.error(
       `Fraction representation ${this.representation} is not supported`,
     );
