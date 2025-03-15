@@ -72,47 +72,6 @@ const sections: SectionInfoType[] = [
       },
     ],
   },
-  {
-    min: 0,
-    max: 100,
-    archLocation: 'below',
-    rows: [
-      {
-        description: '- minsommen, zonder over het tiental heen te gaan',
-        shortCodes: ['od', 'oe'],
-        color: 'yellow',
-        arches: [{ from: 14, to: 11 }],
-      },
-      {
-        description: '- minsommen, zonder splitsen, met boogjes van tien',
-        shortCodes: ['of', 'og'],
-        color: 'lime',
-        arches: [
-          { from: 26, to: 16 },
-          { from: 16, to: 11 },
-        ],
-      },
-      {
-        description: '- minsommen, met splitsen, zonder boogjes van tien',
-        shortCodes: ['oh', 'oi'],
-        color: 'green',
-        arches: [
-          { from: 14, to: 10 },
-          { from: 10, to: 6 },
-        ],
-      },
-      {
-        description: '- minsommen, met splitsen, zonder boogjes van tien',
-        shortCodes: ['oj', 'ok'],
-        color: 'cyan',
-        arches: [
-          { from: 25, to: 15 },
-          { from: 15, to: 10 },
-          { from: 10, to: 6 },
-        ],
-      },
-    ],
-  },
 ];
 
 @customElement('numberline-arches-game-index-app')
