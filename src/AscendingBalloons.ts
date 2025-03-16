@@ -18,7 +18,13 @@ export interface Answers {
 
 /** Possible balloon colors */
 type BalloonColors = 'blue' | 'green' | 'yellow' | 'purple';
-export type ImageType = 'balloon' | 'star' | 'kite' | 'rocket' | 'zeppelin';
+export type ImageType =
+  | 'balloon'
+  | 'star'
+  | 'kite'
+  | 'rocket'
+  | 'zeppelin'
+  | 'hexagon';
 
 /** Interface definition for the ballooninfo */
 interface BalloonInfo {
