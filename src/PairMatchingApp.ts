@@ -65,8 +65,8 @@ type DragElementType = 'draggable' | 'target';
 const dragElementTypes: DragElementType[] = ['draggable', 'target'];
 
 interface BasicCellInfo {
-  left: number; // Left position within the cell as percentage (0-40%)
-  top: number; // Top position within the cell as percentage (0-40%)
+  left: number; // Left position within the cell as percentage (5-45%)
+  top: number; // Top position within the cell as percentage (5-45%)
 }
 
 interface CellInfoInterface {
@@ -244,8 +244,8 @@ export abstract class PairMatchingApp<
         for (const cellType of cellTypes) {
           draft[cellType].push({
             basicInfo: {
-              top: randomIntFromRange(0, 40),
-              left: randomIntFromRange(0, 40),
+              top: randomIntFromRange(5, 45),
+              left: randomIntFromRange(5, 45),
             },
             detailedInfo: castDraft(pair[cellType]),
           });
@@ -411,14 +411,13 @@ export abstract class PairMatchingApp<
       ...super.styles,
       css`
         .gridElement {
-          container-type: size;
-          container-name: draggable;
           display: grid;
           grid-template-rows: 32% 68%;
           grid-template-columns: 100%;
           grid-template-areas:
             'miniMompitzes'
             'content';
+          box-sizing: border-box;
         }
 
         div.miniMompitzes {
@@ -431,6 +430,8 @@ export abstract class PairMatchingApp<
 
         div.content {
           grid-area: content;
+          container-type: size;
+          container-name: draggable;
         }
 
         draggable-target-slotted {
@@ -623,7 +624,7 @@ export abstract class PairMatchingApp<
 
     return html`
         <dynamic-grid
-          contentAspectRatio="1"
+          contentAspectRatio="0.8"
           padding="0"
           style="width: 100%; height: 100%; top: 0;"
         >
