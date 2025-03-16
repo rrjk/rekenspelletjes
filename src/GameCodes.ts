@@ -21,6 +21,7 @@ export const gameCodes: GameInfoType[] = [
     gameCode: 'H',
     name: 'Getallenrij: klik op de ballen in de juiste volgorde',
   },
+  { gameCode: 'I', name: 'Breuken paartjes zoeken' },
   { gameCode: 'J', name: 'Eierdoos tellen' },
   { gameCode: 'K', name: 'Zeppelinspel:Keersommen boven de 10' },
   { gameCode: 'L', name: 'Klokkenspel' },

@@ -14,14 +14,31 @@ export interface DropTargetElementInterface extends HTMLElement {
 }
 
 export class DropEvent extends Event {
-  draggableId = '';
-  draggableValue = '';
-  dropTargetId = '';
-  dropTargetValue = '';
-  dropType: DropType = 'dropOk';
+  draggableElement: HTMLElement;
+  draggableId: string;
+  draggableValue: string;
+  dropTargetElement: HTMLElement;
+  dropTargetId: string;
+  dropTargetValue: string;
+  dropType: DropType;
 
-  constructor() {
+  constructor(
+    draggableElement: HTMLElement,
+    draggableId: string,
+    draggableValue: string,
+    dropTargetElement: HTMLElement,
+    dropTargetId: string,
+    dropTargetValue: string,
+    dropType: DropType,
+  ) {
     super('dropped');
+    this.draggableElement = draggableElement;
+    this.draggableId = draggableId;
+    this.draggableValue = draggableValue;
+    this.dropTargetElement = dropTargetElement;
+    this.dropTargetId = dropTargetId;
+    this.dropTargetValue = dropTargetValue;
+    this.dropType = dropType;
   }
 }
 
@@ -74,10 +91,13 @@ export class DraggableElement extends LitElement {
   private dropTargetInfoList: DropTargetInfo[] = [];
 
   @property()
-  accessor dropTargetList: readonly DropTarget[] = [];
+  accessor dropTargetList: readonly DropTarget[] | undefined = undefined;
 
   protected willUpdate(changedProperties: PropertyValues): void {
-    if (changedProperties.has('dropTargetList')) {
+    if (
+      changedProperties.has('dropTargetList') &&
+      this.dropTargetList !== undefined
+    ) {
       this.dropTargetInfoList = this.dropTargetList.map(e => ({
         element: e.element,
         dropType: e.dropType,
@@ -255,12 +275,15 @@ export class DraggableElement extends LitElement {
         this.cummulativeDeltaY > target.minDeltaY &&
         this.cummulativeDeltaY < target.maxDeltaY
       ) {
-        const event = new DropEvent();
-        event.draggableId = this.id;
-        event.draggableValue = this.value;
-        event.dropTargetId = target.element.id;
-        event.dropTargetValue = target.element.value || '';
-        event.dropType = target.dropType;
+        const event = new DropEvent(
+          this,
+          this.id,
+          this.value,
+          target.element,
+          target.element.id,
+          target.element.value || '',
+          target.dropType,
+        );
         this.dispatchEvent(event);
         break;
       }
@@ -284,7 +307,6 @@ export class DraggableElement extends LitElement {
       this.cummulativeDeltaY = this.minCummalativeDeltaY;
     else if (this.cummulativeDeltaY > this.maxCummalativeDeltaY)
       this.cummulativeDeltaY = this.maxCummalativeDeltaY;
-
     // For each of the drop targets, check whether it's touched and if so highlight it appropriately.
     for (const target of this.dropTargetInfoList) {
       if (
@@ -293,10 +315,11 @@ export class DraggableElement extends LitElement {
         this.cummulativeDeltaY > target.minDeltaY &&
         this.cummulativeDeltaY < target.maxDeltaY
       ) {
-        if (target.dropType === 'dropOk')
+        if (target.dropType === 'dropOk') {
           target.element.highlightForDrop('droppable');
-        else if (target.dropType === 'dropWrong')
+        } else if (target.dropType === 'dropWrong') {
           target.element.highlightForDrop('wrong');
+        }
       } else {
         target.element.highlightForDrop('none');
       }
@@ -319,6 +342,7 @@ export class DraggableElement extends LitElement {
   }
 
   render(): HTMLTemplateResult {
+    const zIndex = this.dragActive ? 300 : 'auto';
     return html`
       <style>
         :host {
@@ -326,6 +350,7 @@ export class DraggableElement extends LitElement {
             calc(${this.cummulativeDeltaX} * var(--vw, 1vw)),
             calc(${this.cummulativeDeltaY} * var(--vh, 1vh))
           );
+          z-index: ${zIndex};
         }
       </style>
       ${this.content}

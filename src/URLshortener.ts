@@ -17,6 +17,7 @@ import { splitsenLink } from './SplitAppLink';
 import { sommenMetSplitsenLink } from './SumsWithSplitAppLink';
 import { splitsenOpWaardeLink } from './TensSplitAppLink';
 import { welkeHandHeeftMeerStippenLink } from './WhichIsBiggerAppLink';
+import { breukenPaartjesLink } from './FractionsPairMatchingAppLink';
 
 /** Function to determine the number belonging to a string of lower case letters
  * a equals 0, b equals 1 etc
@@ -1095,7 +1096,20 @@ const urls: (() => string)[] = [
       'zeppelin',
       180,
     ),
-  // ph
+  // ph indexBreukenPaartjesSpel.html
+  () => breukenPaartjesLink('fractionToPie', 60),
+  () => breukenPaartjesLink('fractionToPie', 180),
+  () => breukenPaartjesLink('equalFractions', 60),
+  () => breukenPaartjesLink('equalFractions', 180),
+  () => breukenPaartjesLink('fractionToDecimal', 60),
+  () => breukenPaartjesLink('fractionToDecimal', 180),
+  () => breukenPaartjesLink('fractionToPercentage', 60),
+  () => breukenPaartjesLink('fractionToPercentage', 180),
+  () => breukenPaartjesLink('percentageToDecimal', 60),
+  () => breukenPaartjesLink('percentageToDecimal', 180),
+  () => breukenPaartjesLink('percentageToPie', 60),
+  () => breukenPaartjesLink('percentageToPie', 180),
+  // pt
 ];
 
 const urlParams = new URLSearchParams(window.location.search);
