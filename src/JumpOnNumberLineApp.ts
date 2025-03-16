@@ -338,7 +338,8 @@ export class JumpOnNumberLineApp extends LitElement {
           <p>
             Je hebt ${this.numberNok === 0 ? 'geen' : this.numberNok}
             ${this.numberNok === 1 ? 'fout' : 'fouten'} gemaakt.
-          </p>`,
+          </p>
+          <p>Je score is ${this.numberOk - this.numberNok}.</p>`,
       )
       .then(result => {
         if (result === 'again') this.startNewGame();

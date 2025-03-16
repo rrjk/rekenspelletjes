@@ -159,6 +159,7 @@ export class AdditionSubstractionWithinDecadeApp extends TimeLimitedGame2 {
         ${this.exerciseExamplesAsScentence}
       </p>
       ${this.numberOkForGameOverText} ${this.numberNokForGameOverText}
+      ${this.scoreForGameOverText}
     `;
   }
 

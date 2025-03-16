@@ -260,7 +260,8 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
           <p>
             Je hebt ${this._numberNok === 0 ? 'geen' : this._numberNok}
             ${this._numberNok === 1 ? 'fout' : 'fouten'} gemaakt.
-          </p>`,
+          </p>
+          <p>Je score is ${this._numberOk - this._numberNok}.</p>`,
       )
       .then(result => {
         if (result === 'again') this.startNewGame();

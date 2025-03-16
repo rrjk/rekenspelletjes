@@ -219,6 +219,7 @@ export class MultiplicationTablesBalloonGameApp extends TimeLimitedGame2 {
         ${this.tablesAsScentence}
       </p>
       ${this.numberOkForGameOverText} ${this.numberNokForGameOverText}
+      ${this.scoreForGameOverText}
     `;
   }
 
