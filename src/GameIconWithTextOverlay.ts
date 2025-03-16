@@ -29,7 +29,8 @@ export class BalloonIndex extends LitElement {
         .balloon,
         .kite,
         .rocket,
-        .zeppelin {
+        .zeppelin,
+        .hexagon {
           display: inline-block;
           background-color: transparent;
           border: none;
@@ -55,6 +56,13 @@ export class BalloonIndex extends LitElement {
         }
 
         .rocket {
+          background-size: 90px 90px;
+          width: 90px;
+          height: 90px;
+          line-height: 90px;
+        }
+
+        .hexagon {
           background-size: 90px 90px;
           width: 90px;
           height: 90px;
@@ -100,7 +108,8 @@ export class BalloonIndex extends LitElement {
       .concat(getIconStyles('balloon'))
       .concat(getIconStyles('kite'))
       .concat(getIconStyles('rocket'))
-      .concat(getIconStyles('zeppelin'));
+      .concat(getIconStyles('zeppelin'))
+      .concat(getIconStyles('hexagon'));
   }
 
   render(): HTMLTemplateResult {

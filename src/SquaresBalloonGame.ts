@@ -173,7 +173,22 @@ export class SquaresBalloonGameApp extends TimeLimitedGame2 {
   }
 
   private createExerciseRoot() {
-    throw new Error('root not yet implemented');
+    const answer = randomIntFromRange(2, this.maxBase);
+
+    this.number = answer * answer;
+
+    const possibleAnswers = [answer + 1, answer + 2, answer + 3, answer - 1];
+    if (answer > 2) possibleAnswers.push(answer - 2);
+    if (answer > 3) possibleAnswers.push(answer - 3);
+
+    this.answers = {
+      correct: answer,
+      incorrect: [
+        randomFromSetAndSplice(possibleAnswers),
+        randomFromSetAndSplice(possibleAnswers),
+        randomFromSetAndSplice(possibleAnswers),
+      ],
+    };
   }
 
   private newRound() {
@@ -193,6 +208,9 @@ export class SquaresBalloonGameApp extends TimeLimitedGame2 {
   }
 
   renderGameContent(): HTMLTemplateResult {
+    let exercise = html``;
+    if (this.operator === 'square') exercise = html`${this.number}² = ?`;
+    else exercise = html`√${this.number}`;
     return html`
       <ascending-balloons
         id="ascendingBalloons"
@@ -210,7 +228,7 @@ export class SquaresBalloonGameApp extends TimeLimitedGame2 {
           ? 'none'
           : 'block'}; position: absolute; top: 20%; width: 100%; text-align: center;"
       >
-        ${this.number}² = ?
+        ${exercise}
       </div>
     `;
   }

@@ -4,10 +4,15 @@ export type Operator = 'square' | 'root';
  * @param time - Gamelength
  */
 
-export function ballonnenSpelLink(operators: Operator[], time: number) {
+export function hexagonnenSpelLink(
+  operators: Operator[],
+  maxBase: number,
+  time: number,
+) {
   let params = `time=${time}`;
   for (const o of operators) {
     params += `&operator=${o}`;
   }
+  params += `&maxBase=${maxBase}`;
   return `../Rekenspelletjes/Hexagonnenspel.html?${params}`;
 }
