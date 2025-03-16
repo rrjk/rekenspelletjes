@@ -7,6 +7,7 @@ import { darken, lighten } from 'color2k';
 import { randomFromSetAndSplice } from './Randomizer';
 import { getZeppelinAsSvgUrl } from './ZeppelinImage';
 import { getColorInfo } from './Colors';
+import { getHexagonAsSvgUrl } from './HexagonImage';
 // import { BalloonIndex } from './BalloonWithTextOverlay';
 
 /** Interface definition for type storing the answers. */
@@ -118,6 +119,47 @@ export class AscendingBalloons extends LitElement {
         ],
       ]),
     ],
+    [
+      'hexagon',
+      new Map<BalloonColors, URL>([
+        [
+          'purple',
+          new URL(
+            `data:image/svg+xml,${getHexagonAsSvgUrl(
+              'black',
+              getColorInfo('lavender').mainColorCode,
+            )}`,
+          ),
+        ],
+        [
+          'green',
+          new URL(
+            `data:image/svg+xml,${getHexagonAsSvgUrl(
+              'black',
+              getColorInfo('lime').mainColorCode,
+            )}`,
+          ),
+        ],
+        [
+          'yellow',
+          new URL(
+            `data:image/svg+xml,${getHexagonAsSvgUrl(
+              'black',
+              getColorInfo('yellow').mainColorCode,
+            )}`,
+          ),
+        ],
+        [
+          'blue',
+          new URL(
+            `data:image/svg+xml,${getHexagonAsSvgUrl(
+              'black',
+              getColorInfo('cyan').mainColorCode,
+            )}`,
+          ),
+        ],
+      ]),
+    ],
   ]);
 
   /** Answers for the balloons, 1 correct answer and 3 incorrect answers. */
@@ -207,7 +249,8 @@ export class AscendingBalloons extends LitElement {
       .kite,
       .balloon,
       .rocket,
-      .zeppelin {
+      .zeppelin,
+      .hexagon {
         border: none;
         outline: none;
         color: black;
@@ -245,6 +288,15 @@ export class AscendingBalloons extends LitElement {
         font-size: calc(0.9em + 3vmin);
         width: 3.5em;
         height: 3.5em;
+      }
+
+      .hexagon {
+        display: inline-block;
+        background-size: 3em 3em;
+        background-color: Transparent;
+        font-size: calc(0.9em + 3vmin);
+        width: 3em;
+        height: 3em;
       }
 
       .rocket span {

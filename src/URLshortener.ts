@@ -18,6 +18,7 @@ import { sommenMetSplitsenLink } from './SumsWithSplitAppLink';
 import { splitsenOpWaardeLink } from './TensSplitAppLink';
 import { welkeHandHeeftMeerStippenLink } from './WhichIsBiggerAppLink';
 import { breukenPaartjesLink } from './FractionsPairMatchingAppLink';
+import { hexagonnenSpelLink } from './SquaresBalloonGameLink';
 
 /** Function to determine the number belonging to a string of lower case letters
  * a equals 0, b equals 1 etc
@@ -1110,6 +1111,25 @@ const urls: (() => string)[] = [
   () => breukenPaartjesLink('percentageToPie', 60),
   () => breukenPaartjesLink('percentageToPie', 180),
   // pt
+  () => hexagonnenSpelLink(['square'], 10, 60),
+  () => hexagonnenSpelLink(['square'], 10, 180),
+  () => hexagonnenSpelLink(['square'], 15, 60),
+  () => hexagonnenSpelLink(['square'], 15, 180),
+  () => hexagonnenSpelLink(['square'], 20, 60),
+  () => hexagonnenSpelLink(['square'], 20, 180),
+  () => hexagonnenSpelLink(['root'], 10, 60), // pz
+  () => hexagonnenSpelLink(['root'], 10, 180),
+  () => hexagonnenSpelLink(['root'], 15, 60),
+  () => hexagonnenSpelLink(['root'], 15, 180),
+  () => hexagonnenSpelLink(['root'], 20, 60),
+  () => hexagonnenSpelLink(['root'], 20, 180),
+  () => hexagonnenSpelLink(['square', 'root'], 10, 60),
+  () => hexagonnenSpelLink(['square', 'root'], 10, 180),
+  () => hexagonnenSpelLink(['square', 'root'], 15, 60),
+  () => hexagonnenSpelLink(['square', 'root'], 15, 180),
+  () => hexagonnenSpelLink(['square', 'root'], 20, 60),
+  () => hexagonnenSpelLink(['square', 'root'], 20, 180), // qk
+  // ql
 ];
 
 const urlParams = new URLSearchParams(window.location.search);
