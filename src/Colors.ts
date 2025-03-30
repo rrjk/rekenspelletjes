@@ -27,6 +27,29 @@ export type Color =
   | 'magenta'
   | 'grey';
 
+export const colors: Color[] = [
+  'apricot',
+  'beige',
+  'blue',
+  'brown',
+  'cyan',
+  'green',
+  'grey',
+  'lavender',
+  'lime',
+  'magenta',
+  'maroon',
+  'mint',
+  'navy',
+  'olive',
+  'orange',
+  'pink',
+  'purple',
+  'red',
+  'teal',
+  'yellow',
+];
+
 export type ColorInfo = {
   colorName: Color;
   fontColor: string;

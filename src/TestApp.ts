@@ -4,11 +4,8 @@ import { customElement } from 'lit/decorators.js';
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
 // import { darken, lighten } from 'color2k';
-import './DraggableTargetSlotted';
-
-import './Arch';
-
-// import './RealHeight';
+import './FlyingSaucer';
+import { colors } from './Colors';
 
 @customElement('test-app')
 export class TestApp extends LitElement {
@@ -16,7 +13,7 @@ export class TestApp extends LitElement {
     console.log(`styles`);
     return [
       css`
-        draggable-target-fraction {
+        flying-saucer {
           width: 100px;
           height: 100px;
         }
@@ -26,10 +23,10 @@ export class TestApp extends LitElement {
 
   protected renderTest(): HTMLTemplateResult {
     return html`<p>Test</p>
-      <draggable-target-slotted>
-        <div>BBB</div>
-        <div>CCC</div>
-      </draggable-target-slotted>`;
+      ${colors.map(
+        color =>
+          html`<flying-saucer color=${color} content="888"></flying-saucer>`,
+      )} `;
   }
 
   protected render(): HTMLTemplateResult {
