@@ -404,26 +404,18 @@ const urls: (() => string)[] = [
       180,
     ),
   () =>
+    klokPaartjesLink(['10Minute', 'QuarterHour'], ['Analog', 'Sentence'], 60),
+  () =>
+    klokPaartjesLink(['10Minute', 'QuarterHour'], ['Analog', 'Sentence'], 180),
+  () =>
     klokPaartjesLink(
-      ['10Minute', 'QuarterHour', 'HalfHour', 'Hour'],
+      ['Minute', '10Minute', 'QuarterHour'],
       ['Analog', 'Sentence'],
       60,
     ),
   () =>
     klokPaartjesLink(
-      ['10Minute', 'QuarterHour', 'HalfHour', 'Hour'],
-      ['Analog', 'Sentence'],
-      180,
-    ),
-  () =>
-    klokPaartjesLink(
-      ['Minute', '10Minute', 'QuarterHour', 'HalfHour', 'Hour'],
-      ['Analog', 'Sentence'],
-      60,
-    ),
-  () =>
-    klokPaartjesLink(
-      ['Minute', '10Minute', 'QuarterHour', 'HalfHour', 'Hour'],
+      ['Minute', '10Minute', 'QuarterHour'],
       ['Analog', 'Sentence'],
       180,
     ),
@@ -445,26 +437,18 @@ const urls: (() => string)[] = [
       180,
     ),
   () =>
+    klokPaartjesLink(['10Minute', 'QuarterHour'], ['Sentence', 'Digital'], 60),
+  () =>
+    klokPaartjesLink(['10Minute', 'QuarterHour'], ['Sentence', 'Digital'], 180),
+  () =>
     klokPaartjesLink(
-      ['10Minute', 'QuarterHour', 'HalfHour', 'Hour'],
+      ['Minute', '10Minute', 'QuarterHour'],
       ['Sentence', 'Digital'],
       60,
     ),
   () =>
     klokPaartjesLink(
-      ['10Minute', 'QuarterHour', 'HalfHour', 'Hour'],
-      ['Sentence', 'Digital'],
-      180,
-    ),
-  () =>
-    klokPaartjesLink(
-      ['Minute', '10Minute', 'QuarterHour', 'HalfHour', 'Hour'],
-      ['Sentence', 'Digital'],
-      60,
-    ),
-  () =>
-    klokPaartjesLink(
-      ['Minute', '10Minute', 'QuarterHour', 'HalfHour', 'Hour'],
+      ['Minute', '10Minute', 'QuarterHour'],
       ['Sentence', 'Digital'],
       180,
     ),
@@ -486,26 +470,18 @@ const urls: (() => string)[] = [
       180,
     ),
   () =>
+    klokPaartjesLink(['10Minute', 'QuarterHour'], ['Analog', 'Digital'], 60),
+  () =>
+    klokPaartjesLink(['10Minute', 'QuarterHour'], ['Analog', 'Digital'], 180),
+  () =>
     klokPaartjesLink(
-      ['10Minute', 'QuarterHour', 'HalfHour', 'Hour'],
+      ['Minute', '10Minute', 'QuarterHour'],
       ['Analog', 'Digital'],
       60,
     ),
   () =>
     klokPaartjesLink(
-      ['10Minute', 'QuarterHour', 'HalfHour', 'Hour'],
-      ['Analog', 'Digital'],
-      180,
-    ),
-  () =>
-    klokPaartjesLink(
-      ['Minute', '10Minute', 'QuarterHour', 'HalfHour', 'Hour'],
-      ['Analog', 'Digital'],
-      60,
-    ),
-  () =>
-    klokPaartjesLink(
-      ['Minute', '10Minute', 'QuarterHour', 'HalfHour', 'Hour'],
+      ['Minute', '10Minute', 'QuarterHour'],
       ['Analog', 'Digital'],
       180,
     ),
@@ -538,25 +514,25 @@ const urls: (() => string)[] = [
     ),
   () =>
     klokPaartjesLink(
-      ['10Minute', 'QuarterHour', 'HalfHour', 'Hour'],
+      ['10Minute', 'QuarterHour'],
       ['Analog', 'Digital', 'Sentence'],
       60,
     ),
   () =>
     klokPaartjesLink(
-      ['10Minute', 'QuarterHour', 'HalfHour', 'Hour'],
+      ['10Minute', 'QuarterHour'],
       ['Analog', 'Digital', 'Sentence'],
       180,
     ),
   () =>
     klokPaartjesLink(
-      ['Minute', '10Minute', 'QuarterHour', 'HalfHour', 'Hour'],
+      ['Minute', '10Minute', 'QuarterHour'],
       ['Analog', 'Digital', 'Sentence'],
       60,
     ),
   () =>
     klokPaartjesLink(
-      ['Minute', '10Minute', 'QuarterHour', 'HalfHour', 'Hour'],
+      ['Minute', '10Minute', 'QuarterHour'],
       ['Analog', 'Digital', 'Sentence'],
       180,
     ),
