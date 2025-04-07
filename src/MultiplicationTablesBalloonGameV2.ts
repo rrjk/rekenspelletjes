@@ -11,12 +11,16 @@ import {
   ItemInfoInterface,
   RoundInfo,
 } from './AscendingItemsGameApp';
-import { Color } from './Colors';
+import { Color, colors } from './Colors';
 
 import './FlyingSaucer';
 
 import { Operator } from './MultiplicationTablesBalloonGameLinkV2';
-import { randomFromSet, randomFromSetAndSplice } from './Randomizer';
+import {
+  randomFromSet,
+  randomFromSetAndSplice,
+  shuffleArray,
+} from './Randomizer';
 
 interface ItemInfo extends ItemInfoInterface {
   nmbr: number;
@@ -51,6 +55,8 @@ export class MultiplicationTablesBalloonGameV2 extends AscendingItemsGameApp<
     console.assert(nmbrItems === 4);
 
     let exerciseInfo: ExerciseInfo;
+    const itemInfo: ItemInfo[] = [];
+    const possibleColors = [...colors];
 
     const table = randomFromSet(this.tablesToUse);
     const operator = randomFromSet(this.operatorsToUse);
@@ -59,6 +65,7 @@ export class MultiplicationTablesBalloonGameV2 extends AscendingItemsGameApp<
 
     const multiplier = randomFromSetAndSplice(possibleMultipliers);
     const answer = multiplier * table;
+    const colorCorrect = randomFromSetAndSplice(possibleColors);
 
     if (operator === 'times') {
       exerciseInfo = {
@@ -66,22 +73,52 @@ export class MultiplicationTablesBalloonGameV2 extends AscendingItemsGameApp<
         secondOperand: table,
         operator,
       };
+      itemInfo.push({
+        color: colorCorrect,
+        disabled: false,
+        nmbr: answer,
+        correct: true,
+      });
     } else {
       exerciseInfo = {
         firstOperand: answer,
         secondOperand: table,
         operator,
       };
+      itemInfo.push({
+        color: colorCorrect,
+        disabled: false,
+        nmbr: multiplier,
+        correct: true,
+      });
     }
+
+    for (let i = 0; i < nmbrItems - 1; i++) {
+      if (operator === 'times') {
+        itemInfo.push({
+          color: randomFromSetAndSplice(possibleColors),
+          correct: false,
+          disabled: false,
+          nmbr: table * randomFromSetAndSplice(possibleMultipliers),
+        });
+      } else {
+        // operator === 'divide'
+        itemInfo.push({
+          color: randomFromSetAndSplice(possibleColors),
+          correct: false,
+          disabled: false,
+          nmbr: randomFromSetAndSplice(possibleMultipliers),
+        });
+      }
+    }
+
+    console.log(JSON.stringify(itemInfo));
+    shuffleArray(itemInfo);
+    console.log(JSON.stringify(itemInfo));
 
     return {
       exerciseInfo,
-      itemInfo: [
-        { color: 'red', nmbr: 16, correct: true, disabled: false },
-        { color: 'yellow', nmbr: 18, correct: false, disabled: false },
-        { color: 'blue', nmbr: 28, correct: false, disabled: false },
-        { color: 'green', nmbr: 38, correct: false, disabled: false },
-      ],
+      itemInfo,
     };
   }
 
