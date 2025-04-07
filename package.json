@@ -39,6 +39,7 @@
     "rules": {
       "wc/guard-super-call": "off",
       "lines-between-class-members": "off",
+      "lit-a11y/click-events-have-key-events": "off",
       "no-console": [
         "warn",
         {
