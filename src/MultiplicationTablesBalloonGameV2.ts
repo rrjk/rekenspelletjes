@@ -21,6 +21,7 @@ import {
   randomFromSetAndSplice,
   shuffleArray,
 } from './Randomizer';
+import { GameLogger } from './GameLogger';
 
 interface ItemInfo extends ItemInfoInterface {
   nmbr: number;
@@ -33,6 +34,8 @@ interface ExerciseInfo {
   operator: Operator;
 }
 
+type ItemImage = 'flyingSaucer' | 'balloon' | 'zeppelin' | 'rocket';
+
 function operatorToSymbol(operator: Operator) {
   if (operator === 'times') return '×';
   if (operator === 'divide') return ':';
@@ -44,11 +47,82 @@ export class MultiplicationTablesBalloonGameV2 extends AscendingItemsGameApp<
   ExerciseInfo,
   ItemInfo
 > {
-  private tablesToUse: number[] = [12];
-  private operatorsToUse: Operator[] = ['times', 'divide'];
+  private tablesToUse: number[] = [];
+  private operatorsToUse: Operator[] = [];
+  private itemImage: ItemImage = 'flyingSaucer';
+  private gameLogger = new GameLogger('D', '');
 
   get welcomeMessage(): HTMLTemplateResult {
     return html`Klik op de ufo met het juiste antwoord`;
+  }
+
+  constructor() {
+    super();
+    console.log(`constructor`);
+    this.parseUrl();
+  }
+
+  private parseUrl(): void {
+    console.log(`parseUrl`);
+
+    const urlParams = new URLSearchParams(window.location.search);
+
+    let tableAbove10 = false;
+    let divideIncluded = false;
+
+    const tablesFromUrl = urlParams.getAll('table');
+    this.tablesToUse = [];
+    for (const tableAsString of tablesFromUrl) {
+      const table = parseInt(tableAsString, 10);
+      if (
+        !Number.isNaN(table) &&
+        table >= 1 &&
+        table <= 100 &&
+        !this.tablesToUse.find(value => value === table)
+      ) {
+        this.tablesToUse.push(table);
+        if (table > 10) tableAbove10 = true;
+      }
+    }
+    if (this.tablesToUse.length === 0)
+      this.tablesToUse = [2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+    const operatorsFromUrl = urlParams.getAll('operator');
+    this.operatorsToUse = [];
+    for (const operator of operatorsFromUrl) {
+      if (
+        (operator === 'times' || operator === 'divide') &&
+        !this.operatorsToUse.find(value => value === operator)
+      ) {
+        this.operatorsToUse.push(operator);
+        if (operator === 'divide') divideIncluded = true;
+      }
+    }
+    if (this.operatorsToUse.length === 0) this.operatorsToUse.push('times');
+
+    if (!tableAbove10 && !divideIncluded) {
+      this.itemImage = 'balloon';
+      this.gameLogger.setMainCode('D');
+      throw new Error('balloon game is not yet supported');
+    }
+    if (!tableAbove10 && divideIncluded) {
+      this.itemImage = 'rocket';
+      this.gameLogger.setMainCode('C');
+      throw new Error('rocket game is not yet supported');
+    }
+    if (tableAbove10 && !divideIncluded) {
+      this.itemImage = 'zeppelin';
+      this.gameLogger.setMainCode('K');
+      throw new Error('zeppelin game is not yet supported');
+    }
+    if (tableAbove10 && divideIncluded) {
+      this.itemImage = 'flyingSaucer';
+      this.gameLogger.setMainCode('M');
+    }
+  }
+
+  executeGameOverActions(): void {
+    this.gameLogger.logGameOver();
   }
 
   protected getRoundInfo(nmbrItems: number): RoundInfo<ExerciseInfo, ItemInfo> {

@@ -20,8 +20,8 @@ export class FlyingSaurcer extends LitElement {
   @property({ converter: stringToColor })
   accessor color: Color = 'red';
 
-  @property({ type: Number })
-  accessor content: number = 0;
+  @property({ type: String })
+  accessor content: string = '';
 
   @property({ type: Boolean })
   accessor disabled: boolean = false;
@@ -40,7 +40,8 @@ export class FlyingSaurcer extends LitElement {
         height: 100%;
       }
 
-      .oneDigit .twoDigit {
+      .oneDigit,
+      .twoDigit {
         font-size: 19px;
       }
 
@@ -102,25 +103,18 @@ export class FlyingSaurcer extends LitElement {
 
   render(): HTMLTemplateResult {
     let digitClass: string = '';
-    if (this.content >= 10000)
-      throw new Error(
-        'Flying saucer only supports positive numbers between 0 and 1000',
-      );
-    else if (this.content >= 1000) digitClass = 'fourDigit';
-    else if (this.content >= 100) digitClass = 'threeDigit';
-    else if (this.content >= 10) digitClass = 'twoDigit';
-    else if (this.content >= 0) digitClass = 'oneDigit';
-    else
-      throw new Error(
-        'Flying saucer only supports positive numbers between 0 and 1000',
-      );
+    if (this.content.length >= 4) digitClass = 'fourDigit';
+    else if (this.content.length >= 3) digitClass = 'threeDigit';
+    else if (this.content.length >= 2) digitClass = 'twoDigit';
+    else if (this.content.length >= 1) digitClass = 'oneDigit';
 
     const classes: { [name: string]: string | boolean | number } = {};
     classes.disabled = this.disabled;
     classes.enabled = !this.disabled;
     classes[digitClass] = true;
 
-    const content = this.disabled ? '✗' : this.content;
+    let content = '✗';
+    if (!this.disabled) content = `${this.content}`;
 
     let dotColor: string;
     const mainColoredDotsColors: Color[] = [

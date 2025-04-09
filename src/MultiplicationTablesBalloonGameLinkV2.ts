@@ -1,12 +1,12 @@
 export type Operator = 'times' | 'divide';
 
-/** Create link for recognize groups game.
- * @param operators - Operators (× or :) to use. × will be used if empty.
+/** Create link for tables ot multiplication game
+ * @param operators - Operators (times or divide to use. times will be used if empty.
  * @param tables: Tables of multiplication to include. If empty, all tables from 1 till 10 are included.
  * @param time - Gamelength
  */
 
-export function ballonnenSpelLink(
+export function multiplicationTablesGameLinkV2(
   operators: Operator[],
   tables: number[],
   time: number,
