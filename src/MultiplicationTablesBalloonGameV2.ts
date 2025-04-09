@@ -58,13 +58,10 @@ export class MultiplicationTablesBalloonGameV2 extends AscendingItemsGameApp<
 
   constructor() {
     super();
-    console.log(`constructor`);
     this.parseUrl();
   }
 
   private parseUrl(): void {
-    console.log(`parseUrl`);
-
     const urlParams = new URLSearchParams(window.location.search);
 
     let tableAbove10 = false;
@@ -186,9 +183,7 @@ export class MultiplicationTablesBalloonGameV2 extends AscendingItemsGameApp<
       }
     }
 
-    console.log(JSON.stringify(itemInfo));
     shuffleArray(itemInfo);
-    console.log(JSON.stringify(itemInfo));
 
     return {
       exerciseInfo,
@@ -229,7 +224,6 @@ export class MultiplicationTablesBalloonGameV2 extends AscendingItemsGameApp<
   }
 
   renderItem(itemInfo: ItemInfo): HTMLTemplateResult {
-    console.log(`renderItem - itemInfo = ${JSON.stringify(itemInfo)}`);
     return html` <flying-saucer
       .color=${itemInfo.color}
       .content=${itemInfo.nmbr}

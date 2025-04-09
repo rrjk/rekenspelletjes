@@ -10,7 +10,6 @@ import { colors } from './Colors';
 @customElement('test-app')
 export class TestApp extends LitElement {
   static get styles(): CSSResultArray {
-    console.log(`styles`);
     return [
       css`
         flying-saucer {

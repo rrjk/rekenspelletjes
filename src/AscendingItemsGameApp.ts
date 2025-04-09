@@ -55,7 +55,6 @@ export abstract class AscendingItemsGameApp<
   /** Start a new game.
    */
   startNewGame(): void {
-    console.log(`start new game called`);
     super.startNewGame();
     this.gameActive = true;
     this.startNewRound();
@@ -181,7 +180,6 @@ export abstract class AscendingItemsGameApp<
   renderGameContent(): HTMLTemplateResult {
     const itemBoxClasses = { MoveUp: this.ascending };
 
-    console.log(`renderGameContent roundInfo = ${this.roundInfo}`);
     return html`
       <div id="gameArea">
         <div id="exercizeBox">
