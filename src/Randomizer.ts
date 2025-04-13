@@ -36,3 +36,60 @@ export function shuffleArray<T>(array: T[]) {
     [array[i], array[j]] = [array[j], array[i]];
   }
 }
+
+export function* rangeWithGaps(
+  from: number,
+  to: number,
+  excludeList: number[],
+) {
+  for (let i = from; i < to; i++) {
+    if (!excludeList.includes(i)) {
+      yield i;
+    }
+  }
+}
+
+export function splitInConsecutiveRanges(orig: number[]): number[][] {
+  const ret: number[][] = [];
+  let subRange: number[] = [];
+  const origCopy = [...orig];
+  origCopy.sort((a, b) => b - a);
+
+  let previous = Number.NaN;
+
+  while (origCopy.length > 0) {
+    const current: number = <number>origCopy.pop(); // As the length > 0, we're sure we'll get an element back.
+    if (current !== previous) {
+      if (Number.isNaN(previous) || current - previous !== 1) {
+        if (subRange.length > 0) ret.push(subRange);
+        subRange = [];
+      }
+      subRange.push(current);
+      previous = current;
+    }
+  }
+  if (subRange.length > 0) ret.push(subRange);
+  return ret;
+}
+
+export function numberArrayToRangeText(orig: number[]): string {
+  const rangesAsString: string[] = [];
+  const ranges = splitInConsecutiveRanges(orig);
+
+  for (const range of ranges) {
+    if (range.length === 1) {
+      rangesAsString.push(`${range[0]}`);
+    }
+    if (range.length === 2) {
+      rangesAsString.push(`${range[0]}, ${range[1]}`);
+    }
+    if (range.length > 2) {
+      rangesAsString.push(`${range[0]} tot en met ${range[range.length - 1]}`);
+    }
+  }
+
+  let ret: string;
+  ret = rangesAsString.join(`, `);
+  ret = ret.replace(/,(?!.*,)/, ' en'); // Replace the last occurance of "," by "en "
+  return ret;
+}

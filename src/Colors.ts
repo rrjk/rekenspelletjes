@@ -25,7 +25,32 @@ export type Color =
   | 'navy'
   | 'lavender'
   | 'magenta'
-  | 'grey';
+  | 'grey'
+  | 'black'
+  | 'white';
+
+export const colors: Color[] = [
+  'apricot',
+  'beige',
+  'blue',
+  'brown',
+  'cyan',
+  'green',
+  'grey',
+  'lavender',
+  'lime',
+  'magenta',
+  'maroon',
+  'mint',
+  'navy',
+  'olive',
+  'orange',
+  'pink',
+  'purple',
+  'red',
+  'teal',
+  'yellow',
+];
 
 export type ColorInfo = {
   colorName: Color;
@@ -35,6 +60,18 @@ export type ColorInfo = {
 };
 
 export const colorArray: ColorInfo[] = [
+  {
+    colorName: 'black',
+    fontColor: 'white',
+    mainColorCode: '#000000',
+    accentColorCode: '#5E5E5E',
+  },
+  {
+    colorName: 'white',
+    fontColor: 'black',
+    mainColorCode: '#FFFFFF',
+    accentColorCode: '#ABABAB',
+  },
   {
     colorName: 'yellow',
     fontColor: 'black',
