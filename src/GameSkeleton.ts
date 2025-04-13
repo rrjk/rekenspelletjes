@@ -145,17 +145,22 @@ export abstract class GameSkeleton extends LitElement {
   get scoreForGameOverText(): HTMLTemplateResult {
     return html` <p>Je score is ${this.numberOk - this.numberNok}</p> `;
   }
+
   get resultsForGameOverText(): HTMLTemplateResult {
     return html`${this.timePlayedForGameOverText}
     ${this.numberOkForGameOverText} ${this.numberNokForGameOverText}
     ${this.scoreForGameOverText}`;
   }
 
+  get gameOverIntroductionText(): HTMLTemplateResult {
+    return html``;
+  }
+
   /** Get the text to show in the game over dialog
    *  This function may be overriden, but need not to. In the latter case a standard text will be shown.
    */
   get gameOverText(): HTMLTemplateResult {
-    return this.resultsForGameOverText;
+    return html`${this.gameOverIntroductionText} ${this.resultsForGameOverText}`;
   }
 
   /** Start a new game.

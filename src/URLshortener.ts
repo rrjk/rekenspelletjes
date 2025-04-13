@@ -1107,6 +1107,39 @@ const urls: (() => string)[] = [
   () => hexagonnenSpelLink(['square', 'root'], 20, 60),
   () => hexagonnenSpelLink(['square', 'root'], 20, 180), // qk
   // ql
+  () => multiplicationTablesGameLinkV2(['divide'], [11], 60),
+  () => multiplicationTablesGameLinkV2(['divide'], [11], 180),
+  () => multiplicationTablesGameLinkV2(['divide'], [12], 60),
+  () => multiplicationTablesGameLinkV2(['divide'], [12], 180),
+  () => multiplicationTablesGameLinkV2(['divide'], [13], 60),
+  () => multiplicationTablesGameLinkV2(['divide'], [13], 180),
+  () => multiplicationTablesGameLinkV2(['divide'], [14], 60),
+  () => multiplicationTablesGameLinkV2(['divide'], [14], 180),
+  () => multiplicationTablesGameLinkV2(['divide'], [11, 12, 13, 14], 60),
+  () => multiplicationTablesGameLinkV2(['divide'], [11, 12, 13, 14], 180),
+  () => multiplicationTablesGameLinkV2(['divide'], [15], 60),
+  () => multiplicationTablesGameLinkV2(['divide'], [15], 180),
+  () => multiplicationTablesGameLinkV2(['divide'], [16], 60),
+  () => multiplicationTablesGameLinkV2(['divide'], [16], 180),
+  () => multiplicationTablesGameLinkV2(['divide'], [17], 60), // qz
+  () => multiplicationTablesGameLinkV2(['divide'], [17], 180), // ra
+  () => multiplicationTablesGameLinkV2(['divide'], [18], 60),
+  () => multiplicationTablesGameLinkV2(['divide'], [18], 180),
+  () => multiplicationTablesGameLinkV2(['divide'], [19], 60),
+  () => multiplicationTablesGameLinkV2(['divide'], [19], 180),
+  () =>
+    multiplicationTablesGameLinkV2(
+      ['divide'],
+      [11, 12, 13, 14, 15, 16, 17, 18, 19],
+      60,
+    ),
+  () =>
+    multiplicationTablesGameLinkV2(
+      ['divide'],
+      [11, 12, 13, 14, 15, 16, 17, 18, 19],
+      180,
+    ), // rg
+  // rh
   () => multiplicationTablesGameLinkV2(['divide', 'times'], [11], 60),
   () => multiplicationTablesGameLinkV2(['divide', 'times'], [11], 180),
   () => multiplicationTablesGameLinkV2(['divide', 'times'], [12], 60),
@@ -1123,12 +1156,12 @@ const urls: (() => string)[] = [
   () => multiplicationTablesGameLinkV2(['divide', 'times'], [15], 180),
   () => multiplicationTablesGameLinkV2(['divide', 'times'], [16], 60),
   () => multiplicationTablesGameLinkV2(['divide', 'times'], [16], 180),
-  () => multiplicationTablesGameLinkV2(['divide', 'times'], [17], 60), // qz
-  () => multiplicationTablesGameLinkV2(['divide', 'times'], [17], 180), // ra
+  () => multiplicationTablesGameLinkV2(['divide', 'times'], [17], 60),
+  () => multiplicationTablesGameLinkV2(['divide', 'times'], [17], 180),
   () => multiplicationTablesGameLinkV2(['divide', 'times'], [18], 60),
   () => multiplicationTablesGameLinkV2(['divide', 'times'], [18], 180),
-  () => multiplicationTablesGameLinkV2(['divide', 'times'], [19], 60),
-  () => multiplicationTablesGameLinkV2(['divide', 'times'], [19], 180),
+  () => multiplicationTablesGameLinkV2(['divide', 'times'], [19], 60), // rz
+  () => multiplicationTablesGameLinkV2(['divide', 'times'], [19], 180), // sa
   () =>
     multiplicationTablesGameLinkV2(
       ['divide', 'times'],
@@ -1140,8 +1173,8 @@ const urls: (() => string)[] = [
       ['divide', 'times'],
       [11, 12, 13, 14, 15, 16, 17, 18, 19],
       180,
-    ), // rg
-  // rh
+    ), // sc
+  // sd
 ];
 
 const urlParams = new URLSearchParams(window.location.search);

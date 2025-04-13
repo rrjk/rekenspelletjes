@@ -3,9 +3,6 @@ import { customElement } from 'lit/decorators.js';
 
 import { css, CSSResultArray, html, HTMLTemplateResult } from 'lit';
 
-// eslint-disable-next-line import/extensions
-import { range } from 'lit/directives/range.js';
-
 import {
   AscendingItemsGameApp,
   ItemInfoInterface,
@@ -17,10 +14,13 @@ import './FlyingSaucer';
 
 import { Operator } from './MultiplicationTablesBalloonGameLinkV2';
 import {
+  numberArrayToRangeText,
   randomFromSet,
   randomFromSetAndSplice,
+  rangeWithGaps,
   shuffleArray,
 } from './Randomizer';
+
 import { GameLogger } from './GameLogger';
 
 interface ItemInfo extends ItemInfoInterface {
@@ -38,7 +38,7 @@ type ItemImage = 'flyingSaucer' | 'balloon' | 'zeppelin' | 'rocket';
 
 function operatorToSymbol(operator: Operator) {
   if (operator === 'times') return '×';
-  if (operator === 'divide') return ':';
+  if (operator === 'divide') return '∶';
   throw Error('Internal software error: unexpected operator');
 }
 
@@ -51,6 +51,9 @@ export class MultiplicationTablesBalloonGameV2 extends AscendingItemsGameApp<
   private operatorsToUse: Operator[] = [];
   private itemImage: ItemImage = 'flyingSaucer';
   private gameLogger = new GameLogger('D', '');
+
+  private lastTableUsed: number = 0;
+  private lastMultiplierUsed: number = 0;
 
   get welcomeMessage(): HTMLTemplateResult {
     return html`Klik op de ufo met het juiste antwoord`;
@@ -129,13 +132,24 @@ export class MultiplicationTablesBalloonGameV2 extends AscendingItemsGameApp<
     const itemInfo: ItemInfo[] = [];
     const possibleColors = [...colors];
 
-    const table = randomFromSet(this.tablesToUse);
+    let allowedTables: number[];
+    if (this.tablesToUse.length < 2) allowedTables = this.tablesToUse;
+    else
+      allowedTables = this.tablesToUse.filter(
+        elm => elm !== this.lastTableUsed,
+      );
+
+    const table = randomFromSet(allowedTables);
     const operator = randomFromSet(this.operatorsToUse);
 
-    const possibleMultipliers = [...range(2, 10)];
+    const possibleMultipliers = [
+      ...rangeWithGaps(1, 11, [this.lastMultiplierUsed]),
+    ];
 
     const multiplier = randomFromSetAndSplice(possibleMultipliers);
     const answer = multiplier * table;
+    this.lastMultiplierUsed = multiplier;
+    this.lastTableUsed = table;
     const colorCorrect = randomFromSetAndSplice(possibleColors);
 
     if (operator === 'times') {
@@ -195,6 +209,31 @@ export class MultiplicationTablesBalloonGameV2 extends AscendingItemsGameApp<
     return 'Tafeltjes oefenen';
   }
 
+  get gameOverIntroductionText(): HTMLTemplateResult {
+    let operatorText = ``;
+
+    if (this.operatorsToUse.length === 2) {
+      operatorText = `keer- en deelsommen`;
+    } else if (
+      this.operatorsToUse.length === 1 &&
+      this.operatorsToUse[0] === 'divide'
+    ) {
+      operatorText = `deelsommen`;
+    } else if (
+      this.operatorsToUse.length === 1 &&
+      this.operatorsToUse[0] === 'times'
+    ) {
+      operatorText = `keersommen`;
+    }
+
+    const tafelText = numberArrayToRangeText(this.tablesToUse);
+
+    const tafelNoun = this.tablesToUse.length === 1 ? 'tafel' : 'tafels';
+
+    return html`Je hebt ${operatorText} geoefend met de ${tafelNoun} van
+    ${tafelText}.`;
+  }
+
   static get styles(): CSSResultArray {
     return [
       ...super.styles,
@@ -226,7 +265,7 @@ export class MultiplicationTablesBalloonGameV2 extends AscendingItemsGameApp<
   renderItem(itemInfo: ItemInfo): HTMLTemplateResult {
     return html` <flying-saucer
       .color=${itemInfo.color}
-      .content=${itemInfo.nmbr}
+      .content=${`${itemInfo.nmbr}`}
       ?disabled=${itemInfo.disabled}
     ></flying-saucer>`;
   }

@@ -15,6 +15,8 @@ interface RowInfoType {
   shortCodes: string[];
   color: Color;
   text: string;
+  symbol1: string;
+  symbol2: string;
 }
 
 interface SectionInfoType {
@@ -24,74 +26,190 @@ interface SectionInfoType {
 
 const sections: SectionInfoType[] = [
   {
-    title:
-      'Vliegende schotel spel: delen en vermenigvuldigen met de tafels boven de 10',
+    title: 'Delen met de tafels boven de 10',
     rows: [
       {
-        description: 'Tafel van 11',
+        description: 'Delen met de tafel van 11',
         shortCodes: ['ql', 'qm'],
         color: 'red',
         text: '11',
+        symbol1: '∶',
+        symbol2: '',
       },
       {
-        description: 'Tafel van 12',
+        description: 'Delen met de tafel van 12',
         shortCodes: ['qn', 'qo'],
         color: 'orange',
         text: '12',
+        symbol1: '∶',
+        symbol2: '',
       },
       {
-        description: 'Tafel van 13',
+        description: 'Delen met de tafel van 13',
         shortCodes: ['qp', 'qq'],
         color: 'yellow',
         text: '13',
+        symbol1: '∶',
+        symbol2: '',
       },
       {
-        description: 'Tafel van 14',
+        description: 'Delen met de tafel van 14',
         shortCodes: ['qr', 'qs'],
         color: 'lime',
         text: '14',
+        symbol1: '∶',
+        symbol2: '',
       },
       {
-        description: 'Tafels van 11 tot en met 14 door elkaar',
+        description: 'Delen met de tafels van 11 tot en met 14 door elkaar',
         shortCodes: ['qt', 'qu'],
-        color: 'brown',
-        text: '11-14',
-      },
-      {
-        description: 'Tafel van 15',
-        shortCodes: ['qv', 'qw'],
         color: 'green',
-        text: '15',
+        text: '11-14',
+        symbol1: '∶',
+        symbol2: '',
       },
       {
-        description: 'Tafel van 16',
-        shortCodes: ['qx', 'qy'],
+        description: 'Delen met de tafel van 15',
+        shortCodes: ['qv', 'qw'],
         color: 'cyan',
-        text: '16',
+        text: '15',
+        symbol1: '∶',
+        symbol2: '',
       },
       {
-        description: 'Tafel van 17',
-        shortCodes: ['qz', 'ra'],
+        description: 'Delen met de tafel van 16',
+        shortCodes: ['qx', 'qy'],
         color: 'blue',
-        text: '17',
+        text: '16',
+        symbol1: '∶',
+        symbol2: '',
       },
       {
-        description: 'Tafel van 18',
-        shortCodes: ['rb', 'rc'],
+        description: 'Delen met de tafel van 17',
+        shortCodes: ['qz', 'ra'],
         color: 'purple',
-        text: '18',
+        text: '17',
+        symbol1: '∶',
+        symbol2: '',
       },
       {
-        description: 'Tafel van 19',
-        shortCodes: ['rd', 're'],
+        description: 'Delen met de tafel van 18',
+        shortCodes: ['rb', 'rc'],
         color: 'magenta',
-        text: '19',
+        text: '18',
+        symbol1: '∶',
+        symbol2: '',
       },
       {
-        description: 'Tafel van 11 tot en met 19 door elkaar',
+        description: 'Delen met de tafel van 19',
+        shortCodes: ['rd', 're'],
+        color: 'lavender',
+        text: '19',
+        symbol1: '∶',
+        symbol2: '',
+      },
+      {
+        description: 'Delen met de tafel van 11 tot en met 19 door elkaar',
         shortCodes: ['rf', 'rg'],
-        color: 'pink',
+        color: 'grey',
         text: '11-19',
+        symbol1: '∶',
+        symbol2: '',
+      },
+    ],
+  },
+  {
+    title: 'Delen en vermenigvuldigen door elkaar, met de tafels boven de 10',
+    rows: [
+      {
+        description: 'Delen en vermenigvuldigen met de tafel van 11',
+        shortCodes: ['rh', 'ri'],
+        color: 'maroon',
+        text: '11',
+        symbol1: '∶',
+        symbol2: '×',
+      },
+      {
+        description: 'Delen en vermenigvuldigen met de tafel van 12',
+        shortCodes: ['rj', 'rk'],
+        color: 'brown',
+        text: '12',
+        symbol1: '∶',
+        symbol2: '×',
+      },
+      {
+        description: 'Delen en vermenigvuldigen met de tafel van 13',
+        shortCodes: ['rl', 'rm'],
+        color: 'olive',
+        text: '13',
+        symbol1: '∶',
+        symbol2: '×',
+      },
+      {
+        description: 'Delen en vermenigvuldigen met de tafel van 14',
+        shortCodes: ['rn', 'ro'],
+        color: 'teal',
+        text: '14',
+        symbol1: '∶',
+        symbol2: '×',
+      },
+      {
+        description:
+          'Delen en vermenigvuldigen met de tafels van 11 tot en met 14 door elkaar',
+        shortCodes: ['rp', 'rq'],
+        color: 'navy',
+        text: '11-14',
+        symbol1: '∶',
+        symbol2: '×',
+      },
+      {
+        description: 'Delen en vermenigvuldigen met de tafel van 15',
+        shortCodes: ['rr', 'rs'],
+        color: 'pink',
+        text: '15',
+        symbol1: '∶',
+        symbol2: '×',
+      },
+      {
+        description: 'Delen en vermenigvuldigen met de tafel van 16',
+        shortCodes: ['rt', 'ru'],
+        color: 'apricot',
+        text: '16',
+        symbol1: '∶',
+        symbol2: '×',
+      },
+      {
+        description: 'Delen en vermenigvuldigen met de tafel van 17',
+        shortCodes: ['rv', 'rw'],
+        color: 'beige',
+        text: '17',
+        symbol1: '∶',
+        symbol2: '×',
+      },
+      {
+        description: 'Delen en vermenigvuldigen met de tafel van 18',
+        shortCodes: ['rx', 'ry'],
+        color: 'mint',
+        text: '18',
+        symbol1: '∶',
+        symbol2: '×',
+      },
+      {
+        description: 'Delen en vermenigvuldigen met de tafel van 19',
+        shortCodes: ['rz', 'sa'],
+        color: 'black',
+        text: '19',
+        symbol1: '∶',
+        symbol2: '×',
+      },
+      {
+        description:
+          'Delen en vermenigvuldigen met de tafel van 11 tot en met 19 door elkaar',
+        shortCodes: ['sb', 'sc'],
+        color: 'white',
+        text: '11-19',
+        symbol1: '∶',
+        symbol2: '×',
       },
     ],
   },
@@ -129,6 +247,8 @@ export class FlyingSaucerGameIndexApp extends LitElement {
     duration: string,
     shortCode: string,
     text: string,
+    symbol1: string,
+    symbol2: string,
     color: Color,
     description: string,
   ): HTMLTemplateResult {
@@ -141,7 +261,9 @@ export class FlyingSaucerGameIndexApp extends LitElement {
       <flying-saucer
           color=${color}
           content=${text}
-        ></gamflying-saucer>
+          symbol1=${symbol1}
+          symbol2=${symbol2}
+        ></flying-saucer>
       </icon-hourglass-button>
     </div>
     `;
@@ -151,6 +273,8 @@ export class FlyingSaucerGameIndexApp extends LitElement {
     durations: string[],
     shortCodes: string[],
     text: string,
+    symbol1: string,
+    symbol2: string,
     color: Color,
     description: string,
   ): HTMLTemplateResult {
@@ -159,6 +283,8 @@ export class FlyingSaucerGameIndexApp extends LitElement {
         durations[0],
         shortCodes[0],
         text,
+        symbol1,
+        symbol2,
         color,
         description,
       )}
@@ -166,6 +292,8 @@ export class FlyingSaucerGameIndexApp extends LitElement {
         durations[1],
         shortCodes[1],
         text,
+        symbol1,
+        symbol2,
         color,
         description,
       )}
@@ -174,29 +302,31 @@ export class FlyingSaucerGameIndexApp extends LitElement {
 
   render(): HTMLTemplateResult[] {
     const renderItems: HTMLTemplateResult[] = [
-      html`<h2>
-        Vliegende schotel spel: delen en vermenigvuldigen met de tafels boven de
-        10
-      </h2>`,
+      html`<h2>Vliegende schotel spel</h2>`,
     ];
     for (const section of sections) {
-      renderItems.push(
-        html`<div class="buttonTable">
-            ${section.rows.map(row =>
-              this.renderRow(
-                ['1min', '3min'],
-                row.shortCodes,
-                row.text,
-                row.color,
-                row.description,
-              ),
-            )}
-          </div>
-          <p>
-            <a href="index.html">Terug naar het hoofdmenu</a>
-          </p>`,
-      );
+      renderItems.push(html`
+        <h3>${section.title}</h3>
+        <div class="buttonTable">
+          ${section.rows.map(row =>
+            this.renderRow(
+              ['1min', '3min'],
+              row.shortCodes,
+              row.text,
+              row.symbol1,
+              row.symbol2,
+              row.color,
+              row.description,
+            ),
+          )}
+        </div>
+      `);
     }
+    renderItems.push(
+      html` <p>
+        <a href="index.html">Terug naar het hoofdmenu</a>
+      </p>`,
+    );
     return renderItems;
   }
 }

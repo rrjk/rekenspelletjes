@@ -4,7 +4,7 @@ import { html, css } from 'lit';
 import { state } from 'lit/decorators.js';
 
 // eslint-disable-next-line import/extensions
-import { classMap } from 'lit/directives/class-map.js';
+import { createRef, ref } from 'lit/directives/ref.js';
 
 import { create } from 'mutative';
 
@@ -28,9 +28,9 @@ export abstract class AscendingItemsGameApp<
 > extends TimeLimitedGame2 {
   @state()
   private accessor roundInfo: RoundInfo<ExerciseInfo, ItemInfo> | undefined;
-  @state()
-  private accessor ascending = false;
   private gameActive = false;
+
+  private itemBox = createRef();
 
   /** Render one item
    * Size is set by ascending item game app
@@ -64,26 +64,48 @@ export abstract class AscendingItemsGameApp<
    */
   startNewRound(): void {
     this.roundInfo = this.getRoundInfo(4);
-    this.ascending = true;
     this.restartAscension();
   }
 
   /* Restart the balloon ascension from the bottom.
    */
-  async restartAscension(): Promise<void> {
-    await this.reset();
-    this.ascending = true;
+  restartAscension(): void {
+    //    await this.reset();
+    //    this.ascending = true;
+    if (!this.itemBox.value) {
+      throw new Error(
+        `Ascension cannot be restarted when the itemBox has not yet been rendered`,
+      );
+    }
+    if (this.itemBox.value.getAnimations().length === 0) {
+      this.itemBox.value.animate(
+        [
+          { transform: 'translate(0px, -0px)' },
+          { transform: 'translate(0px, -100cqh)' },
+        ],
+        {
+          duration: 10000,
+          //          delay: 100 /* Needed to ensure iOS safari has sufficient time to process restarts of the animation */,
+          fill: 'forwards',
+        },
+      );
+    }
+    for (const a of this.itemBox.value.getAnimations()) {
+      a.play();
+      a.finished
+        .then(() => {
+          this.ascensionComplete();
+        })
+        .catch(() => {}); // When the animation is cancelled, we don't need to do anything
+    }
   }
 
-  /** Reset the balloons to the bottom and stop movement.
-   * Wait until the promise resolves before starting ascension again as
-   * otherwise the reset might be missed by the browser.
-   */
-  async reset(): Promise<void> {
-    this.ascending = false;
-    await this.performUpdate();
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const dummy = this.offsetWidth; // This is a dummy command to force a reflow such that the animation is reset.
+  cancelAscension(): void {
+    if (this.itemBox.value !== undefined) {
+      for (const a of this.itemBox.value.getAnimations()) {
+        a.cancel();
+      }
+    }
   }
 
   private ascensionComplete(): void {
@@ -103,6 +125,7 @@ export abstract class AscendingItemsGameApp<
     if (this.roundInfo) {
       if (this.roundInfo.itemInfo[itemIndex].correct) {
         this.numberOk += 1;
+        this.cancelAscension();
         this.startNewRound();
       } else if (!this.roundInfo.itemInfo[itemIndex].disabled) {
         this.numberNok += 1;
@@ -155,22 +178,6 @@ export abstract class AscendingItemsGameApp<
           width: calc(11vmin);
           height: calc(11vmin);
         }
-
-        .MoveUp {
-          animation-name: MoveUp;
-          animation-duration: 10s;
-          animation-delay: 0.05s; /* Needed to ensure iOS safari has sufficient time to process restarts of the animation */
-          animation-timing-function: linear;
-          animation-fill-mode: forwards;
-        }
-        @keyframes MoveUp {
-          from {
-            transform: translate(0px, -0px);
-          }
-          to {
-            transform: translate(0px, -100cqh);
-          }
-        }
       `,
     ];
   }
@@ -178,8 +185,6 @@ export abstract class AscendingItemsGameApp<
 
   /** Render the game content */
   renderGameContent(): HTMLTemplateResult {
-    const itemBoxClasses = { MoveUp: this.ascending };
-
     return html`
       <div id="gameArea">
         <div id="exercizeBox">
@@ -189,11 +194,7 @@ export abstract class AscendingItemsGameApp<
               : html``}
           </div>
         </div>
-        <div
-          id="itemBox"
-          class=${classMap(itemBoxClasses)}
-          @animationend=${() => this.ascensionComplete()}
-        >
+        <div id="itemBox" ${ref(this.itemBox)}>
           ${this.roundInfo?.itemInfo.map(
             (itm, idx) =>
               html`<div
