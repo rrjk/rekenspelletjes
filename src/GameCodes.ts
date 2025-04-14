@@ -25,7 +25,10 @@ export const gameCodes: GameInfoType[] = [
   { gameCode: 'J', name: 'Eierdoos tellen' },
   { gameCode: 'K', name: 'Zeppelinspel:Keersommen boven de 10' },
   { gameCode: 'L', name: 'Klokkenspel' },
-  { gameCode: 'M', name: 'Sommen in een cirkel' },
+  {
+    gameCode: 'M',
+    name: 'Vliegende schotel spel: Keer- en deelsommen boven de 10',
+  },
   {
     gameCode: 'N',
     name: 'Verliefde harten: Combineer door te slepen en los de som op',
