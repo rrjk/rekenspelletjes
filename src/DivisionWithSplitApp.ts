@@ -17,8 +17,12 @@ import './DigitKeyboard';
 import { randomFromSet } from './Randomizer';
 
 import { splitInDigits } from './NumberHelperFunctions';
-import type { FillInBoxes } from './DivideWithSplitWidget';
-import './DivideWithSplitWidget';
+import {
+  fillInFields,
+  FillInFields,
+  initFillInInfo,
+  initFixedNumberInfo,
+} from './DivideWithSplitWidget';
 
 const allEnabledDigits = [
   false,
@@ -34,46 +38,47 @@ const allEnabledDigits = [
 ];
 
 type NeededDigits = {
-  [key in FillInBoxes]: number[];
+  [key in FillInFields]: number[];
 };
+function initEmptyNeededDigits(): NeededDigits {
+  return Object.fromEntries(
+    fillInFields.map(key => [key, [] as number[]]),
+  ) as NeededDigits;
+}
 
 @customElement('division-with-split-app')
 export class DivisionWithSplitApp extends TimeLimitedGame2 {
   @state()
-  accessor dividend = 126; // Number to divide
+  accessor fillInNumbers = initFillInInfo();
   @state()
-  accessor divisor = 6;
-  @state()
-  accessor answer = 21;
-  @state()
-  accessor splits = [120, 6];
-  @state()
-  accessor subAnswers = [20, 1];
+  accessor fixedNumbers = initFixedNumberInfo();
+
   @state()
   accessor activeDigit = 2;
   @state()
-  accessor activeFillIn: FillInBoxes = 'split0';
+  accessor activeFillIn: FillInFields = 'split0';
   @state()
-  accessor neededDigits: NeededDigits = {
-    split0: [],
-    split1: [],
-    subAnswer0: [],
-    subAnswer1: [],
-    answer: [],
-  };
+  accessor neededDigits = initEmptyNeededDigits();
   @state()
   accessor disabledDigits = allEnabledDigits;
+
+  @state()
+  accessor exerciseVisible = false;
+
+  @state()
+  accessor keyBoardEnabled = false;
 
   private gameLogger = new GameLogger('Z', 'a');
   private eligibleDivisors: number[] = [];
   private eligibleAnswers: number[] = [];
 
-  private useSubAnswers = true;
+  private showSubAnswers = true;
+  private showHelp = true;
 
   constructor() {
     super();
     this.eligibleDivisors = [...range(2, 9)];
-    this.eligibleAnswers = [...range(11, 50)];
+    this.eligibleAnswers = [...range(11, 99)];
   }
 
   /** Start a new game.
@@ -85,7 +90,10 @@ export class DivisionWithSplitApp extends TimeLimitedGame2 {
 
   /** Get the text to show in the game over dialog */
   get welcomeMessage(): HTMLTemplateResult {
-    return html`<p>Splits het eerste getal eerst en maak dan de som.</p>`;
+    return html`<p>
+      Splits het eerste getal zodat je er de deler keer een geheel aantal
+      tientallen uit haalt en maak dan de som.
+    </p>`;
   }
 
   /** Get the title for the welcome dialog. */
@@ -94,6 +102,8 @@ export class DivisionWithSplitApp extends TimeLimitedGame2 {
   }
 
   executeGameOverActions(): void {
+    this.exerciseVisible = false;
+    this.keyBoardEnabled = false;
     this.gameLogger.logGameOver();
   }
 
@@ -104,6 +114,7 @@ export class DivisionWithSplitApp extends TimeLimitedGame2 {
         .gameContent {
           display: grid;
           grid-template-rows: 0 repeat(2, calc(97% / 2)) 0;
+          grid-template-columns: 100%;
           row-gap: 1%;
         }
       `,
@@ -111,30 +122,34 @@ export class DivisionWithSplitApp extends TimeLimitedGame2 {
   }
 
   newRound() {
-    this.answer = randomFromSet(this.eligibleAnswers);
-    this.divisor = randomFromSet(this.eligibleDivisors);
+    const pickedAnswer = randomFromSet(this.eligibleAnswers);
+    const pickedDivisor = randomFromSet(this.eligibleDivisors);
+    const pickedDividend = pickedAnswer * pickedDivisor;
 
-    this.dividend = this.answer * this.divisor;
+    this.fixedNumbers = create(this.fixedNumbers, draft => {
+      draft.divisor = pickedDivisor;
+      draft.dividend = pickedDividend;
+    });
 
-    this.subAnswers = [Math.floor(this.answer / 10) * 10, this.answer % 10];
-    this.splits = [
-      this.subAnswers[0] * this.divisor,
-      this.dividend - this.subAnswers[0] * this.divisor,
-    ];
+    this.fillInNumbers = create(this.fillInNumbers, draft => {
+      draft.answer = pickedAnswer;
+      draft.subAnswer0 = Math.floor(pickedAnswer / 10) * 10;
+      draft.subAnswer1 = pickedAnswer % 10;
+      draft.split0 = draft.subAnswer0 * pickedDivisor;
+      draft.split1 = pickedDividend - draft.subAnswer0 * pickedDivisor;
+    });
+
+    this.neededDigits = create(this.neededDigits, draft => {
+      for (const key of fillInFields) {
+        draft[key] = splitInDigits(this.fillInNumbers[key]);
+      }
+    });
 
     this.disabledDigits = allEnabledDigits;
-    this.neededDigits = {
-      split0: splitInDigits(this.splits[0]),
-      split1: splitInDigits(this.splits[1]),
-      subAnswer0: splitInDigits(this.subAnswers[0]),
-      subAnswer1: splitInDigits(this.subAnswers[1]),
-      answer: splitInDigits(this.answer),
-    };
-
-    console.log(`newRound needeDigits = ${JSON.stringify(this.neededDigits)}`);
-    console.log(`newRound subAnswers = ${this.subAnswers}`);
     this.activeDigit = 0;
     this.activeFillIn = 'split0';
+    this.keyBoardEnabled = true;
+    this.exerciseVisible = true;
   }
 
   handleWrongDigit(digit: Digit) {
@@ -160,24 +175,19 @@ export class DivisionWithSplitApp extends TimeLimitedGame2 {
   }
 
   advanceActiveFillIn() {
-    switch (this.activeFillIn) {
-      case 'split0':
-        this.activeFillIn = 'split1';
-        break;
-      case 'split1':
-        if (this.useSubAnswers) this.activeFillIn = 'subAnswer0';
-        else this.activeFillIn = 'answer';
-        break;
-      case 'subAnswer0':
-        this.activeFillIn = 'subAnswer1';
-        break;
-      case 'subAnswer1':
-        this.activeFillIn = 'answer';
-        break;
-      default:
-        throw new Error(
-          `Illegal active fill in (${this.activeFillIn}) or no next fill in possible`,
-        );
+    if (this.activeFillIn === 'answer')
+      throw new Error(`No next fill in possible after ${this.activeFillIn}`);
+
+    if (!this.showSubAnswers && this.activeFillIn === 'split1')
+      this.activeFillIn = 'answer';
+    else {
+      const indexActiveFillIn = fillInFields.findIndex(
+        elm => elm === this.activeFillIn,
+      );
+      if (indexActiveFillIn === -1)
+        throw new Error(`Illegal active fill in (${this.activeFillIn})`);
+
+      this.activeFillIn = fillInFields[indexActiveFillIn + 1];
     }
   }
 
@@ -190,22 +200,31 @@ export class DivisionWithSplitApp extends TimeLimitedGame2 {
   renderGameContent(): HTMLTemplateResult {
     // DummyRows are added to get a gap on the top and the bottom.
 
-    return html` <div class="dummyRow"></div>
-      <divide-with-split-widget
-        .dividend=${this.dividend}
-        .divisor=${this.divisor}
-        .splits=${this.splits}
-        .subAnswers=${this.subAnswers}
-        .answer=${this.answer}
-        .activeFillIn=${this.activeFillIn}
-        .activeDigit=${this.activeDigit}
-      ></divide-with-split-widget>
+    const divideWithSplitWidget = this.exerciseVisible
+      ? html`
+          <divide-with-split-widget
+            .fixedNumbers=${this.fixedNumbers}
+            .fillInNumbers=${this.fillInNumbers}
+            .activeFillIn=${this.activeFillIn}
+            .activeDigit=${this.activeDigit}
+            .showSubAnswers=${this.showSubAnswers}
+            .showHelp=${this.showHelp}
+          ></divide-with-split-widget>
+        `
+      : html`<div></div>`;
+
+    const keyBoard = html`
       <digit-keyboard
         .disabledDigits=${this.disabledDigits}
+        .disabled=${!this.keyBoardEnabled}
         @digit-entered="${(evt: CustomEvent<Digit>) =>
           this.handleDigit(evt.detail)}"
         >></digit-keyboard
       >
+    `;
+
+    return html` <div class="dummyRow"></div>
+      ${divideWithSplitWidget} ${keyBoard}
       <div class="dummyRow"></div>`;
   }
 }
