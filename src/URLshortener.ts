@@ -20,6 +20,7 @@ import { welkeHandHeeftMeerStippenLink } from './WhichIsBiggerAppLink';
 import { breukenPaartjesLink } from './FractionsPairMatchingAppLink';
 import { hexagonnenSpelLink } from './SquaresBalloonGameLink';
 import { multiplicationTablesGameLinkV2 } from './MultiplicationTablesBalloonGameLinkV2';
+import { divisionWithSplitAppLink } from './DivisionWithSplitAppLink';
 
 /** Function to determine the number belonging to a string of lower case letters
  * a equals 0, b equals 1 etc
@@ -1175,6 +1176,37 @@ const urls: (() => string)[] = [
       180,
     ), // sc
   // sd
+  () => divisionWithSplitAppLink([10], false, false, 180),
+  () => divisionWithSplitAppLink([10], false, false, 300),
+  () =>
+    divisionWithSplitAppLink(
+      [10, 20, 30, 40, 50, 60, 70, 80, 90],
+      false,
+      false,
+      180,
+    ),
+  () =>
+    divisionWithSplitAppLink(
+      [10, 20, 30, 40, 50, 60, 70, 80, 90],
+      false,
+      false,
+      300,
+    ),
+  () =>
+    divisionWithSplitAppLink(
+      [10, 20, 30, 40, 50, 60, 70, 80, 90],
+      true,
+      true,
+      180,
+    ),
+  () =>
+    divisionWithSplitAppLink(
+      [10, 20, 30, 40, 50, 60, 70, 80, 90],
+      true,
+      true,
+      300,
+    ), // si
+  // sj
 ];
 
 const urlParams = new URLSearchParams(window.location.search);

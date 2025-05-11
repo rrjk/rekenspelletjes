@@ -4,6 +4,34 @@ export function numberDigitsInNumber(nmbr: number): number {
   return Math.ceil(Math.log10(Math.abs(nmbr) + 1));
 }
 
+/** Split a number in digits */
+export function splitInDigits(nmbr: number): number[] {
+  const ret: number[] = [];
+  const nmbrDigits = numberDigitsInNumber(nmbr);
+  let rest = nmbr;
+  while (rest !== 0) {
+    const digit = rest % 10;
+    rest = (rest - digit) / 10;
+    ret.push(digit);
+  }
+  while (ret.length < nmbrDigits) ret.push(0);
+  ret.reverse();
+  return ret;
+}
+
+/** Actibe digits to number */
+export function numberWithActiveDigits(
+  nmbr: number,
+  activeDigits: number,
+): string {
+  if (activeDigits === 0) return '';
+
+  const maxNmbrDigits = numberDigitsInNumber(nmbr);
+  if (activeDigits >= maxNmbrDigits) return `${nmbr}`;
+  return `${Math.floor(nmbr / 10 ** (maxNmbrDigits - activeDigits))}`;
+}
+
+/** Determine the next required digit, given that a partial answer is already provided */
 export function determineRequiredDigit(
   finalNumber: number,
   partialNumber: number | undefined,

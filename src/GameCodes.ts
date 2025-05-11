@@ -50,6 +50,7 @@ export const gameCodes: GameInfoType[] = [
   { gameCode: 'W', name: 'Tiental Afsplitsen' },
   { gameCode: 'X', name: 'Getallenlijn boogjes spel' },
   { gameCode: 'Y', name: 'Hexagonnen (kwadraten en wortels) spel' },
+  { gameCode: 'Z', name: 'Deelsommen met splitsen' },
 ];
 
 export function getGameDescription(gameCode: string): string {
