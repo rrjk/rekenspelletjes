@@ -243,12 +243,22 @@ function renderSplitLine(
       />`;
 }
 
+function convertJSON<T>(value: string | null): T {
+  console.log(`convertFixedNumbers called`);
+  console.log(value);
+  if (value !== null) {
+    const parsedValue = JSON.parse(value);
+    return parsedValue;
+  }
+  throw new Error(`illegally formatted attribute provided`);
+}
+
 @customElement('divide-with-split-widget')
 export class DivideWihSplitWidget extends LitElement {
-  @property()
+  @property({ converter: convertJSON<FixedNumberInfo> })
   accessor fixedNumbers = initFixedNumberInfo();
 
-  @property()
+  @property({ converter: convertJSON<FillInInfo> })
   accessor fillInNumbers = initFillInInfo();
 
   @property({ type: String })
@@ -296,7 +306,7 @@ export class DivideWihSplitWidget extends LitElement {
       }
       firstLineWidth -= spaceWidth;
 
-      let currentPos = (1000 - firstLineWidth) / 2;
+      let currentPos = (825 - firstLineWidth) / 2 + 50;
 
       for (const field of this.firstLineFields) {
         draft[field].position.x = currentPos;
@@ -534,7 +544,7 @@ export class DivideWihSplitWidget extends LitElement {
         );
     }
 
-    return html` <svg viewbox="0 0 1000 350" style="height: 100%; ">
+    return html` <svg viewbox="0 0 825 350" style="height: 100%; ">
       ${elements}
     </svg>`;
   }

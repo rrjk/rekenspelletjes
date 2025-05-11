@@ -67,6 +67,7 @@
     <script type="module" src="../src/NumberLineV2.ts"></script>
     <script type="module" src="../src/FractionElement.ts"></script>
     <script type="module" src="../src/FlyingSaucer.ts"></script>
+    <script type="module" src="../src/DivideWithSplitWidget.ts"></script>
 
     <h1>Rekenspelletjes</h1>
     <div class="buttonTable">
@@ -328,6 +329,19 @@
             representation="percentage"
           ></fraction-element>
         </div>
+      </icon-label-button>
+      <icon-label-button
+        title="Deelsommen met splitsen"
+        href="indexDelenMetSplitsenSpel.html"
+      >
+        <divide-with-split-widget
+          fixedNumbers='{"dividend": 111, "divisor": 3}'
+          fillInNumbers='{"split0": 90, "split1": 21, "subAnswer0": 30, "subAnswer1": 7, "answer": 37}'
+          showSubAnswers
+          showHelp
+          activeFillIn="answer"
+          style="height: 100px"
+        ></divide-with-split-widget>
       </icon-label-button>
       <icon-label-button
         title="Hexagonspel: Oefenen met kwadraten en wortels"
