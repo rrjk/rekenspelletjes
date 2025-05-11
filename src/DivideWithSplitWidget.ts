@@ -130,8 +130,8 @@ function renderSplitHelperField(
 ): SVGTemplateResult {
   if (field === 'helpSplit0')
     return svg`
-      <text class="explanationText" x="${pos.x}" y="${pos.y + 30}">Geheel aantal </text> 
-      <text class="explanationText" x="${pos.x}" y="${pos.y + 60}">tientallen keer ${divisor}</text>`;
+      <text class="explanationText" x="${pos.x}" y="${pos.y + 30}">Tiental</text> 
+      <text class="explanationText" x="${pos.x}" y="${pos.y + 60}">keer ${divisor} is</text>`;
   if (field === 'helpSplit1')
     return svg`
       <text class="explanationText" x="${pos.x}" y="${pos.y + 30}">Rest</text>`;

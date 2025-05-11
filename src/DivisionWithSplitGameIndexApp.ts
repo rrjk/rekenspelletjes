@@ -170,7 +170,7 @@ export class DivisionWithSplitGameIndexApp extends LitElement {
 
   render(): HTMLTemplateResult[] {
     const renderItems: HTMLTemplateResult[] = [
-      html`<h2>Delen met spitsen</h2>`,
+      html`<h2>Delen met splitsen</h2>`,
     ];
     for (const section of sections) {
       renderItems.push(
