@@ -375,10 +375,10 @@ export class DivideWihSplitWidget extends LitElement {
         else draft[key].active = false;
       }
       if (this.activeFillIn !== 'split0')
-        draft.helpSubAnswer0.visible = this.showHelp;
+        draft.helpSubAnswer0.visible = this.showHelp && this.showSubAnswers;
       else draft.helpSubAnswer0.visible = false;
       if (this.activeFillIn !== 'split0' && this.activeFillIn !== 'split1')
-        draft.helpSubAnswer1.visible = this.showHelp;
+        draft.helpSubAnswer1.visible = this.showHelp && this.showSubAnswers;
       else draft.helpSubAnswer1.visible = false;
     });
   }

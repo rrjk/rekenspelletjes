@@ -77,8 +77,41 @@ export class DivisionWithSplitApp extends TimeLimitedGame2 {
 
   constructor() {
     super();
+    this.parseUrl();
     this.eligibleDivisors = [...range(2, 9)];
-    this.eligibleAnswers = [...range(11, 99)];
+  }
+
+  private parseUrl(): void {
+    const urlParams = new URLSearchParams(window.location.search);
+
+    // Get allowed decade
+    const decadesToUse: number[] = [];
+    const decadesFromUrl = urlParams.getAll('decade');
+
+    for (const decadeAsString of decadesFromUrl) {
+      const decade = parseInt(decadeAsString, 10);
+      if (
+        !Number.isNaN(decade) &&
+        decade % 10 === 0 &&
+        decade >= 10 &&
+        decade < 100 &&
+        !decadesToUse.find(value => value === decade)
+      )
+        decadesToUse.push(decade);
+    }
+
+    if (decadesToUse.length === 0) decadesToUse.push(10);
+    for (const decade of decadesToUse) {
+      for (let i = 1; i < 10; i++) this.eligibleAnswers.push(decade + i);
+    }
+
+    // Determine whether subanswers should be shown
+    if (urlParams.has('hideSubAnswers')) this.showSubAnswers = false;
+    else this.showSubAnswers = true;
+
+    // Determine whether help texts should be shown
+    if (urlParams.has('hideHelpText')) this.showHelp = false;
+    else this.showHelp = true;
   }
 
   /** Start a new game.
