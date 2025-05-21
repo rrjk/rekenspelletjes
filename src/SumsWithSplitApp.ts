@@ -376,13 +376,15 @@ export class SumsWithDoubleSplitApp extends TimeLimitedGame2 {
           --preSplit1Slashes1DigitWidth: calc(
             (2.5 * var(--singleDigitWidth) + var(--operatorWidth)) - var(
                 --slashWidth
-              ) - (0.5 * var(--spaceBetweenSlashesWidth))
+              ) -
+              (0.5 * var(--spaceBetweenSlashesWidth))
           );
 
           --preSplit1DigitEntry1DigitWidthBackup: calc(
             (2.5 * var(--singleDigitWidth) + var(--operatorWidth)) - var(
                 --slashWidth
-              ) - (0.5 * var(--spaceBetweenSlashesWidth)) - var(--fillInWidth)
+              ) -
+              (0.5 * var(--spaceBetweenSlashesWidth)) - var(--fillInWidth)
           );
 
           --preSplit1DigitEntry1DigitWidth: calc(
@@ -393,7 +395,8 @@ export class SumsWithDoubleSplitApp extends TimeLimitedGame2 {
           --preSplit1Slashes2DigitWidth: calc(
             (3 * var(--singleDigitWidth) + var(--operatorWidth)) - var(
                 --slashWidth
-              ) - (0.5 * var(--spaceBetweenSlashesWidth))
+              ) -
+              (0.5 * var(--spaceBetweenSlashesWidth))
           );
 
           --preSplit1DigitEntry2DigitWidth: calc(
@@ -402,9 +405,9 @@ export class SumsWithDoubleSplitApp extends TimeLimitedGame2 {
           );
 
           --preSplit2SlashesWidth: calc(
-            (2.5 * var(--fillInWidth)) + (3 * var(--fillInMargin)) - var(
-                --slashWidth
-              ) - (0.5 * var(--spaceBetweenSlashesWidth)) +
+            (2.5 * var(--fillInWidth)) +
+              (3 * var(--fillInMargin)) - var(--slashWidth) -
+              (0.5 * var(--spaceBetweenSlashesWidth)) +
               var(--preSplit1DigitEntry2DigitWidth)
           );
 
