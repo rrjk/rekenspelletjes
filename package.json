@@ -71,7 +71,7 @@
     "rollup-plugin-copy": "^3.5.0",
     "rollup-plugin-summary": "^3.0.1",
     "ts-node": "^10.9.2",
-    "typescript": "~5.5.0"
+    "typescript": "^5.8.3"
   },
   "dependencies": {
     "@lit-labs/observers": "^2.0.4",
