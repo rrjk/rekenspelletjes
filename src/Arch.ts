@@ -10,7 +10,6 @@ import type {
   SVGTemplateResult,
 } from 'lit';
 
-// eslint-disable-next-line import/extensions
 import { customElement, property } from 'lit/decorators.js';
 
 import { Bezier } from 'bezier-js';

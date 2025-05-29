@@ -1,6 +1,5 @@
 import { html, css, LitElement, nothing } from 'lit';
 
-// eslint-disable-next-line import/extensions
 import { customElement } from 'lit/decorators.js';
 
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';

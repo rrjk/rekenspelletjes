@@ -1,5 +1,4 @@
 import { LitElement, html } from 'lit';
-// eslint-disable-next-line import/extensions
 import { state, property } from 'lit/decorators.js';
 
 import './NumberLineHangingPhotos';

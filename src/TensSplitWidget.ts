@@ -4,7 +4,6 @@ import type {
   HTMLTemplateResult,
   SVGTemplateResult,
 } from 'lit';
-// eslint-disable-next-line import/extensions
 import { customElement, property } from 'lit/decorators.js';
 
 @customElement('tens-split-widget')

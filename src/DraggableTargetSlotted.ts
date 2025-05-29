@@ -1,5 +1,4 @@
 import { CSSResultArray, css } from 'lit';
-// eslint-disable-next-line import/extensions
 import { customElement } from 'lit/decorators.js';
 import {
   DraggableElement,

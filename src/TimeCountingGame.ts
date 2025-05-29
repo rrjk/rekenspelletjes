@@ -1,6 +1,5 @@
 import { html, css } from 'lit';
 
-// eslint-disable-next-line import/extensions
 import type { HTMLTemplateResult, CSSResultArray } from 'lit';
 
 import { TimerBar } from './TimerBar';

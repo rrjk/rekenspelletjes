@@ -1,6 +1,5 @@
 import { LitElement, html, css, SVGTemplateResult, svg } from 'lit';
 import type { HTMLTemplateResult, CSSResultGroup } from 'lit';
-// eslint-disable-next-line import/extensions
 import { customElement, property, state } from 'lit/decorators.js';
 import { FramedPhotoSVG, PhotoId } from './FramedPhotoSVG';
 import { getColorInfo, Color } from './Colors';

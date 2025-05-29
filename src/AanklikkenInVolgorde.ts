@@ -1,4 +1,3 @@
-/* eslint-disable class-methods-use-this */
 /* eslint no-plusplus: ["error", { "allowForLoopAfterthoughts": true }] */
 
 import { html } from 'lit';
@@ -181,7 +180,6 @@ window.addEventListener('resize', () => {
 */
 
 document.addEventListener('DOMContentLoaded', () => {
-  // eslint-disable-next-line no-unused-vars
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const app = new AanklikkenInVolgordeApp();
 });

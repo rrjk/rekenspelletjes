@@ -1,7 +1,5 @@
-/* eslint-disable class-methods-use-this */
 import { LitElement, html } from 'lit';
 import type { TemplateResult } from 'lit';
-// eslint-disable-next-line import/extensions
 import { customElement, property, state } from 'lit/decorators.js';
 import { FramedPhotoSVG } from './FramedPhotoSVG';
 import type { PhotoId } from './FramedPhotoSVG';

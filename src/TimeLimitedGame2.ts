@@ -1,7 +1,6 @@
 import { html, css } from 'lit';
 import type { HTMLTemplateResult, CSSResultArray } from 'lit';
 
-// eslint-disable-next-line import/extensions
 import { state } from 'lit/decorators.js';
 
 import { ProgressBar } from './ProgressBar';

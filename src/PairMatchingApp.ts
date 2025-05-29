@@ -1,11 +1,8 @@
 import { html, css } from 'lit';
 
-// eslint-disable-next-line import/extensions
 import { state } from 'lit/decorators.js';
 
-// eslint-disable-next-line import/extensions
 import { range } from 'lit/directives/range.js';
-// eslint-disable-next-line import/extensions
 import { classMap } from 'lit/directives/class-map.js';
 
 import { castDraft, create } from 'mutative';

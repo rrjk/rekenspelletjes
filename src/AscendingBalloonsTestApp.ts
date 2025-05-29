@@ -1,6 +1,4 @@
-/* eslint-disable class-methods-use-this */
 import { LitElement, html } from 'lit';
-// eslint-disable-next-line import/extensions
 import { customElement, state } from 'lit/decorators.js';
 import type { HTMLTemplateResult } from 'lit';
 

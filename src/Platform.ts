@@ -1,6 +1,5 @@
 /* eslint-disable class-methods-use-this */
 import { LitElement, html, css } from 'lit';
-// eslint-disable-next-line import/extensions
 import { property } from 'lit/decorators.js';
 
 import type { TemplateResult, CSSResultGroup } from 'lit';

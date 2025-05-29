@@ -1,8 +1,6 @@
 import { html, css, nothing } from 'lit';
 
-// eslint-disable-next-line import/extensions
 import { customElement, property, state } from 'lit/decorators.js';
-// eslint-disable-next-line import/extensions
 import { ref } from 'lit/directives/ref.js';
 
 import { create } from 'mutative';

@@ -2,7 +2,6 @@ import { html, css } from 'lit';
 
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
-// eslint-disable-next-line import/extensions
 import { customElement } from 'lit/decorators.js';
 
 import { FractionAndRepresentation, FractionRepresentation } from './Fraction';

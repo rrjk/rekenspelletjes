@@ -8,10 +8,8 @@ import {
   unsafeCSS,
 } from 'lit';
 
-// eslint-disable-next-line import/extensions
 import { customElement, property } from 'lit/decorators.js';
 
-// eslint-disable-next-line import/extensions
 import { classMap } from 'lit/directives/class-map.js';
 
 import { Color, getColorInfo, stringToColor } from './Colors';

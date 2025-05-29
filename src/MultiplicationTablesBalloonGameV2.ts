@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/extensions
 import { customElement } from 'lit/decorators.js';
 
 import { css, CSSResultArray, html, HTMLTemplateResult } from 'lit';

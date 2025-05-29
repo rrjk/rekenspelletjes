@@ -1,10 +1,7 @@
 import { html, css, unsafeCSS } from 'lit';
 
-// eslint-disable-next-line import/extensions
 import { customElement, state } from 'lit/decorators.js';
-// eslint-disable-next-line import/extensions
 import { ref } from 'lit/directives/ref.js';
-// eslint-disable-next-line import/extensions
 import { classMap } from 'lit/directives/class-map.js';
 
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';

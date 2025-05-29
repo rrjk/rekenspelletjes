@@ -1,5 +1,4 @@
 import { LitElement, html, css } from 'lit';
-// eslint-disable-next-line import/extensions
 import { customElement, state, property } from 'lit/decorators.js';
 import type { CSSResultGroup, HTMLTemplateResult, PropertyValues } from 'lit';
 import { darken, lighten } from 'color2k';

@@ -11,7 +11,6 @@ import type {
   PropertyValues,
 } from 'lit';
 
-// eslint-disable-next-line import/extensions
 import { customElement, property, state } from 'lit/decorators.js';
 
 import { Bezier } from 'bezier-js';

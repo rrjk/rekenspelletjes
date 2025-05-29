@@ -1,4 +1,3 @@
-/* eslint-disable class-methods-use-this */
 import { svg } from 'lit';
 import type { SVGTemplateResult } from 'lit';
 

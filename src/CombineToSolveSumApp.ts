@@ -1,7 +1,5 @@
 import { html } from 'lit';
-// eslint-disable-next-line import/extensions
 import { customElement, state } from 'lit/decorators.js';
-// eslint-disable-next-line import/extensions
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
 import { TimeCountingGame } from './TimeCountingGame';

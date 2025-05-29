@@ -1,9 +1,7 @@
-/* eslint-disable class-methods-use-this */
 /* eslint no-plusplus: ["error", { "allowForLoopAfterthoughts": true }] */
 
 import { LitElement, html, css } from 'lit';
 
-// eslint-disable-next-line import/extensions
 import { property } from 'lit/decorators.js';
 
 import type { CSSResultGroup, HTMLTemplateResult } from 'lit';

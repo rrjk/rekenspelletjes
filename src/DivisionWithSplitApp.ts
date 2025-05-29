@@ -1,10 +1,8 @@
 import { html, css } from 'lit';
 
-// eslint-disable-next-line import/extensions
 import { customElement, state } from 'lit/decorators.js';
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
-// eslint-disable-next-line import/extensions
 import { range } from 'lit/directives/range.js';
 
 import { create } from 'mutative';
