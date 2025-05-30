@@ -57,7 +57,8 @@ export abstract class TimeCountingGame extends GameSkeleton {
    * Is empty for the TimeCountingGame, should be overridden in children.
    */
   renderGameContent(): HTMLTemplateResult {
-    return html``;
+    return html`Placeholder for gamecontent - the be filled by descendents of
+    TimeCountingGame`;
   }
 
   /** Render the actual game within the gameskeleton */

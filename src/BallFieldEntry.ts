@@ -1,4 +1,4 @@
-import { LitElement, html, css, unsafeCSS } from 'lit';
+import { LitElement, html, css, unsafeCSS, nothing } from 'lit';
 import type { HTMLTemplateResult, CSSResultGroup } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import type { ResizeObserverClientInterface } from './ResizeObserver';
@@ -293,10 +293,10 @@ export class BallFieldEntry
 
     for (let i = 0; i < this.randomizedBallInfoList.length; i++) {
       const ballInfo = this.randomizedBallInfoList[i];
-      let ballButton = html``;
+      let ballButton: HTMLTemplateResult | typeof nothing = nothing;
       const fadeOutClass = this.ballVisible(ballInfo.label) ? '' : 'fadeOut';
       ballButton = this.disabled
-        ? html``
+        ? nothing
         : html`
             <button
               ?disabled=${this.ballDisabled(ballInfo.label)}

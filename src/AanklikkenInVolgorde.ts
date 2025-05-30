@@ -1,7 +1,6 @@
 /* eslint no-plusplus: ["error", { "allowForLoopAfterthoughts": true }] */
 
 import { html } from 'lit';
-import type { HTMLTemplateResult } from 'lit';
 
 import './BallenVeldInvoer';
 import './GameOverDialog';
@@ -26,7 +25,7 @@ class AanklikkenInVolgordeApp {
   gameOverDialog: GameOverDialog;
   messageDialog: MessageDialog;
   ballToFindIndex: number;
-  startGameText: HTMLTemplateResult;
+  startGameText: string;
 
   constructor() {
     this.updateViewPortHeight();
@@ -36,7 +35,7 @@ class AanklikkenInVolgordeApp {
     });
 
     this.labelsInOrder = [];
-    this.startGameText = html``;
+    this.startGameText = ``;
     this.scoreBox = <TimedScoreBox>document.getElementById('scoreBox');
 
     this.ballFieldEntry = <BallFieldEntry>(
@@ -68,9 +67,11 @@ class AanklikkenInVolgordeApp {
     await this.messageDialog.updateComplete;
 
     this.scoreBox.pause();
-    this.messageDialog.show('Ballen knallen', this.startGameText).then(() => {
-      this.scoreBox.resetScore();
-    });
+    this.messageDialog
+      .show('Ballen knallen', html`this.startGameText`)
+      .then(() => {
+        this.scoreBox.resetScore();
+      });
   }
 
   inputClicked(evt: CustomEvent) {
@@ -125,7 +126,7 @@ class AanklikkenInVolgordeApp {
         for (let i = 1; i <= 10; i++) {
           this.labelsInOrder.push(`${i * tableAsInt}`);
         }
-        this.startGameText = html`Klik de getallen aan, van klein naar groot,
+        this.startGameText = `Klik de getallen aan, van klein naar groot,
         met sprongen van ${tableAsInt}.`;
       }
     } else if (urlParams.has('random')) {
@@ -137,7 +138,7 @@ class AanklikkenInVolgordeApp {
       for (let i = startNumber; i < startNumber + 20; i++) {
         this.labelsInOrder.push(`${i}`);
       }
-      this.startGameText = html`Klik de getallen aan, van klein naar groot,
+      this.startGameText = `Klik de getallen aan, van klein naar groot,
       begin bij ${startNumber}.`;
     } else {
       const numbersToSplitFromUrl = urlParams.getAll('number');
@@ -147,14 +148,14 @@ class AanklikkenInVolgordeApp {
           this.labelsInOrder.push(`${numberAsInt}`);
         }
       }
-      this.startGameText = html`Klik de getallen aan van klein naar groot.`;
+      this.startGameText = `Klik de getallen aan van klein naar groot.`;
     }
     if (this.labelsInOrder.length === 0) {
       this.labelsInOrder = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
-      this.startGameText = html`Klik de getallen aan van klein naar groot.`;
+      this.startGameText = `Klik de getallen aan van klein naar groot.`;
     }
     if (urlParams.has('introText')) {
-      this.startGameText = html`${urlParams.get('introText')}`;
+      this.startGameText = `${urlParams.get('introText')}`;
     }
   }
 

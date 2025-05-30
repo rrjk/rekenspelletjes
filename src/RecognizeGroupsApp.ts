@@ -1,4 +1,4 @@
-import { html, css } from 'lit';
+import { html, css, nothing } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
@@ -384,7 +384,7 @@ export class RecognizeGroupsApp extends TimeLimitedGame2 {
             numberDigits="2"
             ?fillinActive=${this.usedFillIns[this.activeFillIn] === 'result'}
           ></digit-fillin>`
-        : html``}
+        : nothing}
     `;
 
     return html`
@@ -404,7 +404,7 @@ export class RecognizeGroupsApp extends TimeLimitedGame2 {
         >
           ${this.includeLongAddition
             ? html`<div class="subexcersize">${longAddition}</div>`
-            : html``}
+            : nothing}
           <div class="subexcersize">${excersizeAsMultiplication}</div>
         </div>
         <div id="keyboard">

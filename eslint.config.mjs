@@ -48,8 +48,6 @@ export default defineConfig([
 
       // will be introduced when stylistic is turned on
       '@typescript-eslint/no-empty-function': 'error',
-
-      'lit/prefer-nothing': 'off',
     },
   },
 ]);

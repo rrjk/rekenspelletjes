@@ -626,7 +626,7 @@ export class SumsWithDoubleSplitApp extends TimeLimitedGame2 {
       </div>
     `;
 
-    let split2 = html``;
+    let split2: HTMLTemplateResult | typeof nothing = nothing;
     if (this.game === 'split2Till100') {
       split2 = html`
         <div class="row">

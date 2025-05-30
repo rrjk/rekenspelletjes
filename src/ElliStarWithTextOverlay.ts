@@ -1,4 +1,4 @@
-import { LitElement, html, css, unsafeCSS } from 'lit';
+import { LitElement, html, css, unsafeCSS, nothing } from 'lit';
 import type { HTMLTemplateResult, CSSResultGroup } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
@@ -140,9 +140,9 @@ export class BalloonIndex extends LitElement {
     else if (numberTexts === 4) fontClass = 'fourLineFont';
 
     // Add linebreak between two non-empty texts.
-    let linebreakAfter1 = html``;
-    let linebreakAfter2 = html``;
-    let linebreakAfter3 = html``;
+    let linebreakAfter1: HTMLTemplateResult | typeof nothing = nothing;
+    let linebreakAfter2: HTMLTemplateResult | typeof nothing = nothing;
+    let linebreakAfter3: HTMLTemplateResult | typeof nothing = nothing;
     if (
       this.text1 !== '' &&
       (this.text2 !== '' || this.text3 !== '' || this.text4 !== '')

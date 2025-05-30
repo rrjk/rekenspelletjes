@@ -1,4 +1,4 @@
-import { html, css } from 'lit';
+import { html, css, nothing } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
@@ -169,19 +169,20 @@ export class WhichIsBiggerApp extends TimeLimitedGame2 {
   }
 
   get welcomeMessage(): HTMLTemplateResult {
-    let res = html``;
     if (this.countOnly) {
-      res = html`<p>Tel het aantal stippen op de hand.</p>`;
+      return html`<p>Tel het aantal stippen op de hand.</p>`;
     } else if (this.includeDifference)
-      res = html`<p>Wijs de hand aan met de meeste stippen.</p>
+      return html`<p>Wijs de hand aan met de meeste stippen.</p>
         <p>
           Vertel daarna hoeveel stippen die hand er meer heeft dan de andere
           hand.
         </p>`;
     else if (!this.includeDifference)
-      res = html`<p>Wijs de hand aan met de meeste stippen.</p>`;
-
-    return res;
+      return html`<p>Wijs de hand aan met de meeste stippen.</p>`;
+    else
+      throw Error(
+        'Internal SW error - it should not be possible to reach this code',
+      );
   }
 
   executeGameOverActions(): void {
@@ -228,7 +229,7 @@ export class WhichIsBiggerApp extends TimeLimitedGame2 {
   }
 
   renderGameContent(): HTMLTemplateResult {
-    let keyboard = html``;
+    let keyboard: HTMLTemplateResult | typeof nothing = nothing;
     if (this.includeDifference) {
       keyboard = html`
       <div class="bar">
@@ -240,7 +241,7 @@ export class WhichIsBiggerApp extends TimeLimitedGame2 {
       </div>`;
     }
 
-    let hands = html``;
+    let hands: HTMLTemplateResult | typeof nothing = nothing;
     if (this.countOnly) {
       hands = html`
         <button

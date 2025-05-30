@@ -1,4 +1,4 @@
-import { html, css } from 'lit';
+import { html, css, nothing } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
@@ -207,7 +207,7 @@ export class SquaresBalloonGameApp extends TimeLimitedGame2 {
   }
 
   renderGameContent(): HTMLTemplateResult {
-    let exercise = html``;
+    let exercise: HTMLTemplateResult | typeof nothing = nothing;
     if (this.operator === 'square') exercise = html`${this.number}² = ?`;
     else exercise = html`√${this.number}`;
     return html`

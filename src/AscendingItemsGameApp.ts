@@ -1,4 +1,4 @@
-import { html, css } from 'lit';
+import { html, css, nothing } from 'lit';
 
 import { state } from 'lit/decorators.js';
 
@@ -188,7 +188,7 @@ export abstract class AscendingItemsGameApp<
           <div class="exercize">
             ${this.roundInfo !== undefined
               ? this.renderExercise(this.roundInfo.exerciseInfo)
-              : html``}
+              : nothing}
           </div>
         </div>
         <div id="itemBox" ${ref(this.itemBox)}>

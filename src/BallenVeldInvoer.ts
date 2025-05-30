@@ -1,6 +1,6 @@
 /* eslint no-plusplus: ["error", { "allowForLoopAfterthoughts": true }] */
 
-import { LitElement, html, css } from 'lit';
+import { LitElement, html, css, nothing } from 'lit';
 
 import { property } from 'lit/decorators.js';
 
@@ -282,7 +282,9 @@ export class BallFieldEntry extends LitElement {
     this.requestUpdate();
   }
 
-  makeBall(ball: BallInfo | NotShownBallInfo): HTMLTemplateResult {
+  makeBall(
+    ball: BallInfo | NotShownBallInfo,
+  ): HTMLTemplateResult | typeof nothing {
     if (ball.show) {
       let text;
       if (ball.disabled) text = '✗';
@@ -301,7 +303,7 @@ export class BallFieldEntry extends LitElement {
         ${text}
       </button>`;
     }
-    return html``;
+    return nothing;
   }
 
   makeCell20(ball: BallInfo | NotShownBallInfo): HTMLTemplateResult {

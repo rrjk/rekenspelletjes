@@ -1,4 +1,4 @@
-import { html, css } from 'lit';
+import { html, css, nothing } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
@@ -335,8 +335,8 @@ export class ClockPairingApp extends TimeLimitedGame2 {
     let cls = '';
     if (clockInformation === this.selectedClock) cls = 'selected';
 
-    let divContent = html``;
-    let mompitzContent = html``;
+    let divContent: HTMLTemplateResult | typeof nothing = nothing;
+    let mompitzContent: HTMLTemplateResult | typeof nothing = nothing;
 
     if (clockInformation.enabled) {
       divContent = html`

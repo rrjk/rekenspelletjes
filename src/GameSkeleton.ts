@@ -91,7 +91,8 @@ export abstract class GameSkeleton extends LitElement {
    * Is empty for this game skeleton, should be overridden in children.
    */
   renderGame(): HTMLTemplateResult {
-    return html``;
+    return html`Placeholder for gamecontent - the be filled by descendents of
+    GameSkeleton`;
   }
 
   static get styles(): CSSResultArray {
@@ -152,7 +153,7 @@ export abstract class GameSkeleton extends LitElement {
   }
 
   get gameOverIntroductionText(): HTMLTemplateResult {
-    return html``;
+    return html`Placeholder for game introduction text`;
   }
 
   /** Get the text to show in the game over dialog

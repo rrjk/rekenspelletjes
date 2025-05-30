@@ -1,4 +1,4 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 
 import type { CSSResultGroup, HTMLTemplateResult } from 'lit';
@@ -14,7 +14,7 @@ export class MessageDialog extends LitElement {
   @property({ type: String })
   accessor dialogTitle: string;
   @property({ attribute: false })
-  accessor text: HTMLTemplateResult;
+  accessor text: HTMLTemplateResult | typeof nothing;
   @property({ attribute: false })
   accessor imageUrl: URL;
 
@@ -24,7 +24,7 @@ export class MessageDialog extends LitElement {
 
   constructor() {
     super();
-    this.text = html``;
+    this.text = nothing;
     this.dialogTitle = '';
     this.imageUrl = new URL('../images/Mompitz Otto.png', import.meta.url);
   }

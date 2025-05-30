@@ -1,4 +1,4 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, nothing } from 'lit';
 import { state } from 'lit/decorators.js';
 
 import type { CSSResultGroup, HTMLTemplateResult } from 'lit';
@@ -15,7 +15,7 @@ export class GameOverDialog extends LitElement {
   static gameOverImage = new URL('../images/Mompitz Anne.png', import.meta.url);
 
   @state()
-  accessor text: HTMLTemplateResult;
+  accessor text: HTMLTemplateResult | typeof nothing;
 
   static get styles(): CSSResultGroup {
     return RKdialogStyles;
@@ -23,7 +23,7 @@ export class GameOverDialog extends LitElement {
 
   constructor() {
     super();
-    this.text = html``;
+    this.text = nothing;
   }
 
   /** Get the dialog child

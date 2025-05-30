@@ -1,4 +1,12 @@
-import { CSSResultArray, html, css, LitElement, svg, unsafeCSS } from 'lit';
+import {
+  CSSResultArray,
+  html,
+  css,
+  LitElement,
+  svg,
+  unsafeCSS,
+  nothing,
+} from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 
@@ -233,7 +241,7 @@ export class FractionElement extends LitElement {
     return -Math.cos(arc) * 1000;
   }
 
-  render(): HTMLTemplateResult {
+  render(): HTMLTemplateResult | typeof nothing {
     if (this.representation === 'fraction') return this.renderAsFraction();
     if (this.representation === 'piechart') return this.renderAsPiechart();
     if (this.representation === 'percentage') return this.renderAsPercentage();
@@ -242,6 +250,6 @@ export class FractionElement extends LitElement {
     console.error(
       `Fraction representation ${this.representation} is not supported`,
     );
-    return html``;
+    return nothing;
   }
 }

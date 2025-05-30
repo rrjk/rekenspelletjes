@@ -79,7 +79,8 @@ export abstract class TimeLimitedGame2 extends GameSkeleton {
    * Is empty for the TimeLimitedGame, should be overridden in children.
    */
   renderGameContent(): HTMLTemplateResult {
-    return html``;
+    return html`Placeholder for gamecontent - the be filled by descendents of
+    TimeLimitedGame2`;
   }
 
   /** Render the actual game within the gameskeleton */

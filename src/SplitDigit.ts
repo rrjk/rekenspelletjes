@@ -1,4 +1,4 @@
-import { LitElement, html, css } from 'lit';
+import { LitElement, html, css, nothing } from 'lit';
 import type { HTMLTemplateResult, CSSResultGroup } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
@@ -25,8 +25,8 @@ export class SplitDigit extends LitElement {
     `;
   }
 
-  render(): HTMLTemplateResult {
-    if (this.disabled) return html``;
+  render(): HTMLTemplateResult | typeof nothing {
+    if (this.disabled) return nothing;
 
     return html`
       <div>${this.numberToSplit}</div>
