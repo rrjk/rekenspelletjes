@@ -37,6 +37,11 @@ export class AscendingBalloonsTestApp extends LitElement {
     /** Trigger baloons to start */
   }
 
+  /** Toggle disabled flag */
+  toggleDisabled() {
+    this.disabled = !this.disabled;
+  }
+
   /** Render the application */
   render(): HTMLTemplateResult {
     return html`
@@ -82,9 +87,7 @@ export class AscendingBalloonsTestApp extends LitElement {
       <button
         style="position:absolute; left: 0; top:75px;"
         id="toggleDisabledButton"
-        @click=${() => {
-          this.disabled = !this.disabled;
-        }}
+        @click=${this.toggleDisabled}
       >
         Toggle disabled
       </button>

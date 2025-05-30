@@ -50,7 +50,6 @@ export default defineConfig([
       '@typescript-eslint/no-empty-function': 'error',
 
       'lit/prefer-nothing': 'off',
-      'lit/no-this-assign-in-render': 'off',
     },
   },
 ]);

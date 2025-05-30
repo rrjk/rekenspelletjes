@@ -33,6 +33,7 @@ export class DraggableTargetHeart
   }
 
   render(): HTMLTemplateResult {
+    //eslint-disable-next-line lit/no-this-assign-in-render -- Legacy
     this.content = html`${getHeartasHTMLTemplateResult(
       this.heartColor,
       `${this.value}`,
