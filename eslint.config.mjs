@@ -25,11 +25,12 @@ export default defineConfig([
     files: ['**/*.html'],
     plugins: { html },
   },
-  tseslintConfigs.recommended,
+  tseslintConfigs.strict,
   wceslintConfigs['flat/recommended'],
   wceslintConfigs['flat/best-practice'],
-  eslintConfigPrettier,
   liteslintConfigs['flat/all'],
+  eslintConfigPrettier,
+
   {
     settings: {
       wc: {

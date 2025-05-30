@@ -189,7 +189,7 @@ export class FractionMatchingGameApp extends PairMatchingApp<FractionAndRepresen
     const urlParams = new URLSearchParams(window.location.search);
 
     if (urlParams.has('gameType')) {
-      const gameType = urlParams.get('gameType')!;
+      const gameType = urlParams.get('gameType');
       if (gameType === 'equalFractions') {
         this.gameType = 'equalFractions';
         this.representations.exercise = 'fraction';

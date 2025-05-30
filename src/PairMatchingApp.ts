@@ -370,7 +370,7 @@ export abstract class PairMatchingApp<
       }
     }
 
-    // Given the code above, we now for sure there will be a draggable and a target in cellInfo
+    // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion -- Given the code above, we now for sure there will be a draggable and a target in cellInfo
     const equal = cellInfo.draggable!.equal(cellInfo.target!);
 
     if (equal) {
