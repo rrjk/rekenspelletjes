@@ -6,6 +6,7 @@ import { configs as tseslintConfigs } from 'typescript-eslint';
 import { configs as wceslintConfigs } from 'eslint-plugin-wc';
 import { configs as liteslintConfigs } from 'eslint-plugin-lit';
 import { defineConfig, globalIgnores } from 'eslint/config';
+import eslintConfigPrettier from 'eslint-config-prettier/flat';
 
 export default defineConfig([
   globalIgnores(['dist/*', 'node_modules/*']),
@@ -27,6 +28,7 @@ export default defineConfig([
   tseslintConfigs.recommended,
   wceslintConfigs['flat/recommended'],
   wceslintConfigs['flat/best-practice'],
+  eslintConfigPrettier,
   liteslintConfigs['flat/all'],
   {
     settings: {
