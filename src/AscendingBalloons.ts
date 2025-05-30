@@ -415,19 +415,19 @@ export class AscendingBalloons extends LitElement {
     return html`
       <div
         id="balloons"
-        class="${this.ascension && !this.disabled ? 'MoveUp' : ''}"
+        class=${this.ascension && !this.disabled ? 'MoveUp' : ''}
         @animationend=${() => this.ascensionComplete()}
       >
         ${this.balloonInfoList.map(
           balloonInfo => html`
             <button
               type="button"
-              class="${this.imageType}"
+              class=${this.imageType}
               style="background-image: url('${AscendingBalloons.ascendingImage
                 .get(this.imageType)
                 ?.get(balloonInfo.color)}');"
-              @click="${() => this.balloonClicked(balloonInfo.label)}"
-              ?disabled="${balloonInfo.disabled || this.disabled}"
+              @click=${() => this.balloonClicked(balloonInfo.label)}
+              ?disabled=${balloonInfo.disabled || this.disabled}
             >
               <span>${this.renderTextBalloon(balloonInfo)}</span>
             </button>

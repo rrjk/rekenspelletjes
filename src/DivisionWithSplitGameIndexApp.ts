@@ -124,9 +124,9 @@ export class DivisionWithSplitGameIndexApp extends LitElement {
   ): HTMLTemplateResult {
     return html`
       <icon-hourglass-button
-        title="${description}"
-        time="${duration}"
-        shortCode="${shortCode}"
+        title=${description}
+        time=${duration}
+        shortCode=${shortCode}
       >
         <div style="background-color:${getColorInfo(color).mainColorCode}" class="button">
           <divide-with-split-widget .fixedNumbers=${fixedNumbers} .fillInNumbers=${fillInNumbers} .showSubAnswers=${showHelp} .showHelp=${showHelp} activeFillIn="answer"></divide-with-split-widget>

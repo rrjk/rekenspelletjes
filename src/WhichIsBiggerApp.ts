@@ -234,8 +234,8 @@ export class WhichIsBiggerApp extends TimeLimitedGame2 {
       <div class="bar">
         <digit-keyboard showTen ?disabled=${
           this.keyboardDisabled
-        } @digit-entered="${(evt: CustomEvent<Digit>) =>
-          this.handleDigit(evt.detail)}">
+        } @digit-entered=${(evt: CustomEvent<Digit>) =>
+          this.handleDigit(evt.detail)}>
         </digit-keyboad>
       </div>`;
     }
@@ -248,7 +248,7 @@ export class WhichIsBiggerApp extends TimeLimitedGame2 {
           ?disabled=${this.handDisabled[0]}
         >
           <hand-with-dots
-            class="${this.handStyle[0]}"
+            class=${this.handStyle[0]}
             numberDots=${this.numberDotsHands[0]}
           ></hand-with-dots>
         </button>
@@ -260,7 +260,7 @@ export class WhichIsBiggerApp extends TimeLimitedGame2 {
           ?disabled=${this.handDisabled[0]}
         >
           <hand-with-dots
-            class="${this.handStyle[0]}"
+            class=${this.handStyle[0]}
             numberDots=${this.numberDotsHands[0]}
           ></hand-with-dots>
         </button>
@@ -269,7 +269,7 @@ export class WhichIsBiggerApp extends TimeLimitedGame2 {
           ?disabled=${this.handDisabled[1]}
         >
           <hand-with-dots
-            class="${this.handStyle[1]}"
+            class=${this.handStyle[1]}
             numberDots=${this.numberDotsHands[1]}
           ></hand-with-dots>
         </button>

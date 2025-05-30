@@ -47,7 +47,7 @@ export class DropTargetTrashcan
           trashcan: true,
           highlightDroppable: this.highlighted === 'droppable',
         })}"
-        src="${trashcanUrl.href}"
+        src=${trashcanUrl.href}
       />
     `;
   }

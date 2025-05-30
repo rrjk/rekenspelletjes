@@ -60,8 +60,8 @@ export class MessageDialog extends LitElement {
   }
 
   render(): HTMLTemplateResult {
-    return html` <web-dialog id="dialog" center @closing="${(evt: Event) =>
-      evt.preventDefault()}">
+    return html` <web-dialog id="dialog" center @closing=${(evt: Event) =>
+      evt.preventDefault()}>
                     <header>
                         <h1>${this.dialogTitle}</h1>
                     </header>
@@ -69,13 +69,13 @@ export class MessageDialog extends LitElement {
                         <div>
                             ${this.text}
                         </div>
-                        <img style="float: right; width: 200px; max-width: calc(25 * 1vmin); height: auto; " alt="Mompitz figuurtje" src="${
+                        <img style="float: right; width: 200px; max-width: calc(25 * 1vmin); height: auto; " alt="Mompitz figuurtje" src=${
                           this.imageUrl
-                        }"></img>
+                        }></img>
                     </article>
                     <footer>
-                        <button style="float: right;" @click="${() =>
-                          this.handleOkButton()}">Ok</button>
+                        <button style="float: right;" @click=${() =>
+                          this.handleOkButton()}>Ok</button>
                     </footer>
                 </web-dialog> `;
   }

@@ -213,7 +213,7 @@ export class FlyingSaurcer extends LitElement {
         }
       </style>
       <svg
-        class="${classMap(classes)}"
+        class=${classMap(classes)}
         viewBox="0 3.5 36 36.5"
         xmlns="http://www.w3.org/2000/svg"
         xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -289,11 +289,11 @@ export class FlyingSaurcer extends LitElement {
           ></ellipse>
         </g>
         <g id="SVGRepo_text">
-          <text x="${contentX}" y="${contentY}">${content}</text>
-          <text class="symbol" x="${symbol1X}" y="${symbol1Y}">
+          <text x=${contentX} y=${contentY}>${content}</text>
+          <text class="symbol" x=${symbol1X} y=${symbol1Y}>
             ${this.symbol1}
           </text>
-          <text class="symbol" x="${symbol2X}" y="${symbol2Y}">
+          <text class="symbol" x=${symbol2X} y=${symbol2Y}>
             ${this.symbol2}
           </text>
         </g>

@@ -172,7 +172,7 @@ export class HangingPhotoIconWithTextOverlay extends LitElement {
             rx="15"
             width="120"
             height="80"
-            fill="${getColorInfo(this.background).mainColorCode}"
+            fill=${getColorInfo(this.background).mainColorCode}
           />
           ${this.renderNumberLine()}
           ${tickMarks10Positions.map(pos => this.render10TickMark(pos))}

@@ -296,7 +296,7 @@ export class BallFieldEntry extends LitElement {
         ?disabled=${ball.disabled}
         class="Ball ${ball.removed ? 'FadeOut' : ''}"
         id="Ball${ball.label}"
-        @click="${() => this.handleBall(ball.cell)}"
+        @click=${() => this.handleBall(ball.cell)}
       >
         ${text}
       </button>`;

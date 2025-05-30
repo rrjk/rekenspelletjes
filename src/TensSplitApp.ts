@@ -116,12 +116,12 @@ export class TensSplitApp extends TimeLimitedGame2 {
     return html` <div class="dummyRow"></div>
       <tens-split-widget
         numberToSplit="${this.numberToSplit} "
-        activeDigit="${this.activeDigit}"
+        activeDigit=${this.activeDigit}
       ></tens-split-widget>
       <digit-keyboard
         .disabledDigits=${this.disabledDigits}
-        @digit-entered="${(evt: CustomEvent<Digit>) =>
-          this.handleDigit(evt.detail)}"
+        @digit-entered=${(evt: CustomEvent<Digit>) =>
+          this.handleDigit(evt.detail)}
         >></digit-keyboard
       >
       <div class="dummyRow"></div>`;

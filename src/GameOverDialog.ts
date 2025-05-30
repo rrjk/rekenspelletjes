@@ -61,8 +61,8 @@ export class GameOverDialog extends LitElement {
 
   /** Render the dialog */
   render(): HTMLTemplateResult {
-    return html` <web-dialog id="dialog" center @closing="${(evt: Event) =>
-      evt.preventDefault()}">
+    return html` <web-dialog id="dialog" center @closing=${(evt: Event) =>
+      evt.preventDefault()}>
                     <header>
                         <h1>Game over</h1>
                     </header>
@@ -70,16 +70,16 @@ export class GameOverDialog extends LitElement {
                         <div>
                             ${this.text}
                         </div>
-                        <img style="float: right; width: 200px; max-width: calc(25 * 1vmin); height: auto; " alt="Anne" src="${
+                        <img style="float: right; width: 200px; max-width: calc(25 * 1vmin); height: auto; " alt="Anne" src=${
                           GameOverDialog.gameOverImage
-                        }"></img>
+                        }></img>
                     </article>
                     <footer>
-                        <button style="float: right;" @click="${() =>
-                          this.handleAgainButton()}">Speel nog een keer</button>
+                        <button style="float: right;" @click=${() =>
+                          this.handleAgainButton()}>Speel nog een keer</button>
                         <span style="float: right;">&nbsp;</span>
-                        <button style="float: right;" @click="${() =>
-                          this.handleBackToMenuButton()}">Nieuw spel kiezen</button>
+                        <button style="float: right;" @click=${() =>
+                          this.handleBackToMenuButton()}>Nieuw spel kiezen</button>
                     </footer>
                 </web-dialog> `;
   }

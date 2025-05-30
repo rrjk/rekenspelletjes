@@ -553,7 +553,7 @@ export abstract class PairMatchingApp<
 
       ret.push(
         html`<img class="miniMompitz ${classMap(imgClass)}" 
-              alt="Mompitz figure" src="${PairMatchingApp.imagesForMompitzCells[indexes[i]]}"
+              alt="Mompitz figure" src=${PairMatchingApp.imagesForMompitzCells[indexes[i]]}
               @animationend=${() => this.animationend(gridIndex)}></img>`,
       );
     }
@@ -599,8 +599,8 @@ export abstract class PairMatchingApp<
         <div class="content">
           <draggable-target-slotted
             id=${this.serializeGridId(gridIndex)}
-            .gridIndex="${gridIndex}"
-            @dropped="${this.handleDropped}"
+            .gridIndex=${gridIndex}
+            @dropped=${this.handleDropped}
             resetDragAfterDrop
             style="top: ${cell.basicInfo.top}%; left: ${cell.basicInfo.left}%;"
           >

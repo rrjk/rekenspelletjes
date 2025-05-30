@@ -31,7 +31,7 @@ export class IconLabelButton extends LitElement {
 
   render(): HTMLTemplateResult {
     return html`
-      <a href="${this.href}">
+      <a href=${this.href}>
         <slot></slot>
         <p>${this.title}</p>
       </a>

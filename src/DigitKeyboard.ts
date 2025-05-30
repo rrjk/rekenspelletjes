@@ -213,7 +213,7 @@ export class DigitKeyboard
           <button
             class="Digit ${disableEnabledKeyboardClass}"
             id="Digit${digit}"
-            @click="${() => this.handleDigit(digit)}"
+            @click=${() => this.handleDigit(digit)}
           >
             ${this.disabledDigits[digit]
               ? this.renderDigitAsSvg('disabled')

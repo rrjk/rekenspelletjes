@@ -274,7 +274,7 @@ export class ClickInOrderApp extends TimeCountingGame {
           .ballLabels=${this.labelsInOrder}
           .disabledBallLabels=${this.disabledBallLabels}
           .invisibleBallLabels=${this.invisibleBallLabels}
-          exercise="${excercise}"
+          exercise=${excercise}
           @ball-clicked=${(evt: CustomEvent) =>
             this.handleBallClick(evt.detail.label)}
         ></ball-field-entry>

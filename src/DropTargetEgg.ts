@@ -107,15 +107,15 @@ export class DropTargetEgg
         html` <div class="eggElement ${hiddenClass}">
           <draggable-element
             resetDragAfterDrop
-            .dropTargetList="${this.trashcanAreas}"
-            @dropped="${this.dropInTrashcan}"
-            @dragStarted="${this.handleDragStarted}"
+            .dropTargetList=${this.trashcanAreas}
+            @dropped=${this.dropInTrashcan}
+            @dragStarted=${this.handleDragStarted}
           >
             <img
               draggable="false"
-              class="${this.itemType}"
-              alt="${this.itemType}"
-              src="${imageURLs[this.itemType]}"
+              class=${this.itemType}
+              alt=${this.itemType}
+              src=${imageURLs[this.itemType]}
             />
           </draggable-element>
         </div>`,
@@ -128,7 +128,7 @@ export class DropTargetEgg
 
     return html`
       <dynamic-grid
-        class="${highlightClass}"
+        class=${highlightClass}
         fillDirection="bottomtop"
         contentAspectRatio=${230 / 100}
       >

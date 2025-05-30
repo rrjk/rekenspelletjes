@@ -64,9 +64,9 @@ export class IconHourglassButton extends LitElement {
     else url = this.href.concat(timeSuffix);
 
     return html`
-      <a href="${url}">
+      <a href=${url}>
         <slot></slot>
-        <img class="hourglass" alt="${timeText}" src="${hourglassImage}" />
+        <img class="hourglass" alt=${timeText} src=${hourglassImage} />
       </a>
     `;
   }

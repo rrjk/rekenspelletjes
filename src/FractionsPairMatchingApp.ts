@@ -245,8 +245,8 @@ export class FractionMatchingGameApp extends PairMatchingApp<FractionAndRepresen
   renderPairElement(info: FractionAndRepresentation): HTMLTemplateResult {
     return html`
       <fraction-element
-        .fraction="${info.fraction}"
-        .representation="${info.representation}"
+        .fraction=${info.fraction}
+        .representation=${info.representation}
       ></fraction-element>
     `;
   }

@@ -42,19 +42,19 @@ export class AscendingBalloonsTestApp extends LitElement {
     return html`
       <ascending-balloons
         style="position: absolute; height: 100%; width:100%; border: 1px black solid"
-        @correct-balloon-clicked="${() =>
-          this.ascendingBalloons.restartAscension()}"
-        @wrong-balloon-clicked="${() => {
+        @correct-balloon-clicked=${() =>
+          this.ascendingBalloons.restartAscension()}
+        @wrong-balloon-clicked=${() => {
           const logBox = this.getElement<HTMLParagraphElement>('#logBox');
           logBox.insertAdjacentText('beforeend', 'Wrong balloon clicked == ');
-        }}"
-        @ascension-complete="${() => {
+        }}
+        @ascension-complete=${() => {
           const logBox = this.getElement<HTMLParagraphElement>('#logBox');
           logBox.insertAdjacentText(
             'beforeend',
             'Ascension complete event received == ',
           );
-        }}"
+        }}
         .answers=${this.answers}
         ?disabled=${this.disabled}
       ></ascending-balloons>
@@ -62,9 +62,9 @@ export class AscendingBalloonsTestApp extends LitElement {
       <button
         style="position:absolute; left: 0; top:0;"
         id="ascendButton"
-        @click="${() => {
+        @click=${() => {
           this.ascendingBalloons.startAscension();
-        }}"
+        }}
       >
         Ascend
       </button>
@@ -72,9 +72,9 @@ export class AscendingBalloonsTestApp extends LitElement {
       <button
         style="position:absolute; left: 0; top:50px;"
         id="resetButton"
-        @click="${() => {
+        @click=${() => {
           this.ascendingBalloons.reset();
-        }}"
+        }}
       >
         Reset
       </button>
@@ -82,9 +82,9 @@ export class AscendingBalloonsTestApp extends LitElement {
       <button
         style="position:absolute; left: 0; top:75px;"
         id="toggleDisabledButton"
-        @click="${() => {
+        @click=${() => {
           this.disabled = !this.disabled;
-        }}"
+        }}
       >
         Toggle disabled
       </button>

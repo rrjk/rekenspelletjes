@@ -355,16 +355,16 @@ export class EggCountingApp extends TimeLimitedGame2 {
   private renderEggCartonTargetArea(): HTMLTemplateResult {
     return html` <div id="eggCartonTargetArea">
       <drop-target-egg
-        class="${classMap({
+        class=${classMap({
           wrongTargetArea: this.eggCartonTargetAreaHighlightWrong,
-        })}"
+        })}
         itemType="eggCarton"
-        numberItemsToShow="${this.numberVisibleEggCartons}"
-        maxNumberItemsToShow="${this.maxNumberItemsToShow}"
+        numberItemsToShow=${this.numberVisibleEggCartons}
+        maxNumberItemsToShow=${this.maxNumberItemsToShow}
         ${ref(this.eggCartonTargetChange)}
-        @itemTrashed="${this.eggCartonTrashed}"
-        @dragStarted="${this.resetWrongHighlights}"
-        .trashcanAreas="${this.trashcanTarget}"
+        @itemTrashed=${this.eggCartonTrashed}
+        @dragStarted=${this.resetWrongHighlights}
+        .trashcanAreas=${this.trashcanTarget}
       ></drop-target-egg>
     </div>`;
   }
@@ -375,15 +375,15 @@ export class EggCountingApp extends TimeLimitedGame2 {
         <draggable-element
           class="eggCarton"
           resetDragAfterDrop
-          .dropTargetList="${this.eggCartonTarget}"
-          @dropped="${this.eggCartonDrop}"
-          @dragStarted="${this.resetWrongHighlights}"
+          .dropTargetList=${this.eggCartonTarget}
+          @dropped=${this.eggCartonDrop}
+          @dragStarted=${this.resetWrongHighlights}
         >
           <img
             class="eggCarton"
             draggable="false"
             alt="egg Carton"
-            src="${eggCartonUrl.href}"
+            src=${eggCartonUrl.href}
           />
         </draggable-element>
       </div>
@@ -394,16 +394,16 @@ export class EggCountingApp extends TimeLimitedGame2 {
     return html`
       <div id="eggTargetArea">
         <drop-target-egg
-          class="${classMap({
+          class=${classMap({
             wrongTargetArea: this.eggTargetAreaHighlightWrong,
-          })}"
+          })}
           itemType="egg"
-          numberItemsToShow="${this.numberVisibleEggs}"
-          maxNumberItemsToShow="${this.maxNumberItemsToShow}"
+          numberItemsToShow=${this.numberVisibleEggs}
+          maxNumberItemsToShow=${this.maxNumberItemsToShow}
           ${ref(this.eggTargetChange)}
-          @itemTrashed="${this.eggTrashed}"
-          @dragStarted="${this.resetWrongHighlights}"
-          .trashcanAreas="${this.trashcanTarget}"
+          @itemTrashed=${this.eggTrashed}
+          @dragStarted=${this.resetWrongHighlights}
+          .trashcanAreas=${this.trashcanTarget}
         ></drop-target-egg>
       </div>
     `;
@@ -415,15 +415,15 @@ export class EggCountingApp extends TimeLimitedGame2 {
         <draggable-element
           class="egg"
           resetDragAfterDrop
-          .dropTargetList="${this.eggTarget}"
-          @dropped="${this.eggDrop}"
-          @dragStarted="${this.resetWrongHighlights}"
+          .dropTargetList=${this.eggTarget}
+          @dropped=${this.eggDrop}
+          @dragStarted=${this.resetWrongHighlights}
         >
           <img
             class="egg"
             draggable="false"
             alt="egg Carton"
-            src="${eggUrl.href}"
+            src=${eggUrl.href}
           />
         </draggable-element>
       </div>

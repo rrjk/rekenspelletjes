@@ -90,10 +90,10 @@ export abstract class TimeLimitedGame2 extends GameSkeleton {
           style="--progress-bar-gametime: ${this
             .gameTime}s; width:calc(100 * var(--vw));"
           id="progressBar"
-          @timeUp="${() => this.handleGameOver()}"
+          @timeUp=${() => this.handleGameOver()}
           integrateScoreBox
-          numberOk="${this.numberOk}"
-          numberNok="${this.numberNok}"
+          numberOk=${this.numberOk}
+          numberNok=${this.numberNok}
         ></progress-bar>
         <div class="gameContent">${this.renderGameContent()}</div>
       </div>

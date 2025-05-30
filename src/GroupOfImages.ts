@@ -185,9 +185,9 @@ export class GroupOfImages
       flexItems.push(
         html`<div class="flexItem">
           <img
-            class="${this.tallWideFlexItem}"
-            src="${getImageInfo(this.image).url}"
-            alt="${getImageInfo(this.image).name}"
+            class=${this.tallWideFlexItem}
+            src=${getImageInfo(this.image).url}
+            alt=${getImageInfo(this.image).name}
           />
         </div>`,
       );

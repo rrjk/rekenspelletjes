@@ -161,9 +161,9 @@ export class MompitzNumber extends LitElement {
           digitInfo => html`
             <img
               draggable="false"
-              alt="${digitInfo.digit}"
+              alt=${digitInfo.digit}
               class="digit ${digitInfo.narrow}"
-              src="${MompitzNumber.getUrl(digitInfo)}"
+              src=${MompitzNumber.getUrl(digitInfo)}
             />
           `,
         )}

@@ -273,12 +273,12 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
       <progress-bar
         style="--progress-bar-gametime: ${this.time}s;"
         id="progressBar"
-        @timeUp="${() => this.handleTimeUp()}"
+        @timeUp=${() => this.handleTimeUp()}
       ></progress-bar>
       <score-box
         id="scoreBox"
-        numberOk="${this._numberOk}"
-        numberNok="${this._numberNok}"
+        numberOk=${this._numberOk}
+        numberNok=${this._numberNok}
         style="width: 12vmin;
                               --scoreBoxWidth: 12vmin; 
                               position: absolute; 
@@ -298,9 +298,9 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
         minimum=${this.minimum}
         maximum=${this.maximum}
         width="95vw"
-        .photoPositions="${this.positions}"
-        .disabledPositions="${this.disabledPositions}"
-        @photo-clicked="${(evt: CustomEvent) => this.handlePhotoClicked(evt)}"
+        .photoPositions=${this.positions}
+        .disabledPositions=${this.disabledPositions}
+        @photo-clicked=${(evt: CustomEvent) => this.handlePhotoClicked(evt)}
         style="position:absolute; 
                     left: 2.5vw; 
                     top: 30vh; 

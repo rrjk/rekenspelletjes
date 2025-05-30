@@ -471,12 +471,12 @@ export class JumpOnNumberLineApp extends LitElement {
       <progress-bar
         style="--progress-bar-gametime: ${this.gameTime}s;"
         id="progressBar"
-        @timeUp="${() => this.handleTimeUp()}"
+        @timeUp=${() => this.handleTimeUp()}
       ></progress-bar>
       <score-box
         id="scoreBox"
-        numberOk="${this.numberOk}"
-        numberNok="${this.numberNok}"
+        numberOk=${this.numberOk}
+        numberNok=${this.numberNok}
         style="width: 12vmin;--scoreBoxWidth: 12vmin; position: absolute; top: calc(1em + 22px); right: 1em;"
       >
       </score-box>
@@ -504,11 +504,11 @@ export class JumpOnNumberLineApp extends LitElement {
       <img
         id="jan"
         alt="Mompitz"
-        src="${JumpOnNumberLineApp.janImage}"
+        src=${JumpOnNumberLineApp.janImage}
         style="display: ${this.hideJan ? 'none' : 'block'};"
-        class="${this.renderJanClass()}"
+        class=${this.renderJanClass()}
       />
-      <button id="spring" @click="${() => this.checkAnswer()}">Spring</button>
+      <button id="spring" @click=${() => this.checkAnswer()}>Spring</button>
       <message-dialog id="messageDialog"></message-dialog>
       <gameover-dialog id="gameOverDialog"></gameover-dialog>
     `;

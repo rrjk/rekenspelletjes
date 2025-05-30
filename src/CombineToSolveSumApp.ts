@@ -290,11 +290,11 @@ export class CombineToSolveSumApp extends TimeCountingGame {
         cellElements.push(
           html`<div class="gridElement">
             <draggable-target-heart
-              id="${cell.id}"
-              value="${cell.nmbr}"
+              id=${cell.id}
+              value=${cell.nmbr}
               resetDragAfterDrop
               style="height: 50%; aspect-ratio: 1; display:block; position: relative; left: ${cell.left}%; top: ${cell.top}%;"
-              @dropped="${this.handleDropped}"
+              @dropped=${this.handleDropped}
             ></draggable-target-heart>
           </div>`,
         );

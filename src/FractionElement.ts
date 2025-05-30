@@ -125,7 +125,7 @@ export class FractionElement extends LitElement {
         <line
           class="fractionBar ${classMap(classes)}"
           x1="-${this.barLength}"
-          x2="${this.barLength}"
+          x2=${this.barLength}
           y1="0"
           y2="0"
         />
@@ -203,7 +203,7 @@ export class FractionElement extends LitElement {
     }
 
     return html`
-      <svg class="${classMap(classes)}" viewbox="-1100 -1100 2200 2200">
+      <svg class=${classMap(classes)} viewbox="-1100 -1100 2200 2200">
         <path
           d="M 0 0 L 0 -1000 A 1000 1000 0 ${largeArcFilled} 1 
              ${this.arcToXPosition(arc)} ${this.arcToYPosition(arc)} L 0 0"

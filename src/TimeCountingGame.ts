@@ -67,9 +67,9 @@ export abstract class TimeCountingGame extends GameSkeleton {
         <timer-bar
           width:100%
           id="timerBar"
-          numberOk="${this.numberOk}"
-          numberNok="${this.numberNok}"
-          ?paused="${this.timerPaused}"
+          numberOk=${this.numberOk}
+          numberNok=${this.numberNok}
+          ?paused=${this.timerPaused}
         ></timer-bar>
         <div class="gameContent">${this.renderGameContent()}</div>
       </div>

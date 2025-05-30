@@ -325,8 +325,8 @@ export class RecognizeGroupsApp extends TimeLimitedGame2 {
     for (let i = 0; i < this.numberOfGroups; i++) {
       groups.push(
         html` <group-of-images
-          numberInGroup="${this.groupSize}"
-          image="${this.image}"
+          numberInGroup=${this.groupSize}
+          image=${this.image}
         ></group-of-images>`,
       );
     }
@@ -335,7 +335,7 @@ export class RecognizeGroupsApp extends TimeLimitedGame2 {
     longAddition.push(
       html`<digit-fillin
         id="longAddition0"
-        desiredNumber="${this.groupSize}"
+        desiredNumber=${this.groupSize}
         numberDigits="1"
         ?fillinActive=${this.usedFillIns[this.activeFillIn] === `longAddition0`}
       ></digit-fillin>`,
@@ -348,7 +348,7 @@ export class RecognizeGroupsApp extends TimeLimitedGame2 {
           </div>
           <digit-fillin
             id="longAddition${i}"
-            desiredNumber="${this.groupSize}"
+            desiredNumber=${this.groupSize}
             numberDigits="1"
             ?fillinActive=${this.usedFillIns[this.activeFillIn] ===
             `longAddition${i}`}
@@ -360,7 +360,7 @@ export class RecognizeGroupsApp extends TimeLimitedGame2 {
     const excersizeAsMultiplication = html`
       <digit-fillin
         id="numberGroups"
-        desiredNumber="${this.numberOfGroups}"
+        desiredNumber=${this.numberOfGroups}
         numberDigits="1"
         ?fillinActive=${this.usedFillIns[this.activeFillIn] === 'numberGroups'}
       ></digit-fillin>
@@ -372,7 +372,7 @@ export class RecognizeGroupsApp extends TimeLimitedGame2 {
 
       <digit-fillin
         id="groupSize"
-        desiredNumber="${this.groupSize}"
+        desiredNumber=${this.groupSize}
         numberDigits="1"
         ?fillinActive=${this.usedFillIns[this.activeFillIn] === 'groupSize'}
       ></digit-fillin>
@@ -380,7 +380,7 @@ export class RecognizeGroupsApp extends TimeLimitedGame2 {
       ${this.includeAnswer === true
         ? html` <digit-fillin
             id="result"
-            desiredNumber="${this.groupSize * this.numberOfGroups}"
+            desiredNumber=${this.groupSize * this.numberOfGroups}
             numberDigits="2"
             ?fillinActive=${this.usedFillIns[this.activeFillIn] === 'result'}
           ></digit-fillin>`
@@ -400,7 +400,7 @@ export class RecognizeGroupsApp extends TimeLimitedGame2 {
         <div id="groups">${groups}</div>
         <div
           id="excersize"
-          class="${this.includeLongAddition ? 'smallText' : 'largeText'}"
+          class=${this.includeLongAddition ? 'smallText' : 'largeText'}
         >
           ${this.includeLongAddition
             ? html`<div class="subexcersize">${longAddition}</div>`
@@ -409,8 +409,8 @@ export class RecognizeGroupsApp extends TimeLimitedGame2 {
         </div>
         <div id="keyboard">
           <digit-keyboard
-            @digit-entered="${(evt: CustomEvent<Digit>) =>
-              this.handleDigit(evt.detail)}"
+            @digit-entered=${(evt: CustomEvent<Digit>) =>
+              this.handleDigit(evt.detail)}
           ></digit-keyboard>
         </div>
       </div>

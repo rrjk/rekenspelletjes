@@ -348,12 +348,12 @@ export class SortingGameApp extends TimeLimitedGame2 {
             elt =>
               html` <draggable-element
                 class="draggableNumber ${elt.visible === false ? 'hidden' : ''}"
-                id="${elt.id}"
+                id=${elt.id}
               >
                 <mompitz-number
-                  number="${elt.value}"
-                  minimumNumberDigitsForSize="${this.maxNumberDigits}"
-                  divider="${this.divider}"
+                  number=${elt.value}
+                  minimumNumberDigitsForSize=${this.maxNumberDigits}
+                  divider=${this.divider}
                   class="number"
                 ></mompitz-number>
               </draggable-element>`,
@@ -365,15 +365,15 @@ export class SortingGameApp extends TimeLimitedGame2 {
             elt =>
               html`<drop-target-box
                 class="box"
-                id="${elt.id}"
-                size="${elt.size}"
-                boxColor="${this.boxColor}"
+                id=${elt.id}
+                size=${elt.size}
+                boxColor=${this.boxColor}
               >
                 <mompitz-number
-                  number="${elt.intendedValue}"
+                  number=${elt.intendedValue}
                   class="number ${elt.numberVisible === false ? 'hidden' : ''}"
-                  divider="${this.divider}"
-                  minimumNumberDigitsForSize="${this.maxNumberDigits}"
+                  divider=${this.divider}
+                  minimumNumberDigitsForSize=${this.maxNumberDigits}
                 ></mompitz-number>
               </drop-target-box>`,
           )}

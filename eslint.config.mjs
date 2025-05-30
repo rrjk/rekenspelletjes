@@ -51,7 +51,6 @@ export default defineConfig([
 
       'lit/prefer-nothing': 'off',
       'lit/no-this-assign-in-render': 'off',
-      'lit/quoted-expressions': 'off',
     },
   },
 ]);

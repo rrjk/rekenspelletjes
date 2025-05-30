@@ -705,13 +705,13 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
         class="arch"
         resetDragAfterDrop
         ?dragDisabled=${disabled || crossedOut}
-        value="${width}"
+        value=${width}
         .dropTargetList=${this.numberLineArea}
-        @dropped="${this.archDrop}"
+        @dropped=${this.archDrop}
       >
         <number-line-arch
-          width="${width}"
-          position="${position}"
+          width=${width}
+          position=${position}
           ?disabled=${disabled}
           ?crossedOut=${crossedOut}
         ></number-line-arch>
@@ -728,7 +728,7 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
     );
 
     return html`
-      <dynamic-grid contentAspectRatio="${10 / 7}"> ${arches} </dynamic-grid>
+      <dynamic-grid contentAspectRatio=${10 / 7}> ${arches} </dynamic-grid>
     `;
   }
 
@@ -757,12 +757,12 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
         ${ref(this.numberLineAreaChange)}
       >
         <number-line-v2
-          min="${this.minNumber}"
-          max="${this.maxNumber}"
-          .fixedNumbers="${[this.minNumber, this.maxNumber]}"
-          .aboveArches="${aboveArches}"
-          .belowArches="${belowArches}"
-          .numberBoxes="${this.numberBoxes}"
+          min=${this.minNumber}
+          max=${this.maxNumber}
+          .fixedNumbers=${[this.minNumber, this.maxNumber]}
+          .aboveArches=${aboveArches}
+          .belowArches=${belowArches}
+          .numberBoxes=${this.numberBoxes}
           tickMarks="upToSingles"
           aspectRatio="10"
         ></number-line-v2>
@@ -771,8 +771,8 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
       <div id="keypadArea">
         <digit-keyboard
           ?disabled=${!this.keyPadActive}
-          .disabledDigits="${this.disabledDigits}"
-          @digit-entered="${this.handleDigit}"
+          .disabledDigits=${this.disabledDigits}
+          @digit-entered=${this.handleDigit}
         ></digit-keyboard>
       </div>
     `;

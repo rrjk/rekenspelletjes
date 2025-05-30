@@ -67,8 +67,8 @@ export class IconClockPair extends LitElement {
       <div class="icon">
         ${this.analog
           ? html`<analog-clock
-              hours="${this.hours}"
-              minutes="${this.minutes}"
+              hours=${this.hours}
+              minutes=${this.minutes}
               showHourTickmarks
               style="top: 5%"
               class=${cls}
@@ -76,8 +76,8 @@ export class IconClockPair extends LitElement {
           : ''}
         ${this.sentence
           ? html` <sentence-clock
-              hours="${this.hours}"
-              minutes="${this.minutes}"
+              hours=${this.hours}
+              minutes=${this.minutes}
               useWords
               style="top: 10%"
               class=${cls}
@@ -86,8 +86,8 @@ export class IconClockPair extends LitElement {
         ${this.digital
           ? html`
         <digital-clock
-          hours="${this.hours}"
-          minutes="${this.minutes}"
+          hours=${this.hours}
+          minutes=${this.minutes}
           useWords
           style="top: 10%"
           class=${cls}

@@ -141,9 +141,9 @@ export class FractionsPairMatchingGameIndexApp extends LitElement {
 
     return html`
       <icon-hourglass-button
-        title="${description}"
-        time="${duration}"
-        shortCode="${shortCode}"
+        title=${description}
+        time=${duration}
+        shortCode=${shortCode}
       >
         <div style="background-color:${getColorInfo(color).mainColorCode}" class="button">
            <fraction-element .fraction=${leftFraction} .representation=${leftRepresentation}></fraction-element>

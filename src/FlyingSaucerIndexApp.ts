@@ -253,9 +253,9 @@ export class FlyingSaucerGameIndexApp extends LitElement {
   ): HTMLTemplateResult {
     return html`
       <icon-hourglass-button
-        title="${description}"
-        time="${duration}"
-        shortCode="${shortCode}"
+        title=${description}
+        time=${duration}
+        shortCode=${shortCode}
       >
       <flying-saucer
           color=${color}
