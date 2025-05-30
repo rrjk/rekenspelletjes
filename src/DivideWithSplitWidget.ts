@@ -1,5 +1,3 @@
-/* eslint-disable max-classes-per-file */
-
 import { LitElement, html, css, svg } from 'lit';
 import type {
   CSSResultArray,

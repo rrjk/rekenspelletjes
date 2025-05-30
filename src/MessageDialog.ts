@@ -3,7 +3,6 @@ import { property } from 'lit/decorators.js';
 
 import type { CSSResultGroup, HTMLTemplateResult } from 'lit';
 
-// eslint-disable-next-line no-unused-vars
 import 'web-dialog';
 import type { WebDialog } from 'web-dialog';
 

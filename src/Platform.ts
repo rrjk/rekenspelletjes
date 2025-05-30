@@ -1,4 +1,3 @@
-/* eslint-disable class-methods-use-this */
 import { LitElement, html, css } from 'lit';
 import { property } from 'lit/decorators.js';
 

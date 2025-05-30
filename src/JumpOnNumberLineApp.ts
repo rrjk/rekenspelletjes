@@ -1,4 +1,3 @@
-/* eslint-disable class-methods-use-this */
 import { LitElement, html, css } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import type { CSSResultGroup, HTMLTemplateResult } from 'lit';

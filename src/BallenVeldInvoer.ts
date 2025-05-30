@@ -354,9 +354,7 @@ export class BallFieldEntry extends LitElement {
     while (cnt < 10 && this.rectangleIntersect(rect1, rect2)) {
       const factorY = Math.random();
       const factorX = Math.random();
-      // eslint-disable-next-line no-param-reassign
       ball.style.top = `calc(${factorX} * (100% - var(--ballWidth)))`;
-      // eslint-disable-next-line no-param-reassign
       ball.style.left = `calc(${factorY} * (100% - var(--ballHeight)))`;
       rect1 = ball.getBoundingClientRect();
       cnt += 1;
