@@ -27,7 +27,7 @@ export class SquaresBalloonGameApp extends TimeLimitedGame2 {
   private accessor operator: Operator = 'square';
 
   private operators: Operator[] = [];
-  private maxBase: number = 10;
+  private maxBase = 10;
   private gameLogger = new GameLogger('Y', '');
 
   constructor() {

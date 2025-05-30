@@ -26,6 +26,7 @@ export default defineConfig([
     plugins: { html },
   },
   tseslintConfigs.strict,
+  tseslintConfigs.stylistic,
   wceslintConfigs['flat/recommended'],
   wceslintConfigs['flat/best-practice'],
   liteslintConfigs['flat/all'],
@@ -53,9 +54,8 @@ export default defineConfig([
       'lit/prefer-static-styles': 'off',
       'max-classes-per-file': 'error',
       'dot-notation': 'error',
-
-      // will be introduced when stylistic is turned on
-      '@typescript-eslint/no-empty-function': 'error',
+      '@typescript-eslint/class-literal-property-style': 'off',
+      '@typescript-eslint/consistent-type-definitions': 'off',
     },
   },
 ]);

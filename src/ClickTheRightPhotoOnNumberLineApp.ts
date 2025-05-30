@@ -148,7 +148,7 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
    *  @throws {ChildNotFoundError} Child was not found, probably because app was not rendered yet.
    */
   get _scoreBox(): ScoreBox {
-    const ret = <ScoreBox | null>this.renderRoot.querySelector('#scoreBox');
+    const ret = this.renderRoot.querySelector('#scoreBox') as ScoreBox | null;
     if (ret === null) {
       throw new ChildNotFoundError(
         'scoreBox',
@@ -162,9 +162,9 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
    *  @throws {ChildNotFoundError} Child was not found, probably because app was not rendered yet.
    */
   get _progressBar(): ProgressBar {
-    const ret = <ProgressBar | null>(
-      this.renderRoot.querySelector('#progressBar')
-    );
+    const ret = this.renderRoot.querySelector(
+      '#progressBar',
+    ) as ProgressBar | null;
     if (ret === null) {
       throw new ChildNotFoundError(
         'progressBar',
@@ -178,9 +178,9 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
    *  @throws {ChildNotFoundError} Child was not found, probably because app was not rendered yet.
    */
   get _numberLine(): NumberLineHangingPhotos {
-    const ret = <NumberLineHangingPhotos | null>(
-      this.renderRoot.querySelector('#numberLine')
-    );
+    const ret = this.renderRoot.querySelector(
+      '#numberLine',
+    ) as NumberLineHangingPhotos | null;
     if (ret === null) {
       throw new ChildNotFoundError(
         'numberLine',
@@ -194,9 +194,9 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
    *  @throws {ChildNotFoundError} Child was not found, probably because app was not rendered yet.
    */
   get _messageDialog(): MessageDialog {
-    const ret = <MessageDialog | null>(
-      this.renderRoot.querySelector('#messageDialog')
-    );
+    const ret = this.renderRoot.querySelector(
+      '#messageDialog',
+    ) as MessageDialog | null;
     if (ret === null) {
       throw new ChildNotFoundError(
         'messageDialog',
@@ -210,9 +210,9 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
    *  @throws {ChildNotFoundError} Child was not found, probably because app was not rendered yet.
    */
   get _gameOverDialog(): GameOverDialog {
-    const ret = <GameOverDialog | null>(
-      this.renderRoot.querySelector('#gameOverDialog')
-    );
+    const ret = this.renderRoot.querySelector(
+      '#gameOverDialog',
+    ) as GameOverDialog | null;
     if (ret === null) {
       throw new ChildNotFoundError(
         'gameOverDialog',

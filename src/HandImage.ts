@@ -21,7 +21,7 @@ export function numberToPossibleNumberDots(
   }
   if (nmbr < 0) return 0;
   if (nmbr > 10) return 10;
-  return <PossibleNumberDots>nmbr; // Due to the if statements above, we can cast to PossibleNumberDots
+  return nmbr as PossibleNumberDots; // Due to the if statements above, we can cast to PossibleNumberDots
 }
 
 /** Two dimensional array to determine which dots are to be shown for a given number of dots

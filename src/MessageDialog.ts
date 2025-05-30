@@ -33,7 +33,7 @@ export class MessageDialog extends LitElement {
    *  @throws {ChildNotFoundError} Child was not found, probably because the game over dialog was not rendered yet.
    */
   get _dialog(): WebDialog {
-    const ret = <WebDialog | null>this.renderRoot.querySelector('#dialog');
+    const ret = this.renderRoot.querySelector('#dialog') as WebDialog | null;
     if (ret === null) {
       throw new ChildNotFoundError('dialog', 'MessageDialog');
     }
@@ -47,7 +47,7 @@ export class MessageDialog extends LitElement {
       this._dialog.addEventListener(
         'close',
         e => {
-          resolve((<CustomEvent<string>>e).detail);
+          resolve((e as CustomEvent<string>).detail);
         },
         { once: true },
       );

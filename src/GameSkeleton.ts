@@ -31,7 +31,7 @@ export abstract class GameSkeleton extends LitElement {
    *
    */
   protected getElement<T>(query: string): T {
-    const ret = <T | null>this.renderRoot.querySelector(query);
+    const ret = this.renderRoot.querySelector(query) as T | null;
     if (ret === null) {
       throw new ChildNotFoundError(query, 'TimeLimitedGame');
     }

@@ -36,21 +36,21 @@ class AanklikkenInVolgordeApp {
 
     this.labelsInOrder = [];
     this.startGameText = ``;
-    this.scoreBox = <TimedScoreBox>document.getElementById('scoreBox');
+    this.scoreBox = document.getElementById('scoreBox') as TimedScoreBox;
 
-    this.ballFieldEntry = <BallFieldEntry>(
-      document.getElementById('ballFieldEntry')
-    );
-    this.gameOverDialog = <GameOverDialog>(
-      document.getElementById('gameOverDialog')
-    );
-    this.messageDialog = <MessageDialog>(
-      document.getElementById('messageDialog')
-    );
+    this.ballFieldEntry = document.getElementById(
+      'ballFieldEntry',
+    ) as BallFieldEntry;
+    this.gameOverDialog = document.getElementById(
+      'gameOverDialog',
+    ) as GameOverDialog;
+    this.messageDialog = document.getElementById(
+      'messageDialog',
+    ) as MessageDialog;
 
     this.ballFieldEntry.setPreventCollisionElements([this.scoreBox]);
     this.ballFieldEntry.addEventListener('input-clicked', (evt: Event) =>
-      this.inputClicked(<CustomEvent>evt),
+      this.inputClicked(evt as CustomEvent),
     );
 
     this.parsePossibleNumbersFromUrl();
@@ -142,6 +142,7 @@ class AanklikkenInVolgordeApp {
       begin bij ${startNumber}.`;
     } else {
       const numbersToSplitFromUrl = urlParams.getAll('number');
+      // eslint-disable-next-line @typescript-eslint/prefer-for-of -- legacy
       for (let i = 0; i < numbersToSplitFromUrl.length; i++) {
         const numberAsInt = parseInt(numbersToSplitFromUrl[i], 10);
         if (!Number.isNaN(numberAsInt)) {

@@ -175,6 +175,7 @@ export class BallFieldEntry extends LitElement {
       new URL('../images/ball-green.svg', import.meta.url),
       new URL('../images/ball-yellow.svg', import.meta.url),
     ];
+    //eslint-disable-next-line @typescript-eslint/prefer-for-of -- legacy
     for (let i = 0; i < this.labels.length; i++) {
       const selectedBallId = randomIntFromRange(0, possibleBalls.length - 1);
       this.balls[possibleBalls[selectedBallId]] = {
@@ -330,9 +331,9 @@ export class BallFieldEntry extends LitElement {
 
   /** Prevent that balls overlap with other elements on the screen. */
   preventOverlapForBalls(): void {
-    const ballElements = <NodeListOf<HTMLElement>>(
-      this.renderRoot.querySelectorAll('.Ball')
-    );
+    const ballElements = this.renderRoot.querySelectorAll(
+      '.Ball',
+    ) as NodeListOf<HTMLElement>;
     this.preventCollisionElements.forEach(element => {
       ballElements.forEach(ball => {
         this.preventOverlapForBall(ball, element);

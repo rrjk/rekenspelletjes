@@ -12,7 +12,7 @@ export class AscendingBalloonsTestApp extends LitElement {
   @state()
   accessor disabled = true;
   @state()
-  accessor answers = <Answers>{ correct: 13, incorrect: [67, 45, 3] };
+  accessor answers = { correct: 13, incorrect: [67, 45, 3] } as Answers;
 
   /** Helper function to easily query for an element.
    *  @param query Querystring for the element.
@@ -21,7 +21,7 @@ export class AscendingBalloonsTestApp extends LitElement {
    *
    */
   private getElement<T>(query: string): T {
-    const ret = <T | null>this.renderRoot.querySelector(query);
+    const ret = this.renderRoot.querySelector(query) as T | null;
     if (ret === null) {
       throw new ChildNotFoundError(query, 'FindOnNumberApp');
     }

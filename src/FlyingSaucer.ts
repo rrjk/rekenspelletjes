@@ -20,16 +20,16 @@ export class FlyingSaurcer extends LitElement {
   accessor color: Color = 'red';
 
   @property({ type: String })
-  accessor content: string = '';
+  accessor content = '';
 
   @property({ type: Boolean })
-  accessor disabled: boolean = false;
+  accessor disabled = false;
 
   @property({ type: String })
-  accessor symbol1: string = '';
+  accessor symbol1 = '';
 
   @property({ type: String })
-  accessor symbol2: string = '';
+  accessor symbol2 = '';
 
   static get styles(): CSSResultGroup {
     const ret: CSSResultGroup = [];
@@ -131,13 +131,13 @@ export class FlyingSaurcer extends LitElement {
   }
 
   render(): HTMLTemplateResult {
-    let digitClass: string = '';
+    let digitClass = '';
     if (this.content.length >= 4) digitClass = 'fourDigit';
     else if (this.content.length >= 3) digitClass = 'threeDigit';
     else if (this.content.length >= 2) digitClass = 'twoDigit';
     else if (this.content.length >= 1) digitClass = 'oneDigit';
 
-    const classes: { [name: string]: string | boolean | number } = {};
+    const classes: Record<string, string | boolean | number> = {};
     classes.disabled = this.disabled;
     classes.enabled = !this.disabled;
     classes[digitClass] = true;

@@ -39,7 +39,7 @@ export class EggCountingApp extends TimeLimitedGame2 {
   accessor eggCartonTarget: readonly DropTarget[] = [];
 
   @state()
-  accessor eggCartonTargetAreaHighlightWrong: boolean = false;
+  accessor eggCartonTargetAreaHighlightWrong = false;
 
   @state()
   accessor trashcanTarget: readonly DropTarget[] = [];
@@ -48,7 +48,7 @@ export class EggCountingApp extends TimeLimitedGame2 {
   accessor eggTarget: readonly DropTarget[] = [];
 
   @state()
-  accessor eggTargetAreaHighlightWrong: boolean = false;
+  accessor eggTargetAreaHighlightWrong = false;
 
   eggCartonSource: DraggableElement | null = null;
 
@@ -60,7 +60,10 @@ export class EggCountingApp extends TimeLimitedGame2 {
   eggTargetChange(eggTarget: Element | undefined) {
     if (eggTarget) {
       this.eggTarget = [
-        { element: <DropTargetElementInterface>eggTarget, dropType: 'dropOk' },
+        {
+          element: eggTarget as DropTargetElementInterface,
+          dropType: 'dropOk',
+        },
       ];
     } else this.eggTarget = [];
   }
@@ -69,7 +72,7 @@ export class EggCountingApp extends TimeLimitedGame2 {
     if (eggCartonTarget) {
       this.eggCartonTarget = [
         {
-          element: <DropTargetElementInterface>eggCartonTarget,
+          element: eggCartonTarget as DropTargetElementInterface,
           dropType: 'dropOk',
         },
       ];
@@ -80,7 +83,7 @@ export class EggCountingApp extends TimeLimitedGame2 {
     if (trashcanTarget) {
       this.trashcanTarget = [
         {
-          element: <DropTargetElementInterface>trashcanTarget,
+          element: trashcanTarget as DropTargetElementInterface,
           dropType: 'dropOk',
         },
       ];

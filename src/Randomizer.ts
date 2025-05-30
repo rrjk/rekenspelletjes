@@ -58,7 +58,7 @@ export function splitInConsecutiveRanges(orig: number[]): number[][] {
   let previous = Number.NaN;
 
   while (origCopy.length > 0) {
-    const current: number = <number>origCopy.pop(); // As the length > 0, we're sure we'll get an element back.
+    const current: number = origCopy.pop() as number; // As the length > 0, we're sure we'll get an element back.
     if (current !== previous) {
       if (Number.isNaN(previous) || current - previous !== 1) {
         if (subRange.length > 0) ret.push(subRange);

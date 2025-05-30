@@ -199,7 +199,7 @@ export const colorArray: ColorInfo[] = [
  */
 export function stringToColor(color: string | null): Color {
   const colorInfo = colorArray.find(ci => ci.colorName === color);
-  if (colorInfo !== undefined) return <Color>color;
+  if (colorInfo !== undefined) return color as Color;
   return 'grey';
 }
 

@@ -6,7 +6,7 @@ export interface ResizeObserverClientInterface extends LitElement {
 
 const ro = new ResizeObserver(entries => {
   entries.forEach(entry =>
-    (<ResizeObserverClientInterface>entry.target).handleResize(
+    (entry.target as ResizeObserverClientInterface).handleResize(
       entry.contentRect,
     ),
   );

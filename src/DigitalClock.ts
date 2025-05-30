@@ -27,14 +27,13 @@ type SegmentNamesType = (typeof segmentNames)[number];
 type SvgLineCoordinatesType = 'x1' | 'x2' | 'y1' | 'y2';
 
 /** A type to describe the SVG coordinates for the SVG line making up a segment. */
-type segmentXYOffsetsType = {
-  [segment in SegmentNamesType]: {
-    [coordinate in SvgLineCoordinatesType]: number;
-  };
-};
+type segmentXYOffsetsType = Record<
+  SegmentNamesType,
+  Record<SvgLineCoordinatesType, number>
+>;
 
 /** A type for an array that maps a digit that whether the different segments should be shown or not.  */
-type DigitsToSegmentsType = { [location in SegmentNamesType]: boolean }[];
+type DigitsToSegmentsType = Record<SegmentNamesType, boolean>[];
 
 /** Table translating digits (position within list) into what segments should be lit. */
 const digitsToSegments: Readonly<DigitsToSegmentsType> = [

@@ -151,14 +151,15 @@ function renderSubAnswerHelperField(
   throw new Error(`Illegal field ${field}`);
 }
 
-type FieldsRenderInfo = {
-  [key in
-    | FixedNumberFields
-    | SymbolFields
-    | SplitLineDirection
-    | SplitHelperFields
-    | SubAnswerHelperFields]: FieldInfo;
-} & { [key in FillInFields]: FillInFieldInfo };
+type FieldsRenderInfo = Record<
+  | FixedNumberFields
+  | SymbolFields
+  | SplitLineDirection
+  | SplitHelperFields
+  | SubAnswerHelperFields,
+  FieldInfo
+> &
+  Record<FillInFields, FillInFieldInfo>;
 function initFieldsRenderInfo(): FieldsRenderInfo {
   const ret: Partial<FieldsRenderInfo> = {};
   for (const key of fillInFields) {
@@ -205,8 +206,8 @@ function renderNumber(
   nmbr: number,
   activeDigits: number,
   pos: Position,
-  fillIn: boolean = false,
-  active: boolean = false,
+  fillIn = false,
+  active = false,
 ): SVGTemplateResult {
   const rectClasses = {
     boxLine: fillIn,
@@ -264,10 +265,10 @@ export class DivideWihSplitWidget extends LitElement {
   accessor activeDigit = 0; // Which digit should be active, counting starts at 0
 
   @property({ type: Boolean })
-  accessor showSubAnswers: boolean = false;
+  accessor showSubAnswers = false;
 
   @property({ type: Boolean })
-  accessor showHelp: boolean = false;
+  accessor showHelp = false;
 
   @state()
   accessor fieldsRenderInfo = initFieldsRenderInfo();

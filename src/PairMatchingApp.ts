@@ -346,8 +346,8 @@ export abstract class PairMatchingApp<
     if (evt.dropType === 'dropWrong') return;
 
     const involvedElements = {
-      draggable: <CellElement>evt.draggableElement,
-      target: <CellElement>evt.dropTargetElement,
+      draggable: evt.draggableElement as CellElement,
+      target: evt.dropTargetElement as CellElement,
     };
     const involvedGridIndexes = {
       draggable: involvedElements.draggable.gridIndex,

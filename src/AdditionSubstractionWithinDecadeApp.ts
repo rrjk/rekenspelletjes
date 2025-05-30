@@ -50,7 +50,7 @@ export class AdditionSubstractionWithinDecadeApp extends TimeLimitedGame2 {
         decade < 100 &&
         !this.decades.find(value => value === decade)
       ) {
-        this.decades.push(<Decade>decade);
+        this.decades.push(decade as Decade);
       }
     });
     if (this.decades.length === 0) this.decades.push(0);

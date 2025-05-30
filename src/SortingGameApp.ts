@@ -279,13 +279,13 @@ export class SortingGameApp extends TimeLimitedGame2 {
       this.renderRoot
         .querySelectorAll('drop-target-box')
         .forEach(dropTarget => {
-          (<DraggableElement>draggable).addDropElement(
-            <DropTargetBox>dropTarget,
+          (draggable as DraggableElement).addDropElement(
+            dropTarget as DropTargetBox,
           );
         });
 
       draggable.addEventListener('dropped', event =>
-        this.handleDropped(<DropEvent>event),
+        this.handleDropped(event as DropEvent),
       );
     });
 

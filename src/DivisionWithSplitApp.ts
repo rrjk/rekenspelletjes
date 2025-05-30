@@ -35,9 +35,7 @@ const allEnabledDigits = [
   false,
 ];
 
-type NeededDigits = {
-  [key in FillInFields]: number[];
-};
+type NeededDigits = Record<FillInFields, number[]>;
 function initEmptyNeededDigits(): NeededDigits {
   return Object.fromEntries(
     fillInFields.map(key => [key, [] as number[]]),

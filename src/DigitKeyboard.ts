@@ -113,7 +113,7 @@ export class DigitKeyboard
   handleKeyDown(evt: KeyboardEvent) {
     const keyName = evt.key;
 
-    const digitMap: Map<string, Digit> = new Map([
+    const digitMap = new Map<string, Digit>([
       ['0', 0],
       ['1', 1],
       ['2', 2],

@@ -81,11 +81,11 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
   @state()
   private accessor answer = 22;
   @state()
-  private accessor firstArch: number = 0;
+  private accessor firstArch = 0;
   @state()
-  private accessor lastArch: number = 0;
+  private accessor lastArch = 0;
   @state()
-  private accessor numberTenArches: number = 0;
+  private accessor numberTenArches = 0;
   @state()
   private accessor operator: OperatorType = 'plus';
   @state()
@@ -99,11 +99,11 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
   @state()
   private accessor numberLineArea: DropTarget[] = [];
   @state()
-  private accessor keyPadActive: boolean = false;
+  private accessor keyPadActive = false;
   @state()
-  private accessor archesPadActive: boolean = false;
+  private accessor archesPadActive = false;
   @state()
-  private accessor gameActive: boolean = false;
+  private accessor gameActive = false;
   @state()
   private accessor disabledDigits = [
     false,
@@ -500,7 +500,7 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
     if (numberLineArea) {
       this.numberLineArea = [
         {
-          element: <DropTargetElementInterface>numberLineArea,
+          element: numberLineArea as DropTargetElementInterface,
           dropType: 'dropOk',
         },
       ];

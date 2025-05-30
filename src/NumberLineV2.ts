@@ -124,8 +124,8 @@ export class NumberLineV2
     2 * NumberLineV2.numberBoxSvgWidthDigit +
       NumberLineV2.numberBoxSvgWidthOverhead;
 
-  maxNumberDigits: number = 0;
-  minusSignPossible: boolean = false;
+  maxNumberDigits = 0;
+  minusSignPossible = false;
 
   static get styles(): CSSResultGroup {
     return css`

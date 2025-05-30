@@ -146,7 +146,7 @@ export class FractionMatchingGameApp extends PairMatchingApp<FractionAndRepresen
     super.startNewGame();
   }
 
-  fillPotentialDenumerators(refillNumerators: boolean = false): void {
+  fillPotentialDenumerators(refillNumerators = false): void {
     const denumeratorFrequencies = gameToDenumeratorFrequencies.find(
       elm => elm.gameType === this.gameType,
     )?.denumeratorFrequencies;
