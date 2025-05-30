@@ -1,6 +1,7 @@
 import js from '@eslint/js';
 import { importX } from 'eslint-plugin-import-x';
 import globals from 'globals';
+import html from 'eslint-plugin-html';
 import { configs as tseslintConfigs } from 'typescript-eslint';
 import { configs as wceslintConfigs } from 'eslint-plugin-wc';
 import { configs as liteslintConfigs } from 'eslint-plugin-lit';
@@ -19,9 +20,14 @@ export default defineConfig([
     files: ['**/*.{js,mjs,cjs,ts,mts,cts}'],
     languageOptions: { globals: globals.browser },
   },
+  {
+    files: ['**/*.html'],
+    plugins: { html },
+  },
   tseslintConfigs.recommended,
   wceslintConfigs['flat/recommended'],
   wceslintConfigs['flat/best-practice'],
+  liteslintConfigs['flat/all'],
   {
     settings: {
       wc: {
@@ -32,7 +38,6 @@ export default defineConfig([
       },
     },
   },
-  liteslintConfigs['flat/all'],
   {
     rules: {
       'import-x/no-dynamic-require': 'warn',
