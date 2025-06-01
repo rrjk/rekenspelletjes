@@ -13,7 +13,7 @@ export function sommenMetSplitsenLink(
   game: GameRangeType,
   operators: Operator[],
   time: number,
-  splits?: undefined | ShowSplitsType,
+  splits?: ShowSplitsType,
 ) {
   let params = `time=${time}&game=${game}`;
   if (splits !== undefined) params += `&splits=${splits}`;

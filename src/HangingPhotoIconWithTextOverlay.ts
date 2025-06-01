@@ -1,6 +1,5 @@
 import { LitElement, html, css, SVGTemplateResult, svg } from 'lit';
 import type { HTMLTemplateResult, CSSResultGroup } from 'lit';
-// eslint-disable-next-line import/extensions
 import { customElement, property, state } from 'lit/decorators.js';
 import { FramedPhotoSVG, PhotoId } from './FramedPhotoSVG';
 import { getColorInfo, Color } from './Colors';
@@ -173,7 +172,7 @@ export class HangingPhotoIconWithTextOverlay extends LitElement {
             rx="15"
             width="120"
             height="80"
-            fill="${getColorInfo(this.background).mainColorCode}"
+            fill=${getColorInfo(this.background).mainColorCode}
           />
           ${this.renderNumberLine()}
           ${tickMarks10Positions.map(pos => this.render10TickMark(pos))}

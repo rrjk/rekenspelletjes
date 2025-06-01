@@ -13,7 +13,9 @@ export class GameLogger {
       {
         method: 'POST',
       },
-    );
+    ).catch(() => {
+      throw new Error("Can't log played game");
+    });
   }
 
   setMainCode(mainCode: string): void {

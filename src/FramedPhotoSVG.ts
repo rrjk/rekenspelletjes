@@ -1,4 +1,3 @@
-/* eslint-disable class-methods-use-this */
 import { svg } from 'lit';
 import type { SVGTemplateResult } from 'lit';
 
@@ -11,7 +10,7 @@ interface PhotoMetaData {
 
 export type PhotoId = 'Jan' | 'Anne' | 'Johannes' | 'Frank' | 'Disabled';
 
-const photos: { [key: string]: PhotoMetaData } = {
+const photos: Record<string, PhotoMetaData> = {
   Anne: {
     url: new URL('../images/Mompitz Anne.png', import.meta.url),
     width: 434,

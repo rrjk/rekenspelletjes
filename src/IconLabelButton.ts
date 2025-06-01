@@ -1,6 +1,5 @@
 import { LitElement, html, css } from 'lit';
 import type { HTMLTemplateResult, CSSResultGroup } from 'lit';
-// eslint-disable-next-line import/extensions
 import { customElement, property } from 'lit/decorators.js';
 
 @customElement('icon-label-button')
@@ -32,7 +31,7 @@ export class IconLabelButton extends LitElement {
 
   render(): HTMLTemplateResult {
     return html`
-      <a href="${this.href}">
+      <a href=${this.href}>
         <slot></slot>
         <p>${this.title}</p>
       </a>

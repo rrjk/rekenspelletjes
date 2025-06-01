@@ -1,6 +1,5 @@
 import { html, css } from 'lit';
 
-// eslint-disable-next-line import/extensions
 import type { HTMLTemplateResult, CSSResultArray } from 'lit';
 
 import { TimerBar } from './TimerBar';
@@ -58,7 +57,8 @@ export abstract class TimeCountingGame extends GameSkeleton {
    * Is empty for the TimeCountingGame, should be overridden in children.
    */
   renderGameContent(): HTMLTemplateResult {
-    return html``;
+    return html`Placeholder for gamecontent - the be filled by descendents of
+    TimeCountingGame`;
   }
 
   /** Render the actual game within the gameskeleton */
@@ -68,9 +68,9 @@ export abstract class TimeCountingGame extends GameSkeleton {
         <timer-bar
           width:100%
           id="timerBar"
-          numberOk="${this.numberOk}"
-          numberNok="${this.numberNok}"
-          ?paused="${this.timerPaused}"
+          numberOk=${this.numberOk}
+          numberNok=${this.numberNok}
+          ?paused=${this.timerPaused}
         ></timer-bar>
         <div class="gameContent">${this.renderGameContent()}</div>
       </div>

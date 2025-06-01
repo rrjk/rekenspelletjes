@@ -1,7 +1,13 @@
-import { CSSResultArray, html, css, LitElement, svg, unsafeCSS } from 'lit';
-// eslint-disable-next-line import/extensions
+import {
+  CSSResultArray,
+  html,
+  css,
+  LitElement,
+  svg,
+  unsafeCSS,
+  nothing,
+} from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-// eslint-disable-next-line import/extensions
 import { classMap } from 'lit/directives/class-map.js';
 
 import type { HTMLTemplateResult, SVGTemplateResult } from 'lit';
@@ -13,7 +19,7 @@ import { getColorInfo } from './Colors';
 
 function convertFractionAttribute(value: string | null): Fraction {
   if (value !== null) {
-    const parsedValue = JSON.parse(value);
+    const parsedValue = JSON.parse(value) as Fraction;
     return parsedValue;
   }
   return new Fraction(3, 4);
@@ -127,7 +133,7 @@ export class FractionElement extends LitElement {
         <line
           class="fractionBar ${classMap(classes)}"
           x1="-${this.barLength}"
-          x2="${this.barLength}"
+          x2=${this.barLength}
           y1="0"
           y2="0"
         />
@@ -205,7 +211,7 @@ export class FractionElement extends LitElement {
     }
 
     return html`
-      <svg class="${classMap(classes)}" viewbox="-1100 -1100 2200 2200">
+      <svg class=${classMap(classes)} viewbox="-1100 -1100 2200 2200">
         <path
           d="M 0 0 L 0 -1000 A 1000 1000 0 ${largeArcFilled} 1 
              ${this.arcToXPosition(arc)} ${this.arcToYPosition(arc)} L 0 0"
@@ -235,15 +241,10 @@ export class FractionElement extends LitElement {
     return -Math.cos(arc) * 1000;
   }
 
-  render(): HTMLTemplateResult {
+  render(): HTMLTemplateResult | typeof nothing {
     if (this.representation === 'fraction') return this.renderAsFraction();
     if (this.representation === 'piechart') return this.renderAsPiechart();
     if (this.representation === 'percentage') return this.renderAsPercentage();
-    if (this.representation === 'decimal') return this.renderAsDecimal();
-
-    console.error(
-      `Fraction representation ${this.representation} is not supported`,
-    );
-    return html``;
+    else /*(this.representation === 'decimal') */ return this.renderAsDecimal();
   }
 }

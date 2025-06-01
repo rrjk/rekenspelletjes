@@ -1,3 +1,5 @@
+/* eslint-disable import-x/no-nodejs-modules -- This file is not part of the application, but for the config of the web-dev-server, which is run by node */
+
 import { esbuildPlugin } from '@web/dev-server-esbuild';
 import { fileURLToPath } from 'url';
 

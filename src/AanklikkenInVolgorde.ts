@@ -1,8 +1,10 @@
-/* eslint-disable class-methods-use-this */
 /* eslint no-plusplus: ["error", { "allowForLoopAfterthoughts": true }] */
 
+/* eslint-disable @typescript-eslint/no-floating-promises -- legacy */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access -- legacy */
+/* eslint-disable @typescript-eslint/no-unsafe-argument -- legacy */
+
 import { html } from 'lit';
-import type { HTMLTemplateResult } from 'lit';
 
 import './BallenVeldInvoer';
 import './GameOverDialog';
@@ -27,7 +29,7 @@ class AanklikkenInVolgordeApp {
   gameOverDialog: GameOverDialog;
   messageDialog: MessageDialog;
   ballToFindIndex: number;
-  startGameText: HTMLTemplateResult;
+  startGameText: string;
 
   constructor() {
     this.updateViewPortHeight();
@@ -37,22 +39,22 @@ class AanklikkenInVolgordeApp {
     });
 
     this.labelsInOrder = [];
-    this.startGameText = html``;
-    this.scoreBox = <TimedScoreBox>document.getElementById('scoreBox');
+    this.startGameText = ``;
+    this.scoreBox = document.getElementById('scoreBox') as TimedScoreBox;
 
-    this.ballFieldEntry = <BallFieldEntry>(
-      document.getElementById('ballFieldEntry')
-    );
-    this.gameOverDialog = <GameOverDialog>(
-      document.getElementById('gameOverDialog')
-    );
-    this.messageDialog = <MessageDialog>(
-      document.getElementById('messageDialog')
-    );
+    this.ballFieldEntry = document.getElementById(
+      'ballFieldEntry',
+    ) as BallFieldEntry;
+    this.gameOverDialog = document.getElementById(
+      'gameOverDialog',
+    ) as GameOverDialog;
+    this.messageDialog = document.getElementById(
+      'messageDialog',
+    ) as MessageDialog;
 
     this.ballFieldEntry.setPreventCollisionElements([this.scoreBox]);
     this.ballFieldEntry.addEventListener('input-clicked', (evt: Event) =>
-      this.inputClicked(<CustomEvent>evt),
+      this.inputClicked(evt as CustomEvent),
     );
 
     this.parsePossibleNumbersFromUrl();
@@ -69,9 +71,11 @@ class AanklikkenInVolgordeApp {
     await this.messageDialog.updateComplete;
 
     this.scoreBox.pause();
-    this.messageDialog.show('Ballen knallen', this.startGameText).then(() => {
-      this.scoreBox.resetScore();
-    });
+    this.messageDialog
+      .show('Ballen knallen', html`this.startGameText`)
+      .then(() => {
+        this.scoreBox.resetScore();
+      });
   }
 
   inputClicked(evt: CustomEvent) {
@@ -126,7 +130,7 @@ class AanklikkenInVolgordeApp {
         for (let i = 1; i <= 10; i++) {
           this.labelsInOrder.push(`${i * tableAsInt}`);
         }
-        this.startGameText = html`Klik de getallen aan, van klein naar groot,
+        this.startGameText = `Klik de getallen aan, van klein naar groot,
         met sprongen van ${tableAsInt}.`;
       }
     } else if (urlParams.has('random')) {
@@ -138,24 +142,25 @@ class AanklikkenInVolgordeApp {
       for (let i = startNumber; i < startNumber + 20; i++) {
         this.labelsInOrder.push(`${i}`);
       }
-      this.startGameText = html`Klik de getallen aan, van klein naar groot,
+      this.startGameText = `Klik de getallen aan, van klein naar groot,
       begin bij ${startNumber}.`;
     } else {
       const numbersToSplitFromUrl = urlParams.getAll('number');
+      // eslint-disable-next-line @typescript-eslint/prefer-for-of -- legacy
       for (let i = 0; i < numbersToSplitFromUrl.length; i++) {
         const numberAsInt = parseInt(numbersToSplitFromUrl[i], 10);
         if (!Number.isNaN(numberAsInt)) {
           this.labelsInOrder.push(`${numberAsInt}`);
         }
       }
-      this.startGameText = html`Klik de getallen aan van klein naar groot.`;
+      this.startGameText = `Klik de getallen aan van klein naar groot.`;
     }
     if (this.labelsInOrder.length === 0) {
       this.labelsInOrder = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
-      this.startGameText = html`Klik de getallen aan van klein naar groot.`;
+      this.startGameText = `Klik de getallen aan van klein naar groot.`;
     }
     if (urlParams.has('introText')) {
-      this.startGameText = html`${urlParams.get('introText')}`;
+      this.startGameText = `${urlParams.get('introText')}`;
     }
   }
 
@@ -181,7 +186,6 @@ window.addEventListener('resize', () => {
 */
 
 document.addEventListener('DOMContentLoaded', () => {
-  // eslint-disable-next-line no-unused-vars
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const app = new AanklikkenInVolgordeApp();
 });

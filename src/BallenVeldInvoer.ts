@@ -1,9 +1,7 @@
-/* eslint-disable class-methods-use-this */
 /* eslint no-plusplus: ["error", { "allowForLoopAfterthoughts": true }] */
 
-import { LitElement, html, css } from 'lit';
+import { LitElement, html, css, nothing } from 'lit';
 
-// eslint-disable-next-line import/extensions
 import { property } from 'lit/decorators.js';
 
 import type { CSSResultGroup, HTMLTemplateResult } from 'lit';
@@ -177,6 +175,7 @@ export class BallFieldEntry extends LitElement {
       new URL('../images/ball-green.svg', import.meta.url),
       new URL('../images/ball-yellow.svg', import.meta.url),
     ];
+    //eslint-disable-next-line @typescript-eslint/prefer-for-of -- legacy
     for (let i = 0; i < this.labels.length; i++) {
       const selectedBallId = randomIntFromRange(0, possibleBalls.length - 1);
       this.balls[possibleBalls[selectedBallId]] = {
@@ -284,7 +283,9 @@ export class BallFieldEntry extends LitElement {
     this.requestUpdate();
   }
 
-  makeBall(ball: BallInfo | NotShownBallInfo): HTMLTemplateResult {
+  makeBall(
+    ball: BallInfo | NotShownBallInfo,
+  ): HTMLTemplateResult | typeof nothing {
     if (ball.show) {
       let text;
       if (ball.disabled) text = '✗';
@@ -298,12 +299,12 @@ export class BallFieldEntry extends LitElement {
         ?disabled=${ball.disabled}
         class="Ball ${ball.removed ? 'FadeOut' : ''}"
         id="Ball${ball.label}"
-        @click="${() => this.handleBall(ball.cell)}"
+        @click=${() => this.handleBall(ball.cell)}
       >
         ${text}
       </button>`;
     }
-    return html``;
+    return nothing;
   }
 
   makeCell20(ball: BallInfo | NotShownBallInfo): HTMLTemplateResult {
@@ -330,9 +331,7 @@ export class BallFieldEntry extends LitElement {
 
   /** Prevent that balls overlap with other elements on the screen. */
   preventOverlapForBalls(): void {
-    const ballElements = <NodeListOf<HTMLElement>>(
-      this.renderRoot.querySelectorAll('.Ball')
-    );
+    const ballElements = this.renderRoot.querySelectorAll<HTMLElement>('.Ball');
     this.preventCollisionElements.forEach(element => {
       ballElements.forEach(ball => {
         this.preventOverlapForBall(ball, element);
@@ -356,9 +355,7 @@ export class BallFieldEntry extends LitElement {
     while (cnt < 10 && this.rectangleIntersect(rect1, rect2)) {
       const factorY = Math.random();
       const factorX = Math.random();
-      // eslint-disable-next-line no-param-reassign
       ball.style.top = `calc(${factorX} * (100% - var(--ballWidth)))`;
-      // eslint-disable-next-line no-param-reassign
       ball.style.left = `calc(${factorY} * (100% - var(--ballHeight)))`;
       rect1 = ball.getBoundingClientRect();
       cnt += 1;

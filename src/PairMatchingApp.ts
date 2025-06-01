@@ -1,11 +1,8 @@
 import { html, css } from 'lit';
 
-// eslint-disable-next-line import/extensions
 import { state } from 'lit/decorators.js';
 
-// eslint-disable-next-line import/extensions
 import { range } from 'lit/directives/range.js';
-// eslint-disable-next-line import/extensions
 import { classMap } from 'lit/directives/class-map.js';
 
 import { castDraft, create } from 'mutative';
@@ -349,8 +346,8 @@ export abstract class PairMatchingApp<
     if (evt.dropType === 'dropWrong') return;
 
     const involvedElements = {
-      draggable: <CellElement>evt.draggableElement,
-      target: <CellElement>evt.dropTargetElement,
+      draggable: evt.draggableElement as CellElement,
+      target: evt.dropTargetElement as CellElement,
     };
     const involvedGridIndexes = {
       draggable: involvedElements.draggable.gridIndex,
@@ -373,7 +370,7 @@ export abstract class PairMatchingApp<
       }
     }
 
-    // Given the code above, we now for sure there will be a draggable and a target in cellInfo
+    // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion -- Given the code above, we now for sure there will be a draggable and a target in cellInfo
     const equal = cellInfo.draggable!.equal(cellInfo.target!);
 
     if (equal) {
@@ -556,7 +553,7 @@ export abstract class PairMatchingApp<
 
       ret.push(
         html`<img class="miniMompitz ${classMap(imgClass)}" 
-              alt="Mompitz figure" src="${PairMatchingApp.imagesForMompitzCells[indexes[i]]}"
+              alt="Mompitz figure" src=${PairMatchingApp.imagesForMompitzCells[indexes[i]]}
               @animationend=${() => this.animationend(gridIndex)}></img>`,
       );
     }
@@ -602,8 +599,8 @@ export abstract class PairMatchingApp<
         <div class="content">
           <draggable-target-slotted
             id=${this.serializeGridId(gridIndex)}
-            .gridIndex="${gridIndex}"
-            @dropped="${this.handleDropped}"
+            .gridIndex=${gridIndex}
+            @dropped=${(evt: DropEvent) => this.handleDropped(evt)}
             resetDragAfterDrop
             style="top: ${cell.basicInfo.top}%; left: ${cell.basicInfo.left}%;"
           >

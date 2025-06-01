@@ -1,10 +1,7 @@
 import { html, css, unsafeCSS } from 'lit';
 
-// eslint-disable-next-line import/extensions
 import { customElement, state } from 'lit/decorators.js';
-// eslint-disable-next-line import/extensions
 import { ref } from 'lit/directives/ref.js';
-// eslint-disable-next-line import/extensions
 import { classMap } from 'lit/directives/class-map.js';
 
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
@@ -42,7 +39,7 @@ export class EggCountingApp extends TimeLimitedGame2 {
   accessor eggCartonTarget: readonly DropTarget[] = [];
 
   @state()
-  accessor eggCartonTargetAreaHighlightWrong: boolean = false;
+  accessor eggCartonTargetAreaHighlightWrong = false;
 
   @state()
   accessor trashcanTarget: readonly DropTarget[] = [];
@@ -51,7 +48,7 @@ export class EggCountingApp extends TimeLimitedGame2 {
   accessor eggTarget: readonly DropTarget[] = [];
 
   @state()
-  accessor eggTargetAreaHighlightWrong: boolean = false;
+  accessor eggTargetAreaHighlightWrong = false;
 
   eggCartonSource: DraggableElement | null = null;
 
@@ -63,7 +60,10 @@ export class EggCountingApp extends TimeLimitedGame2 {
   eggTargetChange(eggTarget: Element | undefined) {
     if (eggTarget) {
       this.eggTarget = [
-        { element: <DropTargetElementInterface>eggTarget, dropType: 'dropOk' },
+        {
+          element: eggTarget as DropTargetElementInterface,
+          dropType: 'dropOk',
+        },
       ];
     } else this.eggTarget = [];
   }
@@ -72,7 +72,7 @@ export class EggCountingApp extends TimeLimitedGame2 {
     if (eggCartonTarget) {
       this.eggCartonTarget = [
         {
-          element: <DropTargetElementInterface>eggCartonTarget,
+          element: eggCartonTarget as DropTargetElementInterface,
           dropType: 'dropOk',
         },
       ];
@@ -83,7 +83,7 @@ export class EggCountingApp extends TimeLimitedGame2 {
     if (trashcanTarget) {
       this.trashcanTarget = [
         {
-          element: <DropTargetElementInterface>trashcanTarget,
+          element: trashcanTarget as DropTargetElementInterface,
           dropType: 'dropOk',
         },
       ];
@@ -327,18 +327,25 @@ export class EggCountingApp extends TimeLimitedGame2 {
   }
 
   private renderTrashcanArea(): HTMLTemplateResult {
+    console.log(`renderTrascanArea`);
+    /* eslint-disable @typescript-eslint/unbound-method -- For ref, I have to refer to the actual function and not put a arrow function
+                                                           in between as otherwise we run into a endless loop. Moreover, inside a html
+                                                           string, this will be bound properly 
+    */
     return html`
       <drop-target-trashcan
         id="trashcanArea"
         ${ref(this.trashcanTargetChange)}
       ></drop-target-trashcan>
     `;
+    /* eslint-enable @typescript-eslint/unbound-method */
   }
 
   private renderCheckButtonArea(): HTMLTemplateResult {
+    console.log(`renderCheckButtonArea`);
     return html`
       <div id="checkButtonArea">
-        <button @click=${this.handleCheckAnswer}>
+        <button @click=${() => this.handleCheckAnswer()}>
           <svg viewbox="-150 -50 300 100">
             <text class="middleAligned" x="0" y="0">Kijk na</text>
           </svg>
@@ -348,6 +355,7 @@ export class EggCountingApp extends TimeLimitedGame2 {
   }
 
   private renderNumberToSplitArea(): HTMLTemplateResult {
+    console.log(`renderNumberToSplitArea`);
     return html` <div id="numberToSplitArea">
       <svg viewbox="-50 -50 100 100">
         <text class="middleAligned" x="0" y="0">${this.numberToSplit}</text>
@@ -356,37 +364,44 @@ export class EggCountingApp extends TimeLimitedGame2 {
   }
 
   private renderEggCartonTargetArea(): HTMLTemplateResult {
+    console.log(`renderEggCartonTargetArea`);
+    /* eslint-disable @typescript-eslint/unbound-method -- For ref, I have to refer to the actual function and not put a arrow function
+                                                           in between as otherwise we run into a endless loop. Moreover, inside a html
+                                                           string, this will be bound properly 
+    */
     return html` <div id="eggCartonTargetArea">
       <drop-target-egg
-        class="${classMap({
+        class=${classMap({
           wrongTargetArea: this.eggCartonTargetAreaHighlightWrong,
-        })}"
+        })}
         itemType="eggCarton"
-        numberItemsToShow="${this.numberVisibleEggCartons}"
-        maxNumberItemsToShow="${this.maxNumberItemsToShow}"
+        numberItemsToShow=${this.numberVisibleEggCartons}
+        maxNumberItemsToShow=${this.maxNumberItemsToShow}
         ${ref(this.eggCartonTargetChange)}
-        @itemTrashed="${this.eggCartonTrashed}"
-        @dragStarted="${this.resetWrongHighlights}"
-        .trashcanAreas="${this.trashcanTarget}"
+        @itemTrashed=${() => this.eggCartonTrashed()}
+        @dragStarted=${() => this.resetWrongHighlights()}
+        .trashcanAreas=${this.trashcanTarget}
       ></drop-target-egg>
     </div>`;
+    /* eslint-enable @typescript-eslint/unbound-method */
   }
 
   private renderEggCartonSourceArea(): HTMLTemplateResult {
+    console.log(`renderEggCartonSourceArea`);
     return html`
       <div id="eggCartonSourceArea">
         <draggable-element
           class="eggCarton"
           resetDragAfterDrop
-          .dropTargetList="${this.eggCartonTarget}"
-          @dropped="${this.eggCartonDrop}"
-          @dragStarted="${this.resetWrongHighlights}"
+          .dropTargetList=${this.eggCartonTarget}
+          @dropped=${() => this.eggCartonDrop()}
+          @dragStarted=${() => this.resetWrongHighlights()}
         >
           <img
             class="eggCarton"
             draggable="false"
             alt="egg Carton"
-            src="${eggCartonUrl.href}"
+            src=${eggCartonUrl.href}
           />
         </draggable-element>
       </div>
@@ -394,39 +409,46 @@ export class EggCountingApp extends TimeLimitedGame2 {
   }
 
   private renderEggTargetArea(): HTMLTemplateResult {
+    console.log(`renderEggTargetArea`);
+    /* eslint-disable @typescript-eslint/unbound-method -- For ref, I have to refer to the actual function and not put a arrow function
+                                                           in between as otherwise we run into a endless loop. Moreover, inside a html
+                                                           string, this will be bound properly 
+    */
     return html`
       <div id="eggTargetArea">
         <drop-target-egg
-          class="${classMap({
+          class=${classMap({
             wrongTargetArea: this.eggTargetAreaHighlightWrong,
-          })}"
+          })}
           itemType="egg"
-          numberItemsToShow="${this.numberVisibleEggs}"
-          maxNumberItemsToShow="${this.maxNumberItemsToShow}"
+          numberItemsToShow=${this.numberVisibleEggs}
+          maxNumberItemsToShow=${this.maxNumberItemsToShow}
           ${ref(this.eggTargetChange)}
-          @itemTrashed="${this.eggTrashed}"
-          @dragStarted="${this.resetWrongHighlights}"
-          .trashcanAreas="${this.trashcanTarget}"
+          @itemTrashed=${() => this.eggTrashed()}
+          @dragStarted=${() => this.resetWrongHighlights()}
+          .trashcanAreas=${this.trashcanTarget}
         ></drop-target-egg>
       </div>
     `;
+    /* eslint-enable @typescript-eslint/unbound-method */
   }
 
   private renderEggSourceArea(): HTMLTemplateResult {
+    console.log(`renderEggSourceArea`);
     return html`
       <div id="eggSourceArea">
         <draggable-element
           class="egg"
           resetDragAfterDrop
-          .dropTargetList="${this.eggTarget}"
-          @dropped="${this.eggDrop}"
-          @dragStarted="${this.resetWrongHighlights}"
+          .dropTargetList=${this.eggTarget}
+          @dropped=${() => this.eggDrop()}
+          @dragStarted=${() => this.resetWrongHighlights()}
         >
           <img
             class="egg"
             draggable="false"
             alt="egg Carton"
-            src="${eggUrl.href}"
+            src=${eggUrl.href}
           />
         </draggable-element>
       </div>
@@ -434,6 +456,7 @@ export class EggCountingApp extends TimeLimitedGame2 {
   }
 
   renderGameContent(): HTMLTemplateResult {
+    console.log(`renderGameContent`);
     return html`
       ${this.renderNumberToSplitArea()} ${this.renderTrashcanArea()}
       ${this.renderCheckButtonArea()} ${this.renderEggCartonTargetArea()}

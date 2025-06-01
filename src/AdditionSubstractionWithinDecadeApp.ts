@@ -1,5 +1,4 @@
 import { html, css } from 'lit';
-// eslint-disable-next-line import/extensions
 import { customElement, state } from 'lit/decorators.js';
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
@@ -51,7 +50,7 @@ export class AdditionSubstractionWithinDecadeApp extends TimeLimitedGame2 {
         decade < 100 &&
         !this.decades.find(value => value === decade)
       ) {
-        this.decades.push(<Decade>decade);
+        this.decades.push(decade as Decade);
       }
     });
     if (this.decades.length === 0) this.decades.push(0);
@@ -230,9 +229,9 @@ export class AdditionSubstractionWithinDecadeApp extends TimeLimitedGame2 {
         id="ascendingBalloons"
         style="position: absolute; top: 0; left: 0; height: 100%; width:100%;"
         imageType="kite"
-        @correct-balloon-clicked="${() => this.handleCorrectAnswer()}"
-        @wrong-balloon-clicked="${() => this.handleWrongAnswer()}"
-        @ascension-complete="${() => this.handleAscensionComplete()}"
+        @correct-balloon-clicked=${() => this.handleCorrectAnswer()}
+        @wrong-balloon-clicked=${() => this.handleWrongAnswer()}
+        @ascension-complete=${() => this.handleAscensionComplete()}
         .answers=${this.answers}
         ?disabled=${this.gameElementsDisabled}
       ></ascending-balloons>

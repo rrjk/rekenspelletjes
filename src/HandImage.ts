@@ -1,8 +1,6 @@
 import { LitElement, html, css } from 'lit';
 import type { HTMLTemplateResult, CSSResultGroup } from 'lit';
-// eslint-disable-next-line import/extensions
 import { customElement, property } from 'lit/decorators.js';
-// eslint-disable-next-line import/extensions
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 
 export type PossibleNumberDots = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
@@ -23,7 +21,7 @@ export function numberToPossibleNumberDots(
   }
   if (nmbr < 0) return 0;
   if (nmbr > 10) return 10;
-  return <PossibleNumberDots>nmbr; // Due to the if statements above, we can cast to PossibleNumberDots
+  return nmbr as PossibleNumberDots; // Due to the if statements above, we can cast to PossibleNumberDots
 }
 
 /** Two dimensional array to determine which dots are to be shown for a given number of dots

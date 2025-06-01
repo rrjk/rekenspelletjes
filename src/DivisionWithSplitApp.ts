@@ -1,10 +1,8 @@
 import { html, css } from 'lit';
 
-// eslint-disable-next-line import/extensions
 import { customElement, state } from 'lit/decorators.js';
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
-// eslint-disable-next-line import/extensions
 import { range } from 'lit/directives/range.js';
 
 import { create } from 'mutative';
@@ -37,9 +35,7 @@ const allEnabledDigits = [
   false,
 ];
 
-type NeededDigits = {
-  [key in FillInFields]: number[];
-};
+type NeededDigits = Record<FillInFields, number[]>;
 function initEmptyNeededDigits(): NeededDigits {
   return Object.fromEntries(
     fillInFields.map(key => [key, [] as number[]]),
@@ -250,8 +246,8 @@ export class DivisionWithSplitApp extends TimeLimitedGame2 {
       <digit-keyboard
         .disabledDigits=${this.disabledDigits}
         .disabled=${!this.keyBoardEnabled}
-        @digit-entered="${(evt: CustomEvent<Digit>) =>
-          this.handleDigit(evt.detail)}"
+        @digit-entered=${(evt: CustomEvent<Digit>) =>
+          this.handleDigit(evt.detail)}
         >></digit-keyboard
       >
     `;

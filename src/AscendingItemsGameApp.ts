@@ -1,9 +1,7 @@
-import { html, css } from 'lit';
+import { html, css, nothing } from 'lit';
 
-// eslint-disable-next-line import/extensions
 import { state } from 'lit/decorators.js';
 
-// eslint-disable-next-line import/extensions
 import { createRef, ref } from 'lit/directives/ref.js';
 
 import { create } from 'mutative';
@@ -96,7 +94,9 @@ export abstract class AscendingItemsGameApp<
         .then(() => {
           this.ascensionComplete();
         })
-        .catch(() => {}); // When the animation is cancelled, we don't need to do anything
+        .catch(() => {
+          /* When the animation is cancelled, we don't need to do anything */
+        });
     }
   }
 
@@ -191,7 +191,7 @@ export abstract class AscendingItemsGameApp<
           <div class="exercize">
             ${this.roundInfo !== undefined
               ? this.renderExercise(this.roundInfo.exerciseInfo)
-              : html``}
+              : nothing}
           </div>
         </div>
         <div id="itemBox" ${ref(this.itemBox)}>

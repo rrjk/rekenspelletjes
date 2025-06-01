@@ -1,6 +1,5 @@
-import { LitElement, html, css } from 'lit';
+import { LitElement, html, css, nothing } from 'lit';
 import type { HTMLTemplateResult, CSSResultGroup } from 'lit';
-// eslint-disable-next-line import/extensions
 import { customElement, property } from 'lit/decorators.js';
 
 export type SplittableNumber = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
@@ -26,8 +25,8 @@ export class SplitDigit extends LitElement {
     `;
   }
 
-  render(): HTMLTemplateResult {
-    if (this.disabled) return html``;
+  render(): HTMLTemplateResult | typeof nothing {
+    if (this.disabled) return nothing;
 
     return html`
       <div>${this.numberToSplit}</div>

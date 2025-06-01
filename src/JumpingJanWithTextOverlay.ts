@@ -1,6 +1,5 @@
-import { LitElement, html, css, unsafeCSS } from 'lit';
+import { LitElement, html, css, unsafeCSS, nothing } from 'lit';
 import type { HTMLTemplateResult, CSSResultGroup } from 'lit';
-// eslint-disable-next-line import/extensions
 import { customElement, property } from 'lit/decorators.js';
 import './NumberLine';
 import { Color, getColorInfo } from './Colors';
@@ -103,7 +102,7 @@ export class JumpingJanWithTextOverlay extends LitElement {
   }
 
   render(): HTMLTemplateResult {
-    let linebreakAfter1 = html``;
+    let linebreakAfter1: HTMLTemplateResult | typeof nothing = nothing;
     if (this.text1 !== '' && this.text2 !== '') linebreakAfter1 = html`<br />`;
     const text = html`${this.text1}${linebreakAfter1}${this.text2}`;
 

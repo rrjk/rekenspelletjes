@@ -1,12 +1,9 @@
-import { LitElement, html } from 'lit';
-// eslint-disable-next-line import/extensions
+import { LitElement, html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 
 import type { CSSResultGroup, HTMLTemplateResult } from 'lit';
 
-// eslint-disable-next-line no-unused-vars
-import 'web-dialog';
-import type { WebDialog } from 'web-dialog';
+import { WebDialog } from 'web-dialog';
 
 import { RKdialogStyles } from './RKDialog';
 
@@ -16,7 +13,7 @@ export class MessageDialog extends LitElement {
   @property({ type: String })
   accessor dialogTitle: string;
   @property({ attribute: false })
-  accessor text: HTMLTemplateResult;
+  accessor text: HTMLTemplateResult | typeof nothing;
   @property({ attribute: false })
   accessor imageUrl: URL;
 
@@ -26,7 +23,7 @@ export class MessageDialog extends LitElement {
 
   constructor() {
     super();
-    this.text = html``;
+    this.text = nothing;
     this.dialogTitle = '';
     this.imageUrl = new URL('../images/Mompitz Otto.png', import.meta.url);
   }
@@ -35,7 +32,7 @@ export class MessageDialog extends LitElement {
    *  @throws {ChildNotFoundError} Child was not found, probably because the game over dialog was not rendered yet.
    */
   get _dialog(): WebDialog {
-    const ret = <WebDialog | null>this.renderRoot.querySelector('#dialog');
+    const ret = this.renderRoot.querySelector<WebDialog>('#dialog');
     if (ret === null) {
       throw new ChildNotFoundError('dialog', 'MessageDialog');
     }
@@ -49,7 +46,7 @@ export class MessageDialog extends LitElement {
       this._dialog.addEventListener(
         'close',
         e => {
-          resolve((<CustomEvent<string>>e).detail);
+          resolve((e as CustomEvent<string>).detail);
         },
         { once: true },
       );
@@ -62,8 +59,8 @@ export class MessageDialog extends LitElement {
   }
 
   render(): HTMLTemplateResult {
-    return html` <web-dialog id="dialog" center @closing="${(evt: Event) =>
-      evt.preventDefault()}">
+    return html` <web-dialog id="dialog" center @closing=${(evt: Event) =>
+      evt.preventDefault()}>
                     <header>
                         <h1>${this.dialogTitle}</h1>
                     </header>
@@ -71,13 +68,13 @@ export class MessageDialog extends LitElement {
                         <div>
                             ${this.text}
                         </div>
-                        <img style="float: right; width: 200px; max-width: calc(25 * 1vmin); height: auto; " alt="Mompitz figuurtje" src="${
+                        <img style="float: right; width: 200px; max-width: calc(25 * 1vmin); height: auto; " alt="Mompitz figuurtje" src=${
                           this.imageUrl
-                        }"></img>
+                        }></img>
                     </article>
                     <footer>
-                        <button style="float: right;" @click="${() =>
-                          this.handleOkButton()}">Ok</button>
+                        <button style="float: right;" @click=${() =>
+                          this.handleOkButton()}>Ok</button>
                     </footer>
                 </web-dialog> `;
   }

@@ -4,7 +4,6 @@ import type {
   CSSResultGroup,
   SVGTemplateResult,
 } from 'lit';
-// eslint-disable-next-line import/extensions
 import { customElement, property } from 'lit/decorators.js';
 
 @customElement('numbers-in-order-index-icon')

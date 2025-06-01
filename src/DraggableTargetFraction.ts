@@ -1,5 +1,4 @@
 import { CSSResultArray, html, css } from 'lit';
-// eslint-disable-next-line import/extensions
 import { customElement, property, state } from 'lit/decorators.js';
 import type { HTMLTemplateResult } from 'lit';
 import {
@@ -43,6 +42,7 @@ export class DraggableTargetFraction
   }
 
   render(): HTMLTemplateResult {
+    //eslint-disable-next-line lit/no-this-assign-in-render -- Legacy
     this.content = html`<div>
       ${this.numerator}/${this.denumerator} (${this.value}) </br> ${this.dropState}
     </div>`;

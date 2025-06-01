@@ -8,7 +8,6 @@ import {
   CSSResultGroup,
 } from 'lit';
 
-// eslint-disable-next-line import/extensions
 import { property } from 'lit/decorators.js';
 
 export type TickMarkType = 1 | 5 | 10;

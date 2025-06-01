@@ -1,5 +1,4 @@
 import { LitElement, html, css, svg } from 'lit';
-// eslint-disable-next-line import/extensions
 import { property } from 'lit/decorators.js';
 
 import type {
@@ -234,11 +233,11 @@ export class NumberLineHangingPhotos extends LitElement {
                                          top: ${this.translateVerticalDistance(
           verticalDistance,
         ).lineHeight}vw;"
-        photoId="${photoId}"
-        ?disabled="${this.disabledPositions.some(value => value === position)}"
-        @click="${() => {
+        photoId=${photoId}
+        ?disabled=${this.disabledPositions.some(value => value === position)}
+        @click=${() => {
           this.handlePhotoClicked(position);
-        }}"
+        }}
       >
       </framed-photo>
     `;

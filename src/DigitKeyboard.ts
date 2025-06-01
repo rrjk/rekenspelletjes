@@ -1,6 +1,5 @@
 import { LitElement, html, css, unsafeCSS } from 'lit';
 import type { CSSResultGroup, HTMLTemplateResult } from 'lit';
-// eslint-disable-next-line import/extensions
 import { customElement, property, state } from 'lit/decorators.js';
 import {
   addResizeObserverClient,
@@ -114,7 +113,7 @@ export class DigitKeyboard
   handleKeyDown(evt: KeyboardEvent) {
     const keyName = evt.key;
 
-    const digitMap: Map<string, Digit> = new Map([
+    const digitMap = new Map<string, Digit>([
       ['0', 0],
       ['1', 1],
       ['2', 2],
@@ -214,7 +213,7 @@ export class DigitKeyboard
           <button
             class="Digit ${disableEnabledKeyboardClass}"
             id="Digit${digit}"
-            @click="${() => this.handleDigit(digit)}"
+            @click=${() => this.handleDigit(digit)}
           >
             ${this.disabledDigits[digit]
               ? this.renderDigitAsSvg('disabled')

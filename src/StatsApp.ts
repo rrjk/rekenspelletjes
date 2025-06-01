@@ -1,7 +1,6 @@
 import { LitElement, html, css } from 'lit';
 import type { HTMLTemplateResult, CSSResultArray } from 'lit';
 
-// eslint-disable-next-line import/extensions
 import { customElement, state } from 'lit/decorators.js';
 import { getGameCodes, getGameDescription } from './GameCodes';
 
@@ -72,6 +71,9 @@ export class StatsApp extends LitElement {
           });
         }
         this.requestUpdate();
+      })
+      .catch(() => {
+        throw new Error("Can't fetch statistics information");
       });
   }
 

@@ -1,6 +1,4 @@
-/* eslint-disable class-methods-use-this */
 import { LitElement, html } from 'lit';
-// eslint-disable-next-line import/extensions
 import { customElement, state } from 'lit/decorators.js';
 import type { HTMLTemplateResult } from 'lit';
 
@@ -14,7 +12,7 @@ export class AscendingBalloonsTestApp extends LitElement {
   @state()
   accessor disabled = true;
   @state()
-  accessor answers = <Answers>{ correct: 13, incorrect: [67, 45, 3] };
+  accessor answers = { correct: 13, incorrect: [67, 45, 3] } as Answers;
 
   /** Helper function to easily query for an element.
    *  @param query Querystring for the element.
@@ -23,7 +21,7 @@ export class AscendingBalloonsTestApp extends LitElement {
    *
    */
   private getElement<T>(query: string): T {
-    const ret = <T | null>this.renderRoot.querySelector(query);
+    const ret = this.renderRoot.querySelector(query) as T | null;
     if (ret === null) {
       throw new ChildNotFoundError(query, 'FindOnNumberApp');
     }
@@ -34,9 +32,9 @@ export class AscendingBalloonsTestApp extends LitElement {
     return this.getElement<AscendingBalloons>('ascending-balloons');
   }
 
-  /** Actions performed after the first update is complete. */
-  async firstUpdated(): Promise<void> {
-    /** Trigger baloons to start */
+  /** Toggle disabled flag */
+  toggleDisabled() {
+    this.disabled = !this.disabled;
   }
 
   /** Render the application */
@@ -44,19 +42,19 @@ export class AscendingBalloonsTestApp extends LitElement {
     return html`
       <ascending-balloons
         style="position: absolute; height: 100%; width:100%; border: 1px black solid"
-        @correct-balloon-clicked="${() =>
-          this.ascendingBalloons.restartAscension()}"
-        @wrong-balloon-clicked="${() => {
+        @correct-balloon-clicked=${() =>
+          this.ascendingBalloons.restartAscension()}
+        @wrong-balloon-clicked=${() => {
           const logBox = this.getElement<HTMLParagraphElement>('#logBox');
           logBox.insertAdjacentText('beforeend', 'Wrong balloon clicked == ');
-        }}"
-        @ascension-complete="${() => {
+        }}
+        @ascension-complete=${() => {
           const logBox = this.getElement<HTMLParagraphElement>('#logBox');
           logBox.insertAdjacentText(
             'beforeend',
             'Ascension complete event received == ',
           );
-        }}"
+        }}
         .answers=${this.answers}
         ?disabled=${this.disabled}
       ></ascending-balloons>
@@ -64,9 +62,9 @@ export class AscendingBalloonsTestApp extends LitElement {
       <button
         style="position:absolute; left: 0; top:0;"
         id="ascendButton"
-        @click="${() => {
+        @click=${() => {
           this.ascendingBalloons.startAscension();
-        }}"
+        }}
       >
         Ascend
       </button>
@@ -74,9 +72,9 @@ export class AscendingBalloonsTestApp extends LitElement {
       <button
         style="position:absolute; left: 0; top:50px;"
         id="resetButton"
-        @click="${() => {
+        @click=${() => {
           this.ascendingBalloons.reset();
-        }}"
+        }}
       >
         Reset
       </button>
@@ -84,9 +82,7 @@ export class AscendingBalloonsTestApp extends LitElement {
       <button
         style="position:absolute; left: 0; top:75px;"
         id="toggleDisabledButton"
-        @click="${() => {
-          this.disabled = !this.disabled;
-        }}"
+        @click=${() => this.toggleDisabled()}
       >
         Toggle disabled
       </button>

@@ -2,7 +2,6 @@ import { html, css } from 'lit';
 
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
-// eslint-disable-next-line import/extensions
 import { customElement } from 'lit/decorators.js';
 
 import { FractionAndRepresentation, FractionRepresentation } from './Fraction';
@@ -147,7 +146,7 @@ export class FractionMatchingGameApp extends PairMatchingApp<FractionAndRepresen
     super.startNewGame();
   }
 
-  fillPotentialDenumerators(refillNumerators: boolean = false): void {
+  fillPotentialDenumerators(refillNumerators = false): void {
     const denumeratorFrequencies = gameToDenumeratorFrequencies.find(
       elm => elm.gameType === this.gameType,
     )?.denumeratorFrequencies;
@@ -190,7 +189,7 @@ export class FractionMatchingGameApp extends PairMatchingApp<FractionAndRepresen
     const urlParams = new URLSearchParams(window.location.search);
 
     if (urlParams.has('gameType')) {
-      const gameType = urlParams.get('gameType')!;
+      const gameType = urlParams.get('gameType');
       if (gameType === 'equalFractions') {
         this.gameType = 'equalFractions';
         this.representations.exercise = 'fraction';
@@ -246,8 +245,8 @@ export class FractionMatchingGameApp extends PairMatchingApp<FractionAndRepresen
   renderPairElement(info: FractionAndRepresentation): HTMLTemplateResult {
     return html`
       <fraction-element
-        .fraction="${info.fraction}"
-        .representation="${info.representation}"
+        .fraction=${info.fraction}
+        .representation=${info.representation}
       ></fraction-element>
     `;
   }

@@ -200,12 +200,12 @@ export function getIconStyles(icon: GameIcon): CSSResult[] {
     } else if (icon === 'rocket') {
       iconURL = `data:image/svg+xml,${unsafeCSS(
         getRocketAsSvgUrl(colorInfo.accentColorCode, colorInfo.mainColorCode),
-      )}`;
+      ).toString()}`;
       fontColor = 'black;';
     } else if (icon === 'hexagon') {
       iconURL = `data:image/svg+xml,${unsafeCSS(
         getHexagonAsSvgUrl('black', colorInfo.mainColorCode),
-      )}`;
+      ).toString()}`;
       fontColor = colorInfo.fontColor;
     } else if (icon === 'zeppelin') {
       iconURL = `data:image/svg+xml,${unsafeCSS(
@@ -214,7 +214,7 @@ export function getIconStyles(icon: GameIcon): CSSResult[] {
           colorInfo.mainColorCode,
           lighten(colorInfo.mainColorCode, 0.2),
         ),
-      )}`;
+      ).toString()}`;
       fontColor = colorInfo.fontColor;
     }
 

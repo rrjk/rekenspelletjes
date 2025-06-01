@@ -1,6 +1,5 @@
 import { html, css, LitElement } from 'lit';
 
-// eslint-disable-next-line import/extensions
 import { customElement } from 'lit/decorators.js';
 
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
@@ -152,15 +151,15 @@ export class FractionsPairMatchingGameIndexApp extends LitElement {
 
     return html`
       <icon-hourglass-button
-        title="${description}"
-        time="${duration}"
-        shortCode="${shortCode}"
+        title=${description}
+        time=${duration}
+        shortCode=${shortCode}
       >
         <game-icon-with-text-overlay
           iconcolor=${color}
           image="hexagon"
-          text1="${text1}"
-          text2="${text2}"
+          text1=${text1}
+          text2=${text2}
         ></game-icon-with-text-overlay>
       </icon-hourglass-button>
     </div>

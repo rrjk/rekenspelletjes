@@ -1,5 +1,4 @@
-import { LitElement, html } from 'lit';
-// eslint-disable-next-line import/extensions
+import { LitElement, html, nothing } from 'lit';
 import { state } from 'lit/decorators.js';
 
 import type { CSSResultGroup, HTMLTemplateResult } from 'lit';
@@ -16,7 +15,7 @@ export class GameOverDialog extends LitElement {
   static gameOverImage = new URL('../images/Mompitz Anne.png', import.meta.url);
 
   @state()
-  accessor text: HTMLTemplateResult;
+  accessor text: HTMLTemplateResult | typeof nothing;
 
   static get styles(): CSSResultGroup {
     return RKdialogStyles;
@@ -24,14 +23,14 @@ export class GameOverDialog extends LitElement {
 
   constructor() {
     super();
-    this.text = html``;
+    this.text = nothing;
   }
 
   /** Get the dialog child
    *  @throws {ChildNotFoundError} Child was not found, probably because the game over dialog was not rendered yet.
    */
   get _dialog(): WebDialog {
-    const ret = <WebDialog | null>this.renderRoot.querySelector('#dialog');
+    const ret = this.renderRoot.querySelector<WebDialog>('#dialog');
     if (ret === null) {
       throw new ChildNotFoundError('dialog', 'GameOverDialog');
     }
@@ -44,7 +43,7 @@ export class GameOverDialog extends LitElement {
       this._dialog.addEventListener(
         'close',
         e => {
-          resolve((<CustomEvent<string>>e).detail);
+          resolve((e as CustomEvent<string>).detail);
         },
         { once: true },
       );
@@ -62,8 +61,8 @@ export class GameOverDialog extends LitElement {
 
   /** Render the dialog */
   render(): HTMLTemplateResult {
-    return html` <web-dialog id="dialog" center @closing="${(evt: Event) =>
-      evt.preventDefault()}">
+    return html` <web-dialog id="dialog" center @closing=${(evt: Event) =>
+      evt.preventDefault()}>
                     <header>
                         <h1>Game over</h1>
                     </header>
@@ -71,16 +70,16 @@ export class GameOverDialog extends LitElement {
                         <div>
                             ${this.text}
                         </div>
-                        <img style="float: right; width: 200px; max-width: calc(25 * 1vmin); height: auto; " alt="Anne" src="${
+                        <img style="float: right; width: 200px; max-width: calc(25 * 1vmin); height: auto; " alt="Anne" src=${
                           GameOverDialog.gameOverImage
-                        }"></img>
+                        }></img>
                     </article>
                     <footer>
-                        <button style="float: right;" @click="${() =>
-                          this.handleAgainButton()}">Speel nog een keer</button>
+                        <button style="float: right;" @click=${() =>
+                          this.handleAgainButton()}>Speel nog een keer</button>
                         <span style="float: right;">&nbsp;</span>
-                        <button style="float: right;" @click="${() =>
-                          this.handleBackToMenuButton()}">Nieuw spel kiezen</button>
+                        <button style="float: right;" @click=${() =>
+                          this.handleBackToMenuButton()}>Nieuw spel kiezen</button>
                     </footer>
                 </web-dialog> `;
   }

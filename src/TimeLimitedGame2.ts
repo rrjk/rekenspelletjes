@@ -1,7 +1,6 @@
 import { html, css } from 'lit';
 import type { HTMLTemplateResult, CSSResultArray } from 'lit';
 
-// eslint-disable-next-line import/extensions
 import { state } from 'lit/decorators.js';
 
 import { ProgressBar } from './ProgressBar';
@@ -80,7 +79,8 @@ export abstract class TimeLimitedGame2 extends GameSkeleton {
    * Is empty for the TimeLimitedGame, should be overridden in children.
    */
   renderGameContent(): HTMLTemplateResult {
-    return html``;
+    return html`Placeholder for gamecontent - the be filled by descendents of
+    TimeLimitedGame2`;
   }
 
   /** Render the actual game within the gameskeleton */
@@ -91,10 +91,10 @@ export abstract class TimeLimitedGame2 extends GameSkeleton {
           style="--progress-bar-gametime: ${this
             .gameTime}s; width:calc(100 * var(--vw));"
           id="progressBar"
-          @timeUp="${() => this.handleGameOver()}"
+          @timeUp=${() => this.handleGameOver()}
           integrateScoreBox
-          numberOk="${this.numberOk}"
-          numberNok="${this.numberNok}"
+          numberOk=${this.numberOk}
+          numberNok=${this.numberNok}
         ></progress-bar>
         <div class="gameContent">${this.renderGameContent()}</div>
       </div>

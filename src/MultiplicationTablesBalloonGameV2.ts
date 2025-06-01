@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/extensions
 import { customElement } from 'lit/decorators.js';
 
 import { css, CSSResultArray, html, HTMLTemplateResult } from 'lit';
@@ -52,8 +51,8 @@ export class MultiplicationTablesBalloonGameV2 extends AscendingItemsGameApp<
   private itemImage: ItemImage = 'flyingSaucer';
   private gameLogger = new GameLogger('D', '');
 
-  private lastTableUsed: number = 0;
-  private lastMultiplierUsed: number = 0;
+  private lastTableUsed = 0;
+  private lastMultiplierUsed = 0;
 
   get welcomeMessage(): HTMLTemplateResult {
     return html`Klik op de ufo met het juiste antwoord`;

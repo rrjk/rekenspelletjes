@@ -1,7 +1,7 @@
+/* eslint-disable @typescript-eslint/no-misused-promises -- legacy */
+
 import { html } from 'lit';
-// eslint-disable-next-line import/extensions
 import { customElement, state } from 'lit/decorators.js';
-// eslint-disable-next-line import/extensions
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
 import { TimeCountingGame } from './TimeCountingGame';
@@ -292,11 +292,11 @@ export class CombineToSolveSumApp extends TimeCountingGame {
         cellElements.push(
           html`<div class="gridElement">
             <draggable-target-heart
-              id="${cell.id}"
-              value="${cell.nmbr}"
+              id=${cell.id}
+              value=${cell.nmbr}
               resetDragAfterDrop
               style="height: 50%; aspect-ratio: 1; display:block; position: relative; left: ${cell.left}%; top: ${cell.top}%;"
-              @dropped="${this.handleDropped}"
+              @dropped=${(evt: DropEvent) => this.handleDropped(evt)}
             ></draggable-target-heart>
           </div>`,
         );

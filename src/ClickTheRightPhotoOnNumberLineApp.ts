@@ -1,5 +1,8 @@
+/* eslint-disable   @typescript-eslint/no-unsafe-argument -- legacy, use of CustomEvent details field */
+/* eslint-disable   @typescript-eslint/no-unsafe-member-access -- legacy, use of CustomEvent details field */
+/* eslint-disable   @typescript-eslint/no-misused-promises -- legacy */
+
 import { LitElement, html } from 'lit';
-// eslint-disable-next-line import/extensions
 import { state, property } from 'lit/decorators.js';
 
 import './NumberLineHangingPhotos';
@@ -127,7 +130,7 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
     }
   }
 
-  async startNewGame() {
+  startNewGame() {
     this._numberNok = 0;
     this._numberOk = 0;
     this._progressBar.restart();
@@ -149,7 +152,7 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
    *  @throws {ChildNotFoundError} Child was not found, probably because app was not rendered yet.
    */
   get _scoreBox(): ScoreBox {
-    const ret = <ScoreBox | null>this.renderRoot.querySelector('#scoreBox');
+    const ret = this.renderRoot.querySelector<ScoreBox>('#scoreBox');
     if (ret === null) {
       throw new ChildNotFoundError(
         'scoreBox',
@@ -163,9 +166,7 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
    *  @throws {ChildNotFoundError} Child was not found, probably because app was not rendered yet.
    */
   get _progressBar(): ProgressBar {
-    const ret = <ProgressBar | null>(
-      this.renderRoot.querySelector('#progressBar')
-    );
+    const ret = this.renderRoot.querySelector<ProgressBar>('#progressBar');
     if (ret === null) {
       throw new ChildNotFoundError(
         'progressBar',
@@ -179,9 +180,8 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
    *  @throws {ChildNotFoundError} Child was not found, probably because app was not rendered yet.
    */
   get _numberLine(): NumberLineHangingPhotos {
-    const ret = <NumberLineHangingPhotos | null>(
-      this.renderRoot.querySelector('#numberLine')
-    );
+    const ret =
+      this.renderRoot.querySelector<NumberLineHangingPhotos>('#numberLine');
     if (ret === null) {
       throw new ChildNotFoundError(
         'numberLine',
@@ -195,9 +195,7 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
    *  @throws {ChildNotFoundError} Child was not found, probably because app was not rendered yet.
    */
   get _messageDialog(): MessageDialog {
-    const ret = <MessageDialog | null>(
-      this.renderRoot.querySelector('#messageDialog')
-    );
+    const ret = this.renderRoot.querySelector<MessageDialog>('#messageDialog');
     if (ret === null) {
       throw new ChildNotFoundError(
         'messageDialog',
@@ -211,9 +209,8 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
    *  @throws {ChildNotFoundError} Child was not found, probably because app was not rendered yet.
    */
   get _gameOverDialog(): GameOverDialog {
-    const ret = <GameOverDialog | null>(
-      this.renderRoot.querySelector('#gameOverDialog')
-    );
+    const ret =
+      this.renderRoot.querySelector<GameOverDialog>('#gameOverDialog');
     if (ret === null) {
       throw new ChildNotFoundError(
         'gameOverDialog',
@@ -266,6 +263,9 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
       .then(result => {
         if (result === 'again') this.startNewGame();
         else window.location.href = 'index.html';
+      })
+      .catch(() => {
+        throw new Error('Game Over Dialog threw an exception');
       });
   }
 
@@ -274,12 +274,12 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
       <progress-bar
         style="--progress-bar-gametime: ${this.time}s;"
         id="progressBar"
-        @timeUp="${() => this.handleTimeUp()}"
+        @timeUp=${() => this.handleTimeUp()}
       ></progress-bar>
       <score-box
         id="scoreBox"
-        numberOk="${this._numberOk}"
-        numberNok="${this._numberNok}"
+        numberOk=${this._numberOk}
+        numberNok=${this._numberNok}
         style="width: 12vmin;
                               --scoreBoxWidth: 12vmin; 
                               position: absolute; 
@@ -299,9 +299,9 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
         minimum=${this.minimum}
         maximum=${this.maximum}
         width="95vw"
-        .photoPositions="${this.positions}"
-        .disabledPositions="${this.disabledPositions}"
-        @photo-clicked="${(evt: CustomEvent) => this.handlePhotoClicked(evt)}"
+        .photoPositions=${this.positions}
+        .disabledPositions=${this.disabledPositions}
+        @photo-clicked=${(evt: CustomEvent) => this.handlePhotoClicked(evt)}
         style="position:absolute; 
                     left: 2.5vw; 
                     top: 30vh; 

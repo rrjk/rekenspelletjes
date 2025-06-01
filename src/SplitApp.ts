@@ -1,5 +1,4 @@
 import { html } from 'lit';
-// eslint-disable-next-line import/extensions
 import { customElement, state } from 'lit/decorators.js';
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
@@ -174,9 +173,9 @@ export class SplitApp extends TimeLimitedGame2 {
       <ascending-balloons
         id="ascendingBalloons"
         style="position: absolute; top: 0; left: 0; height: 100%; width:100%;"
-        @correct-balloon-clicked="${() => this.handleCorrectAnswer()}"
-        @wrong-balloon-clicked="${() => this.handleWrongAnswer()}"
-        @ascension-complete="${() => this.handleAscensionComplete()}"
+        @correct-balloon-clicked=${() => this.handleCorrectAnswer()}
+        @wrong-balloon-clicked=${() => this.handleWrongAnswer()}
+        @ascension-complete=${() => this.handleAscensionComplete()}
         .answers=${this.answers}
         ?disabled=${this.gameElementsDisabled}
       ></ascending-balloons>

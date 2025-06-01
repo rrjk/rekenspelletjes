@@ -1,5 +1,4 @@
-import { html, css } from 'lit';
-// eslint-disable-next-line import/extensions
+import { html, css, nothing } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
@@ -295,8 +294,8 @@ export class ClockPairingApp extends TimeLimitedGame2 {
       clock = html`
         <analog-clock
           id="clock${clockInformation.clockNumber}"
-          hours="${clockInformation.hours}"
-          minutes="${clockInformation.minutes}"
+          hours=${clockInformation.hours}
+          minutes=${clockInformation.minutes}
           showAllNumbers
           showAllTickMarks
         ></analog-clock>
@@ -304,14 +303,14 @@ export class ClockPairingApp extends TimeLimitedGame2 {
     } else if (clockInformation.clockType === 'Digital') {
       clock = html` <digital-clock
         id="clock${clockInformation.clockNumber}"
-        hours="${clockInformation.hours}"
-        minutes="${clockInformation.minutes}"
+        hours=${clockInformation.hours}
+        minutes=${clockInformation.minutes}
       ></digital-clock>`;
     } else if (clockInformation.clockType === 'Sentence') {
       clock = html` <sentence-clock
         id="clock${clockInformation.clockNumber}"
-        hours="${clockInformation.hours}"
-        minutes="${clockInformation.minutes}"
+        hours=${clockInformation.hours}
+        minutes=${clockInformation.minutes}
         useWords
       ></sentence-clock>`;
     }
@@ -336,14 +335,14 @@ export class ClockPairingApp extends TimeLimitedGame2 {
     let cls = '';
     if (clockInformation === this.selectedClock) cls = 'selected';
 
-    let divContent = html``;
-    let mompitzContent = html``;
+    let divContent: HTMLTemplateResult | typeof nothing = nothing;
+    let mompitzContent: HTMLTemplateResult | typeof nothing = nothing;
 
     if (clockInformation.enabled) {
       divContent = html`
         <button
           style="position: relative; left: ${clockInformation.left}%; top: ${clockInformation.top}%; width: 80%; height: 80%;"
-          class="${cls}"
+          class=${cls}
           @click=${() => this.handleButtonClick(clockInformation)}
         >
           ${this.createClock(clockInformation)}
@@ -354,7 +353,7 @@ export class ClockPairingApp extends TimeLimitedGame2 {
       const imageUrl = clockInformation.addImage;
       mompitzContent = html`<div>
         <img
-          src="${imageUrl.url}"
+          src=${imageUrl.url}
           alt="Mompitz figure"
           style="width: ${imageUrl.size}%; 
                  height: ${imageUrl.size}%; 

@@ -1,5 +1,3 @@
-/* eslint-disable max-classes-per-file */
-
 import { LitElement, html, css, svg } from 'lit';
 import type {
   CSSResultArray,
@@ -7,9 +5,7 @@ import type {
   PropertyValues,
   SVGTemplateResult,
 } from 'lit';
-// eslint-disable-next-line import/extensions
 import { customElement, property, state } from 'lit/decorators.js';
-// eslint-disable-next-line import/extensions
 import { classMap } from 'lit/directives/class-map.js';
 
 import { create } from 'mutative';
@@ -132,10 +128,10 @@ function renderSplitHelperField(
     return svg`
       <text class="explanationText" x="${pos.x}" y="${pos.y + 30}">Tiental</text> 
       <text class="explanationText" x="${pos.x}" y="${pos.y + 60}">keer ${divisor} is</text>`;
-  if (field === 'helpSplit1')
+  // if (field === 'helpSplit1')
+  else
     return svg`
       <text class="explanationText" x="${pos.x}" y="${pos.y + 30}">Rest</text>`;
-  throw new Error(`Illegal field ${field}`);
 }
 
 const subAnswerHelperFields = ['helpSubAnswer0', 'helpSubAnswer1'] as const;
@@ -149,20 +145,20 @@ function renderSubAnswerHelperField(
   field: SubAnswerHelperFields,
 ) {
   if (field === 'helpSubAnswer0')
-    return svg`<text class="explanationText" x="${pos.x}" y="${pos.y + 30}">${split0}∶${divisor} </text>`;
-  if (field === 'helpSubAnswer1')
+    return svg`<text class="explanationText" x="${pos.x}" y="${pos.y + 30}">${split0}∶${divisor} </text>`; // (field === 'helpSubAnswer1')
+  else
     return svg`<text class="explanationText" x="${pos.x}" y="${pos.y + 30}">${split1}∶${divisor} </text>`;
-  throw new Error(`Illegal field ${field}`);
 }
 
-type FieldsRenderInfo = {
-  [key in
-    | FixedNumberFields
-    | SymbolFields
-    | SplitLineDirection
-    | SplitHelperFields
-    | SubAnswerHelperFields]: FieldInfo;
-} & { [key in FillInFields]: FillInFieldInfo };
+type FieldsRenderInfo = Record<
+  | FixedNumberFields
+  | SymbolFields
+  | SplitLineDirection
+  | SplitHelperFields
+  | SubAnswerHelperFields,
+  FieldInfo
+> &
+  Record<FillInFields, FillInFieldInfo>;
 function initFieldsRenderInfo(): FieldsRenderInfo {
   const ret: Partial<FieldsRenderInfo> = {};
   for (const key of fillInFields) {
@@ -209,8 +205,8 @@ function renderNumber(
   nmbr: number,
   activeDigits: number,
   pos: Position,
-  fillIn: boolean = false,
-  active: boolean = false,
+  fillIn = false,
+  active = false,
 ): SVGTemplateResult {
   const rectClasses = {
     boxLine: fillIn,
@@ -247,7 +243,7 @@ function convertJSON<T>(value: string | null): T {
   console.log(`convertFixedNumbers called`);
   console.log(value);
   if (value !== null) {
-    const parsedValue = JSON.parse(value);
+    const parsedValue = JSON.parse(value) as T;
     return parsedValue;
   }
   throw new Error(`illegally formatted attribute provided`);
@@ -268,10 +264,10 @@ export class DivideWihSplitWidget extends LitElement {
   accessor activeDigit = 0; // Which digit should be active, counting starts at 0
 
   @property({ type: Boolean })
-  accessor showSubAnswers: boolean = false;
+  accessor showSubAnswers = false;
 
   @property({ type: Boolean })
-  accessor showHelp: boolean = false;
+  accessor showHelp = false;
 
   @state()
   accessor fieldsRenderInfo = initFieldsRenderInfo();

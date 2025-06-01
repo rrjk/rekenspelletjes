@@ -11,7 +11,6 @@ import type {
   PropertyValues,
 } from 'lit';
 
-// eslint-disable-next-line import/extensions
 import { customElement, property, state } from 'lit/decorators.js';
 
 import { Bezier } from 'bezier-js';
@@ -55,7 +54,7 @@ type AboveBelowType = 'above' | 'below';
 
 function convertArchAttribute(value: string | null): ArchType[] {
   if (value !== null) {
-    const parsedValue = JSON.parse(value);
+    const parsedValue = JSON.parse(value) as ArchType[];
     return parsedValue;
   }
   return [];
@@ -125,8 +124,8 @@ export class NumberLineV2
     2 * NumberLineV2.numberBoxSvgWidthDigit +
       NumberLineV2.numberBoxSvgWidthOverhead;
 
-  maxNumberDigits: number = 0;
-  minusSignPossible: boolean = false;
+  maxNumberDigits = 0;
+  minusSignPossible = false;
 
   static get styles(): CSSResultGroup {
     return css`

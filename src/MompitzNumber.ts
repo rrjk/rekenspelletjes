@@ -1,6 +1,5 @@
 import { LitElement, html, css } from 'lit';
 import type { HTMLTemplateResult, CSSResultGroup } from 'lit';
-// eslint-disable-next-line import/extensions
 import { customElement, property } from 'lit/decorators.js';
 
 type DigitInfo = {
@@ -162,9 +161,9 @@ export class MompitzNumber extends LitElement {
           digitInfo => html`
             <img
               draggable="false"
-              alt="${digitInfo.digit}"
+              alt=${digitInfo.digit}
               class="digit ${digitInfo.narrow}"
-              src="${MompitzNumber.getUrl(digitInfo)}"
+              src=${MompitzNumber.getUrl(digitInfo)}
             />
           `,
         )}

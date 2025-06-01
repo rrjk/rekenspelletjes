@@ -1,0 +1,20 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
+  "extends": [
+    "@open-wc/eslint-config",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:import/typescript",
+    "eslint-config-prettier"
+  ],
+  "rules": {
+    "wc/guard-super-call": "off",
+    "lines-between-class-members": "off",
+    "lit-a11y/click-events-have-key-events": "off",
+    "no-console": ["warn", { "allow": ["warn", "error", "assert"] }],
+    "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
+    "import/extensions": ["error", "never"],
+    "class-methods-use-this": "off",
+    "no-param-reassign": ["error", { "props": false }]
+  }
+}

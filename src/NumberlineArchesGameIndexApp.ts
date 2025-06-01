@@ -1,6 +1,5 @@
 import { html, css, LitElement, nothing } from 'lit';
 
-// eslint-disable-next-line import/extensions
 import { customElement } from 'lit/decorators.js';
 
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
@@ -135,16 +134,16 @@ export class NumberlineArchesGameIndexApp extends LitElement {
     return html`
       <icon-hourglass-button
         title="Getallenlijn boogjes spel ${min} tot ${max} ${description}"
-        time="${duration}"
-        shortCode="${shortCode}"
+        time=${duration}
+        shortCode=${shortCode}
       >
         <div style="background-color:${getColorInfo(color).mainColorCode}" class="button">
           <number-line-v2
             min="0"
-            max="${iconNumberLineLength}"
+            max=${iconNumberLineLength}
             tickMarks="upToSingles"
-            .belowArches="${belowArches}"
-            .aboveArches="${aboveArches}"
+            .belowArches=${belowArches}
+            .aboveArches=${aboveArches}
           ></number-line-v2>
           <span>${min} － ${max}</span>
         </div>

@@ -1,5 +1,4 @@
-import { html, css } from 'lit';
-// eslint-disable-next-line import/extensions
+import { html, css, nothing } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
@@ -170,19 +169,20 @@ export class WhichIsBiggerApp extends TimeLimitedGame2 {
   }
 
   get welcomeMessage(): HTMLTemplateResult {
-    let res = html``;
     if (this.countOnly) {
-      res = html`<p>Tel het aantal stippen op de hand.</p>`;
+      return html`<p>Tel het aantal stippen op de hand.</p>`;
     } else if (this.includeDifference)
-      res = html`<p>Wijs de hand aan met de meeste stippen.</p>
+      return html`<p>Wijs de hand aan met de meeste stippen.</p>
         <p>
           Vertel daarna hoeveel stippen die hand er meer heeft dan de andere
           hand.
         </p>`;
     else if (!this.includeDifference)
-      res = html`<p>Wijs de hand aan met de meeste stippen.</p>`;
-
-    return res;
+      return html`<p>Wijs de hand aan met de meeste stippen.</p>`;
+    else
+      throw Error(
+        'Internal SW error - it should not be possible to reach this code',
+      );
   }
 
   executeGameOverActions(): void {
@@ -229,19 +229,19 @@ export class WhichIsBiggerApp extends TimeLimitedGame2 {
   }
 
   renderGameContent(): HTMLTemplateResult {
-    let keyboard = html``;
+    let keyboard: HTMLTemplateResult | typeof nothing = nothing;
     if (this.includeDifference) {
       keyboard = html`
       <div class="bar">
         <digit-keyboard showTen ?disabled=${
           this.keyboardDisabled
-        } @digit-entered="${(evt: CustomEvent<Digit>) =>
-          this.handleDigit(evt.detail)}">
+        } @digit-entered=${(evt: CustomEvent<Digit>) =>
+          this.handleDigit(evt.detail)}>
         </digit-keyboad>
       </div>`;
     }
 
-    let hands = html``;
+    let hands: HTMLTemplateResult | typeof nothing = nothing;
     if (this.countOnly) {
       hands = html`
         <button
@@ -249,7 +249,7 @@ export class WhichIsBiggerApp extends TimeLimitedGame2 {
           ?disabled=${this.handDisabled[0]}
         >
           <hand-with-dots
-            class="${this.handStyle[0]}"
+            class=${this.handStyle[0]}
             numberDots=${this.numberDotsHands[0]}
           ></hand-with-dots>
         </button>
@@ -261,7 +261,7 @@ export class WhichIsBiggerApp extends TimeLimitedGame2 {
           ?disabled=${this.handDisabled[0]}
         >
           <hand-with-dots
-            class="${this.handStyle[0]}"
+            class=${this.handStyle[0]}
             numberDots=${this.numberDotsHands[0]}
           ></hand-with-dots>
         </button>
@@ -270,7 +270,7 @@ export class WhichIsBiggerApp extends TimeLimitedGame2 {
           ?disabled=${this.handDisabled[1]}
         >
           <hand-with-dots
-            class="${this.handStyle[1]}"
+            class=${this.handStyle[1]}
             numberDots=${this.numberDotsHands[1]}
           ></hand-with-dots>
         </button>

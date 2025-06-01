@@ -4,11 +4,9 @@
 // https://boxy-svg.com/
 
 import { LitElement, html, css } from 'lit';
-// eslint-disable-next-line import/extensions
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 
 import type { HTMLTemplateResult, CSSResultGroup } from 'lit';
-// eslint-disable-next-line import/extensions
 import { customElement, property } from 'lit/decorators.js';
 
 import { Color, colorArray } from './Colors';

@@ -1,8 +1,6 @@
 import { html, css, nothing } from 'lit';
 
-// eslint-disable-next-line import/extensions
 import { customElement, property, state } from 'lit/decorators.js';
-// eslint-disable-next-line import/extensions
 import { ref } from 'lit/directives/ref.js';
 
 import { create } from 'mutative';
@@ -83,11 +81,11 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
   @state()
   private accessor answer = 22;
   @state()
-  private accessor firstArch: number = 0;
+  private accessor firstArch = 0;
   @state()
-  private accessor lastArch: number = 0;
+  private accessor lastArch = 0;
   @state()
-  private accessor numberTenArches: number = 0;
+  private accessor numberTenArches = 0;
   @state()
   private accessor operator: OperatorType = 'plus';
   @state()
@@ -101,11 +99,11 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
   @state()
   private accessor numberLineArea: DropTarget[] = [];
   @state()
-  private accessor keyPadActive: boolean = false;
+  private accessor keyPadActive = false;
   @state()
-  private accessor archesPadActive: boolean = false;
+  private accessor archesPadActive = false;
   @state()
-  private accessor gameActive: boolean = false;
+  private accessor gameActive = false;
   @state()
   private accessor disabledDigits = [
     false,
@@ -502,7 +500,7 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
     if (numberLineArea) {
       this.numberLineArea = [
         {
-          element: <DropTargetElementInterface>numberLineArea,
+          element: numberLineArea as DropTargetElementInterface,
           dropType: 'dropOk',
         },
       ];
@@ -552,6 +550,7 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
   }
 
   handleDigit(evt: CustomEvent) {
+    /* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- legacy */
     const digit: number = evt.detail;
     const partialNumberlineNumber =
       this.numberBoxes[this.numberBoxes.length - 1].nmbr;
@@ -707,13 +706,13 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
         class="arch"
         resetDragAfterDrop
         ?dragDisabled=${disabled || crossedOut}
-        value="${width}"
+        value=${width}
         .dropTargetList=${this.numberLineArea}
-        @dropped="${this.archDrop}"
+        @dropped=${(evt: DropEvent) => this.archDrop(evt)}
       >
         <number-line-arch
-          width="${width}"
-          position="${position}"
+          width=${width}
+          position=${position}
           ?disabled=${disabled}
           ?crossedOut=${crossedOut}
         ></number-line-arch>
@@ -730,7 +729,7 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
     );
 
     return html`
-      <dynamic-grid contentAspectRatio="${10 / 7}"> ${arches} </dynamic-grid>
+      <dynamic-grid contentAspectRatio=${10 / 7}> ${arches} </dynamic-grid>
     `;
   }
 
@@ -751,6 +750,10 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
     if (this.operator === 'minus') belowArches = this.arches;
     else if (this.operator === 'plus') aboveArches = this.arches;
 
+    /* eslint-disable @typescript-eslint/unbound-method -- For ref, I have to refer to the actual function and not put a arrow function
+                                                           in between as otherwise we run into a endless loop. Moreover, inside a html
+                                                           string, this will be bound properly 
+    */
     return html`
       ${this.renderExerciseArea()}
       <div id="expandedSumArea"></div>
@@ -759,12 +762,12 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
         ${ref(this.numberLineAreaChange)}
       >
         <number-line-v2
-          min="${this.minNumber}"
-          max="${this.maxNumber}"
-          .fixedNumbers="${[this.minNumber, this.maxNumber]}"
-          .aboveArches="${aboveArches}"
-          .belowArches="${belowArches}"
-          .numberBoxes="${this.numberBoxes}"
+          min=${this.minNumber}
+          max=${this.maxNumber}
+          .fixedNumbers=${[this.minNumber, this.maxNumber]}
+          .aboveArches=${aboveArches}
+          .belowArches=${belowArches}
+          .numberBoxes=${this.numberBoxes}
           tickMarks="upToSingles"
           aspectRatio="10"
         ></number-line-v2>
@@ -773,10 +776,11 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
       <div id="keypadArea">
         <digit-keyboard
           ?disabled=${!this.keyPadActive}
-          .disabledDigits="${this.disabledDigits}"
-          @digit-entered="${this.handleDigit}"
+          .disabledDigits=${this.disabledDigits}
+          @digit-entered=${(evt: CustomEvent) => this.handleDigit(evt)}
         ></digit-keyboard>
       </div>
     `;
+    /* eslint-enable @typescript-eslint/unbound-method */
   }
 }

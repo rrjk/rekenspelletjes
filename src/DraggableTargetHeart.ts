@@ -1,5 +1,4 @@
 import { CSSResultArray, html, css } from 'lit';
-// eslint-disable-next-line import/extensions
 import { customElement, state } from 'lit/decorators.js';
 import type { HTMLTemplateResult } from 'lit';
 import {
@@ -34,6 +33,7 @@ export class DraggableTargetHeart
   }
 
   render(): HTMLTemplateResult {
+    //eslint-disable-next-line lit/no-this-assign-in-render -- Legacy
     this.content = html`${getHeartasHTMLTemplateResult(
       this.heartColor,
       `${this.value}`,

@@ -1,5 +1,7 @@
+/* eslint-disable   @typescript-eslint/no-unsafe-argument -- legacy, use of CustomEvent details field */
+/* eslint-disable   @typescript-eslint/no-unsafe-member-access -- legacy, use of CustomEvent details field */
+
 import { html, css } from 'lit';
-// eslint-disable-next-line import/extensions
 import { customElement, state } from 'lit/decorators.js';
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
@@ -275,7 +277,7 @@ export class ClickInOrderApp extends TimeCountingGame {
           .ballLabels=${this.labelsInOrder}
           .disabledBallLabels=${this.disabledBallLabels}
           .invisibleBallLabels=${this.invisibleBallLabels}
-          exercise="${excercise}"
+          exercise=${excercise}
           @ball-clicked=${(evt: CustomEvent) =>
             this.handleBallClick(evt.detail.label)}
         ></ball-field-entry>

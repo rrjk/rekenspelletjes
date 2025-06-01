@@ -4,7 +4,6 @@ import type {
   CSSResultGroup,
   SVGTemplateResult,
 } from 'lit';
-// eslint-disable-next-line import/extensions
 import { customElement, property } from 'lit/decorators.js';
 
 /** Analog clock.
@@ -147,16 +146,16 @@ export class AnalogClock extends LitElement {
         <line
           x1="125"
           y1="125"
-          x2="${125 + 100 * Math.sin(angleMinutesHand)}"
-          y2="${125 - 100 * Math.cos(angleMinutesHand)}"
+          x2=${125 + 100 * Math.sin(angleMinutesHand)}
+          y2=${125 - 100 * Math.cos(angleMinutesHand)}
           stroke="red"
           stroke-width="5"
         ></line>
         <line
           x1="125"
           y1="125"
-          x2="${125 + 75 * Math.sin(angleHoursHand)}"
-          y2="${125 - 75 * Math.cos(angleHoursHand)}"
+          x2=${125 + 75 * Math.sin(angleHoursHand)}
+          y2=${125 - 75 * Math.cos(angleHoursHand)}
           stroke="grey"
           stroke-width="5"
         ></line>

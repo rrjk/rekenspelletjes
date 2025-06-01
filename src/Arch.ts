@@ -10,7 +10,6 @@ import type {
   SVGTemplateResult,
 } from 'lit';
 
-// eslint-disable-next-line import/extensions
 import { customElement, property } from 'lit/decorators.js';
 
 import { Bezier } from 'bezier-js';
@@ -25,16 +24,16 @@ export class NumberLineArch extends LitElement {
   static svgHeight = 70;
 
   @property({ type: Number })
-  accessor width: number = 1;
+  accessor width = 1;
 
   @property({ type: String })
   accessor position: AboveBelowType = 'above';
 
   @property({ type: Boolean })
-  accessor disabled: boolean = false;
+  accessor disabled = false;
 
   @property({ type: Boolean })
-  accessor crossedOut: boolean = false;
+  accessor crossedOut = false;
 
   static get styles(): CSSResultGroup {
     return css`

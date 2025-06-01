@@ -8,10 +8,8 @@ import {
   unsafeCSS,
 } from 'lit';
 
-// eslint-disable-next-line import/extensions
 import { customElement, property } from 'lit/decorators.js';
 
-// eslint-disable-next-line import/extensions
 import { classMap } from 'lit/directives/class-map.js';
 
 import { Color, getColorInfo, stringToColor } from './Colors';
@@ -22,16 +20,16 @@ export class FlyingSaurcer extends LitElement {
   accessor color: Color = 'red';
 
   @property({ type: String })
-  accessor content: string = '';
+  accessor content = '';
 
   @property({ type: Boolean })
-  accessor disabled: boolean = false;
+  accessor disabled = false;
 
   @property({ type: String })
-  accessor symbol1: string = '';
+  accessor symbol1 = '';
 
   @property({ type: String })
-  accessor symbol2: string = '';
+  accessor symbol2 = '';
 
   static get styles(): CSSResultGroup {
     const ret: CSSResultGroup = [];
@@ -133,13 +131,13 @@ export class FlyingSaurcer extends LitElement {
   }
 
   render(): HTMLTemplateResult {
-    let digitClass: string = '';
+    let digitClass = '';
     if (this.content.length >= 4) digitClass = 'fourDigit';
     else if (this.content.length >= 3) digitClass = 'threeDigit';
     else if (this.content.length >= 2) digitClass = 'twoDigit';
     else if (this.content.length >= 1) digitClass = 'oneDigit';
 
-    const classes: { [name: string]: string | boolean | number } = {};
+    const classes: Record<string, string | boolean | number> = {};
     classes.disabled = this.disabled;
     classes.enabled = !this.disabled;
     classes[digitClass] = true;
@@ -215,7 +213,7 @@ export class FlyingSaurcer extends LitElement {
         }
       </style>
       <svg
-        class="${classMap(classes)}"
+        class=${classMap(classes)}
         viewBox="0 3.5 36 36.5"
         xmlns="http://www.w3.org/2000/svg"
         xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -291,11 +289,11 @@ export class FlyingSaurcer extends LitElement {
           ></ellipse>
         </g>
         <g id="SVGRepo_text">
-          <text x="${contentX}" y="${contentY}">${content}</text>
-          <text class="symbol" x="${symbol1X}" y="${symbol1Y}">
+          <text x=${contentX} y=${contentY}>${content}</text>
+          <text class="symbol" x=${symbol1X} y=${symbol1Y}>
             ${this.symbol1}
           </text>
-          <text class="symbol" x="${symbol2X}" y="${symbol2Y}">
+          <text class="symbol" x=${symbol2X} y=${symbol2Y}>
             ${this.symbol2}
           </text>
         </g>

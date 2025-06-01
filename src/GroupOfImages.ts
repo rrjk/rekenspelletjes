@@ -1,6 +1,5 @@
 import { LitElement, html, css } from 'lit';
 import type { HTMLTemplateResult, CSSResultGroup } from 'lit';
-// eslint-disable-next-line import/extensions
 import { customElement, property, state } from 'lit/decorators.js';
 import type { ResizeObserverClientInterface } from './ResizeObserver';
 import {
@@ -15,43 +14,43 @@ type ImageInfo = { name: string; url: URL; aspectRatio: number };
 const imageInfo = new Map<ImageEnum, ImageInfo>([
   [
     'box',
-    <ImageInfo>{
+    {
       name: 'box',
       url: new URL('../images/red-box.png', import.meta.url),
       aspectRatio: 674 / 671,
-    },
+    } as ImageInfo,
   ],
   [
     'balloon',
-    <ImageInfo>{
+    {
       name: 'balloon',
       url: new URL('../images/balloon-blue.png', import.meta.url),
       aspectRatio: 110 / 150,
-    },
+    } as ImageInfo,
   ],
   [
     'star',
-    <ImageInfo>{
+    {
       name: 'star',
       url: new URL('../images/star-green.png', import.meta.url),
       aspectRatio: 213 / 181,
-    },
+    } as ImageInfo,
   ],
   [
     'tractor',
-    <ImageInfo>{
+    {
       name: 'cherries',
       url: new URL('../images/tractor.png', import.meta.url),
       aspectRatio: 250 / 183,
-    },
+    } as ImageInfo,
   ],
   [
     'strawberry',
-    <ImageInfo>{
+    {
       name: 'strawberry',
       url: new URL('../images/strawberry.png', import.meta.url),
       aspectRatio: 227 / 242,
-    },
+    } as ImageInfo,
   ],
 ]);
 
@@ -186,9 +185,9 @@ export class GroupOfImages
       flexItems.push(
         html`<div class="flexItem">
           <img
-            class="${this.tallWideFlexItem}"
-            src="${getImageInfo(this.image).url}"
-            alt="${getImageInfo(this.image).name}"
+            class=${this.tallWideFlexItem}
+            src=${getImageInfo(this.image).url}
+            alt=${getImageInfo(this.image).name}
           />
         </div>`,
       );

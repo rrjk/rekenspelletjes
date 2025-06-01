@@ -1,6 +1,5 @@
-/* eslint-disable class-methods-use-this */
+/* eslint-disable @typescript-eslint/no-misused-promises -- legacy */
 import { LitElement, html, css } from 'lit';
-// eslint-disable-next-line import/extensions
 import { customElement, state } from 'lit/decorators.js';
 import type { CSSResultGroup, HTMLTemplateResult } from 'lit';
 
@@ -283,7 +282,7 @@ export class JumpOnNumberLineApp extends LitElement {
    *
    */
   private getElement<T>(query: string): T {
-    const ret = <T | null>this.renderRoot.querySelector(query);
+    const ret = this.renderRoot.querySelector(query) as T | null;
     if (ret === null) {
       throw new ChildNotFoundError(query, 'FindOnNumberApp');
     }
@@ -344,6 +343,9 @@ export class JumpOnNumberLineApp extends LitElement {
       .then(result => {
         if (result === 'again') this.startNewGame();
         else window.location.href = 'index.html';
+      })
+      .catch(() => {
+        throw new Error('Error while shoung game over dialog');
       });
   }
 
@@ -367,7 +369,7 @@ export class JumpOnNumberLineApp extends LitElement {
   }
 
   /** Ceck the answer the student has selected and make Jan jump. */
-  async checkAnswer(): Promise<void> {
+  checkAnswer(): void {
     if (this.hideJan === false)
       // If Jan is visible, a check is already going on
       return;
@@ -379,7 +381,7 @@ export class JumpOnNumberLineApp extends LitElement {
     this.hideJan = false;
 
     /* We now need to process the update, to ensure Jan is at the right location, so we can get it's position on the screen */
-    await this.performUpdate();
+    this.performUpdate();
 
     const platformBoundRect = this.numberLinePlatform.getBoundingClientRect();
     const janBoundingRect = this.jan.getBoundingClientRect();
@@ -473,12 +475,12 @@ export class JumpOnNumberLineApp extends LitElement {
       <progress-bar
         style="--progress-bar-gametime: ${this.gameTime}s;"
         id="progressBar"
-        @timeUp="${() => this.handleTimeUp()}"
+        @timeUp=${() => this.handleTimeUp()}
       ></progress-bar>
       <score-box
         id="scoreBox"
-        numberOk="${this.numberOk}"
-        numberNok="${this.numberNok}"
+        numberOk=${this.numberOk}
+        numberNok=${this.numberNok}
         style="width: 12vmin;--scoreBoxWidth: 12vmin; position: absolute; top: calc(1em + 22px); right: 1em;"
       >
       </score-box>
@@ -506,11 +508,11 @@ export class JumpOnNumberLineApp extends LitElement {
       <img
         id="jan"
         alt="Mompitz"
-        src="${JumpOnNumberLineApp.janImage}"
+        src=${JumpOnNumberLineApp.janImage}
         style="display: ${this.hideJan ? 'none' : 'block'};"
-        class="${this.renderJanClass()}"
+        class=${this.renderJanClass()}
       />
-      <button id="spring" @click="${() => this.checkAnswer()}">Spring</button>
+      <button id="spring" @click=${() => this.checkAnswer()}>Spring</button>
       <message-dialog id="messageDialog"></message-dialog>
       <gameover-dialog id="gameOverDialog"></gameover-dialog>
     `;

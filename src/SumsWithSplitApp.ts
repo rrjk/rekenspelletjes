@@ -1,5 +1,4 @@
 import { html, css, nothing } from 'lit';
-// eslint-disable-next-line import/extensions
 import { customElement, state } from 'lit/decorators.js';
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
@@ -376,13 +375,15 @@ export class SumsWithDoubleSplitApp extends TimeLimitedGame2 {
           --preSplit1Slashes1DigitWidth: calc(
             (2.5 * var(--singleDigitWidth) + var(--operatorWidth)) - var(
                 --slashWidth
-              ) - (0.5 * var(--spaceBetweenSlashesWidth))
+              ) -
+              (0.5 * var(--spaceBetweenSlashesWidth))
           );
 
           --preSplit1DigitEntry1DigitWidthBackup: calc(
             (2.5 * var(--singleDigitWidth) + var(--operatorWidth)) - var(
                 --slashWidth
-              ) - (0.5 * var(--spaceBetweenSlashesWidth)) - var(--fillInWidth)
+              ) -
+              (0.5 * var(--spaceBetweenSlashesWidth)) - var(--fillInWidth)
           );
 
           --preSplit1DigitEntry1DigitWidth: calc(
@@ -393,7 +394,8 @@ export class SumsWithDoubleSplitApp extends TimeLimitedGame2 {
           --preSplit1Slashes2DigitWidth: calc(
             (3 * var(--singleDigitWidth) + var(--operatorWidth)) - var(
                 --slashWidth
-              ) - (0.5 * var(--spaceBetweenSlashesWidth))
+              ) -
+              (0.5 * var(--spaceBetweenSlashesWidth))
           );
 
           --preSplit1DigitEntry2DigitWidth: calc(
@@ -402,9 +404,9 @@ export class SumsWithDoubleSplitApp extends TimeLimitedGame2 {
           );
 
           --preSplit2SlashesWidth: calc(
-            (2.5 * var(--fillInWidth)) + (3 * var(--fillInMargin)) - var(
-                --slashWidth
-              ) - (0.5 * var(--spaceBetweenSlashesWidth)) +
+            (2.5 * var(--fillInWidth)) +
+              (3 * var(--fillInMargin)) - var(--slashWidth) -
+              (0.5 * var(--spaceBetweenSlashesWidth)) +
               var(--preSplit1DigitEntry2DigitWidth)
           );
 
@@ -578,7 +580,7 @@ export class SumsWithDoubleSplitApp extends TimeLimitedGame2 {
           ><span class="operator">=</span
           ><digit-fillin
             id="result"
-            desiredNumber="${this.result}"
+            desiredNumber=${this.result}
             numberDigits="2"
             ?fillinActive=${this.usedFillIns[this.activeFillIn] === `result`}
           ></digit-fillin>
@@ -598,24 +600,24 @@ export class SumsWithDoubleSplitApp extends TimeLimitedGame2 {
     const split1 = html`
       <div class="row">
         <div class="excersize">
-          <span class="${preSplit1SlashesClass}"></span><span>/</span
+          <span class=${preSplit1SlashesClass}></span><span>/</span
           ><span class="spaceBetweenSlashes"></span><span>&#92;</span>
         </div>
       </div>
 
       <div class="row">
         <div class="excersize">
-          <span class="${preSplit1DigitEntryClass}"></span
+          <span class=${preSplit1DigitEntryClass}></span
           ><digit-fillin
             id="split1Left"
-            desiredNumber="${this.left1Split}"
-            numberDigits="${left1SplitNumberDigits}"
+            desiredNumber=${this.left1Split}
+            numberDigits=${left1SplitNumberDigits}
             ?fillinActive=${this.usedFillIns[this.activeFillIn] ===
             `split1Left`}
           ></digit-fillin
           ><digit-fillin
             id="split1Right"
-            desiredNumber="${this.right1Split}"
+            desiredNumber=${this.right1Split}
             numberDigits="1"
             ?fillinActive=${this.usedFillIns[this.activeFillIn] ===
             `split1Right`}
@@ -624,7 +626,7 @@ export class SumsWithDoubleSplitApp extends TimeLimitedGame2 {
       </div>
     `;
 
-    let split2 = html``;
+    let split2: HTMLTemplateResult | typeof nothing = nothing;
     if (this.game === 'split2Till100') {
       split2 = html`
         <div class="row">
@@ -639,14 +641,14 @@ export class SumsWithDoubleSplitApp extends TimeLimitedGame2 {
             <span class="preSplit2DigitEntry"></span
             ><digit-fillin
               id="split2Left"
-              desiredNumber="${this.left2Split}"
+              desiredNumber=${this.left2Split}
               numberDigits="1"
               ?fillinActive=${this.usedFillIns[this.activeFillIn] ===
               `split2Left`}
             ></digit-fillin
             ><digit-fillin
               id="split2Right"
-              desiredNumber="${this.right2Split}"
+              desiredNumber=${this.right2Split}
               numberDigits="1"
               ?fillinActive=${this.usedFillIns[this.activeFillIn] ===
               `split2Right`}
@@ -673,8 +675,8 @@ export class SumsWithDoubleSplitApp extends TimeLimitedGame2 {
         ${this.showSplits === 'showSplits' ? split2 : nothing}
         <div class="keyboardArea">
           <digit-keyboard
-            @digit-entered="${(evt: CustomEvent<Digit>) =>
-              this.handleDigit(evt.detail)}"
+            @digit-entered=${(evt: CustomEvent<Digit>) =>
+              this.handleDigit(evt.detail)}
           >
           </digit-keyboard>
         </div>
