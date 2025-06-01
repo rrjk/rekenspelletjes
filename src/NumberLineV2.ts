@@ -54,7 +54,7 @@ type AboveBelowType = 'above' | 'below';
 
 function convertArchAttribute(value: string | null): ArchType[] {
   if (value !== null) {
-    const parsedValue = JSON.parse(value);
+    const parsedValue = JSON.parse(value) as ArchType[];
     return parsedValue;
   }
   return [];

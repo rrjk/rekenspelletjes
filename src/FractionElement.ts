@@ -19,7 +19,7 @@ import { getColorInfo } from './Colors';
 
 function convertFractionAttribute(value: string | null): Fraction {
   if (value !== null) {
-    const parsedValue = JSON.parse(value);
+    const parsedValue = JSON.parse(value) as Fraction;
     return parsedValue;
   }
   return new Fraction(3, 4);
@@ -245,11 +245,6 @@ export class FractionElement extends LitElement {
     if (this.representation === 'fraction') return this.renderAsFraction();
     if (this.representation === 'piechart') return this.renderAsPiechart();
     if (this.representation === 'percentage') return this.renderAsPercentage();
-    if (this.representation === 'decimal') return this.renderAsDecimal();
-
-    console.error(
-      `Fraction representation ${this.representation} is not supported`,
-    );
-    return nothing;
+    else /*(this.representation === 'decimal') */ return this.renderAsDecimal();
   }
 }

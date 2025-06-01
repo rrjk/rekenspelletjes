@@ -3,8 +3,7 @@ import { property } from 'lit/decorators.js';
 
 import type { CSSResultGroup, HTMLTemplateResult } from 'lit';
 
-import 'web-dialog';
-import type { WebDialog } from 'web-dialog';
+import { WebDialog } from 'web-dialog';
 
 import { RKdialogStyles } from './RKDialog';
 
@@ -33,7 +32,7 @@ export class MessageDialog extends LitElement {
    *  @throws {ChildNotFoundError} Child was not found, probably because the game over dialog was not rendered yet.
    */
   get _dialog(): WebDialog {
-    const ret = this.renderRoot.querySelector('#dialog') as WebDialog | null;
+    const ret = this.renderRoot.querySelector<WebDialog>('#dialog');
     if (ret === null) {
       throw new ChildNotFoundError('dialog', 'MessageDialog');
     }

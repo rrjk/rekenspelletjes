@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-misused-promises -- legacy */
+
 import { LitElement, html, css, unsafeCSS } from 'lit';
 import type { HTMLTemplateResult, CSSResultGroup } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';

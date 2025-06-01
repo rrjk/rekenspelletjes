@@ -108,9 +108,7 @@ export class ProgressBar extends LitElement {
    *  @throws {ChildNotFoundError} Child was not found, probably because the progress bar was not rendered yet.
    */
   get _progressBar(): HTMLElement {
-    const ret = this.renderRoot.querySelector(
-      '#ProgressBar',
-    ) as HTMLElement | null;
+    const ret = this.renderRoot.querySelector<HTMLElement>('#ProgressBar');
     if (ret === null) {
       throw new ChildNotFoundError('ProgressBar', 'ProgressBar');
     }

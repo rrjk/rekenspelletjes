@@ -132,7 +132,7 @@ export class DynamicGrid
             : `wrap-reverse`};
         }
       </style>
-      <slot @slotchange=${this.handleSlottedElementsChange}></slot>
+      <slot @slotchange=${() => this.handleSlottedElementsChange()}></slot>
     `;
   }
 }

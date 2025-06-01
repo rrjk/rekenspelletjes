@@ -331,9 +331,7 @@ export class BallFieldEntry extends LitElement {
 
   /** Prevent that balls overlap with other elements on the screen. */
   preventOverlapForBalls(): void {
-    const ballElements = this.renderRoot.querySelectorAll(
-      '.Ball',
-    ) as NodeListOf<HTMLElement>;
+    const ballElements = this.renderRoot.querySelectorAll<HTMLElement>('.Ball');
     this.preventCollisionElements.forEach(element => {
       ballElements.forEach(ball => {
         this.preventOverlapForBall(ball, element);

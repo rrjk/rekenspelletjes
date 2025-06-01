@@ -90,10 +90,13 @@ export abstract class AscendingItemsGameApp<
     }
     for (const a of this.itemBox.value.getAnimations()) {
       a.play();
-      a.finished.then(() => {
-        this.ascensionComplete();
-      });
-      //        .catch(() => {}); // When the animation is cancelled, we don't need to do anything
+      a.finished
+        .then(() => {
+          this.ascensionComplete();
+        })
+        .catch(() => {
+          /* When the animation is cancelled, we don't need to do anything */
+        });
     }
   }
 

@@ -25,14 +25,23 @@ export default defineConfig([
     files: ['**/*.html'],
     plugins: { html },
   },
+  tseslintConfigs.recommendedTypeCheckedOnly,
   tseslintConfigs.strict,
   tseslintConfigs.stylistic,
   wceslintConfigs['flat/recommended'],
   wceslintConfigs['flat/best-practice'],
   liteslintConfigs['flat/all'],
   eslintConfigPrettier,
-
   {
+    languageOptions: {
+      parserOptions: {
+        projectService: {
+          // This ensures that eslint.config.mjs and web-dev-server.config.mjs also are handled properly by eslint, even though not being mentioned in tsconfig.json
+          allowDefaultProject: ['*.mjs'],
+        },
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
     settings: {
       wc: {
         elementBaseClasses: ['LitElement'], // Recognize `LitElement` as a Custom Element base class

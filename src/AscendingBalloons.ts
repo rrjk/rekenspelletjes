@@ -350,8 +350,8 @@ export class AscendingBalloons extends LitElement {
 
   /* Restart the balloon ascension from the bottom.
    */
-  async restartAscension(): Promise<void> {
-    await this.reset();
+  restartAscension(): void {
+    this.reset();
     this.startAscension();
   }
 
@@ -359,10 +359,10 @@ export class AscendingBalloons extends LitElement {
    * Wait until the promise resolves before starting ascension again as
    * otherwise the reset might be missed by the browser.
    */
-  async reset(): Promise<void> {
+  reset(): void {
     this.updateBalloonInfo();
     this.ascension = false;
-    await this.performUpdate();
+    this.performUpdate();
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const dummy = this.offsetWidth; // This is a dummy command to force a reflow such that the animation is reset.
   }

@@ -32,11 +32,6 @@ export class AscendingBalloonsTestApp extends LitElement {
     return this.getElement<AscendingBalloons>('ascending-balloons');
   }
 
-  /** Actions performed after the first update is complete. */
-  async firstUpdated(): Promise<void> {
-    /** Trigger baloons to start */
-  }
-
   /** Toggle disabled flag */
   toggleDisabled() {
     this.disabled = !this.disabled;
@@ -87,7 +82,7 @@ export class AscendingBalloonsTestApp extends LitElement {
       <button
         style="position:absolute; left: 0; top:75px;"
         id="toggleDisabledButton"
-        @click=${this.toggleDisabled}
+        @click=${() => this.toggleDisabled()}
       >
         Toggle disabled
       </button>

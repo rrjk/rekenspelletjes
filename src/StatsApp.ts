@@ -71,6 +71,9 @@ export class StatsApp extends LitElement {
           });
         }
         this.requestUpdate();
+      })
+      .catch(() => {
+        throw new Error("Can't fetch statistics information");
       });
   }
 

@@ -108,8 +108,8 @@ export class DropTargetEgg
           <draggable-element
             resetDragAfterDrop
             .dropTargetList=${this.trashcanAreas}
-            @dropped=${this.dropInTrashcan}
-            @dragStarted=${this.handleDragStarted}
+            @dropped=${() => this.dropInTrashcan()}
+            @dragStarted=${() => this.handleDragStarted()}
           >
             <img
               draggable="false"

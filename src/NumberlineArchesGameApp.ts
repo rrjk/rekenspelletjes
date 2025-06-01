@@ -550,6 +550,7 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
   }
 
   handleDigit(evt: CustomEvent) {
+    /* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- legacy */
     const digit: number = evt.detail;
     const partialNumberlineNumber =
       this.numberBoxes[this.numberBoxes.length - 1].nmbr;
@@ -707,7 +708,7 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
         ?dragDisabled=${disabled || crossedOut}
         value=${width}
         .dropTargetList=${this.numberLineArea}
-        @dropped=${this.archDrop}
+        @dropped=${(evt: DropEvent) => this.archDrop(evt)}
       >
         <number-line-arch
           width=${width}
@@ -749,6 +750,10 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
     if (this.operator === 'minus') belowArches = this.arches;
     else if (this.operator === 'plus') aboveArches = this.arches;
 
+    /* eslint-disable @typescript-eslint/unbound-method -- For ref, I have to refer to the actual function and not put a arrow function
+                                                           in between as otherwise we run into a endless loop. Moreover, inside a html
+                                                           string, this will be bound properly 
+    */
     return html`
       ${this.renderExerciseArea()}
       <div id="expandedSumArea"></div>
@@ -772,9 +777,10 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
         <digit-keyboard
           ?disabled=${!this.keyPadActive}
           .disabledDigits=${this.disabledDigits}
-          @digit-entered=${this.handleDigit}
+          @digit-entered=${(evt: CustomEvent) => this.handleDigit(evt)}
         ></digit-keyboard>
       </div>
     `;
+    /* eslint-enable @typescript-eslint/unbound-method */
   }
 }

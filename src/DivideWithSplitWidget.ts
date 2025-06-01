@@ -128,10 +128,10 @@ function renderSplitHelperField(
     return svg`
       <text class="explanationText" x="${pos.x}" y="${pos.y + 30}">Tiental</text> 
       <text class="explanationText" x="${pos.x}" y="${pos.y + 60}">keer ${divisor} is</text>`;
-  if (field === 'helpSplit1')
+  // if (field === 'helpSplit1')
+  else
     return svg`
       <text class="explanationText" x="${pos.x}" y="${pos.y + 30}">Rest</text>`;
-  throw new Error(`Illegal field ${field}`);
 }
 
 const subAnswerHelperFields = ['helpSubAnswer0', 'helpSubAnswer1'] as const;
@@ -145,10 +145,9 @@ function renderSubAnswerHelperField(
   field: SubAnswerHelperFields,
 ) {
   if (field === 'helpSubAnswer0')
-    return svg`<text class="explanationText" x="${pos.x}" y="${pos.y + 30}">${split0}∶${divisor} </text>`;
-  if (field === 'helpSubAnswer1')
+    return svg`<text class="explanationText" x="${pos.x}" y="${pos.y + 30}">${split0}∶${divisor} </text>`; // (field === 'helpSubAnswer1')
+  else
     return svg`<text class="explanationText" x="${pos.x}" y="${pos.y + 30}">${split1}∶${divisor} </text>`;
-  throw new Error(`Illegal field ${field}`);
 }
 
 type FieldsRenderInfo = Record<
@@ -244,7 +243,7 @@ function convertJSON<T>(value: string | null): T {
   console.log(`convertFixedNumbers called`);
   console.log(value);
   if (value !== null) {
-    const parsedValue = JSON.parse(value);
+    const parsedValue = JSON.parse(value) as T;
     return parsedValue;
   }
   throw new Error(`illegally formatted attribute provided`);

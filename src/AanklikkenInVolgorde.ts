@@ -1,5 +1,9 @@
 /* eslint no-plusplus: ["error", { "allowForLoopAfterthoughts": true }] */
 
+/* eslint-disable @typescript-eslint/no-floating-promises -- legacy */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access -- legacy */
+/* eslint-disable @typescript-eslint/no-unsafe-argument -- legacy */
+
 import { html } from 'lit';
 
 import './BallenVeldInvoer';

@@ -600,7 +600,7 @@ export abstract class PairMatchingApp<
           <draggable-target-slotted
             id=${this.serializeGridId(gridIndex)}
             .gridIndex=${gridIndex}
-            @dropped=${this.handleDropped}
+            @dropped=${(evt: DropEvent) => this.handleDropped(evt)}
             resetDragAfterDrop
             style="top: ${cell.basicInfo.top}%; left: ${cell.basicInfo.left}%;"
           >

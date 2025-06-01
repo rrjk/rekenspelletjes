@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-misused-promises -- legacy */
 import { LitElement, html, css } from 'lit';
 import { property } from 'lit/decorators.js';
 

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-misused-promises -- legacy */
+
 import { html } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
@@ -294,7 +296,7 @@ export class CombineToSolveSumApp extends TimeCountingGame {
               value=${cell.nmbr}
               resetDragAfterDrop
               style="height: 50%; aspect-ratio: 1; display:block; position: relative; left: ${cell.left}%; top: ${cell.top}%;"
-              @dropped=${this.handleDropped}
+              @dropped=${(evt: DropEvent) => this.handleDropped(evt)}
             ></draggable-target-heart>
           </div>`,
         );

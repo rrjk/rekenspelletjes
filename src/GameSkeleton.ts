@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-misused-promises -- legacy */
+
 import { LitElement, html, css } from 'lit';
 import { state } from 'lit/decorators.js';
 import type { HTMLTemplateResult, CSSResultArray } from 'lit';
@@ -153,7 +155,7 @@ export abstract class GameSkeleton extends LitElement {
   }
 
   get gameOverIntroductionText(): HTMLTemplateResult {
-    return html`Placeholder for game introduction text`;
+    return html`Het spel is afgelopen.`;
   }
 
   /** Get the text to show in the game over dialog
@@ -180,11 +182,16 @@ export abstract class GameSkeleton extends LitElement {
   /** Handle game over */
   handleGameOver(): void {
     this.executeGameOverActions();
-    this.gameOverDialog.show(this.gameOverText).then(result => {
-      if (result === 'again') {
-        this.startNewGame();
-      } else window.location.href = 'index.html';
-    });
+    this.gameOverDialog
+      .show(this.gameOverText)
+      .then(result => {
+        if (result === 'again') {
+          this.startNewGame();
+        } else window.location.href = 'index.html';
+      })
+      .catch(() => {
+        throw new Error('Error in showing game over dialog');
+      });
   }
 
   /** Actions to perform before the game over dialog is shown.

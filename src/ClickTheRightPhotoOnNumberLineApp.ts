@@ -1,3 +1,7 @@
+/* eslint-disable   @typescript-eslint/no-unsafe-argument -- legacy, use of CustomEvent details field */
+/* eslint-disable   @typescript-eslint/no-unsafe-member-access -- legacy, use of CustomEvent details field */
+/* eslint-disable   @typescript-eslint/no-misused-promises -- legacy */
+
 import { LitElement, html } from 'lit';
 import { state, property } from 'lit/decorators.js';
 
@@ -126,7 +130,7 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
     }
   }
 
-  async startNewGame() {
+  startNewGame() {
     this._numberNok = 0;
     this._numberOk = 0;
     this._progressBar.restart();
@@ -148,7 +152,7 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
    *  @throws {ChildNotFoundError} Child was not found, probably because app was not rendered yet.
    */
   get _scoreBox(): ScoreBox {
-    const ret = this.renderRoot.querySelector('#scoreBox') as ScoreBox | null;
+    const ret = this.renderRoot.querySelector<ScoreBox>('#scoreBox');
     if (ret === null) {
       throw new ChildNotFoundError(
         'scoreBox',
@@ -162,9 +166,7 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
    *  @throws {ChildNotFoundError} Child was not found, probably because app was not rendered yet.
    */
   get _progressBar(): ProgressBar {
-    const ret = this.renderRoot.querySelector(
-      '#progressBar',
-    ) as ProgressBar | null;
+    const ret = this.renderRoot.querySelector<ProgressBar>('#progressBar');
     if (ret === null) {
       throw new ChildNotFoundError(
         'progressBar',
@@ -178,9 +180,8 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
    *  @throws {ChildNotFoundError} Child was not found, probably because app was not rendered yet.
    */
   get _numberLine(): NumberLineHangingPhotos {
-    const ret = this.renderRoot.querySelector(
-      '#numberLine',
-    ) as NumberLineHangingPhotos | null;
+    const ret =
+      this.renderRoot.querySelector<NumberLineHangingPhotos>('#numberLine');
     if (ret === null) {
       throw new ChildNotFoundError(
         'numberLine',
@@ -194,9 +195,7 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
    *  @throws {ChildNotFoundError} Child was not found, probably because app was not rendered yet.
    */
   get _messageDialog(): MessageDialog {
-    const ret = this.renderRoot.querySelector(
-      '#messageDialog',
-    ) as MessageDialog | null;
+    const ret = this.renderRoot.querySelector<MessageDialog>('#messageDialog');
     if (ret === null) {
       throw new ChildNotFoundError(
         'messageDialog',
@@ -210,9 +209,8 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
    *  @throws {ChildNotFoundError} Child was not found, probably because app was not rendered yet.
    */
   get _gameOverDialog(): GameOverDialog {
-    const ret = this.renderRoot.querySelector(
-      '#gameOverDialog',
-    ) as GameOverDialog | null;
+    const ret =
+      this.renderRoot.querySelector<GameOverDialog>('#gameOverDialog');
     if (ret === null) {
       throw new ChildNotFoundError(
         'gameOverDialog',
@@ -265,6 +263,9 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
       .then(result => {
         if (result === 'again') this.startNewGame();
         else window.location.href = 'index.html';
+      })
+      .catch(() => {
+        throw new Error('Game Over Dialog threw an exception');
       });
   }
 

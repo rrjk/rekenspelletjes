@@ -1,4 +1,6 @@
 /* eslint-disable max-classes-per-file */
+/* eslint-disable @typescript-eslint/no-misused-promises -- legacy */
+
 import { LitElement, html, css } from 'lit';
 import type { HTMLTemplateResult, CSSResultGroup, PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
