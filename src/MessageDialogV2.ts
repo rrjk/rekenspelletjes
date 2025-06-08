@@ -7,12 +7,19 @@ import { createRef, ref, Ref } from 'lit/directives/ref.js';
 
 @customElement('message-dialog-v2')
 export class MessageDialogV2 extends LitElement {
+  /** Title of the message dialog */
   @property({ type: String })
   accessor title = 'Dialog Title';
 
+  /** Image to use in the dialog, if none is specified, Mompitz Otto is used. */
   @property({ attribute: false })
   accessor imageUrl = new URL('../images/Mompitz Otto.png', import.meta.url);
 
+  /** Should the  dialog box start open*/
+  @property({ type: Boolean })
+  accessor initialOpen = false;
+
+  /** Reference to the dialog HTML element used. */
   dialogRef: Ref<HTMLDialogElement> = createRef();
 
   static get styles(): CSSResultGroup {
@@ -112,8 +119,13 @@ export class MessageDialogV2 extends LitElement {
     `;
   }
 
+  protected firstUpdated(): void {
+    if (this.initialOpen) this.showModal();
+  }
+
   showModal() {
     if (this.dialogRef.value) this.dialogRef.value.showModal();
+    else throw new Error('showModal called, but dialog is not yet rendered');
   }
 
   handleCloseDialog() {
