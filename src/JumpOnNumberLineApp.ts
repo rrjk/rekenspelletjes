@@ -1,6 +1,7 @@
-/* eslint-disable @typescript-eslint/no-misused-promises -- legacy */
 import { LitElement, html, css } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
+import { createRef, ref, Ref } from 'lit/directives/ref.js';
+
 import type { CSSResultGroup, HTMLTemplateResult } from 'lit';
 
 import { NumberLine } from './NumberLine';
@@ -13,8 +14,8 @@ import { randomIntFromRange } from './Randomizer';
 import './ScoreBox';
 import type { ScoreBox } from './ScoreBox';
 
-import './MessageDialog';
-import type { MessageDialog } from './MessageDialog';
+import './MessageDialogV2';
+import type { MessageDialogV2 } from './MessageDialogV2';
 
 import './GameOverDialog';
 import type { GameOverDialog } from './GameOverDialog';
@@ -79,6 +80,8 @@ export class JumpOnNumberLineApp extends LitElement {
   /** Gametime in number of seconds */
   @state()
   private accessor gameTime: number;
+
+  welcomeDialogRef: Ref<MessageDialogV2> = createRef();
 
   /** Width of the number line in vw units */
   private static readonly numberLineWidth = 94;
@@ -299,11 +302,6 @@ export class JumpOnNumberLineApp extends LitElement {
     return this.getElement<GameOverDialog>('#gameOverDialog');
   }
 
-  /** Get the message dialog. */
-  private get messageDialog(): MessageDialog {
-    return this.getElement<MessageDialog>('#messageDialog');
-  }
-
   /** Get the progress bar. */
   private get progressBar(): ProgressBar {
     return this.getElement<ProgressBar>('#progressBar');
@@ -425,42 +423,16 @@ export class JumpOnNumberLineApp extends LitElement {
     }
   }
 
-  /** Actions performed after the first update is complete. */
-  async firstUpdated(): Promise<void> {
-    await this.updateComplete;
-    await this.showWelcomeMessage();
-    this.startNewGame();
-  }
-
-  override async getUpdateComplete(): Promise<boolean> {
-    const result = await super.getUpdateComplete();
-    await this.progressBar.updateComplete;
-    await this.numberLine.updateComplete;
-    await this.numberLinePlatform.updateComplete;
-    await this.scoreBox.updateComplete;
-    await this.gameOverDialog.updateComplete;
-    await this.messageDialog.updateComplete;
-    return result;
-  }
-
-  /** Show the welcome message */
-  async showWelcomeMessage(): Promise<string> {
-    return this.messageDialog.show(
-      'Spring op de getallenlijn',
-      html`<p>
-          Zet het platform op de juiste plek op de getallenlijn, zodat Jan erop
-          kan springen.
-        </p>
-        <p>Dit spel kun je op de telefoon het beste horizontaal spelen.</p>`,
-    );
-  }
-
   /** Render the class property of jan, the image that moves down */
   renderJanClass(): string {
     let ret;
     if (this.janAnimation === 'none') ret = '';
     else ret = this.janAnimation;
     return ret;
+  }
+
+  handleCloseWelcomeDialog() {
+    this.startNewGame();
   }
 
   /** Render the application */
@@ -513,7 +485,21 @@ export class JumpOnNumberLineApp extends LitElement {
         class=${this.renderJanClass()}
       />
       <button id="spring" @click=${() => this.checkAnswer()}>Spring</button>
-      <message-dialog id="messageDialog"></message-dialog>
+
+      <message-dialog-v2
+        initialOpen
+        id="welcomeDialog"
+        title="Spring op de getallenlijn"
+        @close=${() => this.handleCloseWelcomeDialog()}
+        ${ref(this.welcomeDialogRef)}
+      >
+        <p>
+          Zet het platform op de juiste plek op de getallenlijn, zodat Jan erop
+          kan springen.
+        </p>
+        <p>Dit spel kun je op de telefoon het beste horizontaal spelen.</p>
+      </message-dialog-v2>
+
       <gameover-dialog id="gameOverDialog"></gameover-dialog>
     `;
   }
