@@ -483,8 +483,8 @@ export class JumpOnNumberLineApp extends LitElement {
       <message-dialog-v2
         initialOpen
         id="welcomeDialog"
-        .title="Spring op de getallenlijn"
-        .buttonText="Start"
+        .title=${'Spring op de getallenlijn'}
+        .buttonText=${'Start'}
         @close=${() => this.handleCloseWelcomeDialog()}
         ${ref(this.welcomeDialogRef)}
       >
