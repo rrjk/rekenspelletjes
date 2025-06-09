@@ -19,6 +19,10 @@ export class MessageDialogV2 extends LitElement {
   @property({ type: Boolean })
   accessor initialOpen = false;
 
+  /** Text for the button to close the dialog */
+  @property({ type: String })
+  accessor buttonText = 'Ok';
+
   /** Reference to the dialog HTML element used. */
   dialogRef: Ref<HTMLDialogElement> = createRef();
 
@@ -81,7 +85,7 @@ export class MessageDialogV2 extends LitElement {
         max-height: 50vh;
       }
 
-      button#okButton {
+      button {
         grid-area: button;
         justify-self: start;
         background-color: ${unsafeCSS(getColorInfo('red').mainColorCode)};
@@ -98,7 +102,7 @@ export class MessageDialogV2 extends LitElement {
         margin: 0.2em;
       }
 
-      button#okButton:focus {
+      button:focus {
         outline: none;
         border: 2px solid ${unsafeCSS(getColorInfo('red').accentColorCode)};
       }
@@ -116,7 +120,9 @@ export class MessageDialogV2 extends LitElement {
           <div id="image">
             <img alt="Mompitz figuurtje" src=${this.imageUrl} />
           </div>
-          <button id="okButton" @click=${() => this.handleClick()}>Ok</button>
+          <button id="okButton" @click=${() => this.handleClick()}>
+            ${this.buttonText}
+          </button>
         </div>
       </dialog>
     `;
