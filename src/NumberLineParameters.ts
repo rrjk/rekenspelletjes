@@ -13,6 +13,38 @@ export interface NumberLineParameters {
   readonly showAll10Numbers: boolean;
 }
 
+export function DescribeNumberLineParameters(
+  parameters: NumberLineParameters,
+): string {
+  const numberLineBoundaries = `${parameters.minimum} tot ${parameters.maximum}`;
+
+  let tickMarks = ``;
+  if (
+    parameters.show10TickMarks &&
+    parameters.show5TickMarks &&
+    parameters.show1TickMarks
+  )
+    tickMarks = 'alle hulplijntjes';
+  else if (
+    parameters.show10TickMarks &&
+    parameters.show5TickMarks &&
+    !parameters.show1TickMarks
+  )
+    tickMarks = 'de hulplijntjes voor de vijf- en tientallen';
+  else if (
+    parameters.show10TickMarks &&
+    !parameters.show5TickMarks &&
+    !parameters.show1TickMarks
+  )
+    tickMarks = 'de hulplijntjes voor de tientallen';
+
+  let numbersShown = ``;
+  if (parameters.showAll10Numbers) numbersShown = 'alle tientallen';
+  else numbersShown = 'het eerste en laatste getal van de getallenlijn';
+
+  return `${numberLineBoundaries} waarbij ${tickMarks} ${tickMarks !== '' ? 'en' : ''} ${numbersShown} zichtbaar waren.`;
+}
+
 export function ParseNumberLineParameters(): NumberLineParameters {
   const urlParams = new URLSearchParams(window.location.search);
 

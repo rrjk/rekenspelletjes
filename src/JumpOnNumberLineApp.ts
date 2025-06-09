@@ -17,15 +17,21 @@ import type { ScoreBox } from './ScoreBox';
 import './MessageDialogV2';
 import type { MessageDialogV2 } from './MessageDialogV2';
 
-import './GameOverDialog';
-import type { GameOverDialog } from './GameOverDialog';
+import './GameOverDialogV2';
+import type {
+  GameOverDialogV2,
+  GameOverDialogCloseEvent,
+} from './GameOverDialogV2';
 
 import './Platform';
 import type { Platform } from './Platform';
 
 import { ChildNotFoundError } from './ChildNotFoundError';
 
-import { ParseNumberLineParameters } from './NumberLineParameters';
+import {
+  ParseNumberLineParameters,
+  DescribeNumberLineParameters,
+} from './NumberLineParameters';
 import type { NumberLineParameters } from './NumberLineParameters';
 
 import { ParseGametimeFromUrl } from './GametimeParameters';
@@ -82,6 +88,7 @@ export class JumpOnNumberLineApp extends LitElement {
   private accessor gameTime: number;
 
   welcomeDialogRef: Ref<MessageDialogV2> = createRef();
+  gameOverDialogRef: Ref<GameOverDialogV2> = createRef();
 
   /** Width of the number line in vw units */
   private static readonly numberLineWidth = 94;
@@ -297,11 +304,6 @@ export class JumpOnNumberLineApp extends LitElement {
     return this.getElement<HTMLImageElement>('#jan');
   }
 
-  /** Get the game over dialog */
-  private get gameOverDialog(): GameOverDialog {
-    return this.getElement<GameOverDialog>('#gameOverDialog');
-  }
-
   /** Get the progress bar. */
   private get progressBar(): ProgressBar {
     return this.getElement<ProgressBar>('#progressBar');
@@ -326,25 +328,17 @@ export class JumpOnNumberLineApp extends LitElement {
   handleTimeUp(): void {
     this.gameLogger.logGameOver();
     this.showNumber = false;
-    this.gameOverDialog
-      .show(
-        html` <p>
-            Jan is ${this.numberOk === 0 ? 'nooit' : `${this.numberOk} keer`} op
-            het platform geland.
-          </p>
-          <p>
-            Je hebt ${this.numberNok === 0 ? 'geen' : this.numberNok}
-            ${this.numberNok === 1 ? 'fout' : 'fouten'} gemaakt.
-          </p>
-          <p>Je score is ${this.numberOk - this.numberNok}.</p>`,
-      )
-      .then(result => {
-        if (result === 'again') this.startNewGame();
-        else window.location.href = 'index.html';
-      })
-      .catch(() => {
-        throw new Error('Error while shoung game over dialog');
-      });
+    if (this.gameOverDialogRef.value) this.gameOverDialogRef.value.showModal();
+    else
+      throw new Error(
+        `Game over dialog has not been rendered during game over`,
+      );
+  }
+
+  handleGameOverDialogClose(evt: GameOverDialogCloseEvent) {
+    if (evt.action === 'NewGame') window.location.href = 'index.html';
+    else if (evt.action === 'PlayAgain') this.startNewGame();
+    else throw new Error(`Game over dialog exited with an unknown action`);
   }
 
   /** Start a new game, resets the timer and the number of correct and incorrect answer. */
@@ -489,7 +483,8 @@ export class JumpOnNumberLineApp extends LitElement {
       <message-dialog-v2
         initialOpen
         id="welcomeDialog"
-        title="Spring op de getallenlijn"
+        .title="Spring op de getallenlijn"
+        .buttonText="Start"
         @close=${() => this.handleCloseWelcomeDialog()}
         ${ref(this.welcomeDialogRef)}
       >
@@ -500,7 +495,21 @@ export class JumpOnNumberLineApp extends LitElement {
         <p>Dit spel kun je op de telefoon het beste horizontaal spelen.</p>
       </message-dialog-v2>
 
-      <gameover-dialog id="gameOverDialog"></gameover-dialog>
+      <game-over-dialog-v2
+        ${ref(this.gameOverDialogRef)}
+        id="gameOverDialog"
+        @close=${(evt: GameOverDialogCloseEvent) =>
+          this.handleGameOverDialogClose(evt)}
+        .numberOk=${this.numberOk}
+        .numberNok=${this.numberNok}
+        .gameTime=${this.gameTime}
+      >
+        <p>Je hebt het <i>Spring op de getallenlijn</i> spel gespeeld</p>
+        <p>
+          De getallenlijn liep van
+          ${DescribeNumberLineParameters(this.numberLineProperties)}
+        </p>
+      </game-over-dialog-v2>
     `;
   }
 }

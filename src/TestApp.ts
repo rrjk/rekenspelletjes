@@ -47,9 +47,9 @@ export class TestApp extends LitElement {
         ${ref(this.dialogRef)}
         @close=${(evt: GameOverDialogCloseEvent) => this.handleOk(evt)}
         .imageUrl=${new URL('../images/Mompitz Anne.png', import.meta.url)}
-        .nmbrCorrect=${5}
-        .nmbrInCorrect=${15}
-        .playTime=${180}
+        .numberOk=${5}
+        .numberNok=${15}
+        .gameTime=${180}
       >
         <p>Je hebt het test app spel gespeeld</p>
       </game-over-dialog-v2>`;

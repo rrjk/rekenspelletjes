@@ -27,13 +27,13 @@ export class GameOverDialogV2 extends LitElement {
   accessor initialOpen = false;
 
   @property({ type: Number })
-  accessor nmbrCorrect: number | undefined = undefined;
+  accessor numberOk: number | undefined = undefined;
 
   @property({ type: Number })
-  accessor nmbrInCorrect: number | undefined = undefined;
+  accessor numberNok: number | undefined = undefined;
 
   @property({ type: Number })
-  accessor playTime: number | undefined = undefined;
+  accessor gameTime: number | undefined = undefined;
 
   /** Reference to the dialog HTML element used. */
   dialogRef: Ref<HTMLDialogElement> = createRef();
@@ -146,52 +146,55 @@ export class GameOverDialogV2 extends LitElement {
   }
 
   renderPlayTimeRow() {
-    if (!this.playTime) return nothing;
+    if (this.gameTime === undefined) return nothing;
 
     let column3: HTMLTemplateResult | typeof nothing = nothing;
 
-    if (this.playTime && this.playTime % 60 !== 0)
+    if (this.gameTime && this.gameTime % 60 !== 0)
       column3 = html`<td>
-        :${(this.playTime % 60).toString().padStart(2, '0')} minuten
+        :${(this.gameTime % 60).toString().padStart(2, '0')} minuten
       </td>`;
-    else if (this.playTime !== 60) column3 = html`<td>&nbsp;minuten</td>`;
+    else if (this.gameTime !== 60) column3 = html`<td>&nbsp;minuten</td>`;
     else column3 = html`<td>&nbsp;minuut</td>`;
 
     return html` <tr>
       <td>Tijd gespeeld:</td>
-      <td class="number">${Math.floor(this.playTime / 60)}</td>
+      <td class="number">${Math.floor(this.gameTime / 60)}</td>
       ${column3}
     </tr>`;
   }
 
   renderNmbrCorrectRow() {
-    if (this.nmbrCorrect)
+    if (this.numberOk !== undefined)
       return html`
         <tr>
           <td>Aantal goed:</td>
-          <td class="number">${this.nmbrCorrect}</td>
+          <td class="number">${this.numberOk}</td>
           <td></td>
         </tr>
       `;
   }
 
   renderNmbrInCorrectRow() {
-    if (this.nmbrCorrect)
+    if (this.numberOk !== undefined)
       return html`
         <tr>
           <td>Aantal fout:</td>
-          <td class="number">${this.nmbrInCorrect}</td>
+          <td class="number">${this.numberNok}</td>
           <td></td>
         </tr>
       `;
   }
 
   renderScoreRow() {
-    if (this.nmbrCorrect && this.nmbrInCorrect)
+    console.log(
+      `renderScoreRow - numberOk = ${this.numberOk} - numberNok = ${this.numberNok}`,
+    );
+    if (this.numberOk !== undefined && this.numberNok !== undefined)
       return html`
         <tr>
           <td>Score:</td>
-          <td class="number">${this.nmbrCorrect - this.nmbrInCorrect}</td>
+          <td class="number">${this.numberOk - this.numberNok}</td>
           <td></td>
         </tr>
       `;
@@ -216,18 +219,11 @@ export class GameOverDialogV2 extends LitElement {
             <img alt="Mompitz figuurtje" src=${this.imageUrl} />
           </div>
           <div id="buttons">
-            <button
-              autofocus
-              id="NewGameButton"
-              @click=${() => this.handleClickNewGame()}
-            >
-              Nieuw spel kiezen
-            </button>
-            <button
-              id="PlayAgainButton"
-              @click=${() => this.handleClickPlayAgain()}
-            >
+            <button autofocus @click=${() => this.handleClickPlayAgain()}>
               Speel nog een keer
+            </button>
+            <button @click=${() => this.handleClickNewGame()}>
+              Nieuw spel kiezen
             </button>
           </div>
         </div>
