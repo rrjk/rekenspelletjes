@@ -1,33 +1,72 @@
 import { html, css, LitElement } from 'lit';
-import { customElement } from 'lit/decorators.js';
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
-// import { darken, lighten } from 'color2k';
-import './FlyingSaucer';
-import { colors } from './Colors';
+import { customElement, state } from 'lit/decorators.js';
+import { createRef, ref, Ref } from 'lit/directives/ref.js';
+
+import type {
+  GameOverDialogCloseEvent,
+  GameOverDialogV2,
+} from './GameOverDialogV2';
+import './GameOverDialogV2';
 
 @customElement('test-app')
 export class TestApp extends LitElement {
+  @state()
+  accessor dialogOpen = false;
+
+  dialogRef: Ref<GameOverDialogV2> = createRef();
+
   static get styles(): CSSResultArray {
     return [
       css`
-        flying-saucer {
-          width: 100px;
+        :host {
+          width: 100%;
+          height: 100%;
+          display: block;
+        }
+        div#im {
           height: 100px;
+          width: 100px;
+          background-color: green;
+        }
+        img {
+          object-fit: contain;
+          max-width: 100px;
+          max-height: 100px;
         }
       `,
     ];
   }
-
   protected renderTest(): HTMLTemplateResult {
-    return html`<p>Test</p>
-      ${colors.map(
-        color =>
-          html`<flying-saucer color=${color} content="888"></flying-saucer>`,
-      )} `;
+    return html` <button @click=${() => this.handleButtonClick()}>
+        AppButton
+      </button>
+      <p>Test</p>
+      <game-over-dialog-v2
+        ${ref(this.dialogRef)}
+        @close=${(evt: GameOverDialogCloseEvent) => this.handleOk(evt)}
+        .imageUrl=${new URL('../images/Mompitz Anne.png', import.meta.url)}
+        .numberOk=${5}
+        .numberNok=${15}
+        .gameTime=${180}
+      >
+        <p>Je hebt het test app spel gespeeld</p>
+      </game-over-dialog-v2>`;
   }
 
   protected render(): HTMLTemplateResult {
     return this.renderTest();
+  }
+
+  handleButtonClick() {
+    console.log(`App Button click`);
+    if (this.dialogRef.value) this.dialogRef.value.showModal();
+    this.dialogOpen = true;
+  }
+
+  handleOk(evt: GameOverDialogCloseEvent) {
+    console.log(`Dialog closed with ${evt.action}`);
+    this.dialogOpen = false;
   }
 }
