@@ -86,10 +86,13 @@ export class MessageDialogV2 extends LitElement {
         justify-self: start;
         background-color: ${unsafeCSS(getColorInfo('red').mainColorCode)};
         color: white;
-        width: 5em;
-        height: 2em;
         font-size: 100%;
         border: none;
+        padding-top: 0.3em;
+        padding-bottom: 0.3em;
+        padding-left: 0.6em;
+        padding-right: 0.6em;
+        box-sizing: content-box;
         border-radius: 999px;
         display: inline-block;
         margin: 0.2em;
