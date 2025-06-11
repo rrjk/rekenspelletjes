@@ -1,9 +1,9 @@
 /* eslint-disable   @typescript-eslint/no-unsafe-argument -- legacy, use of CustomEvent details field */
 /* eslint-disable   @typescript-eslint/no-unsafe-member-access -- legacy, use of CustomEvent details field */
-/* eslint-disable   @typescript-eslint/no-misused-promises -- legacy */
 
-import { LitElement, html } from 'lit';
+import { HTMLTemplateResult, LitElement, html } from 'lit';
 import { state, property } from 'lit/decorators.js';
+import { createRef, ref, Ref } from 'lit/directives/ref.js';
 
 import './NumberLineHangingPhotos';
 import type { NumberLineHangingPhotos } from './NumberLineHangingPhotos';
@@ -16,15 +16,19 @@ import { randomIntFromRange } from './Randomizer';
 import './ScoreBox';
 import type { ScoreBox } from './ScoreBox';
 
-import './MessageDialog';
-import type { MessageDialog } from './MessageDialog';
-
-import './GameOverDialog';
-import type { GameOverDialog } from './GameOverDialog';
-
 import { ChildNotFoundError } from './ChildNotFoundError';
 import { GameLogger } from './GameLogger';
 import { ParseGametimeFromUrl } from './GametimeParameters';
+
+import './MessageDialogV2';
+import type { MessageDialogV2 } from './MessageDialogV2';
+
+import './GameOverDialogV2';
+import type {
+  GameOverDialogV2,
+  GameOverDialogCloseEvent,
+} from './GameOverDialogV2';
+import { DescribeNumberLineParameters } from './NumberLineParameters';
 
 class ClickTheRightPhotoOnNumberLineApp extends LitElement {
   @property({ type: Number })
@@ -46,11 +50,14 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
   @property({ type: Array })
   accessor disabledPositions: number[];
   @state()
-  accessor _numberOk: number;
+  accessor numberOk: number;
   @state()
-  accessor _numberNok: number;
+  accessor numberNok: number;
   @property({ type: Number })
-  accessor time: number;
+  accessor gameTime: number;
+
+  welcomeDialogRef: Ref<MessageDialogV2> = createRef();
+  gameOverDialogRef: Ref<GameOverDialogV2> = createRef();
 
   private gameLogger = new GameLogger('T', 'a');
 
@@ -68,10 +75,10 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
     this.positions = [];
     this.disabledPositions = [];
 
-    this._numberNok = 0;
-    this._numberOk = 0;
+    this.numberNok = 0;
+    this.numberOk = 0;
 
-    this.time = 60;
+    this.gameTime = 60;
 
     this.parseUrl();
 
@@ -79,7 +86,7 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
   }
 
   parseUrl() {
-    this.time = ParseGametimeFromUrl(60);
+    this.gameTime = ParseGametimeFromUrl(60);
     const urlParams = new URLSearchParams(window.location.search);
 
     if (urlParams.has('minimum')) {
@@ -123,16 +130,26 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
       this.disabledPositions = this.disabledPositions.concat(
         event.detail.position,
       );
-      this._numberNok += 1;
+      this.numberNok += 1;
     } else {
-      this._numberOk += 1;
+      this.numberOk += 1;
       this.startNewRound();
     }
   }
 
+  handleGameOverDialogClose(evt: GameOverDialogCloseEvent) {
+    if (evt.action === 'NewGame') window.location.href = 'index.html';
+    else if (evt.action === 'PlayAgain') this.startNewGame();
+    else throw new Error(`Game over dialog exited with an unknown action`);
+  }
+
+  handleCloseWelcomeDialog() {
+    this.startNewGame();
+  }
+
   startNewGame() {
-    this._numberNok = 0;
-    this._numberOk = 0;
+    this.numberNok = 0;
+    this.numberOk = 0;
     this._progressBar.restart();
     this.startNewRound();
   }
@@ -191,95 +208,67 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
     return ret;
   }
 
-  /** Get the messageDialog child
-   *  @throws {ChildNotFoundError} Child was not found, probably because app was not rendered yet.
-   */
-  get _messageDialog(): MessageDialog {
-    const ret = this.renderRoot.querySelector<MessageDialog>('#messageDialog');
-    if (ret === null) {
-      throw new ChildNotFoundError(
-        'messageDialog',
-        'ClickTheRightPhotoOnNumberLineApp',
-      );
-    }
-    return ret;
-  }
-
-  /** Get the gameOverDialog child
-   *  @throws {ChildNotFoundError} Child was not found, probably because app was not rendered yet.
-   */
-  get _gameOverDialog(): GameOverDialog {
-    const ret =
-      this.renderRoot.querySelector<GameOverDialog>('#gameOverDialog');
-    if (ret === null) {
-      throw new ChildNotFoundError(
-        'gameOverDialog',
-        'ClickTheRightPhotoOnNumberLineApp',
-      );
-    }
-    return ret;
-  }
-
-  async firstUpdated() {
-    await this.updateComplete;
-    await this.showWelcomeMessage();
-    this._progressBar.restart();
-    this.startNewGame();
-  }
-
-  override async getUpdateComplete() {
-    const result = await super.getUpdateComplete();
-    await this._progressBar.updateComplete;
-    await this._numberLine.updateComplete;
-    await this._scoreBox.updateComplete;
-    await this._gameOverDialog.updateComplete;
-    await this._messageDialog.updateComplete;
-    return result;
-  }
-
-  async showWelcomeMessage() {
-    return this._messageDialog.show(
-      'De juiste foto kiezen',
-      html`<p>Kies de juiste foto op de getallenlijn.</p>
-        <p>Dit spel kun je op de telefoon het beste horizontaal spelen.</p>`,
-    );
-  }
-
   handleTimeUp(): void {
     this.gameLogger.logGameOver();
-    this._gameOverDialog
-      .show(
-        html` <p>
-            Je hebt ${this._numberOk === 0 ? 'geen' : this._numberOk}
-            ${this._numberOk === 1 ? 'foto' : "foto's"} goed aanklikt in 1
-            minuut.
-          </p>
-          <p>
-            Je hebt ${this._numberNok === 0 ? 'geen' : this._numberNok}
-            ${this._numberNok === 1 ? 'fout' : 'fouten'} gemaakt.
-          </p>
-          <p>Je score is ${this._numberOk - this._numberNok}.</p>`,
-      )
-      .then(result => {
-        if (result === 'again') this.startNewGame();
-        else window.location.href = 'index.html';
-      })
-      .catch(() => {
-        throw new Error('Game Over Dialog threw an exception');
-      });
+    if (this.gameOverDialogRef.value) this.gameOverDialogRef.value.showModal();
+    else
+      throw new Error(
+        `Game over dialog has not been rendered during game over`,
+      );
+  }
+
+  renderWelcomeDialog(): HTMLTemplateResult {
+    return html`
+      <message-dialog-v2
+        initialOpen
+        id="welcomeDialog"
+        .title=${'Kies de juiste foto'}
+        .buttonText=${'Start'}
+        @close=${() => this.handleCloseWelcomeDialog()}
+        ${ref(this.welcomeDialogRef)}
+      >
+        <p>Kies de juiste foto op de getallenlijn.</p>
+        <p>Dit spel kun je op de telefoon het beste horizontaal spelen.</p>
+      </message-dialog-v2>
+    `;
+  }
+
+  renderGameOverDialog(): HTMLTemplateResult {
+    return html` <game-over-dialog-v2
+      ${ref(this.gameOverDialogRef)}
+      id="gameOverDialog"
+      @close=${(evt: GameOverDialogCloseEvent) =>
+        this.handleGameOverDialogClose(evt)}
+      .numberOk=${this.numberOk}
+      .numberNok=${this.numberNok}
+      .gameTime=${this.gameTime}
+    >
+      <p>Je hebt het <i>Kies de juiste foto</i> spel gespeeld</p>
+      <p>
+        De getallenlijn liep van
+        ${DescribeNumberLineParameters({
+          minimum: this.minimum,
+          maximum: this.maximum,
+          show10TickMarks: this.show10TickMarks,
+          show1TickMarks: this.show1TickMarks,
+          show5TickMarks: this.show5TickMarks,
+          showAll10Numbers: this._showAll10Numbers,
+        })}
+      </p>
+    </game-over-dialog-v2>`;
   }
 
   render() {
     return html`
       <progress-bar
-        style="--progress-bar-gametime: ${this.time}s;"
+        style="--progress-bar-gametime: ${this.gameTime}s;"
         id="progressBar"
         @timeUp=${() => this.handleTimeUp()}
       ></progress-bar>
       <score-box
         id="scoreBox"
-        numberOk=${this._numberOk}
-        numberNok=${this._numberNok}
+        numberOk=${this.numberOk}
+        numberNok=${this.numberNok}
         style="width: 12vmin;
                               --scoreBoxWidth: 12vmin; 
                               position: absolute; 
@@ -308,8 +297,8 @@ class ClickTheRightPhotoOnNumberLineApp extends LitElement {
                     width:95vw;"
       >
       </number-line-hanging-photos>
-      <message-dialog id="messageDialog"></message-dialog>
-      <gameover-dialog id="gameOverDialog"></gameover-dialog>
+
+      ${this.renderWelcomeDialog()} ${this.renderGameOverDialog()}
     `;
   }
 }
