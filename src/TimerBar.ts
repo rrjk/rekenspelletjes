@@ -41,6 +41,10 @@ export class TimerBar extends LitElement {
     return `${this.minutes}:${this.seconds.toString().padStart(2, '0')}`;
   }
 
+  getTime(): number {
+    return this.minutes * 60 + this.seconds;
+  }
+
   resetTime(): void {
     this.minutes = 0;
     this.seconds = 0;

@@ -34,6 +34,10 @@ export abstract class TimeLimitedGame2 extends GameSkeleton {
     super.additionalFirstUpdatedActions();
   }
 
+  protected getGameTime(): number {
+    return this.gameTime;
+  }
+
   /** Get the gametime in minutes as string for display */
   protected getGameTimeString() {
     const minutes = Math.floor(this.gameTime / 60);

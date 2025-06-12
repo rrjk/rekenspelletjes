@@ -211,14 +211,12 @@ export class MultiplicationTablesBalloonGameApp extends TimeLimitedGame2 {
 
   /** Get the text to show in the game over dialog
    */
-  get gameOverText(): HTMLTemplateResult {
+  get gameOverIntroductionText(): HTMLTemplateResult {
     return html`
       <p>
-        Je hebt ${this.getGameTimeString()} gespeeld met de
-        ${this.tablesAsScentence}
+        Je hebt het <i>ballonnenspel</i> gespeeld met de
+        ${this.tablesAsScentence}.
       </p>
-      ${this.numberOkForGameOverText} ${this.numberNokForGameOverText}
-      ${this.scoreForGameOverText}
     `;
   }
 

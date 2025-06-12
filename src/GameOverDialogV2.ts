@@ -137,10 +137,15 @@ export class GameOverDialogV2 extends LitElement {
       tbody tr td:nth-child(2) {
         text-align: right;
         padding-right: 0;
+        padding-left: 2;
       }
 
       tbody tr td:nth-child(3) {
         padding-left: 0;
+      }
+
+      table {
+        border-collapse: collapse;
       }
     `;
   }

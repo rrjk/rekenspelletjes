@@ -55,7 +55,7 @@ export class MultiplicationTablesBalloonGameV2 extends AscendingItemsGameApp<
   private lastMultiplierUsed = 0;
 
   get welcomeMessage(): HTMLTemplateResult {
-    return html`Klik op de ufo met het juiste antwoord`;
+    return html`<p>Klik op de ufo met het juiste antwoord.</p>`;
   }
 
   constructor() {
@@ -229,8 +229,9 @@ export class MultiplicationTablesBalloonGameV2 extends AscendingItemsGameApp<
 
     const tafelNoun = this.tablesToUse.length === 1 ? 'tafel' : 'tafels';
 
-    return html`Je hebt ${operatorText} geoefend met de ${tafelNoun} van
-    ${tafelText}.`;
+    return html`<p>
+      Je hebt ${operatorText} geoefend met de ${tafelNoun} van ${tafelText}.
+    </p>`;
   }
 
   static get styles(): CSSResultArray {
