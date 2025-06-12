@@ -146,19 +146,17 @@ export class AdditionSubstractionWithinDecadeApp extends TimeLimitedGame2 {
   /** Get the text to show in the game over dialog */
   get welcomeMessage(): HTMLTemplateResult {
     return html`<p>Sommen als ${this.exerciseExamplesAsScentence}</p>
-      <p>Klik op de ballon met het juiste antwoord.</p> `;
+      <p>Klik op de vlieger met het juiste antwoord.</p> `;
   }
 
   /** Get the text to show in the game over dialog
    */
-  get gameOverText(): HTMLTemplateResult {
+  get gameOverIntroductionText(): HTMLTemplateResult {
     return html`
       <p>
-        Je hebt ${this.getGameTimeString()} gespeeld met sommen als
-        ${this.exerciseExamplesAsScentence}
+        Je hebt het <i>vliegerspel</i> gespeeld met sommen als
+        ${this.exerciseExamplesAsScentence}.
       </p>
-      ${this.numberOkForGameOverText} ${this.numberNokForGameOverText}
-      ${this.scoreForGameOverText}
     `;
   }
 

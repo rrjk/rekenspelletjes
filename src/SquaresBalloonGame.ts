@@ -122,14 +122,12 @@ export class SquaresBalloonGameApp extends TimeLimitedGame2 {
 
   /** Get the text to show in the game over dialog
    */
-  get gameOverText(): HTMLTemplateResult {
+  get gameOverIntroductionText(): HTMLTemplateResult {
     return html`
       <p>
-        Je hebt ${this.getGameTimeString()} gespeeld met
-        ${this.operatorsAsScentence}
+        Je hebt het <i>Hexagonspel</i> gespeeld met
+        ${this.operatorsAsScentence}.
       </p>
-      ${this.numberOkForGameOverText} ${this.numberNokForGameOverText}
-      ${this.scoreForGameOverText}
     `;
   }
 

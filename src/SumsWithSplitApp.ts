@@ -239,9 +239,8 @@ export class SumsWithDoubleSplitApp extends TimeLimitedGame2 {
     return `Sommen met splitsen`;
   }
 
-  get gameOverText(): HTMLTemplateResult {
-    return html`<p>Je hebt sommen zoals ${this.possibleSums} geoefend.</p>
-      ${this.resultsForGameOverText}`;
+  get gameOverIntroductionText(): HTMLTemplateResult {
+    return html`<p>Je hebt sommen zoals ${this.possibleSums} geoefend.</p> `;
   }
 
   private handleCorrectAnswer(): void {

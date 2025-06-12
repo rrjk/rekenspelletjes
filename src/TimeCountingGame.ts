@@ -53,6 +53,14 @@ export abstract class TimeCountingGame extends GameSkeleton {
     return `${this.timerBar.getTimeAsString()} minuut`;
   }
 
+  protected getGameTime(): number {
+    try {
+      return this.timerBar.getTime();
+    } catch {
+      return 0;
+    }
+  }
+
   /** Render the actual game content within the game area of the the game
    * Is empty for the TimeCountingGame, should be overridden in children.
    */

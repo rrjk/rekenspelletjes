@@ -2,13 +2,18 @@
 
 import { LitElement, html, css } from 'lit';
 import { state } from 'lit/decorators.js';
+import { createRef, ref, Ref } from 'lit/directives/ref.js';
+
 import type { HTMLTemplateResult, CSSResultArray } from 'lit';
 
-import './MessageDialog';
-import type { MessageDialog } from './MessageDialog';
+import './MessageDialogV2';
+import type { MessageDialogV2 } from './MessageDialogV2';
 
-import './GameOverDialog';
-import type { GameOverDialog } from './GameOverDialog';
+import './GameOverDialogV2';
+import type {
+  GameOverDialogV2,
+  GameOverDialogCloseEvent,
+} from './GameOverDialogV2';
 
 import { ChildNotFoundError } from './ChildNotFoundError';
 
@@ -26,6 +31,9 @@ export abstract class GameSkeleton extends LitElement {
     import.meta.url,
   );
 
+  private welcomeDialogRef: Ref<MessageDialogV2> = createRef();
+  private gameOverDialogRef: Ref<GameOverDialogV2> = createRef();
+
   /** Helper function to easily query for an element.
    *  @param query Querystring for the element.
    *  @template T The type of the element.
@@ -40,20 +48,21 @@ export abstract class GameSkeleton extends LitElement {
     return ret;
   }
 
-  /** Get the game over dialog */
-  protected get gameOverDialog(): GameOverDialog {
-    return this.getElement<GameOverDialog>('#gameOverDialog');
-  }
+  /** Get the text to show in the welcome dialog */
+  abstract get welcomeMessage(): HTMLTemplateResult;
 
-  /** Get the message dialog. */
-  protected get messageDialog(): MessageDialog {
-    return this.getElement<MessageDialog>('#messageDialog');
-  }
+  /** Get the title for the welcome dialog. */
+  abstract get welcomeDialogTitle(): string;
 
   /** Get the gametime in minutes as string for display
    * To be implemented by the children, should contain the time the game was played as mm:ss
    */
   protected abstract getGameTimeString(): string;
+
+  /** Get the gametime in seconds
+   * To be implemented by the children, should contain the time the game was played as mm:ss
+   */
+  protected abstract getGameTime(): number;
 
   /** Reset the number of correct and incorrect answers. */
   private resetCounters(): void {
@@ -67,26 +76,19 @@ export abstract class GameSkeleton extends LitElement {
   }
 
   /** Actions performed after the first update is complete. */
-  async firstUpdated(): Promise<void> {
-    await this.updateComplete;
+  firstUpdated(): void {
     this.additionalFirstUpdatedActions();
-    await this.showWelcomeMessage();
+  }
+
+  handleGameOverDialogClose(evt: GameOverDialogCloseEvent) {
+    if (evt.action === 'NewGame') window.location.href = 'index.html';
+    else if (evt.action === 'PlayAgain') this.startNewGame();
+    else throw new Error(`Game over dialog exited with an unknown action`);
+  }
+
+  handleCloseWelcomeDialog() {
+    console.log(`handleCloseWelcomeDialog`);
     this.startNewGame();
-  }
-
-  override async getUpdateComplete(): Promise<boolean> {
-    const result = await super.getUpdateComplete();
-    await this.gameOverDialog.updateComplete;
-    await this.messageDialog.updateComplete;
-    return result;
-  }
-
-  /** Show the welcome message */
-  async showWelcomeMessage(): Promise<string> {
-    return this.messageDialog.show(
-      this.welcomeDialogTitle,
-      this.welcomeMessage,
-    );
   }
 
   /** Render the actual game
@@ -111,15 +113,40 @@ export abstract class GameSkeleton extends LitElement {
     ];
   }
 
+  renderWelcomeDialog(): HTMLTemplateResult {
+    return html`
+      <message-dialog-v2
+        initialOpen
+        id="welcomeDialog"
+        .title=${this.welcomeDialogTitle}
+        .buttonText=${'Start'}
+        .imageURL=${this.welcomeDialogImageUrl}
+        @close=${() => this.handleCloseWelcomeDialog()}
+        ${ref(this.welcomeDialogRef)}
+      >
+        ${this.welcomeMessage}
+      </message-dialog-v2>
+    `;
+  }
+
+  renderGameOverDialog(): HTMLTemplateResult {
+    return html` <game-over-dialog-v2
+      ${ref(this.gameOverDialogRef)}
+      id="gameOverDialog"
+      @close=${(evt: GameOverDialogCloseEvent) =>
+        this.handleGameOverDialogClose(evt)}
+      .numberOk=${this.numberOk}
+      .numberNok=${this.numberNok}
+      .gameTime=${this.getGameTime()}
+    >
+      ${this.gameOverIntroductionText}
+    </game-over-dialog-v2>`;
+  }
+
   /** Render the application */
   render(): HTMLTemplateResult {
     return html`
-      <message-dialog
-        id="messageDialog"
-        .imageUrl=${this.welcomeDialogImageUrl}
-      ></message-dialog>
-
-      <gameover-dialog id="gameOverDialog"></gameover-dialog>
+      ${this.renderWelcomeDialog()} ${this.renderGameOverDialog()}
       <div class="wholeScreen">${this.renderGame()}</div>
     `;
   }
@@ -155,14 +182,7 @@ export abstract class GameSkeleton extends LitElement {
   }
 
   get gameOverIntroductionText(): HTMLTemplateResult {
-    return html`Het spel is afgelopen.`;
-  }
-
-  /** Get the text to show in the game over dialog
-   *  This function may be overriden, but need not to. In the latter case a standard text will be shown.
-   */
-  get gameOverText(): HTMLTemplateResult {
-    return html`${this.gameOverIntroductionText} ${this.resultsForGameOverText}`;
+    return html`<p>Het spel is afgelopen.</p>`;
   }
 
   /** Start a new game.
@@ -173,25 +193,11 @@ export abstract class GameSkeleton extends LitElement {
     this.resetCounters();
   }
 
-  /** Get the text to show in the game over dialog */
-  abstract get welcomeMessage(): HTMLTemplateResult;
-
-  /** Get the title for the welcome dialog. */
-  abstract get welcomeDialogTitle(): string;
-
   /** Handle game over */
   handleGameOver(): void {
     this.executeGameOverActions();
-    this.gameOverDialog
-      .show(this.gameOverText)
-      .then(result => {
-        if (result === 'again') {
-          this.startNewGame();
-        } else window.location.href = 'index.html';
-      })
-      .catch(() => {
-        throw new Error('Error in showing game over dialog');
-      });
+    if (this.gameOverDialogRef.value) this.gameOverDialogRef.value.showModal();
+    else throw new Error('Error in showing game over dialog');
   }
 
   /** Actions to perform before the game over dialog is shown.

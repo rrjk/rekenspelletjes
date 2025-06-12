@@ -109,7 +109,6 @@ export class AdditionSubstractionWholeDecadeApp extends TimeLimitedGame2 {
     this.newRound();
   }
 
-  /** Get the text to show in the game over dialog */
   get welcomeMessage(): HTMLTemplateResult {
     const exerciseExamples: string[] = [];
     let exerciseExamplesAsScentence = '';
@@ -138,7 +137,7 @@ export class AdditionSubstractionWholeDecadeApp extends TimeLimitedGame2 {
       exerciseExamplesAsScentence = `${exerciseExamples[0]} en ${exerciseExamples[1]}.`;
 
     return html`<p>Sommen als ${exerciseExamplesAsScentence}</p>
-      <p>Klik op de ballon met het juiste antwoord.</p> `;
+      <p>Klik op de ster met het juiste antwoord.</p> `;
   }
 
   /** Get the title for the welcome dialog. */
