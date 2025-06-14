@@ -14,11 +14,6 @@ export abstract class TimeCountingGame extends GameSkeleton {
     return this.getElement<TimerBar>('#timerBar');
   }
 
-  /** Additional first update actions, can be overriden in child classes */
-  additionalFirstUpdatedActions() {
-    super.additionalFirstUpdatedActions();
-  }
-
   override async getUpdateComplete(): Promise<boolean> {
     const result = await super.getUpdateComplete();
     await this.timerBar.updateComplete;

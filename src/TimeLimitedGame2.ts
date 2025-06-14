@@ -29,11 +29,6 @@ export abstract class TimeLimitedGame2 extends GameSkeleton {
     return this.getElement<ProgressBar>('#progressBar');
   }
 
-  /** Additional first update actions, can be overriden in child classes */
-  additionalFirstUpdatedActions() {
-    super.additionalFirstUpdatedActions();
-  }
-
   protected getGameTime(): number {
     return this.gameTime;
   }

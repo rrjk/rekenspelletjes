@@ -271,9 +271,8 @@ export class SortingGameApp extends TimeLimitedGame2 {
     this.gameLogger.logGameOver();
   }
 
-  async firstUpdated(): Promise<void> {
-    await this.getUpdateComplete();
-
+  firstUpdated(): void {
+    super.firstUpdated();
     // Add all boxes as targets to all draggable numbers;
     this.renderRoot.querySelectorAll('.draggableNumber').forEach(draggable => {
       this.renderRoot
@@ -288,18 +287,6 @@ export class SortingGameApp extends TimeLimitedGame2 {
         this.handleDropped(event as DropEvent),
       );
     });
-
-    /* Workaround for bug found in firefox where draggable=false is ignored in case user-select is set to none.
-     * Please note that this expression cannot pierce into webcomponent's shadowroms.
-     * The img in slots are found though.
-     */
-    if (window.navigator.userAgent.toLowerCase().includes('firefox')) {
-      this.renderRoot.querySelectorAll('img[draggable=false]').forEach(el => {
-        el.addEventListener('mousedown', event => event.preventDefault());
-      });
-    }
-
-    return super.firstUpdated();
   }
 
   handleDropped(evt: DropEvent) {

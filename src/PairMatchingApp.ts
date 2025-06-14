@@ -152,22 +152,6 @@ export abstract class PairMatchingApp<
   protected abstract getPair(): Pair<CellInfo>;
   protected abstract renderPairElement(info: CellInfo): HTMLTemplateResult;
 
-  async firstUpdated(): Promise<void> {
-    await this.getUpdateComplete();
-
-    /* Workaround for bug found in firefox where draggable=false is ignored in case user-select is set to none.
-     * Please note that this expression cannot pierce into webcomponent's shadowroms.
-     * The img in slots are found though.
-     */
-    if (window.navigator.userAgent.toLowerCase().includes('firefox')) {
-      this.renderRoot.querySelectorAll('img[draggable=false]').forEach(el => {
-        el.addEventListener('mousedown', event => event.preventDefault());
-      });
-    }
-
-    return super.firstUpdated();
-  }
-
   /** Start a new game.
    */
   startNewGame(): void {

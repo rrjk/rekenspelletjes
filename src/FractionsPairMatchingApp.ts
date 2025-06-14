@@ -114,9 +114,7 @@ export class FractionMatchingGameApp extends PairMatchingApp<FractionAndRepresen
 
   gameType: FractionPairMatchingGameType = 'fractionToPie';
 
-  async firstUpdated(): Promise<void> {
-    await this.getUpdateComplete();
-
+  firstUpdated(): void {
     /* Workaround for bug found in firefox where draggable=false is ignored in case user-select is set to none.
      * Please note that this expression cannot pierce into webcomponent's shadowroms.
      * The img in slots are found though.
