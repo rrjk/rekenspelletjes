@@ -78,8 +78,6 @@ export class PuzzlePhoto extends LitElement {
         this.puzzlePieceInfo.push(puzzlePiece);
       }
     }
-    console.log(`initializePuzzlePieceInfo`);
-    console.log(JSON.stringify(this.puzzlePieceInfo));
   }
 
   constructor() {
