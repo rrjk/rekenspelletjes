@@ -65,6 +65,7 @@ export default defineConfig([
       'dot-notation': 'error',
       '@typescript-eslint/class-literal-property-style': 'off',
       '@typescript-eslint/consistent-type-definitions': 'off',
+      'no-console': ['warn', { allow: ['error', 'assert', 'warn'] }],
     },
   },
 ]);

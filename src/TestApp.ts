@@ -2,13 +2,17 @@ import { html, css, LitElement } from 'lit';
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
 import { customElement, state } from 'lit/decorators.js';
+import { createRef, Ref, ref } from 'lit/directives/ref.js';
 
+import type { PuzzlePhoto } from './PuzzlePhoto';
 import './PuzzlePhoto';
 
 @customElement('test-app')
 export class TestApp extends LitElement {
   @state()
-  accessor numberVisiblePieces = 1;
+  accessor numberVisiblePieces = 5;
+
+  puzzlePhotoRef: Ref<PuzzlePhoto> = createRef();
 
   static get styles(): CSSResultArray {
     return [
@@ -31,10 +35,26 @@ export class TestApp extends LitElement {
       `,
     ];
   }
+
+  minus(): void {
+    if (this.numberVisiblePieces > 0) this.numberVisiblePieces -= 1;
+  }
+
+  plus(): void {
+    if (
+      this.puzzlePhotoRef.value !== undefined &&
+      this.numberVisiblePieces < this.puzzlePhotoRef.value.numberPieces
+    )
+      this.numberVisiblePieces += 1;
+  }
+
   protected renderTest(): HTMLTemplateResult {
     return html`<puzzle-photo
-      numberVisiblePieces=${this.numberVisiblePieces}
-    ></puzzle-photo>`;
+        ${ref(this.puzzlePhotoRef)}
+        numberVisiblePieces=${this.numberVisiblePieces}
+      ></puzzle-photo>
+      <button @click=${() => this.minus()}>minus</button>
+      <button @click=${() => this.plus()}>plus</button> `;
   }
 
   protected render(): HTMLTemplateResult {

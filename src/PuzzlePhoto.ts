@@ -6,6 +6,9 @@ import type {
   PropertyValues,
 } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+
+import { create } from 'mutative';
+
 import { UnexpectedValueError } from './UnexpectedValueError';
 import { randomFromSet, randomFromSetAndSplice } from './Randomizer';
 
@@ -44,19 +47,24 @@ const pieceHeight = 50;
 
 @customElement('puzzle-photo')
 export class PuzzlePhoto extends LitElement {
+  static numberColumns = 4;
+  static numberRows = 4;
+  static pieceWidth = 75;
+  static pieceHeight = 50;
+
   @state()
-  accessor puzzlePieceInfo: PuzzlePieceInfo[][] = [];
+  accessor puzzlePieceInfo: PuzzlePieceInfo[] = [];
 
   @property({ type: Number })
   accessor numberVisiblePieces = 0;
 
-  filledPieces: { x: number; y: number }[] = [];
+  get numberPieces() {
+    return PuzzlePhoto.numberColumns * PuzzlePhoto.numberRows;
+  }
 
   initializePuzzlePieceInfo() {
     this.puzzlePieceInfo = [];
-    this.filledPieces = [];
     for (let row = 0; row < numberRows; row++) {
-      const row: PuzzlePieceInfo[] = [];
       for (let column = 0; column < numberColumns; column++) {
         const puzzlePiece: PuzzlePieceInfo = {
           bottomEdge: 'straight',
@@ -67,9 +75,8 @@ export class PuzzlePhoto extends LitElement {
           x: 0,
           y: 0,
         };
-        row.push(puzzlePiece);
+        this.puzzlePieceInfo.push(puzzlePiece);
       }
-      this.puzzlePieceInfo.push(row);
     }
     console.log(`initializePuzzlePieceInfo`);
     console.log(JSON.stringify(this.puzzlePieceInfo));
@@ -78,38 +85,15 @@ export class PuzzlePhoto extends LitElement {
   constructor() {
     super();
     this.initializePuzzlePieceInfo();
+    this.randomizePuzzlePieceInfo();
+    this.updateNumberVisiblePieces();
   }
 
   protected willUpdate(changedProperties: PropertyValues<this>): void {
-    console.log(
-      `will Update - changedProperties - ${JSON.stringify(changedProperties)}`,
-    );
-    console.log(
-      `willUpdate - numberVisiblePieces = ${this.numberVisiblePieces}`,
-    );
-    const originalNumberVisiblePieces = changedProperties.get(
-      'numberVisiblePieces',
-    );
-    if (
-      originalNumberVisiblePieces !== undefined // If not undefined, number of visible pieces has changed
-    ) {
-      console.log(originalNumberVisiblePieces);
-      if (this.numberVisiblePieces > numberRows * numberColumns) {
-        /// don't do anything, all pieces are already visisble
-      } else if (this.numberVisiblePieces - originalNumberVisiblePieces === 1) {
-        /// One more visiblePiece
-        this.showAdditionalPiece();
-      } else if (this.numberVisiblePieces === 0) {
-        /// Number of visible pieces is reset
-        console.log(`numberOfVisiblePieces is zero branch`);
-        this.randomizePuzzlePieceInfo();
-      } else {
-        throw new Error(
-          `Unsupported change in number of visible pieces -  ${this.numberVisiblePieces}`,
-        );
-      }
-    }
+    if (changedProperties.has('numberVisiblePieces'))
+      this.updateNumberVisiblePieces();
   }
+
   renderPuzzlePiece(puzzlePiece: PuzzlePieceInfo): SVGTemplateResult {
     const topSegment = this.determineHorizontalEdge(puzzlePiece.topEdge);
     const rightSegment = this.determineVerticalEdge(puzzlePiece.rightEdge);
@@ -159,52 +143,77 @@ export class PuzzlePhoto extends LitElement {
     }
   }
 
-  showAdditionalPiece() {
-    const pieceLocation = randomFromSetAndSplice(this.filledPieces);
-    this.puzzlePieceInfo[pieceLocation.y][pieceLocation.x].pieceType =
-      'outline';
-  }
+  updateNumberVisiblePieces() {
+    let cappedNumberVisiblePieces = this.numberVisiblePieces;
+    if (cappedNumberVisiblePieces < 0) cappedNumberVisiblePieces = 0;
+    if (cappedNumberVisiblePieces > numberColumns * numberRows)
+      cappedNumberVisiblePieces = numberColumns * numberRows;
 
-  /*
-  updateNumberVisiblePieces(delta: number){
-    if (delta > 0){
-      let currentHiddenPieces = [...this.puzzlePieceInfo.filter(e => e.f)]
+    if (cappedNumberVisiblePieces === 0) {
+      this.randomizePuzzlePieceInfo();
+    } else {
+      this.puzzlePieceInfo = create(this.puzzlePieceInfo, draft => {
+        const visiblePieces = [...draft.filter(e => e.pieceType === 'outline')];
+        const hiddenPieces = [...draft.filter(e => e.pieceType === 'filled')];
+        const delta = cappedNumberVisiblePieces - visiblePieces.length;
+        if (delta > 0) {
+          for (let i = 0; i < delta; i++) {
+            randomFromSetAndSplice(hiddenPieces).pieceType = 'outline';
+          }
+        } else {
+          for (let i = 0; i < -delta; i++) {
+            randomFromSetAndSplice(visiblePieces).pieceType = 'filled';
+          }
+        }
+      });
     }
   }
-*/
+
+  locationToIndex(x: number, y: number) {
+    if (x < 0 || !Number.isInteger(x) || y < 0 || !Number.isInteger(y))
+      throw new RangeError(`x(${x}) and y(${y}) need to be positive integers`);
+    return y * numberColumns + x;
+  }
 
   randomizePuzzlePieceInfo() {
-    this.filledPieces = [];
     for (let row = 0; row < numberRows; row++) {
       for (let column = 0; column < numberColumns; column++) {
-        this.puzzlePieceInfo[row][column].y = row;
-        this.puzzlePieceInfo[row][column].x = column;
+        this.puzzlePieceInfo[this.locationToIndex(column, row)].y = row;
+        this.puzzlePieceInfo[this.locationToIndex(column, row)].x = column;
 
-        if (row === 0) this.puzzlePieceInfo[row][column].topEdge = 'straight';
+        if (row === 0)
+          this.puzzlePieceInfo[this.locationToIndex(column, row)].topEdge =
+            'straight';
         else
-          this.puzzlePieceInfo[row][column].topEdge =
-            this.puzzlePieceInfo[row - 1][column].bottomEdge;
+          this.puzzlePieceInfo[this.locationToIndex(column, row)].topEdge =
+            this.puzzlePieceInfo[
+              this.locationToIndex(column, row - 1)
+            ].bottomEdge;
 
         if (row === numberRows - 1)
-          this.puzzlePieceInfo[row][column].bottomEdge = 'straight';
+          this.puzzlePieceInfo[this.locationToIndex(column, row)].bottomEdge =
+            'straight';
         else
-          this.puzzlePieceInfo[row][column].bottomEdge =
+          this.puzzlePieceInfo[this.locationToIndex(column, row)].bottomEdge =
             randomFromSet(horizontalBlobEdges);
 
         if (column === 0)
-          this.puzzlePieceInfo[row][column].leftEdge = 'straight';
+          this.puzzlePieceInfo[this.locationToIndex(column, row)].leftEdge =
+            'straight';
         else
-          this.puzzlePieceInfo[row][column].leftEdge =
-            this.puzzlePieceInfo[row][column - 1].rightEdge;
+          this.puzzlePieceInfo[this.locationToIndex(column, row)].leftEdge =
+            this.puzzlePieceInfo[
+              this.locationToIndex(column - 1, row)
+            ].rightEdge;
 
         if (column === numberColumns - 1)
-          this.puzzlePieceInfo[row][column].rightEdge = 'straight';
+          this.puzzlePieceInfo[this.locationToIndex(column, row)].rightEdge =
+            'straight';
         else
-          this.puzzlePieceInfo[row][column].rightEdge =
+          this.puzzlePieceInfo[this.locationToIndex(column, row)].rightEdge =
             randomFromSet(verticalBlobEdges);
 
-        this.puzzlePieceInfo[row][column].pieceType = 'filled';
-        this.filledPieces.push({ x: row, y: column });
+        this.puzzlePieceInfo[row + numberColumns * column].pieceType = 'filled';
       }
     }
   }
@@ -267,18 +276,17 @@ export class PuzzlePhoto extends LitElement {
   }
 
   render(): HTMLTemplateResult {
-    this.randomizePuzzlePieceInfo();
-
     const renderedPuzzlePieces: Record<PieceType, SVGTemplateResult[]> = {
       filled: [],
       outline: [],
     };
 
-    for (const row of this.puzzlePieceInfo) {
-      for (const puzzlePiece of row)
+    if (this.numberPieces > this.numberVisiblePieces) {
+      for (const puzzlePiece of this.puzzlePieceInfo) {
         renderedPuzzlePieces[puzzlePiece.pieceType].push(
           svg`${this.renderPuzzlePiece(puzzlePiece)}`,
         );
+      }
     }
 
     return html`<svg
