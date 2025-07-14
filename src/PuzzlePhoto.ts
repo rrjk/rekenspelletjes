@@ -40,10 +40,12 @@ const pieceTypes = ['outline', 'filled'] as const;
 
 type PieceType = (typeof pieceTypes)[number];
 
-const numberColumns = 4;
-const numberRows = 4;
-const pieceWidth = 75;
-const pieceHeight = 50;
+const availablePuzzlePhotos = [
+  new URL('../images/puzzles/monstersInForest.jpg', import.meta.url),
+  new URL('../images/puzzles/trainComic.jpg', import.meta.url),
+  new URL('../images/puzzles/monstersInSwimmingPool.jpg', import.meta.url),
+  new URL('../images/puzzles/monstersRailwayCrossing.jpg', import.meta.url),
+] as const;
 
 @customElement('puzzle-photo')
 export class PuzzlePhoto extends LitElement {
@@ -55,6 +57,9 @@ export class PuzzlePhoto extends LitElement {
   @state()
   accessor puzzlePieceInfo: PuzzlePieceInfo[] = [];
 
+  @state()
+  accessor photoUrl = availablePuzzlePhotos[0];
+
   @property({ type: Number })
   accessor numberVisiblePieces = 0;
 
@@ -64,8 +69,8 @@ export class PuzzlePhoto extends LitElement {
 
   initializePuzzlePieceInfo() {
     this.puzzlePieceInfo = [];
-    for (let row = 0; row < numberRows; row++) {
-      for (let column = 0; column < numberColumns; column++) {
+    for (let row = 0; row < PuzzlePhoto.numberRows; row++) {
+      for (let column = 0; column < PuzzlePhoto.numberColumns; column++) {
         const puzzlePiece: PuzzlePieceInfo = {
           bottomEdge: 'straight',
           topEdge: 'straight',
@@ -105,10 +110,10 @@ export class PuzzlePhoto extends LitElement {
       throw new UnexpectedValueError(puzzlePiece.pieceType);
 
     return svg`<path class="${puzzlePiece.pieceType}" d="
-      M${puzzlePiece.x * pieceWidth},${puzzlePiece.y * pieceHeight}      
+      M${puzzlePiece.x * PuzzlePhoto.pieceWidth},${puzzlePiece.y * PuzzlePhoto.pieceHeight}      
       ${leftSegment}      
       ${bottomSegment}
-      M${puzzlePiece.x * pieceWidth},${puzzlePiece.y * pieceHeight} 
+      M${puzzlePiece.x * PuzzlePhoto.pieceWidth},${puzzlePiece.y * PuzzlePhoto.pieceHeight} 
       ${topSegment}
       ${rightSegment}
       "></path>
@@ -144,8 +149,8 @@ export class PuzzlePhoto extends LitElement {
   updateNumberVisiblePieces() {
     let cappedNumberVisiblePieces = this.numberVisiblePieces;
     if (cappedNumberVisiblePieces < 0) cappedNumberVisiblePieces = 0;
-    if (cappedNumberVisiblePieces > numberColumns * numberRows)
-      cappedNumberVisiblePieces = numberColumns * numberRows;
+    if (cappedNumberVisiblePieces > this.numberPieces)
+      cappedNumberVisiblePieces = this.numberPieces;
 
     if (cappedNumberVisiblePieces === 0) {
       this.randomizePuzzlePieceInfo();
@@ -170,12 +175,19 @@ export class PuzzlePhoto extends LitElement {
   locationToIndex(x: number, y: number) {
     if (x < 0 || !Number.isInteger(x) || y < 0 || !Number.isInteger(y))
       throw new RangeError(`x(${x}) and y(${y}) need to be positive integers`);
-    return y * numberColumns + x;
+    return y * PuzzlePhoto.numberColumns + x;
+  }
+
+  randomNewPhoto() {
+    const oldPhotoUrl = this.photoUrl;
+    while (oldPhotoUrl === this.photoUrl)
+      this.photoUrl = randomFromSet(availablePuzzlePhotos);
   }
 
   randomizePuzzlePieceInfo() {
-    for (let row = 0; row < numberRows; row++) {
-      for (let column = 0; column < numberColumns; column++) {
+    this.randomNewPhoto();
+    for (let row = 0; row < PuzzlePhoto.numberRows; row++) {
+      for (let column = 0; column < PuzzlePhoto.numberColumns; column++) {
         this.puzzlePieceInfo[this.locationToIndex(column, row)].y = row;
         this.puzzlePieceInfo[this.locationToIndex(column, row)].x = column;
 
@@ -188,7 +200,7 @@ export class PuzzlePhoto extends LitElement {
               this.locationToIndex(column, row - 1)
             ].bottomEdge;
 
-        if (row === numberRows - 1)
+        if (row === PuzzlePhoto.numberRows - 1)
           this.puzzlePieceInfo[this.locationToIndex(column, row)].bottomEdge =
             'straight';
         else
@@ -204,14 +216,16 @@ export class PuzzlePhoto extends LitElement {
               this.locationToIndex(column - 1, row)
             ].rightEdge;
 
-        if (column === numberColumns - 1)
+        if (column === PuzzlePhoto.numberColumns - 1)
           this.puzzlePieceInfo[this.locationToIndex(column, row)].rightEdge =
             'straight';
         else
           this.puzzlePieceInfo[this.locationToIndex(column, row)].rightEdge =
             randomFromSet(verticalBlobEdges);
 
-        this.puzzlePieceInfo[row + numberColumns * column].pieceType = 'filled';
+        this.puzzlePieceInfo[
+          row + PuzzlePhoto.numberColumns * column
+        ].pieceType = 'filled';
       }
     }
   }
@@ -294,13 +308,7 @@ export class PuzzlePhoto extends LitElement {
       height="200px"
       viewBox="0 0 300 200"
     >
-      <image
-        href="../images/puzzles/trainComic.png"
-        x="0"
-        y="0"
-        width="300"
-        height="200"
-      />
+      <image href=${this.photoUrl.href} x="0" y="0" width="300" height="200" />
       ${renderedPuzzlePieces.filled} ${renderedPuzzlePieces.outline}
     </svg>`;
   }

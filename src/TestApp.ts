@@ -14,6 +14,11 @@ export class TestApp extends LitElement {
 
   puzzlePhotoRef: Ref<PuzzlePhoto> = createRef();
 
+  get maxPieces() {
+    if (this.puzzlePhotoRef.value === undefined) return 0;
+    return this.puzzlePhotoRef.value.numberPieces;
+  }
+
   static get styles(): CSSResultArray {
     return [
       css`
@@ -53,8 +58,18 @@ export class TestApp extends LitElement {
         ${ref(this.puzzlePhotoRef)}
         numberVisiblePieces=${this.numberVisiblePieces}
       ></puzzle-photo>
-      <button @click=${() => this.minus()}>minus</button>
-      <button @click=${() => this.plus()}>plus</button> `;
+      <button
+        ?disabled=${this.numberVisiblePieces === 0}
+        @click=${() => this.minus()}
+      >
+        minus
+      </button>
+      <button
+        ?disabled=${this.numberVisiblePieces === this.maxPieces}
+        @click=${() => this.plus()}
+      >
+        plus
+      </button> `;
   }
 
   protected render(): HTMLTemplateResult {
