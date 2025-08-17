@@ -38,6 +38,11 @@
       width: 90px;
     }
 
+    die-face{
+      height: 90px;
+      width: 90px;
+    }
+
     div.fractionPairGamesbutton {
       width: 100px;
       height: 100px;
@@ -74,11 +79,19 @@
     <script type="module" src="../src/FractionElement.ts"></script>
     <script type="module" src="../src/FlyingSaucer.ts"></script>
     <script type="module" src="../src/DivideWithSplitWidget.ts"></script>
+    <script type="module" src="../src/DieFace.ts"></script>
 
     <h1>Rekenspelletjes</h1>
     <div class="buttonTable">
       <icon-label-button
-        title="Welke hand heeft de meeste stippen"
+        title="Dobbelsteen spelletjes"
+        href="indexDobbelsteenSpel.html"
+      >
+        <die-face dieFaceNumber="5", dieFaceColor="green"></hand-with-dots>
+      </icon-label-button>
+
+      <icon-label-button
+        title="Stippen tellen"
         href="indexWelkeHandHeeftMeerStippen.html"
       >
         <hand-with-dots numberDots="7"></hand-with-dots>

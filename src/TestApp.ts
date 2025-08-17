@@ -1,22 +1,12 @@
 import { html, css, LitElement } from 'lit';
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
-import { customElement, state } from 'lit/decorators.js';
-import { createRef, ref, Ref } from 'lit/directives/ref.js';
+import { customElement } from 'lit/decorators.js';
 
-import type {
-  GameOverDialogCloseEvent,
-  GameOverDialogV2,
-} from './GameOverDialogV2';
-import './GameOverDialogV2';
+import './DieFace';
 
 @customElement('test-app')
 export class TestApp extends LitElement {
-  @state()
-  accessor dialogOpen = false;
-
-  dialogRef: Ref<GameOverDialogV2> = createRef();
-
   static get styles(): CSSResultArray {
     return [
       css`
@@ -25,48 +15,27 @@ export class TestApp extends LitElement {
           height: 100%;
           display: block;
         }
-        div#im {
-          height: 100px;
+        die-face {
           width: 100px;
-          background-color: green;
-        }
-        img {
-          object-fit: contain;
-          max-width: 100px;
-          max-height: 100px;
+          height: 100px;
         }
       `,
     ];
   }
   protected renderTest(): HTMLTemplateResult {
-    return html` <button @click=${() => this.handleButtonClick()}>
-        AppButton
-      </button>
-      <p>Test</p>
-      <game-over-dialog-v2
-        ${ref(this.dialogRef)}
-        @close=${(evt: GameOverDialogCloseEvent) => this.handleOk(evt)}
-        .imageUrl=${new URL('../images/Mompitz Anne.png', import.meta.url)}
-        .numberOk=${5}
-        .numberNok=${15}
-        .gameTime=${180}
-      >
-        <p>Je hebt het test app spel gespeeld</p>
-      </game-over-dialog-v2>`;
+    return html`
+      <die-face numberDots="1" dieFaceColor="apricot"></die-face>
+      <die-face numberDots="2" dieFaceColor="blue"></die-face>
+      <die-face numberDots="3" dieFaceColor="mint"></die-face>
+      <die-face numberDots="4" dieFaceColor="lavender"></die-face>
+      <die-face numberDots="5" dieFaceColor="pink"></die-face>
+      <die-face numberDots="6" dieFaceColor="red"></die-face>
+      <die-face dieFaceColor="green"></die-face>
+      <die-face numberDots="7" dieFaceColor="black"></die-face>
+    `;
   }
 
   protected render(): HTMLTemplateResult {
     return this.renderTest();
-  }
-
-  handleButtonClick() {
-    console.log(`App Button click`);
-    if (this.dialogRef.value) this.dialogRef.value.showModal();
-    this.dialogOpen = true;
-  }
-
-  handleOk(evt: GameOverDialogCloseEvent) {
-    console.log(`Dialog closed with ${evt.action}`);
-    this.dialogOpen = false;
   }
 }

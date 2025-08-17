@@ -10,7 +10,7 @@ export function randomIntFromRange(min: number, max: number): number {
  * @param Array with the possible values to select from
  * @returns random element from the arrayOfPossibleValues.
  */
-export function randomFromSet<T>(arrayOfPossibleValues: T[]): T {
+export function randomFromSet<T>(arrayOfPossibleValues: readonly T[]): T {
   const numberOfPossibleValues = arrayOfPossibleValues.length;
   const selectedIndex = randomIntFromRange(0, numberOfPossibleValues - 1);
   return arrayOfPossibleValues[selectedIndex];
