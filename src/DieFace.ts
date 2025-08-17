@@ -112,7 +112,6 @@ export class DieFace extends LitElement {
       throw Error(
         `Internal SW error - No coordinate available for dot position ${dotPosition}`,
       );
-
     return svg`
     <circle class="dot" cx="${x}" cy="${y}" r="8" />`;
   }
@@ -129,7 +128,6 @@ export class DieFace extends LitElement {
     for (const position of dotPositions) {
       ret.push(this.renderDot(position));
     }
-
     return ret;
   }
 

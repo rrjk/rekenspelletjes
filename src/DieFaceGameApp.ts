@@ -141,7 +141,6 @@ export class DieFaceGameApp extends TimeLimitedGame2 {
       this.disabledDigits = create(this.disabledDigits, draft => {
         draft[digit] = true;
       });
-      console.log(`wrong digit - ${JSON.stringify(this.disabledDigits)}`);
     }
   }
 
