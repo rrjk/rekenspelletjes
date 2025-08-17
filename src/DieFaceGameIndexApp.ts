@@ -108,7 +108,7 @@ export class DieFaceGameIndexApp extends LitElement {
         html`<div class="buttonTable">
           ${section.rows.map(row =>
             this.renderRow(
-              ['3min', '5min'],
+              ['1min', '3min'],
               row.shortCodes,
               row.color,
               row.description,
