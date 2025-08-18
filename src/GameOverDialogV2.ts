@@ -192,9 +192,6 @@ export class GameOverDialogV2 extends LitElement {
   }
 
   renderScoreRow() {
-    console.log(
-      `renderScoreRow - numberOk = ${this.numberOk} - numberNok = ${this.numberNok}`,
-    );
     if (this.numberOk !== undefined && this.numberNok !== undefined)
       return html`
         <tr>

@@ -312,7 +312,6 @@ export class EggCountingApp extends TimeLimitedGame2 {
   }
 
   private renderTrashcanArea(): HTMLTemplateResult {
-    console.log(`renderTrascanArea`);
     /* eslint-disable @typescript-eslint/unbound-method -- For ref, I have to refer to the actual function and not put a arrow function
                                                            in between as otherwise we run into a endless loop. Moreover, inside a html
                                                            string, this will be bound properly 
@@ -327,7 +326,6 @@ export class EggCountingApp extends TimeLimitedGame2 {
   }
 
   private renderCheckButtonArea(): HTMLTemplateResult {
-    console.log(`renderCheckButtonArea`);
     return html`
       <div id="checkButtonArea">
         <button @click=${() => this.handleCheckAnswer()}>
@@ -340,7 +338,6 @@ export class EggCountingApp extends TimeLimitedGame2 {
   }
 
   private renderNumberToSplitArea(): HTMLTemplateResult {
-    console.log(`renderNumberToSplitArea`);
     return html` <div id="numberToSplitArea">
       <svg viewbox="-50 -50 100 100">
         <text class="middleAligned" x="0" y="0">${this.numberToSplit}</text>
@@ -349,7 +346,6 @@ export class EggCountingApp extends TimeLimitedGame2 {
   }
 
   private renderEggCartonTargetArea(): HTMLTemplateResult {
-    console.log(`renderEggCartonTargetArea`);
     /* eslint-disable @typescript-eslint/unbound-method -- For ref, I have to refer to the actual function and not put a arrow function
                                                            in between as otherwise we run into a endless loop. Moreover, inside a html
                                                            string, this will be bound properly 
@@ -372,7 +368,6 @@ export class EggCountingApp extends TimeLimitedGame2 {
   }
 
   private renderEggCartonSourceArea(): HTMLTemplateResult {
-    console.log(`renderEggCartonSourceArea`);
     return html`
       <div id="eggCartonSourceArea">
         <draggable-element
@@ -394,7 +389,6 @@ export class EggCountingApp extends TimeLimitedGame2 {
   }
 
   private renderEggTargetArea(): HTMLTemplateResult {
-    console.log(`renderEggTargetArea`);
     /* eslint-disable @typescript-eslint/unbound-method -- For ref, I have to refer to the actual function and not put a arrow function
                                                            in between as otherwise we run into a endless loop. Moreover, inside a html
                                                            string, this will be bound properly 
@@ -419,7 +413,6 @@ export class EggCountingApp extends TimeLimitedGame2 {
   }
 
   private renderEggSourceArea(): HTMLTemplateResult {
-    console.log(`renderEggSourceArea`);
     return html`
       <div id="eggSourceArea">
         <draggable-element
@@ -441,7 +434,6 @@ export class EggCountingApp extends TimeLimitedGame2 {
   }
 
   renderGameContent(): HTMLTemplateResult {
-    console.log(`renderGameContent`);
     return html`
       ${this.renderNumberToSplitArea()} ${this.renderTrashcanArea()}
       ${this.renderCheckButtonArea()} ${this.renderEggCartonTargetArea()}

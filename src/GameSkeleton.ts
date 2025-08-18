@@ -87,7 +87,6 @@ export abstract class GameSkeleton extends LitElement {
   }
 
   handleCloseWelcomeDialog() {
-    console.log(`handleCloseWelcomeDialog`);
     this.startNewGame();
   }
 
