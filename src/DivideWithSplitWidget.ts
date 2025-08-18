@@ -240,8 +240,6 @@ function renderSplitLine(
 }
 
 function convertJSON<T>(value: string | null): T {
-  console.log(`convertFixedNumbers called`);
-  console.log(value);
   if (value !== null) {
     const parsedValue = JSON.parse(value) as T;
     return parsedValue;
