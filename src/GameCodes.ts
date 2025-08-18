@@ -51,6 +51,7 @@ export const gameCodes: GameInfoType[] = [
   { gameCode: 'X', name: 'Getallenlijn boogjes spel' },
   { gameCode: 'Y', name: 'Hexagonnen (kwadraten en wortels) spel' },
   { gameCode: 'Z', name: 'Deelsommen met splitsen' },
+  { gameCode: 'AA', name: 'Dobbelsteen spel' },
 ];
 
 export function getGameDescription(gameCode: string): string {

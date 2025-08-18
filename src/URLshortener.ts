@@ -21,6 +21,7 @@ import { breukenPaartjesLink } from './FractionsPairMatchingAppLink';
 import { hexagonnenSpelLink } from './SquaresBalloonGameLink';
 import { multiplicationTablesGameLinkV2 } from './MultiplicationTablesBalloonGameLinkV2';
 import { divisionWithSplitAppLink } from './DivisionWithSplitAppLink';
+import { dieFaceGameAppLink } from './DieFaceGameAppLink';
 
 /** Function to determine the number belonging to a string of lower case letters
  * a equals 0, b equals 1 etc
@@ -1207,6 +1208,9 @@ const urls: (() => string)[] = [
       300,
     ), // si
   // sj
+  () => dieFaceGameAppLink(60),
+  () => dieFaceGameAppLink(180),
+  // sl
 ];
 
 const urlParams = new URLSearchParams(window.location.search);

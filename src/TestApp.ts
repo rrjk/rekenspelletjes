@@ -27,15 +27,9 @@ export class TestApp extends LitElement {
           height: 100%;
           display: block;
         }
-        div#im {
-          height: 100px;
+        die-face {
           width: 100px;
-          background-color: green;
-        }
-        img {
-          object-fit: contain;
-          max-width: 100px;
-          max-height: 100px;
+          height: 100px;
         }
       `,
     ];
