@@ -22,6 +22,7 @@ import { hexagonnenSpelLink } from './SquaresBalloonGameLink';
 import { multiplicationTablesGameLinkV2 } from './MultiplicationTablesBalloonGameLinkV2';
 import { divisionWithSplitAppLink } from './DivisionWithSplitAppLink';
 import { dieFaceGameAppLink } from './DieFaceGameAppLink';
+import { howManyFingersGameAppLink } from './HowManyFingersGameAppLink';
 
 /** Function to determine the number belonging to a string of lower case letters
  * a equals 0, b equals 1 etc
@@ -1211,6 +1212,11 @@ const urls: (() => string)[] = [
   () => dieFaceGameAppLink(60),
   () => dieFaceGameAppLink(180),
   // sl
+  () => howManyFingersGameAppLink(60, 1, 5),
+  () => howManyFingersGameAppLink(180, 1, 5),
+  () => howManyFingersGameAppLink(60, 1, 10),
+  () => howManyFingersGameAppLink(180, 1, 10),
+  //sp
 ];
 
 const urlParams = new URLSearchParams(window.location.search);
