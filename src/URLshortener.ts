@@ -94,7 +94,7 @@ const urls: (() => string)[] = [
   () => aanklikkenInVolgordeLink('random', 20, 'ascending', 'all'),
   () => aanklikkenInVolgordeLink(2, 10, 'ascending', 'even'),
   () => aanklikkenInVolgordeLink(1, 10, 'ascending', 'odd'),
-  // br - indexSplitsen.html 1
+  // br - indexSplitsen.html
   () => splitsenLink([4], 60),
   () => splitsenLink([4], 180),
   () => splitsenLink([5], 60),
@@ -1210,7 +1210,10 @@ const urls: (() => string)[] = [
   // sj
   () => dieFaceGameAppLink(60),
   () => dieFaceGameAppLink(180),
-  // sl
+  // sl - indexSplitsen.html
+  () => splitsenLink([3], 60),
+  () => splitsenLink([3], 180),
+  // sn
 ];
 
 const urlParams = new URLSearchParams(window.location.search);
