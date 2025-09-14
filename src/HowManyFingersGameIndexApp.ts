@@ -23,12 +23,12 @@ const sections: SectionInfoType[] = [
     rows: [
       {
         description: 'Hoeveel vingers op één hand spel',
-        shortCodes: ['sl', 'sm'],
+        shortCodes: ['sn', 'so'],
         nmbrToShow: 4,
       },
       {
         description: 'Hoeveel vingers op één of twee handen spel',
-        shortCodes: ['sn', 'so'],
+        shortCodes: ['sp', 'sq'],
         nmbrToShow: 7,
       },
     ],
