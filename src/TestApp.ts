@@ -3,7 +3,7 @@ import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
 import { customElement } from 'lit/decorators.js';
 
-import './DieFace';
+import './HandFace';
 
 @customElement('test-app')
 export class TestApp extends LitElement {
@@ -15,24 +15,24 @@ export class TestApp extends LitElement {
           height: 100%;
           display: block;
         }
-        die-face {
-          width: 100px;
-          height: 100px;
+        hand-face {
+          width: 130px;
+          height: 80px;
         }
       `,
     ];
   }
   protected renderTest(): HTMLTemplateResult {
-    return html`
-      <die-face numberDots="1" dieFaceColor="apricot"></die-face>
-      <die-face numberDots="2" dieFaceColor="blue"></die-face>
-      <die-face numberDots="3" dieFaceColor="mint"></die-face>
-      <die-face numberDots="4" dieFaceColor="lavender"></die-face>
-      <die-face numberDots="5" dieFaceColor="pink"></die-face>
-      <die-face numberDots="6" dieFaceColor="red"></die-face>
-      <die-face dieFaceColor="green"></die-face>
-      <die-face numberDots="7" dieFaceColor="black"></die-face>
-    `;
+    return html` <hand-face nmbrToShow="1"> </hand-face>
+      <hand-face nmbrToShow="2"> </hand-face>
+      <hand-face nmbrToShow="3"> </hand-face>
+      <hand-face nmbrToShow="4"> </hand-face>
+      <hand-face nmbrToShow="5"> </hand-face>
+      <hand-face nmbrToShow="6"> </hand-face>
+      <hand-face nmbrToShow="7"> </hand-face>
+      <hand-face nmbrToShow="8"> </hand-face>
+      <hand-face nmbrToShow="9"> </hand-face>
+      <hand-face nmbrToShow="10"> </hand-face>`;
   }
 
   protected render(): HTMLTemplateResult {
