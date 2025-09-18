@@ -24,13 +24,21 @@ export class NumberedBird extends LitElement {
         }
 
         .stroke {
-          stroke: #222;
+          stroke: var(--birdColor, #4fc3f7);
+          stroke-width: 8;
+          stroke-linecap: round;
+          stroke-linejoin: round;
+        }
+
+        .thinstroke {
+          stroke: var(--birdColor, #4fc3f7);
           stroke-width: 4;
           stroke-linecap: round;
           stroke-linejoin: round;
         }
+
         .body {
-          fill: var(--birdColor, #4fc3f7);
+          fill: url(#bellyGradient);
         }
         .wing {
           fill: var(--wingColor, #29b6f6);
@@ -52,7 +60,7 @@ export class NumberedBird extends LitElement {
         .number {
           font-family: 'Comic Sans MS', Arial, sans-serif;
           font-weight: 700;
-          font-size: 60px;
+          font-size: 80px;
           fill: #222;
           text-anchor: middle;
           dominant-baseline: middle;
@@ -104,7 +112,7 @@ export class NumberedBird extends LitElement {
         <ellipse class="body stroke" cx="120" cy="120" rx="85" ry="70" />
 
         <!-- feather tuft -->
-        <path class="body stroke" d="M110 45 q6 -15 15 0 q6 -12 15 0" />
+        <!-- <path class="body stroke" d="M110 45 q6 -15 15 0 q6 -12 15 0" /> -->
 
         <!-- tail with 3 feather tips -->
         <path
@@ -118,7 +126,7 @@ export class NumberedBird extends LitElement {
 
         <!-- wing (hugging belly) -->
         <path
-          class="wing stroke"
+          class="wing thinstroke"
           d="M55 120 
                                q-10 25 25 35 
                                q30 10 40 -15 
@@ -126,17 +134,18 @@ export class NumberedBird extends LitElement {
         />
 
         <!-- belly -->
-        <circle class="belly stroke" cx="120" cy="130" r="48" />
+        <!-- <circle class="belly stroke" cx="120" cy="130" r="48" />
+        -->
 
         <!-- beak -->
-        <polygon class="beak stroke" points="185,100 215,110 185,120" />
+        <polygon class="beak thinstroke" points="185,100 215,110 185,120" />
 
         <!-- eye -->
-        <circle class="eye stroke" cx="160" cy="75" r="10" />
+        <circle class="eye thinstroke" cx="160" cy="75" r="10" />
         <circle cx="157" cy="72" r="3" fill="#fff" />
 
         <!-- number (centered in belly) -->
-        <text id="number" class="number" x="120" y="130">
+        <text id="number" class="number" x="145" y="135">
           ${this.disabled ? '✗' : this.nmbrToShow}
         </text>
       </svg>
