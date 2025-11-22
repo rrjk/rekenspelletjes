@@ -48,6 +48,18 @@ export class SimpleSplitWidget extends LitElement {
     ];
   }
 
+  get getSecondSplitBoxWidth() {
+    if (this.numberToSplit >= 100) return 100;
+    else if (this.numberToSplit >= 10) return 75;
+    else return 50;
+  }
+
+  get getSecondSplitBoxX() {
+    if (this.numberToSplit >= 100) return 225;
+    else if (this.numberToSplit >= 10) return 237.5;
+    else return 250;
+  }
+
   renderNumberToSplit(): SVGTemplateResult {
     return svg`<text class="middleAligned" x="210" y="50">${this.numberToSplit}</text>`;
   }
@@ -57,7 +69,7 @@ export class SimpleSplitWidget extends LitElement {
   }
 
   renderSecondSplitBox(): SVGTemplateResult {
-    return svg`<rect class="boxLine activeFilled"  x="250" y="200" width="50" height="80"  /> `;
+    return svg`<rect class="boxLine activeFilled"  x="${this.getSecondSplitBoxX}" y="200" width="${this.getSecondSplitBoxWidth}" height="80"  /> `;
   }
 
   renderSplitLines(): SVGTemplateResult {
@@ -69,7 +81,7 @@ export class SimpleSplitWidget extends LitElement {
 
   render(): HTMLTemplateResult {
     return html`
-      <svg viewbox="125 25 180 255" style="height: 100%;">
+      <svg viewbox="100 25 230 258" style="height: 100%;">
         ${this.renderSecondSplitBox()} ${this.renderNumberToSplit()}
         ${this.renderFirstSplit()} ${this.renderSplitLines()}
       </svg>

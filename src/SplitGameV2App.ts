@@ -10,6 +10,8 @@ import {
 import { Color, colors } from './Colors';
 
 import './NumberedBird';
+import './NumberedBalloon';
+
 import './SimpleSplitWidget';
 
 import {
@@ -33,11 +35,8 @@ interface ExerciseInfo {
   secondSplit: number;
 }
 
-@customElement('split-bird-game-app')
-export class SplitBirdGameV2 extends AscendingItemsGameApp<
-  ExerciseInfo,
-  ItemInfo
-> {
+@customElement('split-game-v2-app')
+export class SplitGameV2 extends AscendingItemsGameApp<ExerciseInfo, ItemInfo> {
   private possibleNumbersToSplit: number[] = [];
   private gameLogger = new GameLogger('R', '');
 
@@ -163,6 +162,10 @@ export class SplitBirdGameV2 extends AscendingItemsGameApp<
           font-size: 30px;
           height: 100%;
         }
+
+        text {
+          user-select: none;
+        }
       `,
     ];
   }
@@ -175,10 +178,10 @@ export class SplitBirdGameV2 extends AscendingItemsGameApp<
   }
 
   renderItem(itemInfo: ItemInfo): HTMLTemplateResult {
-    return html` <numbered-bird
-      .birdColor=${itemInfo.color}
+    return html` <numbered-balloon
+      .color=${itemInfo.color}
       .nmbrToShow=${itemInfo.nmbr}
       ?disabled=${itemInfo.disabled}
-    ></flying-saucer>`;
+    ></numbered-balloon>`;
   }
 }

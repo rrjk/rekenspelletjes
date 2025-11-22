@@ -56,6 +56,7 @@ export type ColorInfo = {
   colorName: Color;
   fontColor: string;
   mainColorCode: string;
+  subAccentColorCode?: string;
   accentColorCode: string;
 };
 
@@ -76,18 +77,21 @@ export const colorArray: ColorInfo[] = [
     colorName: 'yellow',
     fontColor: 'black',
     mainColorCode: '#FFE119',
+    subAccentColorCode: '#E0C500',
     accentColorCode: '#C1AA00',
   },
   {
     colorName: 'purple',
     fontColor: 'white',
     mainColorCode: '#911EB4',
+    subAccentColorCode: '#750099',
     accentColorCode: '#59007E',
   },
   {
     colorName: 'green',
     fontColor: 'white',
     mainColorCode: '#3CB44B',
+    subAccentColorCode: '#750099',
     accentColorCode: '#007E17',
   },
   {
