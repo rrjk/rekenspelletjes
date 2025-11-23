@@ -61,3 +61,11 @@ export function gcd(a: number, b: number): number {
   if (b === 0) return a;
   return gcd(b, a % b);
 }
+
+export function getRange(lowest: number, highest: number): number[] {
+  const ret: number[] = [];
+  for (let i = lowest; i <= highest; i++) {
+    ret.push(i);
+  }
+  return ret;
+}

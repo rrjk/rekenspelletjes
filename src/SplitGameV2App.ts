@@ -18,11 +18,11 @@ import {
   numberArrayToRangeText,
   randomFromSet,
   randomFromSetAndSplice,
-  randomIntFromRange,
   shuffleArray,
 } from './Randomizer';
 
 import { GameLogger } from './GameLogger';
+import { getRange } from './NumberHelperFunctions';
 
 interface ItemInfo extends ItemInfoInterface {
   nmbr: number;
@@ -41,9 +41,10 @@ export class SplitGameV2 extends AscendingItemsGameApp<ExerciseInfo, ItemInfo> {
   private gameLogger = new GameLogger('R', '');
 
   private lastNumberToSplitUsed = 0;
+  private lastSecondSplitUsed = 0;
 
   get welcomeMessage(): HTMLTemplateResult {
-    return html`<p>Klik op de vogel met het juiste antwoord.</p>`;
+    return html`<p>Klik op de ballons met het juiste antwoord.</p>`;
   }
 
   constructor() {
@@ -96,9 +97,20 @@ export class SplitGameV2 extends AscendingItemsGameApp<ExerciseInfo, ItemInfo> {
       );
 
     exerciseInfo.numberToSplit = randomFromSet(allowedNumbersToSplit);
-    exerciseInfo.firstSplit = randomIntFromRange(0, exerciseInfo.numberToSplit);
-    exerciseInfo.secondSplit =
-      exerciseInfo.numberToSplit - exerciseInfo.firstSplit;
+    this.lastNumberToSplitUsed = exerciseInfo.numberToSplit;
+
+    let possibleSecondSplitNumbers: number[];
+    possibleSecondSplitNumbers = getRange(0, exerciseInfo.numberToSplit);
+
+    possibleSecondSplitNumbers = possibleSecondSplitNumbers.filter(
+      elm => elm !== this.lastSecondSplitUsed,
+    );
+
+    exerciseInfo.secondSplit = randomFromSet(possibleSecondSplitNumbers);
+    this.lastSecondSplitUsed = exerciseInfo.secondSplit;
+
+    exerciseInfo.firstSplit =
+      exerciseInfo.numberToSplit - exerciseInfo.secondSplit;
 
     const colorCorrect = randomFromSetAndSplice(possibleColors);
 
