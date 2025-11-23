@@ -8,7 +8,6 @@ import type {
 import { customElement, property } from 'lit/decorators.js';
 
 import { getColorInfo, type Color, stringToColor } from './Colors';
-import { desaturate } from 'color2k';
 
 @customElement('numbered-balloon')
 export class NumberedBalloon extends LitElement {
@@ -28,21 +27,16 @@ export class NumberedBalloon extends LitElement {
           display: block;
         }
 
-        .balloon {
-          stroke: #000;
-          stroke-width: 12;
-          stroke-linejoin: round;
-        }
         .crossOut {
           font-family:
             'Arial Rounded MT Bold', 'Segoe UI', 'Helvetica', 'Arial',
             sans-serif;
           font-weight: 700;
           fill: #555555;
-          stroke: #000000;
-          stroke-width: 40px;
+          stroke: #222222;
+          stroke-width: 10px;
           paint-order: stroke;
-          font-size: 300px;
+          font-size: 115px;
           text-anchor: middle;
           dominant-baseline: middle;
         }
@@ -54,28 +48,22 @@ export class NumberedBalloon extends LitElement {
           font-weight: 700;
           fill: #ffffff;
           stroke: #000000;
-          stroke-width: 40px;
+          stroke-width: 10px;
           paint-order: stroke;
           text-anchor: middle;
           dominant-baseline: middle;
         }
 
         .oneDigit {
-          font-size: 500px;
+          font-size: 160px;
         }
 
         .twoDigit {
-          font-size: 380px;
+          font-size: 110px;
         }
 
         .threeDigit {
-          font-size: 250px;
-        }
-
-        .knot {
-          stroke: #000;
-          stroke-width: 8;
-          fill: #ff8a2b;
+          font-size: 70px;
         }
 
         text {
@@ -89,8 +77,8 @@ export class NumberedBalloon extends LitElement {
   renderDisabled(): SVGTemplateResult {
     return svg`
       <text
-          x="512"
-          y="475"
+          x="100"
+          y="135"
           class="crossOut"
         >
           ✗
@@ -100,15 +88,23 @@ export class NumberedBalloon extends LitElement {
 
   renderNumber(): SVGTemplateResult {
     let classes = '';
-    if (this.nmbrToShow < 10) classes = 'number oneDigit';
-    else if (this.nmbrToShow < 100) classes = 'number twoDigit';
-    else if (this.nmbrToShow < 1000) classes = 'number threeDigit';
+    let y = 0;
+    if (this.nmbrToShow < 10) {
+      y = 135;
+      classes = 'number oneDigit';
+    } else if (this.nmbrToShow < 100) {
+      classes = 'number twoDigit';
+      y = 131;
+    } else if (this.nmbrToShow < 1000) {
+      classes = 'number threeDigit';
+      y = 128;
+    }
 
     return svg`
         <!-- Big number  -->
         <text
-          x="512"
-          y="490"
+          x="100"
+          y="${y}"
           class="${classes}"
         >
           ${this.nmbrToShow}
@@ -118,101 +114,71 @@ export class NumberedBalloon extends LitElement {
 
   render(): HTMLTemplateResult {
     return html`
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="200 100 615 900">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 300">
+        <!-- Gradient for the Balloon -->
         <defs>
-          <radialGradient id="g1" cx="40%" cy="25%" r="70%">
+          <linearGradient
+            id="balloonGradient"
+            x1="0%"
+            y1="0%"
+            x2="100%"
+            y2="100%"
+          >
             <stop
               offset="0%"
-              stop-color=${getColorInfo(this.color).mainColorCode}
+              stop-color=${getColorInfo(this.color).mainColorCode /*#9D5CFF*/}
             />
             <stop
-              offset="45%"
-              stop-color=${desaturate(
-                getColorInfo(this.color).mainColorCode,
-                0.25,
-              )}
+              offset="50%"
+              stop-color=${
+                getColorInfo(this.color).accentColorCode /*
+                desaturate(
+                  lighten(getColorInfo(this.color).mainColorCode, 0.2),
+                  0.1,
+                )*/ /*#C77DFF"*/
+              }
             />
             <stop
               offset="100%"
-              stop-color=${desaturate(
-                getColorInfo(this.color).mainColorCode,
-                0.5,
-              )}
+              stop-color=${getColorInfo(this.color).mainColorCode /*#9D5CFF*/}
             />
-          </radialGradient>
-          <linearGradient id="shine" x1="0" x2="1" y1="0" y2="1">
-            <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9" />
-            <stop offset="35%" stop-color="#ffffff" stop-opacity="0.35" />
-            <stop offset="100%" stop-color="#ffffff" stop-opacity="0.0" />
           </linearGradient>
-          <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
-            <feDropShadow
-              dx="0"
-              dy="8"
-              stdDeviation="18"
-              flood-color="#000"
-              flood-opacity="0.25"
-            />
-          </filter>
+          <radialGradient id="shine" cx="40%" cy="40%" r="50%">
+            <stop offset="0%" stop-color="white" stop-opacity="0.7" />
+            <stop offset="100%" stop-color="white" stop-opacity="0" />
+          </radialGradient>
         </defs>
 
-        <!-- Main balloon shape -->
-        <g filter="url(#shadow)">
-          <path
-            class="balloon"
-            d="M512 120
-                C680 120 780 260 780 420
-                C780 620 640 740 512 812
-                C384 740 244 620 244 420
-                C244 260 344 120 512 120
-                Z"
-            fill="url(#g1)"
-          />
-        </g>
-
-        <!-- Internal subtle shading -->
-        <path
-          d="M512 140
-              C660 140 744 250 744 420
-              C744 600 620 712 512 770
-              C404 712 280 600 280 420
-              C280 250 364 140 512 140
-              Z"
-          fill="rgba(0,0,0,0.06)"
+        <!-- Balloon Body with Gradient -->
+        <ellipse
+          cx="100"
+          cy="120"
+          rx="80"
+          ry="100"
+          fill="url(#balloonGradient)"
         />
 
-        <!-- Shine highlight -->
-        <path
-          d="M420 180 C460 140 560 120 610 150 C592 140 540 120 480 150 C440 170 430 190 420 180 Z"
-          fill="url(#shine)"
+        <!-- Shine Effect -->
+        <ellipse cx="60" cy="80" rx="30" ry="40" fill="url(#shine)" />
+
+        <!-- Knot at the Balloon's Bottom -->
+        <circle
+          cx="100"
+          cy="220"
+          r="6"
+          fill=${getColorInfo(this.color).accentColorCode}
         />
 
-        <!-- Balloon knot (moved below balloon bottom at y≈812) -->
-        <path class="knot" d="M500 800 L524 800 L512 820 Z" />
-
-        <!-- String (starts at bottom center of the knot) -->
+        <!-- Meandering String -->
         <path
-          d="M512 820 C512 900 496 940 504 980 C512 1020 492 1020 492 1020"
-          stroke="#f6d88a"
-          stroke-width="14"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          d="M100 220 C 105 230, 95 250, 100 260 C 105 270, 95 280, 100 290"
+          stroke=${getColorInfo(this.color).accentColorCode}
+          stroke-width="2"
           fill="none"
-        />
-        <path
-          d="M512 820 C512 900 496 940 504 980 C512 1020 492 1020 492 1020"
-          stroke="#c77d12"
-          stroke-width="6"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          fill="none"
-          stroke-dasharray="12 8"
-          opacity="0.6"
         />
 
         <!-- Big number  -->
-          ${this.disabled ? this.renderDisabled() : this.renderNumber()}
-        </text>
+        ${this.disabled ? this.renderDisabled() : this.renderNumber()}
       </svg>
     `;
   }
