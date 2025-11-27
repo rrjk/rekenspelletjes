@@ -4,39 +4,24 @@
  * Get variations of colors via https://convertingcolors.com/hex-color-f032e6.html
  * Info about how to do all this: https://www.svgbackgrounds.com/how-to-add-svgs-with-css-background-image/
  */
-export type Color =
-  | 'yellow'
-  | 'purple'
-  | 'yellowPurple'
-  | 'green'
-  | 'blue'
-  | 'maroon'
-  | 'red'
-  | 'pink'
-  | 'brown'
-  | 'orange'
-  | 'apricot'
-  | 'olive'
-  | 'beige'
-  | 'lime'
-  | 'mint'
-  | 'teal'
-  | 'cyan'
-  | 'navy'
-  | 'lavender'
-  | 'magenta'
-  | 'grey'
-  | 'black'
-  | 'white';
 
-export const colors: Color[] = [
+import { saturate } from 'color2k';
+
+export const neonFusionColors = [
+  'malachite',
+  'amberFlame',
+  'fuchsiaFlame',
+  'brilliantAzure',
+  'limeFlash',
+] as const;
+
+export const setOf20Colors = [
   'apricot',
   'beige',
   'blue',
   'brown',
   'cyan',
   'green',
-  'grey',
   'lavender',
   'lime',
   'magenta',
@@ -50,7 +35,29 @@ export const colors: Color[] = [
   'red',
   'teal',
   'yellow',
-];
+] as const;
+
+export const colors = setOf20Colors; // Included for backward compatibility
+
+export const legacyBalloonColors = [
+  'legacyYellow',
+  'legacyPurple',
+  'legacyBlue',
+  'legacyGreen',
+] as const;
+
+export const blackWhiteColors = ['black', 'grey', 'white'] as const;
+
+export type NeonFusionColor = (typeof neonFusionColors)[number];
+export type SetOf20Color = (typeof setOf20Colors)[number];
+export type LegacyBalloonColors = (typeof legacyBalloonColors)[number];
+export type BlackWhiteColors = (typeof blackWhiteColors)[number];
+
+export type Color =
+  | NeonFusionColor
+  | SetOf20Color
+  | LegacyBalloonColors
+  | BlackWhiteColors;
 
 export type ColorInfo = {
   colorName: Color;
@@ -195,6 +202,60 @@ export const colorArray: ColorInfo[] = [
     fontColor: 'white',
     mainColorCode: '#A9A9A9',
     accentColorCode: '#757575',
+  },
+  {
+    colorName: 'legacyBlue',
+    fontColor: 'black',
+    mainColorCode: '#0174c5',
+    accentColorCode: '#80C3FF',
+  },
+  {
+    colorName: 'legacyGreen',
+    fontColor: 'white',
+    mainColorCode: '#398f30',
+    accentColorCode: '#004300',
+  },
+  {
+    colorName: 'legacyPurple',
+    fontColor: 'white',
+    mainColorCode: '#af6da9',
+    accentColorCode: saturate('#af6da9', 0.2),
+  },
+  {
+    colorName: 'legacyYellow',
+    fontColor: 'black',
+    mainColorCode: '#b1a23b',
+    accentColorCode: '#FFF58A',
+  },
+  {
+    colorName: 'malachite',
+    fontColor: 'black',
+    mainColorCode: '#04e762',
+    accentColorCode: saturate('#04e762', 0.2),
+  },
+  {
+    colorName: 'amberFlame',
+    fontColor: 'black',
+    mainColorCode: '#f5b700',
+    accentColorCode: saturate('#f5b700', 0.2),
+  },
+  {
+    colorName: 'fuchsiaFlame',
+    fontColor: 'white',
+    mainColorCode: '#dc0073',
+    accentColorCode: saturate('#dc0073', 0.2),
+  },
+  {
+    colorName: 'brilliantAzure',
+    fontColor: 'white',
+    mainColorCode: '#008bf8',
+    accentColorCode: saturate('#008bf8', 0.2),
+  },
+  {
+    colorName: 'limeFlash',
+    fontColor: 'white',
+    mainColorCode: '#89fc00',
+    accentColorCode: saturate('#89fc00', 0.2),
   },
 ];
 

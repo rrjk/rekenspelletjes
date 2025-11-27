@@ -12,7 +12,7 @@ import { randomFromSet } from './Randomizer';
 import type { Digit } from './DigitKeyboard';
 import './DigitKeyboard';
 import { possibleNumberDots, PossibleNumberDots } from './DieFace';
-import { colors, type Color } from './Colors';
+import { setOf20Colors, type Color } from './Colors';
 
 const allDigitsEnabled = [
   false,
@@ -100,12 +100,8 @@ export class DieFaceGameApp extends TimeLimitedGame2 {
     );
     this.dieFaceNumber = randomFromSet(allowedNumberDots);
 
-    const allowedColors = colors.filter(
-      color =>
-        color !== this.dieFaceColor &&
-        color !== 'grey' &&
-        color !== 'white' &&
-        color !== 'black',
+    const allowedColors = setOf20Colors.filter(
+      color => color !== this.dieFaceColor,
     );
     this.dieFaceColor = randomFromSet(allowedColors);
 

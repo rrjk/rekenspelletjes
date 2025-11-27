@@ -24,7 +24,8 @@ export class SimpleSplitWidget extends LitElement {
 
         text {
           dominant-baseline: mathematical;
-          font-size: 80px;
+          font-size: 90px;
+          font-weight: 500;
         }
 
         .middleAligned {
@@ -33,7 +34,7 @@ export class SimpleSplitWidget extends LitElement {
 
         .splitLine {
           stroke: black;
-          stroke-width: 3px;
+          stroke-width: 5px;
         }
 
         .boxLine {
@@ -55,9 +56,9 @@ export class SimpleSplitWidget extends LitElement {
   }
 
   get getSecondSplitBoxX() {
-    if (this.numberToSplit >= 100) return 225;
-    else if (this.numberToSplit >= 10) return 237.5;
-    else return 250;
+    if (this.numberToSplit >= 100) return 245;
+    else if (this.numberToSplit >= 10) return 257.5;
+    else return 270;
   }
 
   renderNumberToSplit(): SVGTemplateResult {
@@ -65,7 +66,7 @@ export class SimpleSplitWidget extends LitElement {
   }
 
   renderFirstSplit(): SVGTemplateResult {
-    return svg`<text class="middleAligned" x="145" y="230">${this.firstSplit}</text>`;
+    return svg`<text class="middleAligned" x="125" y="230">${this.firstSplit}</text>`;
   }
 
   renderSecondSplitBox(): SVGTemplateResult {
@@ -74,8 +75,8 @@ export class SimpleSplitWidget extends LitElement {
 
   renderSplitLines(): SVGTemplateResult {
     return svg`        
-      <line class="splitLine" x1="200" y1="110" x2="150" y2="190" />
-      <line class="splitLine" x1="220" y1="110" x2="270" y2="190" />
+      <line class="splitLine" x1="200" y1="110" x2="130" y2="190" />
+      <line class="splitLine" x1="220" y1="110" x2="290" y2="190" />
     `;
   }
 

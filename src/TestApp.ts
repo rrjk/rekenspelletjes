@@ -3,7 +3,7 @@ import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
 import { customElement } from 'lit/decorators.js';
 
-import './SimpleSplitWidget';
+import './NumberedBalloon';
 
 @customElement('test-app')
 export class TestApp extends LitElement {
@@ -15,18 +15,19 @@ export class TestApp extends LitElement {
           height: 100%;
           display: block;
         }
-        simple-split-widget {
-          width: 500px;
-          height: 500px;
+        numbered-balloon {
+          width: 75px;
+          height: auto;
         }
       `,
     ];
   }
   protected renderTest(): HTMLTemplateResult {
-    return html` <simple-split-widget
-      numberToSplit="3"
-      firstSplit="2"
-    ></simple-split-widget>`;
+    return html` <numbered-balloon
+      color="purple"
+      stringsToShow='["×","2,3,4", "5,6,7,8","9,10"]'
+      fontSizeFactor="0.35"
+    ></numbered-balloon>`;
   }
 
   protected render(): HTMLTemplateResult {

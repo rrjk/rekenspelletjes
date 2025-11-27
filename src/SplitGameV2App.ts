@@ -7,9 +7,13 @@ import {
   ItemInfoInterface,
   RoundInfo,
 } from './AscendingItemsGameApp';
-import { Color, colors } from './Colors';
+import {
+  Color,
+  setOf20Colors,
+  legacyBalloonColors,
+  neonFusionColors,
+} from './Colors';
 
-import './NumberedBird';
 import './NumberedBalloon';
 
 import './SimpleSplitWidget';
@@ -43,6 +47,8 @@ export class SplitGameV2 extends AscendingItemsGameApp<ExerciseInfo, ItemInfo> {
   private lastNumberToSplitUsed = 0;
   private lastSecondSplitUsed = 0;
 
+  private possibleColors: Color[] = [];
+
   get welcomeMessage(): HTMLTemplateResult {
     return html`<p>Klik op de ballons met het juiste antwoord.</p>`;
   }
@@ -70,6 +76,16 @@ export class SplitGameV2 extends AscendingItemsGameApp<ExerciseInfo, ItemInfo> {
     }
     if (this.possibleNumbersToSplit.length === 0)
       this.possibleNumbersToSplit = [9];
+
+    const colorParam = urlParams.get('colorSet');
+    // colorParam might be null. but then the following if constuction will fall throigh to the last else.
+    if (colorParam === 'setOf20Colors')
+      this.possibleColors = [...setOf20Colors];
+    else if (colorParam === 'neonFusionColors')
+      this.possibleColors = [...neonFusionColors];
+    else if (colorParam === 'legacyBalloonColors')
+      this.possibleColors = [...legacyBalloonColors];
+    else this.possibleColors = [...neonFusionColors];
   }
 
   executeGameOverActions(): void {
@@ -85,8 +101,6 @@ export class SplitGameV2 extends AscendingItemsGameApp<ExerciseInfo, ItemInfo> {
       secondSplit: 0,
     };
     const itemInfo: ItemInfo[] = [];
-
-    const possibleColors = [...colors];
 
     let allowedNumbersToSplit: number[];
     if (this.possibleNumbersToSplit.length < 2)
@@ -112,6 +126,7 @@ export class SplitGameV2 extends AscendingItemsGameApp<ExerciseInfo, ItemInfo> {
     exerciseInfo.firstSplit =
       exerciseInfo.numberToSplit - exerciseInfo.secondSplit;
 
+    const possibleColors: Color[] = [...this.possibleColors];
     const colorCorrect = randomFromSetAndSplice(possibleColors);
 
     itemInfo.push({
@@ -158,20 +173,13 @@ export class SplitGameV2 extends AscendingItemsGameApp<ExerciseInfo, ItemInfo> {
     return [
       ...super.styles,
       css`
-        numbered-bird {
-          width: 100%;
-          height: 100%;
+        numbered-balloon {
+          width: 80%;
+          height: 80%;
         }
 
         simple-split-widget {
           width: 100%;
-          height: 100%;
-        }
-
-        svg {
-          text-anchor: middle;
-          dominant-baseline: middle;
-          font-size: 30px;
           height: 100%;
         }
 
