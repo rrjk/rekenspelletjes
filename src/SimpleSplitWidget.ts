@@ -8,8 +8,10 @@ import { customElement, property } from 'lit/decorators.js';
 
 @customElement('simple-split-widget')
 export class SimpleSplitWidget extends LitElement {
+  /** Number shown at the top of the split widget */
   @property({ type: Number })
   accessor numberToSplit = 8;
+  /** Number shown as the first split */
   @property({ type: Number })
   accessor firstSplit = 3;
 

@@ -30,21 +30,33 @@ export class NumberedBalloon extends LitElement {
   /** Number  to show */
   @property({ type: Number })
   accessor nmbrToShow = 3;
+  /** Strings to show, each array element will be shown on a separate row.
+   * In case both a number and strings are provided, the strings will be shown
+   */
   @property({ converter: convertJSON<string[]> })
   accessor stringsToShow: string[] = [];
 
-  /** Color of the balloonto use */
+  /** Color of the balloon to use */
   @property({ converter: stringToColor })
   accessor color: Color = 'blue';
 
+  /** Indication whether the balloon should show as a disabled balloon */
   @property({ type: Boolean })
   accessor disabled = false;
 
+  /** Factor to use for the fontsize in case strings are provided
+   * fontSizeFactor equal to 1 is the size for
+   *  putting one row with an M in the balloon.
+   */
   @property({ type: Number })
   accessor fontSizeFactor = 1;
 
+  /** Indication whether the balloon rope should be short or long
+   * With a long rope, the aspect ratio of the balloon is 8:14
+   * With a short rope, the aspect ratio of the balloon is 8:11
+   */
   @property({ converter: stringToShortLong })
-  accessor stringLength: ShortLong = 'long';
+  accessor ropeLength: ShortLong = 'long';
 
   static get styles(): CSSResultArray {
     return [
@@ -54,9 +66,7 @@ export class NumberedBalloon extends LitElement {
         }
 
         .crossOut {
-          font-family:
-            'Arial Rounded MT Bold', 'Segoe UI', 'Helvetica', 'Arial',
-            sans-serif;
+          font-family: 'Arial';
           font-weight: 700;
           fill: #555555;
           stroke: #222222;
@@ -179,8 +189,8 @@ export class NumberedBalloon extends LitElement {
 
   render(): HTMLTemplateResult {
     let svgHeight = 0;
-    if (this.stringLength === 'short') svgHeight = 220;
-    else if (this.stringLength === 'long') svgHeight = 280;
+    if (this.ropeLength === 'short') svgHeight = 220;
+    else if (this.ropeLength === 'long') svgHeight = 280;
     return html`
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="20 20 160 ${svgHeight}">
         <!-- Gradient for the Balloon -->
@@ -239,7 +249,7 @@ export class NumberedBalloon extends LitElement {
           fill=${desaturate(getColorInfo(this.color).mainColorCode, 0.05)}
         />
 
-        <!-- Meandering String -->
+        <!-- Meandering rope -->
         <path
           d="M100 220 C 105 230, 95 250, 100 260 C 105 270, 95 280, 100 290"
           stroke=${desaturate(getColorInfo(this.color).mainColorCode, 0.05)}

@@ -39,6 +39,14 @@ interface ExerciseInfo {
   secondSplit: number;
 }
 
+/** Customer element for a game to exercise is splitting numbers
+ * The player has to click the proper ballon.
+ *
+ * The followin url parameters are supported
+ * - time - Time to play in seconds
+ * - number* - Number that have to split. May be one number, may be multiple numbers. Allowed numbers 3-10
+ * - colorSet - Colorset to use for the balloons. Possible values: setOf20Colors, neonFusionColors, legacyBalloonColors. Default: legacyBalloonColors
+ */
 @customElement('split-game-v2-app')
 export class SplitGameV2 extends AscendingItemsGameApp<ExerciseInfo, ItemInfo> {
   private possibleNumbersToSplit: number[] = [];
@@ -50,7 +58,7 @@ export class SplitGameV2 extends AscendingItemsGameApp<ExerciseInfo, ItemInfo> {
   private possibleColors: Color[] = [];
 
   get welcomeMessage(): HTMLTemplateResult {
-    return html`<p>Klik op de ballons met het juiste antwoord.</p>`;
+    return html`<p>Klik op de ballon met het juiste antwoord.</p>`;
   }
 
   constructor() {
@@ -67,7 +75,7 @@ export class SplitGameV2 extends AscendingItemsGameApp<ExerciseInfo, ItemInfo> {
       const nmbr = parseInt(nmbrAsString, 10);
       if (
         !Number.isNaN(nmbr) &&
-        nmbr >= 1 &&
+        nmbr >= 3 &&
         nmbr <= 10 &&
         !this.possibleNumbersToSplit.find(value => value === nmbr)
       ) {
@@ -85,7 +93,7 @@ export class SplitGameV2 extends AscendingItemsGameApp<ExerciseInfo, ItemInfo> {
       this.possibleColors = [...neonFusionColors];
     else if (colorParam === 'legacyBalloonColors')
       this.possibleColors = [...legacyBalloonColors];
-    else this.possibleColors = [...neonFusionColors];
+    else this.possibleColors = [...legacyBalloonColors]; // Default color set is legacy balloon colors.
   }
 
   executeGameOverActions(): void {

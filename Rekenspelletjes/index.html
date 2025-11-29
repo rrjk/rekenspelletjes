@@ -44,6 +44,11 @@
       width: 90px;
     }
 
+    numbered-balloon {
+      height: 90px;
+      width: 66px;
+    }
+
     div.fractionPairGamesbutton {
       width: 100px;
       height: 100px;
@@ -82,6 +87,7 @@
     <script type="module" src="../src/DivideWithSplitWidget.ts"></script>
     <script type="module" src="../src/DieFace.ts"></script>
     <script type="module" src="../src/HandFace.ts"></script>
+    <script type="module" src="../src/NumberedBalloon.ts"></script>
 
     <h1>Rekenspelletjes</h1>
     <div class="buttonTable">
@@ -119,12 +125,14 @@
       </icon-label-button>
       <icon-label-button
         title="Splitsen van getallen"
-        href="indexSplitsen.html"
+        href="indexSplitsenV2.html"
       >
-        <game-icon-with-text-overlay
-          iconcolor="yellow"
-          text1="/ \"
-        ></game-icon-with-text-overlay>
+        <numbered-balloon
+          color="yellow"
+          stringsToShow='["/ \\"]'
+          fontSizeFactor="0.6"
+          ropeLength="short"
+        ></numbered-balloon>
       </icon-label-button>
       <icon-label-button
         title="Verliefde harten"
