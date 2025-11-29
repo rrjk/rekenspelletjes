@@ -84,7 +84,7 @@ export class SimpleSplitWidget extends LitElement {
 
   render(): HTMLTemplateResult {
     return html`
-      <svg viewbox="100 25 230 258" style="height: 100%;">
+      <svg viewbox="100 25 245 258" style="height: 100%;">
         ${this.renderSecondSplitBox()} ${this.renderNumberToSplit()}
         ${this.renderFirstSplit()} ${this.renderSplitLines()}
       </svg>
