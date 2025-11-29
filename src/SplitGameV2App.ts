@@ -174,7 +174,7 @@ export class SplitGameV2 extends AscendingItemsGameApp<ExerciseInfo, ItemInfo> {
   get gameOverIntroductionText(): HTMLTemplateResult {
     const numbersText = numberArrayToRangeText(this.possibleNumbersToSplit);
 
-    return html`<p>Je hebt geoefend met hety splitsen van ${numbersText}.</p>`;
+    return html`<p>Je hebt geoefend met het splitsen van ${numbersText}.</p>`;
   }
 
   static get styles(): CSSResultArray {
