@@ -394,6 +394,7 @@ export class RecognizeGroupsApp extends TimeLimitedGame2 {
         </div>
         <div id="keyboard">
           <digit-keyboard
+            ?disabled=${this.dialogVisible ? true : false}
             @digit-entered=${(evt: CustomEvent<Digit>) =>
               this.handleDigit(evt.detail)}
           ></digit-keyboard>

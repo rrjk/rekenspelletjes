@@ -28,6 +28,8 @@ export abstract class GameSkeleton extends LitElement {
     '../images/Mompitz Otto.png',
     import.meta.url,
   );
+  @state()
+  protected accessor dialogVisible = true; // Upon start the welcom dialog is open
 
   private welcomeDialogRef: Ref<MessageDialogV2> = createRef();
   private gameOverDialogRef: Ref<GameOverDialogV2> = createRef();
@@ -189,12 +191,15 @@ export abstract class GameSkeleton extends LitElement {
    * When overruled by a child, the super needs to be called
    */
   startNewGame(): void {
+    this.dialogVisible = false;
     this.resetCounters();
   }
 
   /** Handle game over */
   handleGameOver(): void {
     this.executeGameOverActions();
+    this.dialogVisible = true;
+
     if (this.gameOverDialogRef.value) this.gameOverDialogRef.value.showModal();
     else throw new Error('Error in showing game over dialog');
   }
