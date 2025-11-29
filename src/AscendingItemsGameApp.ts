@@ -171,12 +171,12 @@ export abstract class AscendingItemsGameApp<
         }
 
         div.exercize {
-          height: 22vmin;
+          height: 25vmin;
         }
 
         div.item {
-          width: calc(11vmin);
-          height: calc(11vmin);
+          width: calc(15vmin);
+          height: calc(15vmin);
         }
       `,
     ];

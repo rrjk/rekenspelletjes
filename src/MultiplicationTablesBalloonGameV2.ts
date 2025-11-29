@@ -7,7 +7,7 @@ import {
   ItemInfoInterface,
   RoundInfo,
 } from './AscendingItemsGameApp';
-import { Color, colors } from './Colors';
+import { Color, setOf20Colors } from './Colors';
 
 import './FlyingSaucer';
 
@@ -129,7 +129,7 @@ export class MultiplicationTablesBalloonGameV2 extends AscendingItemsGameApp<
 
     let exerciseInfo: ExerciseInfo;
     const itemInfo: ItemInfo[] = [];
-    const possibleColors = [...colors];
+    const possibleColors = [...setOf20Colors];
 
     let allowedTables: number[];
     if (this.tablesToUse.length < 2) allowedTables = this.tablesToUse;
