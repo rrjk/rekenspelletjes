@@ -43,10 +43,31 @@ export class StatsApp extends LitElement {
     { month: 12, count: 0 },
   ];
 
+  @state()
+  private accessor year = 2020;
+
+  private parseUrl(): void {
+    const urlParams = new URLSearchParams(window.location.search);
+
+    const currentDate = new Date();
+    this.year = currentDate.getFullYear();
+
+    if (urlParams.has('year')) {
+      const yearAsString = urlParams.get('year');
+      if (yearAsString) {
+        const year = parseInt(yearAsString);
+        if (year >= 2000 && year < 2100) {
+          this.year = year;
+        }
+      }
+    }
+  }
+
   constructor() {
     super();
+    this.parseUrl();
     fetch(
-      `https://counter.jufAnkie.nl/getCount.php?game=${getGameCodes().join(
+      `https://counter.jufAnkie.nl/getCount.php?year=${this.year}&game=${getGameCodes().join(
         ',',
       )}`,
     )
@@ -94,6 +115,7 @@ export class StatsApp extends LitElement {
   /** Render the application */
   render(): HTMLTemplateResult {
     return html`
+      <h1>${this.year} - Monthly</h1>
       <table border="1">
         <tr>
           <th rowspan="2">Spelcode</th>
