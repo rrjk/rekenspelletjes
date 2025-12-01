@@ -3,24 +3,43 @@ import type { HTMLTemplateResult, CSSResultArray } from 'lit';
 
 import { customElement, state } from 'lit/decorators.js';
 import { getGameCodes, getGameDescription } from './GameCodes';
+import { getRange } from './NumberHelperFunctions';
 
-type CountPerMonthType = {
-  month: number;
+type TimeUnitType = 'monthly' | 'weekly';
+
+type CountPerTimeUnitType = {
+  timeUnitNmbr: number;
   count: number;
 };
 
 type GameStatsType = {
   gameCode: string;
   gameDescription: string;
-  gameCounts: CountPerMonthType[];
+  gameCounts: CountPerTimeUnitType[];
   totalCount: number;
 };
 
 type CountInfo = {
   game: string;
   year: number;
-  counts: CountPerMonthType[];
+  counts: CountPerTimeUnitType[];
 };
+
+const monthMapping = [
+  '', // We have an empty string at position zero, as we don't have a month 0.
+  'Jan',
+  'Feb',
+  'Mrt',
+  'Apr',
+  'Mei',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Okt',
+  'Nov',
+  'Dec',
+];
 
 @customElement('stats-app')
 export class StatsApp extends LitElement {
@@ -28,20 +47,16 @@ export class StatsApp extends LitElement {
   private accessor stats: GameStatsType[] = [];
 
   @state()
-  private accessor totalsPerMonth: CountPerMonthType[] = [
-    { month: 1, count: 0 },
-    { month: 2, count: 0 },
-    { month: 3, count: 0 },
-    { month: 4, count: 0 },
-    { month: 5, count: 0 },
-    { month: 6, count: 0 },
-    { month: 7, count: 0 },
-    { month: 8, count: 0 },
-    { month: 9, count: 0 },
-    { month: 10, count: 0 },
-    { month: 11, count: 0 },
-    { month: 12, count: 0 },
-  ];
+  private accessor nmbrTimeUnits = 1;
+
+  @state()
+  private accessor timeUnitType: TimeUnitType = 'monthly';
+
+  @state()
+  private accessor totalsPerTimeUnit: CountPerTimeUnitType[] = [];
+
+  @state()
+  private accessor grandTotal = 0;
 
   @state()
   private accessor year = 2020;
@@ -61,13 +76,30 @@ export class StatsApp extends LitElement {
         }
       }
     }
+
+    this.timeUnitType = 'monthly';
+    if (urlParams.get('type') === 'weekly') this.timeUnitType = 'weekly';
   }
 
   constructor() {
     super();
     this.parseUrl();
+    this.refreshStatistics();
+  }
+
+  private fillTotalsPerTimeUnit() {
+    this.totalsPerTimeUnit = [];
+    let nmbrTimeUnits = 12;
+    if (this.timeUnitType === 'weekly') nmbrTimeUnits = 13;
+    for (let i = 1; i <= nmbrTimeUnits; i++)
+      this.totalsPerTimeUnit.push({ timeUnitNmbr: i, count: 0 });
+  }
+
+  refreshStatistics() {
+    this.stats = [];
+    this.totalsPerTimeUnit = [];
     fetch(
-      `https://counter.jufAnkie.nl/getCount.php?year=${this.year}&game=${getGameCodes().join(
+      `https://counter.jufAnkie.nl/getCount.php?year=${this.year}&type=${this.timeUnitType}&game=${getGameCodes().join(
         ',',
       )}`,
     )
@@ -75,12 +107,17 @@ export class StatsApp extends LitElement {
       .then(json => {
         const countInfoList = json as CountInfo[];
         for (const countInfo of countInfoList) {
-          for (const monthlyCount of countInfo.counts) {
-            const totalMonthCount = this.totalsPerMonth.find(
-              m => m.month === monthlyCount.month,
+          for (const timeUnitCount of countInfo.counts) {
+            const totalTimeUnitCount = this.totalsPerTimeUnit.find(
+              m => m.timeUnitNmbr === timeUnitCount.timeUnitNmbr,
             );
-            if (totalMonthCount !== undefined)
-              totalMonthCount.count += monthlyCount.count;
+            if (totalTimeUnitCount !== undefined)
+              totalTimeUnitCount.count += timeUnitCount.count;
+            else
+              this.totalsPerTimeUnit.push({
+                timeUnitNmbr: timeUnitCount.timeUnitNmbr,
+                count: timeUnitCount.count,
+              });
           }
           this.stats.push({
             gameCode: countInfo.game,
@@ -91,11 +128,40 @@ export class StatsApp extends LitElement {
               .reduce((sum, c) => sum + c),
           });
         }
-        this.requestUpdate();
+        this.grandTotal = this.totalsPerTimeUnit
+          .map(t => t.count)
+          .reduce((sum, c) => sum + c, 0);
       })
       .catch(() => {
         throw new Error("Can't fetch statistics information");
       });
+  }
+
+  handleYearSelection(evt: Event): void {
+    console.assert(
+      evt.target instanceof HTMLSelectElement,
+      'In handleYearSelection, target is not an HTMLSelectElement',
+    );
+    const newValue = parseInt((evt.target as HTMLSelectElement).value, 10);
+    if (!Number.isNaN(newValue) && newValue !== this.year) {
+      this.year = newValue;
+      this.refreshStatistics();
+    }
+  }
+
+  handleTimeUnitSelection(evt: Event): void {
+    console.assert(
+      evt.target instanceof HTMLSelectElement,
+      'In handleTimeUnitSelection, target is not an HTMLSelectElement',
+    );
+    const newValue = (evt.target as HTMLSelectElement).value;
+    if (
+      newValue !== this.timeUnitType &&
+      (newValue === 'monthly' || newValue === 'weekly')
+    ) {
+      this.timeUnitType = newValue;
+      this.refreshStatistics();
+    }
   }
 
   static get styles(): CSSResultArray {
@@ -112,54 +178,105 @@ export class StatsApp extends LitElement {
     ];
   }
 
+  renderTimeUnitRowHeaders(): HTMLTemplateResult[] {
+    const ret: HTMLTemplateResult[] = [];
+    if (this.stats.length > 0) {
+      // If there are no stats available yet, ad no column headers
+      for (const timeUnitNumber of this.stats[0].gameCounts.map(
+        v => v.timeUnitNmbr,
+      )) {
+        if (this.timeUnitType === 'monthly') {
+          ret.push(html`<th>${monthMapping[timeUnitNumber]}</th>`);
+        } else if (this.timeUnitType === 'weekly') {
+          ret.push(html`<th>Wk${timeUnitNumber}</th>`);
+        }
+      }
+      ret.push(html`<th>Totaal</th>`);
+    }
+    return ret;
+  }
+
+  renderUnitType(): HTMLTemplateResult {
+    if (this.timeUnitType === 'monthly') return html`Per maand`;
+    else if (this.timeUnitType === 'weekly') return html`Per week`;
+    return html`Fout`;
+  }
+
+  renderYearSelect(): HTMLTemplateResult {
+    const firstYear = 2024;
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+    const years = getRange(firstYear, currentYear);
+    const options = years.map(
+      year =>
+        html`<option value=${year} ?selected=${year === currentYear}>
+          ${year}
+        </option>`,
+    );
+    return html`
+      <select
+        name="year"
+        id="nameSelect"
+        @change=${(evt: Event) => this.handleYearSelection(evt)}
+      >
+        ${options}
+      </select>
+    `;
+  }
+
+  renderTimeUnitSelect(): HTMLTemplateResult {
+    return html` <select
+      name="timeUnit"
+      id="timeUnitSelect"
+      @change=${(evt: Event) => this.handleTimeUnitSelection(evt)}
+    >
+      <option value="monthly" selected>Per maand</option>
+      <option value="weekly">Per week</option>
+    </select>`;
+  }
+
   /** Render the application */
   render(): HTMLTemplateResult {
+    const timeUnitRowHeaders = this.renderTimeUnitRowHeaders();
     return html`
-      <h1>${this.year} - Monthly</h1>
-      <table border="1">
-        <tr>
-          <th rowspan="2">Spelcode</th>
-          <th rowspan="2">Beschrijving</th>
-          <th colspan="13">Aantal keer gespeeld</th>
-        </tr>
-        <tr>
-          <th>Jan</th>
-          <th>Feb</th>
-          <th>Mrt</th>
-          <th>Apr</th>
-          <th>Mei</th>
-          <th>Jun</th>
-          <th>Jul</th>
-          <th>aug</th>
-          <th>Sep</th>
-          <th>Okt</th>
-          <th>Nov</th>
-          <th>Dec</th>
-          <th>Totaal</th>
-        </tr>
+        <b>Jaar: </b>${this.renderYearSelect()}
+        <b>Granulariteit: </b>${this.renderTimeUnitSelect()}
 
-        ${this.stats.map(
-          stat =>
-            html`<tr>
-              <td>${stat.gameCode}</td>
-              <td>${stat.gameDescription}</td>
-              ${stat.gameCounts.map(
-                monthlyCount => html`<td>${monthlyCount.count}</td>`,
-              )}
-              <td>${stat.totalCount}</td>
-            </tr>`,
-        )}
-        <tr>
-          <td>Totaal</td>
-          <td>Totaal voor alle spellen</td>
-          ${this.totalsPerMonth.map(
-            monthlyTotal => html` <td>${monthlyTotal.count}</td>`,
+        <h1>${this.year} - ${this.renderUnitType()}</h1>
+
+        <table border="1">
+          <tr>
+            <th rowspan="2">Spelcode</th>
+            <th rowspan="2">Beschrijving</th>
+            <th colspan=${timeUnitRowHeaders.length}>Aantal keer gespeeld</th>
+          </tr>
+          <tr>
+            ${timeUnitRowHeaders}
+          </tr>
+
+          ${this.stats.map(
+            stat =>
+              html`<tr>
+                <td>${stat.gameCode}</td>
+                <td>${stat.gameDescription}</td>
+                ${stat.gameCounts.map(
+                  timeUnitCount => html`<td>${timeUnitCount.count}</td>`,
+                )}
+                <td>${stat.totalCount}</td>
+              </tr>`,
           )}
-          <td>
-            ${this.totalsPerMonth.map(t => t.count).reduce((sum, c) => sum + c)}
-          </td>
-        </tr>
-      </table>
+          <tr>
+            <td>Totaal</td>
+            <td>Totaal voor alle spellen</td>
+            ${this.totalsPerTimeUnit.map(
+              timeUnitTotal => html` <td>${timeUnitTotal.count}</td>`,
+            )}
+            <td>
+              ${this.grandTotal}
+            </td>
+          </tr>
+        </table>
+      </select>
     `;
   }
 }

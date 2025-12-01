@@ -87,7 +87,7 @@
                         $count = 0;
                     }
 
-                    array_push($counts, ['month' =>  $month, 'count' => $count]);
+                    array_push($counts, ['timeUnitNmbr' =>  $month, 'count' => $count]);
 
                 }
             }
@@ -102,7 +102,7 @@
                         $count = 0;
                     }
 
-                    array_push($counts, ['week' =>  $week, 'count' => $count]);
+                    array_push($counts, ['timeUnitNmbr' =>  $week, 'count' => $count]);
                 }
             }
 
