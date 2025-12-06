@@ -1,4 +1,4 @@
-import { customElement } from 'lit/decorators.js';
+import { customElement, state } from 'lit/decorators.js';
 
 import { css, CSSResultArray, html, HTMLTemplateResult } from 'lit';
 
@@ -7,9 +7,10 @@ import {
   ItemInfoInterface,
   RoundInfo,
 } from './AscendingItemsGameApp';
-import { Color, setOf20Colors } from './Colors';
+import { Color, legacyBalloonColors, setOf20Colors } from './Colors';
 
 import './FlyingSaucer';
+import './NumberedBalloon';
 
 import { Operator } from './MultiplicationTablesBalloonGameLinkV2';
 import {
@@ -33,7 +34,11 @@ interface ExerciseInfo {
   operator: Operator;
 }
 
-type ItemImage = 'flyingSaucer' | 'balloon' | 'zeppelin' | 'rocket';
+type gameType =
+  | 'timesTill10'
+  | 'timesAndDivideAbove10'
+  | 'timesAbove10'
+  | 'timesAndDivideTill10';
 
 function operatorToSymbol(operator: Operator) {
   if (operator === 'times') return '×';
@@ -46,16 +51,48 @@ export class MultiplicationTablesBalloonGameV2 extends AscendingItemsGameApp<
   ExerciseInfo,
   ItemInfo
 > {
+  @state()
+  private accessor gameType: gameType = 'timesTill10';
+
   private tablesToUse: number[] = [];
   private operatorsToUse: Operator[] = [];
-  private itemImage: ItemImage = 'flyingSaucer';
   private gameLogger = new GameLogger('D', '');
-
   private lastTableUsed = 0;
   private lastMultiplierUsed = 0;
 
+  get imageName(): string {
+    switch (this.gameType) {
+      case 'timesTill10':
+        return 'ballon';
+      case 'timesAndDivideAbove10':
+        return 'ufo';
+      case 'timesAndDivideTill10':
+        return 'raket';
+      case 'timesAbove10':
+        return 'zeppelin';
+    }
+    throw RangeError('Internal SW error - itemImage not recognized');
+  }
+
+  /** Provides a fresh color set array based on the itemImage that can be used and changed etc. */
+  getColorSet(): Color[] {
+    switch (this.gameType) {
+      case 'timesTill10':
+        return [...legacyBalloonColors];
+      case 'timesAndDivideAbove10':
+        return [...setOf20Colors];
+      case 'timesAndDivideTill10':
+        return [...setOf20Colors];
+      case 'timesAbove10':
+        return [...setOf20Colors];
+    }
+    throw RangeError(
+      'Internal SW error - gameType ${this.gameType} is not according to type definition',
+    );
+  }
+
   get welcomeMessage(): HTMLTemplateResult {
-    return html`<p>Klik op de ufo met het juiste antwoord.</p>`;
+    return html`<p>Klik op de ${this.imageName} met het juiste antwoord.</p>`;
   }
 
   constructor() {
@@ -100,22 +137,21 @@ export class MultiplicationTablesBalloonGameV2 extends AscendingItemsGameApp<
     if (this.operatorsToUse.length === 0) this.operatorsToUse.push('times');
 
     if (!tableAbove10 && !divideIncluded) {
-      this.itemImage = 'balloon';
+      this.gameType = 'timesTill10';
       this.gameLogger.setMainCode('D');
-      throw new Error('balloon game is not yet supported');
     }
     if (!tableAbove10 && divideIncluded) {
-      this.itemImage = 'rocket';
+      this.gameType = 'timesAndDivideTill10';
       this.gameLogger.setMainCode('C');
       throw new Error('rocket game is not yet supported');
     }
     if (tableAbove10 && !divideIncluded) {
-      this.itemImage = 'zeppelin';
+      this.gameType = 'timesAbove10';
       this.gameLogger.setMainCode('K');
       throw new Error('zeppelin game is not yet supported');
     }
     if (tableAbove10 && divideIncluded) {
-      this.itemImage = 'flyingSaucer';
+      this.gameType = 'timesAndDivideAbove10';
       this.gameLogger.setMainCode('M');
     }
   }
@@ -129,7 +165,7 @@ export class MultiplicationTablesBalloonGameV2 extends AscendingItemsGameApp<
 
     let exerciseInfo: ExerciseInfo;
     const itemInfo: ItemInfo[] = [];
-    const possibleColors = [...setOf20Colors];
+    const possibleColors = this.getColorSet();
 
     let allowedTables: number[];
     if (this.tablesToUse.length < 2) allowedTables = this.tablesToUse;
@@ -243,6 +279,11 @@ export class MultiplicationTablesBalloonGameV2 extends AscendingItemsGameApp<
           height: 100%;
         }
 
+        numbered-balloon {
+          width: 80%;
+          height: 80%;
+        }
+
         svg {
           text-anchor: middle;
           dominant-baseline: middle;
@@ -262,11 +303,29 @@ export class MultiplicationTablesBalloonGameV2 extends AscendingItemsGameApp<
     </svg>`;
   }
 
-  renderItem(itemInfo: ItemInfo): HTMLTemplateResult {
+  renderFlyingSaucer(itemInfo: ItemInfo): HTMLTemplateResult {
     return html` <flying-saucer
       .color=${itemInfo.color}
       .content=${`${itemInfo.nmbr}`}
       ?disabled=${itemInfo.disabled}
     ></flying-saucer>`;
+  }
+
+  renderBalloon(itemInfo: ItemInfo): HTMLTemplateResult {
+    return html`
+      <numbered-balloon
+        .color=${itemInfo.color}
+        .nmbrToShow=${itemInfo.nmbr}
+        ?disabled=${itemInfo.disabled}
+      ></numbered-balloon>
+    `;
+  }
+
+  renderItem(itemInfo: ItemInfo): HTMLTemplateResult {
+    if (this.gameType === 'timesAndDivideAbove10')
+      return this.renderFlyingSaucer(itemInfo);
+    else if (this.gameType === 'timesTill10')
+      return this.renderBalloon(itemInfo);
+    throw Error('Internal SW error - gameType not implemented');
   }
 }
