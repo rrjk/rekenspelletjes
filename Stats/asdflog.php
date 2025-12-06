@@ -28,29 +28,27 @@ file_put_contents('./log_'.date("Ym").'.log', $log, FILE_APPEND);
 
 
 if ($refCode == "J"){
-$month_count_file_name = "./count_".$game."_".date("Ym").".txt";
-$week_count_file_name = "./weekcount_".$game."_".date("o")."_".date("W").".txt";
+    $month_count_file_name = "./count_".$game."_".date("Ym").".txt";
+    $week_count_file_name = "./weekcount_".$game."_".date("o")."_".date("W").".txt";
 
-if (file_exists($month_count_file_name)){
-    $month_count = file_get_contents($month_count_file_name);
-    $month_count = trim($month_count);
-    $month_count = $month_count + 1;
-}
-else {
-    $month_count = 1;
-}
+    if (file_exists($month_count_file_name)){
+        $month_count = file_get_contents($month_count_file_name);
+        $month_count = trim($month_count);
+        $month_count = $month_count + 1;
+    }
+    else {
+        $month_count = 1;
+    }
+    file_put_contents($month_count_file_name, $month_count);
 
-if (file_exists($week_count_file_name)){
-    $week_count = file_get_contents($week_count_file_name);
-    $week_count = trim($week_count);
-    $week_count = $week_count + 1;
-}
-else {
-    $week_count = 1;
-}
-
-
-file_put_contents($month_count_file_name, $month_count);
-file_put_contents($week_count_file_name, $week_count);
+    if (file_exists($week_count_file_name)){
+        $week_count = file_get_contents($week_count_file_name);
+        $week_count = trim($week_count);
+        $week_count = $week_count + 1;
+    }
+    else {
+        $week_count = 1;
+    }
+    file_put_contents($week_count_file_name, $week_count);
 }
 ?>
