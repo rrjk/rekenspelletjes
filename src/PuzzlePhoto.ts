@@ -40,7 +40,7 @@ const pieceTypes = ['outline', 'filled'] as const;
 
 type PieceType = (typeof pieceTypes)[number];
 
-const availablePuzzlePhotos = [
+export const availablePuzzlePhotos = [
   new URL('../images/puzzles/monstersInForest.jpg', import.meta.url),
   new URL('../images/puzzles/trainComic.jpg', import.meta.url),
   new URL('../images/puzzles/monstersInSwimmingPool.jpg', import.meta.url),
@@ -61,14 +61,20 @@ export class PuzzlePhoto extends LitElement {
   @state()
   accessor puzzlePieceInfo: PuzzlePieceInfo[] = [];
 
-  @state()
-  accessor photoUrl = availablePuzzlePhotos[0];
-
   @property({ type: Number })
   accessor numberVisiblePieces = 0;
 
+  @property({ type: Number })
+  accessor photoIndex = 0;
+
   get numberPieces() {
     return PuzzlePhoto.numberColumns * PuzzlePhoto.numberRows;
+  }
+
+  get photoUrl(): URL {
+    if (this.photoIndex > 0 && this.photoIndex < availablePuzzlePhotos.length)
+      return availablePuzzlePhotos[this.photoIndex];
+    else return availablePuzzlePhotos[0];
   }
 
   initializePuzzlePieceInfo() {
@@ -182,14 +188,7 @@ export class PuzzlePhoto extends LitElement {
     return y * PuzzlePhoto.numberColumns + x;
   }
 
-  randomNewPhoto() {
-    const oldPhotoUrl = this.photoUrl;
-    while (oldPhotoUrl === this.photoUrl)
-      this.photoUrl = randomFromSet(availablePuzzlePhotos);
-  }
-
   randomizePuzzlePieceInfo() {
-    this.randomNewPhoto();
     for (let row = 0; row < PuzzlePhoto.numberRows; row++) {
       for (let column = 0; column < PuzzlePhoto.numberColumns; column++) {
         this.puzzlePieceInfo[this.locationToIndex(column, row)].y = row;
@@ -308,8 +307,6 @@ export class PuzzlePhoto extends LitElement {
     return html`<svg
       xmlns="http://www.w3.org/2000/svg"
       version="1.0"
-      width="300px"
-      height="200px"
       viewBox="0 0 300 200"
     >
       <image href=${this.photoUrl.href} x="0" y="0" width="300" height="200" />

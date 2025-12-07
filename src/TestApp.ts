@@ -2,10 +2,10 @@ import { html, css, LitElement } from 'lit';
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
 import { customElement, state } from 'lit/decorators.js';
-import { createRef, Ref, ref } from 'lit/directives/ref.js';
+import { createRef, Ref } from 'lit/directives/ref.js';
 
 import type { PuzzlePhoto } from './PuzzlePhoto';
-import './PuzzlePhoto';
+import './PuzzlePhotoFrame';
 
 @customElement('test-app')
 export class TestApp extends LitElement {
@@ -27,9 +27,9 @@ export class TestApp extends LitElement {
           height: 100%;
           display: block;
         }
-        die-face {
-          width: 100px;
-          height: 100px;
+        puzzle-photo-frame {
+          width: 480px;
+          height: 400px;
         }
       `,
     ];
@@ -48,22 +48,11 @@ export class TestApp extends LitElement {
   }
 
   protected renderTest(): HTMLTemplateResult {
-    return html`<puzzle-photo
-        ${ref(this.puzzlePhotoRef)}
+    return html`
+      <puzzle-photo-frame
         numberVisiblePieces=${this.numberVisiblePieces}
-      ></puzzle-photo>
-      <button
-        ?disabled=${this.numberVisiblePieces === 0}
-        @click=${() => this.minus()}
-      >
-        minus
-      </button>
-      <button
-        ?disabled=${this.numberVisiblePieces === this.maxPieces}
-        @click=${() => this.plus()}
-      >
-        plus
-      </button> `;
+      ></puzzle-photo-frame>
+    `;
   }
 
   protected render(): HTMLTemplateResult {
