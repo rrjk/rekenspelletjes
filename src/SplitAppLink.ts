@@ -7,5 +7,5 @@ export function splitsenLink(numbers: number[], time: number) {
   let params = `time=${time}`;
   for (const n of numbers) params += `&number=${n}`;
 
-  return `../Rekenspelletjes/Splitsen.html?${params}`;
+  return `../Rekenspelletjes/SplitsenV2.html?${params}`;
 }

@@ -11,8 +11,7 @@ import { randomFromSet } from './Randomizer';
 
 import type { Digit } from './DigitKeyboard';
 import './DigitKeyboard';
-import { possibleNumberDots, PossibleNumberDots } from './DieFace';
-import { setOf20Colors, type Color } from './Colors';
+import { possibleNumberFingers, PossibleNumberFingers } from './HandFace';
 
 const allDigitsEnabled = [
   false,
@@ -27,21 +26,46 @@ const allDigitsEnabled = [
   false,
 ] as const;
 
-@customElement('die-face-game-app')
-export class DieFaceGameApp extends TimeLimitedGame2 {
+@customElement('how-many-fingers-game-app')
+export class HowManyFingersGameApp extends TimeLimitedGame2 {
   @state()
-  private accessor dieFaceNumber: PossibleNumberDots = 1;
+  private accessor numberFingers: PossibleNumberFingers = 1;
 
   @state()
   private accessor disabledDigits: boolean[] = [...allDigitsEnabled];
 
   @state()
-  private accessor dieFaceColor: Color = 'apricot';
-
-  @state()
   private accessor gameDisabled = true;
 
-  private gameLogger = new GameLogger('AA', 'a');
+  private minNumberFingers = 1;
+  private maxNumberFingers = 10;
+
+  private gameLogger = new GameLogger('AB', 'a');
+
+  constructor() {
+    super();
+    this.parseUrlParameters();
+  }
+
+  protected parseUrlParameters(): void {
+    const urlParams = new URLSearchParams(window.location.search);
+
+    const minAsString = urlParams.get('min');
+    if (minAsString !== null) {
+      const min = parseInt(minAsString, 10);
+      if (!Number.isNaN(min) && min >= 1 && min <= 9) {
+        this.minNumberFingers = min;
+      } // Otherwise we'll keep the default
+    }
+
+    const maxAsString = urlParams.get('max');
+    if (maxAsString !== null) {
+      const max = parseInt(maxAsString, 10);
+      if (!Number.isNaN(max) && max >= 1 && max <= 9) {
+        this.maxNumberFingers = max;
+      } // Otherwise we'll keep the default
+    }
+  }
 
   static get styles(): CSSResultArray {
     return [
@@ -77,7 +101,7 @@ export class DieFaceGameApp extends TimeLimitedGame2 {
           width: 80%;
           height: 80%;
         }
-        die-face {
+        hand-face {
           width: 80%;
           height: 80%;
         }
@@ -95,15 +119,13 @@ export class DieFaceGameApp extends TimeLimitedGame2 {
   }
 
   newRound(): void {
-    const allowedNumberDots = possibleNumberDots.filter(
-      nmbr => nmbr !== this.dieFaceNumber,
+    const allowedNumberFingers = possibleNumberFingers.filter(
+      nmbr =>
+        nmbr !== this.numberFingers &&
+        nmbr >= this.minNumberFingers &&
+        nmbr <= this.maxNumberFingers,
     );
-    this.dieFaceNumber = randomFromSet(allowedNumberDots);
-
-    const allowedColors = setOf20Colors.filter(
-      color => color !== this.dieFaceColor,
-    );
-    this.dieFaceColor = randomFromSet(allowedColors);
+    this.numberFingers = randomFromSet(allowedNumberFingers);
 
     this.disabledDigits = [...allDigitsEnabled];
 
@@ -111,7 +133,7 @@ export class DieFaceGameApp extends TimeLimitedGame2 {
   }
 
   get welcomeMessage(): HTMLTemplateResult {
-    return html`<p>Tel het aantal stippen op de dobbelsteen.</p>`;
+    return html`<p>Tel het aantal vingers.</p>`;
   }
 
   executeGameOverActions(): void {
@@ -120,15 +142,15 @@ export class DieFaceGameApp extends TimeLimitedGame2 {
 
   /** Get the title for the welcome dialog. */
   get welcomeDialogTitle(): string {
-    return `Dobbelsteen spel`;
+    return `Hoeveel vingers spel`;
   }
 
   get gameOverIntroductionText(): HTMLTemplateResult {
-    return html`<p>Je hebt stippen op een dobbelsteen geteld!</p>`;
+    return html`<p>Je hebt het aantal vingers op de handen geteld!</p>`;
   }
 
   handleDigit(digit: Digit) {
-    if (this.dieFaceNumber === digit) {
+    if (this.numberFingers === digit) {
       this.numberOk += 1;
       this.newRound();
     } else {
@@ -143,16 +165,16 @@ export class DieFaceGameApp extends TimeLimitedGame2 {
   renderGameContent(): HTMLTemplateResult {
     const hiddenClass = this.gameDisabled ? 'hidden' : '';
     return html`
-      <die-face
-        .dieFaceColor=${this.dieFaceColor}
-        .numberDots=${this.dieFaceNumber}
+      <hand-face
+        .nmbrToShow=${this.numberFingers}
         class=${hiddenClass}
-      ></die-face>
+      ></hand-face>
       <digit-keyboard
         @digit-entered=${(evt: CustomEvent<Digit>) =>
           this.handleDigit(evt.detail)}
         .disabledDigits=${this.disabledDigits}
         .disabled=${this.gameDisabled}
+        showTen
       >
       </digit-keyboard>
     `;

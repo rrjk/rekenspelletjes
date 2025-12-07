@@ -38,9 +38,15 @@
       width: 90px;
     }
 
-    die-face{
+    die-face,
+    hand-face {
       height: 90px;
       width: 90px;
+    }
+
+    numbered-balloon {
+      height: 90px;
+      width: 66px;
     }
 
     div.fractionPairGamesbutton {
@@ -80,6 +86,8 @@
     <script type="module" src="../src/FlyingSaucer.ts"></script>
     <script type="module" src="../src/DivideWithSplitWidget.ts"></script>
     <script type="module" src="../src/DieFace.ts"></script>
+    <script type="module" src="../src/HandFace.ts"></script>
+    <script type="module" src="../src/NumberedBalloon.ts"></script>
 
     <h1>Rekenspelletjes</h1>
     <div class="buttonTable">
@@ -87,7 +95,14 @@
         title="Dobbelsteen spelletjes"
         href="indexDobbelsteenSpel.html"
       >
-        <die-face dieFaceNumber="5", dieFaceColor="green"></hand-with-dots>
+        <die-face dieFaceNumber="5" , dieFaceColor="green"></die-face>
+      </icon-label-button>
+
+      <icon-label-button
+        title="Hoeveel vingers spelletjes"
+        href="indexHoeveelVingersSpel.html"
+      >
+        <hand-face nmbrToShow="8"></hand-face>
       </icon-label-button>
 
       <icon-label-button
@@ -110,12 +125,14 @@
       </icon-label-button>
       <icon-label-button
         title="Splitsen van getallen"
-        href="indexSplitsen.html"
+        href="indexSplitsenV2.html"
       >
-        <game-icon-with-text-overlay
-          iconcolor="yellow"
-          text1="/ \"
-        ></game-icon-with-text-overlay>
+        <numbered-balloon
+          color="yellow"
+          stringsToShow='["/ \\"]'
+          fontSizeFactor="0.6"
+          ropeLength="short"
+        ></numbered-balloon>
       </icon-label-button>
       <icon-label-button
         title="Verliefde harten"
