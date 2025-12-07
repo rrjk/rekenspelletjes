@@ -4,19 +4,17 @@ import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import { createRef, Ref } from 'lit/directives/ref.js';
 
-import type { PuzzlePhoto } from './PuzzlePhoto';
-import './PuzzlePhotoFrame';
+import { PuzzlePhotoFrame } from './PuzzlePhotoFrame';
 
 @customElement('test-app')
 export class TestApp extends LitElement {
   @state()
-  accessor numberVisiblePieces = 5;
+  accessor numberVisiblePieces = 20;
 
-  puzzlePhotoRef: Ref<PuzzlePhoto> = createRef();
+  puzzlePhotoRef: Ref<PuzzlePhotoFrame> = createRef();
 
   get maxPieces() {
-    if (this.puzzlePhotoRef.value === undefined) return 0;
-    return this.puzzlePhotoRef.value.numberPieces;
+    return PuzzlePhotoFrame.maxNmbrPieces;
   }
 
   static get styles(): CSSResultArray {
@@ -40,10 +38,10 @@ export class TestApp extends LitElement {
   }
 
   plus(): void {
-    if (
-      this.puzzlePhotoRef.value !== undefined &&
-      this.numberVisiblePieces < this.puzzlePhotoRef.value.numberPieces
-    )
+    console.log(
+      `plus - numberVisiblePieces = ${this.numberVisiblePieces} - maxPieces = ${this.maxPieces}`,
+    );
+    if (this.numberVisiblePieces < this.maxPieces)
       this.numberVisiblePieces += 1;
   }
 
@@ -52,6 +50,8 @@ export class TestApp extends LitElement {
       <puzzle-photo-frame
         numberVisiblePieces=${this.numberVisiblePieces}
       ></puzzle-photo-frame>
+      <button @click=${() => this.plus()}>Plus</button>
+      <button @click=${() => this.minus()}>Min</button>
     `;
   }
 

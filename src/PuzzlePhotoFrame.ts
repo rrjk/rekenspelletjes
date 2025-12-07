@@ -1,12 +1,13 @@
-import { LitElement, html, css } from 'lit';
-import type { CSSResultArray } from 'lit';
+import { LitElement, html, css, nothing } from 'lit';
+import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 
 // import { create } from 'mutative';
 
 // import { UnexpectedValueError } from './UnexpectedValueError';
 import { shuffleArray } from './Randomizer';
-import { availablePuzzlePhotos, PuzzlePhoto } from './PuzzlePhoto';
+import { PuzzlePhoto } from './PuzzlePhoto';
+import { getRange } from './NumberHelperFunctions';
 
 @customElement('puzzle-photo-frame')
 export class PuzzlePhotoFrame extends LitElement {
@@ -19,6 +20,10 @@ export class PuzzlePhotoFrame extends LitElement {
   static smallPhotoHeight =
     PuzzlePhoto.pieceHeight * PuzzlePhotoFrame.smallPhotoMultiplicationFactor;
 
+  static get maxNmbrPieces(): number {
+    return (PuzzlePhotoFrame.numbrSmallPhotos + 1) * PuzzlePhoto.numberPieces;
+  }
+
   @property({ type: Number })
   accessor numberVisiblePieces = 0;
 
@@ -30,8 +35,40 @@ export class PuzzlePhotoFrame extends LitElement {
     this.randomizePhotos();
   }
 
+  miniPhotoVisible(smallPhotoIndex: number): boolean {
+    if (smallPhotoIndex < this.numberVisibleSmallPhotos()) return true;
+    else return false;
+  }
+
+  numberVisibleSmallPhotos(): number {
+    console.log(`numberVisiblePieces = ${this.numberVisiblePieces}`);
+    if (this.numberVisiblePieces === 0) {
+      console.log(`numberVisibleSmallPhotos return 0`);
+      return 0;
+    } else {
+      console.log(
+        `numberVisibleSmallPhotos return ${Math.floor(
+          (this.numberVisiblePieces - 1) / PuzzlePhoto.numberPieces,
+        )}`,
+      );
+      return Math.floor(
+        (this.numberVisiblePieces - 1) / PuzzlePhoto.numberPieces,
+      );
+    }
+  }
+
+  numberVisiblePiecesPuzzle(): number {
+    return (
+      this.numberVisiblePieces -
+      this.numberVisibleSmallPhotos() * PuzzlePhoto.numberPieces
+    );
+  }
+
   randomizePhotos(): void {
-    this.photosIndexesInOrder = [0, 1, 2, 3, 4];
+    this.photosIndexesInOrder = getRange(
+      PuzzlePhoto.lowestPhotoIndex,
+      PuzzlePhoto.highestPhotoIndex,
+    );
     shuffleArray(this.photosIndexesInOrder);
   }
 
@@ -43,7 +80,7 @@ export class PuzzlePhotoFrame extends LitElement {
           grid-template-columns: repeat(4, 1fr);
           grid-template-rows: repeat(5, 1fr);
           grid-template-areas:
-            'mini1  mini2  mini3  mini4'
+            'mini0  mini1  mini2  mini3'
             'puzzle puzzle puzzle puzzle'
             'puzzle puzzle puzzle puzzle'
             'puzzle puzzle puzzle puzzle'
@@ -57,21 +94,21 @@ export class PuzzlePhotoFrame extends LitElement {
           width: 80%;
           height: 80%;
         }
-        #mini1 {
-          grid-area: mini1;
+        #mini0 {
+          grid-area: mini0;
           background-color: red;
         }
-        #mini2 {
-          grid-area: mini2;
+        #mini1 {
+          grid-area: mini1;
           background-color: blue;
         }
-        #mini3 {
+        #mini2 {
           background-color: green;
-          grid-area: mini3;
+          grid-area: mini2;
         }
-        #mini4 {
+        #mini3 {
           background-color: yellow;
-          grid-area: mini4;
+          grid-area: mini3;
         }
         #puzzle {
           width: 100%;
@@ -83,13 +120,27 @@ export class PuzzlePhotoFrame extends LitElement {
     ];
   }
 
-  render() {
+  renderMiniPhoto(miniPhotoIndex: number): HTMLTemplateResult | typeof nothing {
+    if (this.miniPhotoVisible(miniPhotoIndex)) {
+      return html`
+      <img 
+        class="miniPhoto" 
+        id="mini${miniPhotoIndex}" 
+        src=${PuzzlePhoto.getPhotoUrl(this.photosIndexesInOrder[miniPhotoIndex + 1]).href}>
+      </img>
+    `;
+    } else {
+      return nothing;
+    }
+  }
+
+  render(): HTMLTemplateResult {
     return html`
-      <img class="miniPhoto" id="mini1" src=${availablePuzzlePhotos[this.photosIndexesInOrder[1]].href}></div>
-      <div class="miniPhoto" id="mini2"></div>
-      <div class="miniPhoto" id="mini3"></div>
-      <div class="miniPhoto" id="mini4"></div>
-      <puzzle-photo id="puzzle" .numberVisiblePieces=${this.numberVisiblePieces} .photoIndex=${this.photosIndexesInOrder[0]}></div>
+      ${this.renderMiniPhoto(0)}
+      ${this.renderMiniPhoto(1)}
+      ${this.renderMiniPhoto(2)}
+      ${this.renderMiniPhoto(3)}
+      <puzzle-photo id="puzzle" .numberVisiblePieces=${this.numberVisiblePiecesPuzzle()} .photoIndex=${this.photosIndexesInOrder[0]}></div>
     `;
   }
 }

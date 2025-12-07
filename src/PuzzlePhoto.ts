@@ -40,7 +40,7 @@ const pieceTypes = ['outline', 'filled'] as const;
 
 type PieceType = (typeof pieceTypes)[number];
 
-export const availablePuzzlePhotos = [
+const availablePuzzlePhotos = [
   new URL('../images/puzzles/monstersInForest.jpg', import.meta.url),
   new URL('../images/puzzles/trainComic.jpg', import.meta.url),
   new URL('../images/puzzles/monstersInSwimmingPool.jpg', import.meta.url),
@@ -58,6 +58,25 @@ export class PuzzlePhoto extends LitElement {
   static pieceWidth = 75;
   static pieceHeight = 50;
 
+  static get highestPhotoIndex(): number {
+    return availablePuzzlePhotos.length - 1;
+  }
+
+  static get lowestPhotoIndex(): number {
+    return 0;
+  }
+
+  static get numberPieces() {
+    return PuzzlePhoto.numberColumns * PuzzlePhoto.numberRows;
+  }
+
+  static getPhotoUrl(index: number): URL {
+    if (index >= 0 && index < availablePuzzlePhotos.length)
+      return availablePuzzlePhotos[index];
+    else
+      throw RangeError(`Photo asked for index ${index} that is out of range`);
+  }
+
   @state()
   accessor puzzlePieceInfo: PuzzlePieceInfo[] = [];
 
@@ -66,10 +85,6 @@ export class PuzzlePhoto extends LitElement {
 
   @property({ type: Number })
   accessor photoIndex = 0;
-
-  get numberPieces() {
-    return PuzzlePhoto.numberColumns * PuzzlePhoto.numberRows;
-  }
 
   get photoUrl(): URL {
     if (this.photoIndex > 0 && this.photoIndex < availablePuzzlePhotos.length)
@@ -159,8 +174,8 @@ export class PuzzlePhoto extends LitElement {
   updateNumberVisiblePieces() {
     let cappedNumberVisiblePieces = this.numberVisiblePieces;
     if (cappedNumberVisiblePieces < 0) cappedNumberVisiblePieces = 0;
-    if (cappedNumberVisiblePieces > this.numberPieces)
-      cappedNumberVisiblePieces = this.numberPieces;
+    if (cappedNumberVisiblePieces > PuzzlePhoto.numberPieces)
+      cappedNumberVisiblePieces = PuzzlePhoto.numberPieces;
 
     if (cappedNumberVisiblePieces === 0) {
       this.randomizePuzzlePieceInfo();
@@ -296,7 +311,7 @@ export class PuzzlePhoto extends LitElement {
       outline: [],
     };
 
-    if (this.numberPieces > this.numberVisiblePieces) {
+    if (PuzzlePhoto.numberPieces > this.numberVisiblePieces) {
       for (const puzzlePiece of this.puzzlePieceInfo) {
         renderedPuzzlePieces[puzzlePiece.pieceType].push(
           svg`${this.renderPuzzlePiece(puzzlePiece)}`,
