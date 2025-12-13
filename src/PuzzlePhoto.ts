@@ -49,6 +49,7 @@ const availablePuzzlePhotos = [
   new URL('../images/puzzles/monstersInPark.jpg', import.meta.url),
   new URL('../images/puzzles/monstersWithElephants.jpg', import.meta.url),
   new URL('../images/puzzles/monstersInPlayground.jpg', import.meta.url),
+  new URL('../images/puzzles/monstersHideAndSeek.jpg', import.meta.url),
 ] as const;
 
 @customElement('puzzle-photo')

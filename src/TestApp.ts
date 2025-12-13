@@ -9,7 +9,7 @@ import { PuzzlePhotoFrame } from './PuzzlePhotoFrame';
 @customElement('test-app')
 export class TestApp extends LitElement {
   @state()
-  accessor numberVisiblePieces = 20;
+  accessor numberVisiblePieces = 100;
 
   puzzlePhotoRef: Ref<PuzzlePhotoFrame> = createRef();
 
@@ -38,9 +38,6 @@ export class TestApp extends LitElement {
   }
 
   plus(): void {
-    console.log(
-      `plus - numberVisiblePieces = ${this.numberVisiblePieces} - maxPieces = ${this.maxPieces}`,
-    );
     if (this.numberVisiblePieces < this.maxPieces)
       this.numberVisiblePieces += 1;
   }
