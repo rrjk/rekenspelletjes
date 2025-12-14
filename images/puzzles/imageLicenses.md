@@ -8,4 +8,9 @@
 | monstersWithElephants.jpg   | Generated using chatGpt | GPL3    |
 | monstersInPlayground.jpg    | Generated using chatGpt | GPL3    |
 | monstersInPark.jpg          | Generated using chatGpt | GPL3    |
+| monstersDancing.jpg         | Generated using chatGpt | GPL3    |
+| monsterPlayingBoardGame.jpg | Generated using chatGpt | GPL3    |
 | monstersHideAndSeek.jpg     | Generated using chatGpt | GPL3    |
+| monsterRunningAtATrack.jpg  | Generated using chatGpt | GPL3    |
+| monsterAtSchool.jpg         | Generated using chatGpt | GPL3    |
+| monsterRocketLaunch.jpg     | Generated using chatGpt | GPL3    |
