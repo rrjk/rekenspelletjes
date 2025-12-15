@@ -42,7 +42,6 @@ type PieceType = (typeof pieceTypes)[number];
 
 const availablePuzzlePhotos = [
   new URL('../images/puzzles/monstersInForest.jpg', import.meta.url),
-  new URL('../images/puzzles/trainComic.jpg', import.meta.url),
   new URL('../images/puzzles/monstersInSwimmingPool.jpg', import.meta.url),
   new URL('../images/puzzles/monstersRailwayCrossing.jpg', import.meta.url),
   new URL('../images/puzzles/monstersSportscarCity.jpg', import.meta.url),
@@ -55,6 +54,10 @@ const availablePuzzlePhotos = [
   new URL('../images/puzzles/monsterPlayingBoardGame.jpg', import.meta.url),
   new URL('../images/puzzles/monstersDancing.jpg', import.meta.url),
   new URL('../images/puzzles/monsterRocketLaunch.jpg', import.meta.url),
+  new URL('../images/puzzles/monstersRollerCoaster.jpg', import.meta.url),
+  new URL('../images/puzzles/monstersChoir.jpg', import.meta.url),
+  new URL('../images/puzzles/monstersFootball.jpg', import.meta.url),
+  new URL('../images/puzzles/monstersOrchestra.jpg', import.meta.url),
 ] as const;
 
 @customElement('puzzle-photo')

@@ -14,3 +14,7 @@
 | monsterRunningAtATrack.jpg  | Generated using chatGpt | GPL3    |
 | monsterAtSchool.jpg         | Generated using chatGpt | GPL3    |
 | monsterRocketLaunch.jpg     | Generated using chatGpt | GPL3    |
+| monstersRollerCoaster.jpg   | Generated using chatGpt | GPL3    |
+| monstersChoir.jpg           | Generated using chatGpt | GPL3    |
+| monstersFootball.jpg        | Generated using chatGpt | GPL3    |
+| monstersOrchestra.jpg       | Generated using chatGpt | GPL3    |
