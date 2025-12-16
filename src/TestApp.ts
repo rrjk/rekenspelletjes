@@ -1,22 +1,12 @@
 import { html, css, LitElement } from 'lit';
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
-import { customElement, state } from 'lit/decorators.js';
-import { createRef, Ref } from 'lit/directives/ref.js';
+import { customElement } from 'lit/decorators.js';
 
-import { PuzzlePhotoFrame } from './PuzzlePhotoFrame';
+import './SimpleSumWidget';
 
 @customElement('test-app')
 export class TestApp extends LitElement {
-  @state()
-  accessor numberVisiblePieces = 100;
-
-  puzzlePhotoRef: Ref<PuzzlePhotoFrame> = createRef();
-
-  get maxPieces() {
-    return PuzzlePhotoFrame.maxNmbrPieces;
-  }
-
   static get styles(): CSSResultArray {
     return [
       css`
@@ -25,30 +15,23 @@ export class TestApp extends LitElement {
           height: 100%;
           display: block;
         }
-        puzzle-photo-frame {
-          width: 480px;
-          height: 400px;
+        simple-sum-widget {
+          width: 400px;
+          height: 100px;
+          background-color: yellow;
         }
       `,
     ];
   }
 
-  minus(): void {
-    if (this.numberVisiblePieces > 0) this.numberVisiblePieces -= 1;
-  }
-
-  plus(): void {
-    if (this.numberVisiblePieces < this.maxPieces)
-      this.numberVisiblePieces += 1;
-  }
-
   protected renderTest(): HTMLTemplateResult {
     return html`
-      <puzzle-photo-frame
-        numberVisiblePieces=${this.numberVisiblePieces}
-      ></puzzle-photo-frame>
-      <button @click=${() => this.plus()}>Plus</button>
-      <button @click=${() => this.minus()}>Min</button>
+      <simple-sum-widget
+        operand1="999"
+        operand2="9"
+        operator="divide"
+        digitsAnswerBox="4"
+      ></simple-sum-widget>
     `;
   }
 
