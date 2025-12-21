@@ -103,6 +103,10 @@ export class SimpleSumWidget extends LitElement {
   @property({ type: Number })
   private accessor minDigitsOperand2 = -1;
 
+  /** Should the sum be visible, or just the equal sign and the answerbox */
+  @property({ type: Boolean })
+  private accessor sumVisible = false;
+
   /** Answer to the sum */
   private get answer(): number {
     switch (this.operator) {
@@ -163,9 +167,6 @@ export class SimpleSumWidget extends LitElement {
       3 * SimpleSumWidget.spaceWidth +
       SimpleSumWidget.operatorWidth +
       SimpleSumWidget.equalSignWidth;
-    console.log(
-      `operand1Width = ${operand1Width}, operand2Width = ${operand2Width}, totalWidth = ${totalWidth}`,
-    );
 
     return totalWidth;
   }
@@ -246,15 +247,24 @@ export class SimpleSumWidget extends LitElement {
       <text x="${this.getEqualSignPosition() + SimpleSumWidget.spaceWidth + SimpleSumWidget.boxHorizontalMargin}" y="${SimpleSumWidget.textBaseline}">${numberWithActiveDigits(this.answer, activeDigits)}</text>`;
   }
 
+  renderSum(sumVisible = false): SVGTemplateResult {
+    console.log(`sumVisible = ${sumVisible}`);
+    let sumText = '';
+    if (sumVisible) {
+      sumText = `${this.operand1} ${operatorToSymbol(this.operator)} ${this.operand2} =`;
+    } else {
+      sumText = `=`;
+    }
+    return svg`<text class="sum" x=${this.getEqualSignPosition()} y="${SimpleSumWidget.textBaseline}"> ${sumText}</text>`;
+  }
+
   render(): HTMLTemplateResult {
     const elements: SVGTemplateResult[] = [];
     elements.push(
       svg`<rect x="0" y="0" width="${this.getExerciseWidth()}" height="${SimpleSumWidget.viewBoxHeight}" stroke="black" stroke-width="1" fill="none"/>`,
     );
 
-    elements.push(
-      svg`<text class="sum" x=${this.getEqualSignPosition()} y="${SimpleSumWidget.textBaseline}"> ${this.operand1} ${operatorToSymbol(this.operator)} ${this.operand2} =</text>`,
-    );
+    elements.push(this.renderSum(this.sumVisible));
     elements.push(this.renderAnswer(this.visibleDigits, this.fillInActive));
 
     return html` <svg

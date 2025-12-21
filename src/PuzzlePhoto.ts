@@ -301,8 +301,8 @@ export class PuzzlePhoto extends LitElement {
     return [
       css`
         path.filled {
-          fill: white;
-          stroke: white;
+          fill: var(--piece-absent-color, white);
+          stroke: var(--piece-absent-color, white);
           stroke-width: 1;
         }
         path.outline {

@@ -84,15 +84,34 @@ export class PuzzlePhotoFrame extends LitElement {
 
     ret.push(css`
       :host {
+        container-type: size;
+        display: grid;
+        justify-items: center;
+        align-items: center;
+      }
+
+      div#frame {
         display: grid;
         grid-template-columns: 100%;
         grid-template-rows: 20% 80%;
         justify-items: center;
         align-items: center;
-        background-color: white;
         grid-template-areas:
           'miniPhotoBox'
           'puzzle';
+        aspect-ratio: 6/5;
+      }
+
+      @container (aspect-ratio < 6/5) {
+        div#frame {
+          width: 100%;
+        }
+      }
+
+      @container (aspect-ratio >= 6/5) {
+        div#frame {
+          height: 100%;
+        }
       }
 
       #miniPhotoBox {
@@ -259,10 +278,16 @@ export class PuzzlePhotoFrame extends LitElement {
       miniPhotos.push(html`${this.renderMiniPhoto(i)}`);
 
     return html`
-      <div class=${classMap(classes)} id="miniPhotoBox">
-        ${miniPhotos}
+      <div id="frame">
+        <div class=${classMap(classes)} id="miniPhotoBox">${miniPhotos}</div>
+        <puzzle-photo
+          id="puzzle"
+          .numberVisiblePieces=${this.numberVisiblePiecesPuzzle()}
+          .photoIndex=${this.photosIndexesInOrder[
+            this.numberVisibleSmallPhotos()
+          ]}
+        ></puzzle-photo>
       </div>
-      <puzzle-photo id="puzzle" .numberVisiblePieces=${this.numberVisiblePiecesPuzzle()} .photoIndex=${this.photosIndexesInOrder[this.numberVisibleSmallPhotos()]}></div>
     `;
   }
 }
