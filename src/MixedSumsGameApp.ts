@@ -1,4 +1,4 @@
-import { html, css } from 'lit';
+import { html, css, nothing } from 'lit';
 
 import { customElement, state } from 'lit/decorators.js';
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
@@ -23,6 +23,7 @@ import './DigitKeyboard';
 
 import { Operator, operators } from './Operator';
 import { UnexpectedValueError } from './UnexpectedValueError';
+import { classMap } from 'lit/directives/class-map.js';
 
 const allEnabledDigits = [
   false,
@@ -66,6 +67,9 @@ export class MixedSumsGameApp extends TimeLimitedGame2 {
   private accessor sumVisible = false;
   @state()
   private accessor keyBoardEnabled = false;
+
+  @state()
+  private accessor includePuzzle = false;
 
   private gameLogger = new GameLogger('AC', 'a');
   private eligibleOperators: Operator[] = []; // We use an array as we need to often select a element randomly and hence need direct access
@@ -199,6 +203,9 @@ export class MixedSumsGameApp extends TimeLimitedGame2 {
     this.determineMaxDigitsOperand1();
     this.determineMaxDigitsOperand2();
     this.determineMaxDigitsAnswer();
+
+    this.includePuzzle = false;
+    this.includePuzzle = urlParams.has('includePuzzle');
   }
 
   startNewGame(): void {
@@ -284,7 +291,9 @@ export class MixedSumsGameApp extends TimeLimitedGame2 {
     return [
       ...super.styles,
       css`
-        .gameContent {
+        div#gameGrid {
+          width: 100%;
+          height: 100%;
           display: grid;
           justify-items: center;
           align-items: center;
@@ -292,7 +301,7 @@ export class MixedSumsGameApp extends TimeLimitedGame2 {
         }
 
         @media (aspect-ratio > 6/8) {
-          .gameContent {
+          div#gameGrid.includePuzzle {
             grid-template-rows: 30% 70%;
             grid-template-columns: 50% 50%;
             grid-template-areas:
@@ -301,7 +310,7 @@ export class MixedSumsGameApp extends TimeLimitedGame2 {
           }
         }
         @media (aspect-ratio < 6/8) {
-          .gameContent {
+          div#gameGrid.includePuzzle {
             grid-template-rows: 20% 40% 40%;
             grid-template-columns: 100%;
             grid-template-areas:
@@ -309,6 +318,14 @@ export class MixedSumsGameApp extends TimeLimitedGame2 {
               'puzzle'
               'keyboard';
           }
+        }
+
+        div#gameGrid.excludePuzzle {
+          grid-template-rows: 30% 70%;
+          grid-template-columns: 100%;
+          grid-template-areas:
+            'sum'
+            'keyboard';
         }
 
         simple-sum-widget {
@@ -333,27 +350,37 @@ export class MixedSumsGameApp extends TimeLimitedGame2 {
   }
 
   renderGameContent(): HTMLTemplateResult {
-    return html`
-      <simple-sum-widget
-        id="sum"
-        .operand1=${this.operand1}
-        .operand2=${this.operand2}
-        .operator=${this.operator}
-        .visibleDigits=${this.activeDigit}
-        .minDigitsAnswer=${this.maxDigitsAnswer}
-        .minDigitsOperand1=${this.maxDigitsOperand1}
-        .minDigitsOperand2=${this.maxDigitsOperand2}
-        ?sumVisible=${this.sumVisible}
-      ></simple-sum-widget>
+    const gameGridClasses = {
+      includePuzzle: this.includePuzzle,
+      excludePuzzle: !this.includePuzzle,
+    };
 
-      <puzzle-photo-frame
+    let puzzlePhoteFrame: HTMLTemplateResult | typeof nothing = nothing;
+    if (this.includePuzzle)
+      puzzlePhoteFrame = html` <puzzle-photo-frame
         .numberVisiblePieces=${Math.max(0, this.numberOk - this.numberNok)}
-      ></puzzle-photo-frame>
-      <digit-keyboard
-        @digit-entered=${(evt: CustomEvent<Digit>) => this.handleDigit(evt)}
-        ?disabled=${!this.keyBoardEnabled}
-        .disabledDigits=${this.disabledDigits}
-      ></digit-keyboard>
+      ></puzzle-photo-frame>`;
+
+    return html`
+      <div id="gameGrid" class=${classMap(gameGridClasses)}>
+        <simple-sum-widget
+          id="sum"
+          .operand1=${this.operand1}
+          .operand2=${this.operand2}
+          .operator=${this.operator}
+          .visibleDigits=${this.activeDigit}
+          .minDigitsAnswer=${this.maxDigitsAnswer}
+          .minDigitsOperand1=${this.maxDigitsOperand1}
+          .minDigitsOperand2=${this.maxDigitsOperand2}
+          ?sumVisible=${this.sumVisible}
+        ></simple-sum-widget>
+        ${puzzlePhoteFrame}
+        <digit-keyboard
+          @digit-entered=${(evt: CustomEvent<Digit>) => this.handleDigit(evt)}
+          ?disabled=${!this.keyBoardEnabled}
+          .disabledDigits=${this.disabledDigits}
+        ></digit-keyboard>
+      </div>
     `;
   }
 }

@@ -248,7 +248,6 @@ export class SimpleSumWidget extends LitElement {
   }
 
   renderSum(sumVisible = false): SVGTemplateResult {
-    console.log(`sumVisible = ${sumVisible}`);
     let sumText = '';
     if (sumVisible) {
       sumText = `${this.operand1} ${operatorToSymbol(this.operator)} ${this.operand2} =`;
@@ -260,10 +259,6 @@ export class SimpleSumWidget extends LitElement {
 
   render(): HTMLTemplateResult {
     const elements: SVGTemplateResult[] = [];
-    elements.push(
-      svg`<rect x="0" y="0" width="${this.getExerciseWidth()}" height="${SimpleSumWidget.viewBoxHeight}" stroke="black" stroke-width="1" fill="none"/>`,
-    );
-
     elements.push(this.renderSum(this.sumVisible));
     elements.push(this.renderAnswer(this.visibleDigits, this.fillInActive));
 
