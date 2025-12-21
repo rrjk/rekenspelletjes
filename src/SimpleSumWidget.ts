@@ -139,8 +139,8 @@ export class SimpleSumWidget extends LitElement {
    * It's ensured it is at least as high as the number of digits in operand2
    */
   private digitsOperand2ToUse(): number {
-    const actualDigitsOperand1 = numberDigitsInNumber(this.operand1);
-    return Math.max(actualDigitsOperand1, this.minDigitsOperand1);
+    const actualDigitsOperand2 = numberDigitsInNumber(this.operand2);
+    return Math.max(actualDigitsOperand2, this.minDigitsOperand2);
   }
 
   /** Calculated width of the fillin box in SVG units*/
@@ -163,6 +163,10 @@ export class SimpleSumWidget extends LitElement {
       3 * SimpleSumWidget.spaceWidth +
       SimpleSumWidget.operatorWidth +
       SimpleSumWidget.equalSignWidth;
+    console.log(
+      `operand1Width = ${operand1Width}, operand2Width = ${operand2Width}, totalWidth = ${totalWidth}`,
+    );
+
     return totalWidth;
   }
 
@@ -239,7 +243,7 @@ export class SimpleSumWidget extends LitElement {
             y="${SimpleSumWidget.textBaseline + SimpleSumWidget.boxVerticalMargin - SimpleSumWidget.boxHeight}" 
             width="${this.getFillinBoxWidth()}" 
             height="${SimpleSumWidget.boxHeight}" />
-      <text x="${SimpleSumWidget.middleX + SimpleSumWidget.spaceWidth + SimpleSumWidget.boxHorizontalMargin}" y="${SimpleSumWidget.textBaseline}">${numberWithActiveDigits(this.answer, activeDigits)}</text>`;
+      <text x="${this.getEqualSignPosition() + SimpleSumWidget.spaceWidth + SimpleSumWidget.boxHorizontalMargin}" y="${SimpleSumWidget.textBaseline}">${numberWithActiveDigits(this.answer, activeDigits)}</text>`;
   }
 
   render(): HTMLTemplateResult {
