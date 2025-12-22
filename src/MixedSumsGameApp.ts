@@ -8,11 +8,7 @@ import { create } from 'mutative';
 import { TimeLimitedGame2 } from './TimeLimitedGame2';
 import { GameLogger } from './GameLogger';
 
-import {
-  randomFromIterable,
-  randomFromSet,
-  randomIntFromRange,
-} from './Randomizer';
+import { randomFromSet, randomIntFromRange } from './Randomizer';
 
 import { numberDigitsInNumber, splitInDigits } from './NumberHelperFunctions';
 
@@ -75,6 +71,12 @@ export class MixedSumsGameApp extends TimeLimitedGame2 {
   private eligibleOperators: Operator[] = []; // We use an array as we need to often select a element randomly and hence need direct access
   private eligibleTables: number[] = []; // We use an array as we need to often select a element randomly and hence need direct access
   private maximumNumber = 10;
+
+  private lastAnswerUsed = 0;
+  private lastOperatorUsed: Operator = 'times';
+  private numberOfIdenticalOperatorsLastUsed = 0;
+
+  private maxIdenticalOperatorsLastUsed = 2;
 
   constructor() {
     super();
@@ -175,7 +177,7 @@ export class MixedSumsGameApp extends TimeLimitedGame2 {
       if (operator !== undefined) this.eligibleOperators.push(operator);
     }
     if (this.eligibleOperators.length === 0)
-      this.eligibleOperators.push('plus');
+      this.eligibleOperators = [...operators];
 
     // Get maximum number
     const maxFromUrl = urlParams.get('max');
@@ -184,7 +186,7 @@ export class MixedSumsGameApp extends TimeLimitedGame2 {
     if (maxFromUrl !== null) {
       const maxAsInt = parseInt(maxFromUrl, 10);
       if (maxAsInt === 10 || maxAsInt === 100 || maxAsInt === 1000)
-        this.maximumNumber = maxAsInt; // When the max in the URL is not a number or not 10, 100 or 1000
+        this.maximumNumber = maxAsInt;
     }
 
     /* Determine the set of operators to use based on the URL
@@ -204,8 +206,18 @@ export class MixedSumsGameApp extends TimeLimitedGame2 {
     this.determineMaxDigitsOperand2();
     this.determineMaxDigitsAnswer();
 
-    this.includePuzzle = false;
-    this.includePuzzle = urlParams.has('includePuzzle');
+    this.determineMaxIdenticalLastUsed();
+
+    this.includePuzzle = true;
+    this.includePuzzle = !urlParams.has('excludePuzzle');
+  }
+
+  private determineMaxIdenticalLastUsed() {
+    if (this.eligibleOperators.length === 1)
+      this.maxIdenticalOperatorsLastUsed = Number.POSITIVE_INFINITY;
+    else if (this.eligibleOperators.length === 2)
+      this.maxIdenticalOperatorsLastUsed = 2;
+    else this.maxIdenticalOperatorsLastUsed = 1;
   }
 
   startNewGame(): void {
@@ -230,14 +242,14 @@ export class MixedSumsGameApp extends TimeLimitedGame2 {
   }
 
   determineOperandsForPlus() {
-    this.answer = randomIntFromRange(1, this.maximumNumber);
-    this.operand1 = randomIntFromRange(1, this.answer);
+    this.answer = randomIntFromRange(2, this.maximumNumber);
+    this.operand1 = randomIntFromRange(1, this.answer - 1);
     this.operand2 = this.answer - this.operand1;
   }
 
   determineOperandsForMinus() {
-    this.answer = randomIntFromRange(1, this.maximumNumber);
-    this.operand1 = randomIntFromRange(this.answer, this.maximumNumber);
+    this.answer = randomIntFromRange(1, this.maximumNumber - 1);
+    this.operand1 = randomIntFromRange(this.answer + 1, this.maximumNumber);
     this.operand2 = this.operand1 - this.answer;
   }
 
@@ -253,17 +265,38 @@ export class MixedSumsGameApp extends TimeLimitedGame2 {
     this.operand1 = this.operand2 * this.answer;
   }
 
+  determineOperator(): Operator {
+    let possibleOperators: Operator[] = [];
+    if (
+      this.numberOfIdenticalOperatorsLastUsed >=
+      this.maxIdenticalOperatorsLastUsed
+    ) {
+      possibleOperators = this.eligibleOperators.filter(
+        elm => elm !== this.lastOperatorUsed,
+      );
+    } else {
+      possibleOperators = [...this.eligibleOperators];
+    }
+    const pickedOperator = randomFromSet(possibleOperators);
+    if (this.lastOperatorUsed === pickedOperator)
+      this.numberOfIdenticalOperatorsLastUsed += 1;
+    else this.numberOfIdenticalOperatorsLastUsed = 1;
+    this.lastOperatorUsed = pickedOperator;
+    return pickedOperator;
+  }
+
   newRound() {
-    const pickedOperator = randomFromIterable(this.eligibleOperators);
-
-    if (pickedOperator === 'plus') this.determineOperandsForPlus();
-    else if (pickedOperator === 'minus') this.determineOperandsForMinus();
-    else if (pickedOperator === 'times') this.determineOperandsForTimes();
-    else if (pickedOperator === 'divide') this.determineOperandsForDivision();
-    else throw new UnexpectedValueError(pickedOperator);
-
-    this.operator = pickedOperator;
-
+    this.operator = this.determineOperator();
+    let tryCounter = 0;
+    while (this.answer === this.lastAnswerUsed && tryCounter < 10) {
+      if (this.operator === 'plus') this.determineOperandsForPlus();
+      else if (this.operator === 'minus') this.determineOperandsForMinus();
+      else if (this.operator === 'times') this.determineOperandsForTimes();
+      else if (this.operator === 'divide') this.determineOperandsForDivision();
+      else throw new UnexpectedValueError(this.operator);
+      tryCounter += 1;
+    }
+    this.lastAnswerUsed = this.answer;
     this.disabledDigits = allEnabledDigits;
     this.activeDigit = 0;
     this.keyBoardEnabled = true;
