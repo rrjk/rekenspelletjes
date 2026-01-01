@@ -10,7 +10,11 @@ import { GameLogger } from './GameLogger';
 
 import { randomFromSet, randomIntFromRange } from './Randomizer';
 
-import { numberDigitsInNumber, splitInDigits } from './NumberHelperFunctions';
+import {
+  getRange,
+  numberDigitsInNumber,
+  splitInDigits,
+} from './NumberHelperFunctions';
 
 import './SimpleSumWidget';
 import './PuzzlePhotoFrame';
@@ -180,7 +184,7 @@ export class MixedSumsGameApp extends TimeLimitedGame2 {
       this.eligibleOperators = [...operators];
 
     // Get maximum number
-    const maxFromUrl = urlParams.get('max');
+    const maxFromUrl = urlParams.get('maxAnswer');
     // If we don't find a proper maximum in the URL, we use 100.
     this.maximumNumber = 100;
     if (maxFromUrl !== null) {
@@ -192,13 +196,20 @@ export class MixedSumsGameApp extends TimeLimitedGame2 {
     /* Determine the set of operators to use based on the URL
      * We deliberately do not check for duplicates to allow influecing how often an operator is selected
      */
-    const tablesFromUrl = urlParams.getAll('table');
-    for (const tableAsString of tablesFromUrl) {
-      const tableAsNumber = parseInt(tableAsString, 10);
-      if (!isNaN(tableAsNumber)) {
-        this.eligibleTables.push(tableAsNumber);
+    const maxTableFromUrl = urlParams.get('maxTable');
+    let maxTablesAsInt = 10;
+    if (maxTableFromUrl !== null) {
+      maxTablesAsInt = parseInt(maxTableFromUrl, 10);
+      if (
+        Number.isNaN(maxTablesAsInt) ||
+        maxTablesAsInt < 2 ||
+        maxTablesAsInt > 100
+      ) {
+        maxTablesAsInt = 10;
       }
     }
+    this.eligibleTables = getRange(2, maxTablesAsInt);
+
     if (this.eligibleTables.length === 0)
       this.eligibleTables = [2, 3, 4, 5, 6, 7, 8, 9];
 

@@ -23,6 +23,7 @@ import { multiplicationTablesGameLinkV2 } from './MultiplicationTablesBalloonGam
 import { divisionWithSplitAppLink } from './DivisionWithSplitAppLink';
 import { dieFaceGameAppLink } from './DieFaceGameAppLink';
 import { howManyFingersGameAppLink } from './HowManyFingersGameAppLink';
+import { mixedSumsGameLink } from './MixedSumsGameAppLink';
 
 /** Function to determine the number belonging to a string of lower case letters
  * a equals 0, b equals 1 etc
@@ -1226,6 +1227,72 @@ const urls: (() => string)[] = [
   () => howManyFingersGameAppLink(60, 1, 10),
   () => howManyFingersGameAppLink(180, 1, 10),
   //sr
+  () => mixedSumsGameLink(['plus', 'minus'], 10, 10, false, 60),
+  () => mixedSumsGameLink(['plus', 'minus'], 10, 10, false, 180),
+  () => mixedSumsGameLink(['plus', 'minus'], 100, 10, false, 60),
+  () => mixedSumsGameLink(['plus', 'minus'], 100, 10, false, 180),
+  () => mixedSumsGameLink(['plus', 'minus'], 1000, 10, false, 60),
+  () => mixedSumsGameLink(['plus', 'minus'], 1000, 10, false, 180),
+
+  () => mixedSumsGameLink(['times', 'divide'], 10, 10, false, 60),
+  () => mixedSumsGameLink(['times', 'divide'], 10, 10, false, 180),
+  () => mixedSumsGameLink(['times', 'divide'], 10, 20, false, 60),
+  () => mixedSumsGameLink(['times', 'divide'], 10, 20, false, 180),
+
+  () =>
+    mixedSumsGameLink(['plus', 'minus', 'times', 'divide'], 100, 10, false, 60),
+  () =>
+    mixedSumsGameLink(
+      ['plus', 'minus', 'times', 'divide'],
+      100,
+      10,
+      false,
+      180,
+    ),
+  () =>
+    mixedSumsGameLink(
+      ['plus', 'minus', 'times', 'divide'],
+      1000,
+      20,
+      false,
+      60,
+    ),
+  () =>
+    mixedSumsGameLink(
+      ['plus', 'minus', 'times', 'divide'],
+      1000,
+      20,
+      false,
+      180,
+    ),
+  //tf
+  () => mixedSumsGameLink(['plus', 'minus'], 10, 10, true, 60),
+  () => mixedSumsGameLink(['plus', 'minus'], 10, 10, true, 180),
+  () => mixedSumsGameLink(['plus', 'minus'], 100, 10, true, 60),
+  () => mixedSumsGameLink(['plus', 'minus'], 100, 10, true, 180),
+  () => mixedSumsGameLink(['plus', 'minus'], 1000, 10, true, 60),
+  () => mixedSumsGameLink(['plus', 'minus'], 1000, 10, true, 180),
+
+  () => mixedSumsGameLink(['times', 'divide'], 10, 10, true, 60),
+  () => mixedSumsGameLink(['times', 'divide'], 10, 10, true, 180),
+  () => mixedSumsGameLink(['times', 'divide'], 10, 20, true, 60),
+  () => mixedSumsGameLink(['times', 'divide'], 10, 20, true, 180),
+
+  () =>
+    mixedSumsGameLink(['plus', 'minus', 'times', 'divide'], 100, 10, true, 60),
+  () =>
+    mixedSumsGameLink(['plus', 'minus', 'times', 'divide'], 100, 10, true, 180),
+  () =>
+    mixedSumsGameLink(['plus', 'minus', 'times', 'divide'], 1000, 20, true, 60),
+  () =>
+    mixedSumsGameLink(
+      ['plus', 'minus', 'times', 'divide'],
+      1000,
+      20,
+      true,
+      180,
+    ),
+  //tt
 ];
 
 const urlParams = new URLSearchParams(window.location.search);
