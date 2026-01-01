@@ -31,7 +31,7 @@ export function operatorToSymbol(operator: Operator): string {
     case 'plus':
       return '+';
     case 'minus':
-      return '-';
+      return '−';
     case 'divide':
       return '∶';
     case 'times':
