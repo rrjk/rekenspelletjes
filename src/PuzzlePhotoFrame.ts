@@ -82,6 +82,13 @@ export class PuzzlePhotoFrame extends LitElement {
       `);
     }
 
+    /* In the styles below I use for div#frame width and height (depending on the aspect ratio of the container) expressed in cqw and cqh
+     * in stead of using percentages of the width and height of the parent. This gives a different result in chrome when there is an
+     * image somewhere in the children. I don't understand what is going wrong, possibly a bug in chrome, but using cwq and cqh seems '
+     * to solve the issue.
+     * In firefox the two ways to specify width and height result in the same calculated sized.
+     * I have not been able to create a simplified example that exhibits the same problem.
+     */
     ret.push(css`
       :host {
         container-type: size;
@@ -104,13 +111,13 @@ export class PuzzlePhotoFrame extends LitElement {
 
       @container (aspect-ratio < 6/5) {
         div#frame {
-          width: 100%;
+          width: 100cqw;
         }
       }
 
       @container (aspect-ratio >= 6/5) {
         div#frame {
-          height: 100%;
+          height: 100cqh;
         }
       }
 
@@ -126,8 +133,8 @@ export class PuzzlePhotoFrame extends LitElement {
       }
 
       .miniPhoto {
-        width: 80%;
-        height: 80%;
+        width: 90%;
+        height: 90%;
       }
 
       .miniPhotoBox0 {
