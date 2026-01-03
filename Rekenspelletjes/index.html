@@ -66,6 +66,10 @@
       background-color: olive;
       border-radius: 10px;
     }
+
+    icon-mixed-sums {
+      --fill-color: green;
+    }
   </style>
   <head>
     <meta charset="UTF-8" />
@@ -88,6 +92,7 @@
     <script type="module" src="../src/DieFace.ts"></script>
     <script type="module" src="../src/HandFace.ts"></script>
     <script type="module" src="../src/NumberedBalloon.ts"></script>
+    <script type="module" src="../src/IconMixedSums.ts"></script>
 
     <h1>Rekenspelletjes</h1>
     <div class="buttonTable">
@@ -379,6 +384,22 @@
           style="height: 100px"
         ></divide-with-split-widget>
       </icon-label-button>
+
+      <icon-label-button
+        title="Gemengde sommen"
+        href="indexGemengdeSommen.html"
+      >
+        <icon-mixed-sums
+          plus
+          minus
+          times
+          divide
+          puzzlePiece
+          excludeMaxs
+          style="height: 100px"
+        ></icon-mixed-sums>
+      </icon-label-button>
+
       <icon-label-button
         title="Hexagonspel: Oefenen met kwadraten en wortels"
         href="indexHexagonSpel.html"

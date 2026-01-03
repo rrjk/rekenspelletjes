@@ -33,6 +33,9 @@ export class IconMixedSums extends LitElement {
   @property({ type: Number })
   private accessor maxAnswer = 100;
 
+  @property({ type: Boolean })
+  private accessor excludeMaxs = false;
+
   @property({ type: String, converter: stringToColor })
   private accessor color: Color = 'grey';
 
@@ -43,6 +46,8 @@ export class IconMixedSums extends LitElement {
       }
 
       svg {
+        height: 100%;
+        width: 100%;
         font-family: 'Arial';
         font-weight: 700;
         fill: #ffffff;
@@ -146,11 +151,11 @@ export class IconMixedSums extends LitElement {
       </text>`;
 
     const maxs: SVGTemplateResult[] = [];
-    if (this.plus || this.minus)
+    if (!this.excludeMaxs && (this.plus || this.minus))
       maxs.push(
         svg`<text class="number" x="55" y="43">${this.maxAnswer}</text>`,
       );
-    if (this.times || this.divide)
+    if (!this.excludeMaxs && (this.times || this.divide))
       maxs.push(
         svg`<text class="number" x="54" y="88">${this.maxTable}</text>`,
       );
