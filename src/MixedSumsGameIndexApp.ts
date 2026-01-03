@@ -88,9 +88,19 @@ const sections: SectionInfoType[] = [
       },
       {
         description:
-          'Gemengde plus, min, keer- en gedeeld door sommen tot 1000 met de tafels tot 20',
+          'Gemengde plus, min, keer- en gedeeld door sommen tot 1000 met de tafels tot 10',
         shortCodes: ['td', 'te'],
         color: 'mint',
+        operators: ['plus', 'minus', 'times', 'divide'],
+        maxAnswer: 1000,
+        maxTable: 10,
+        puzzle: false,
+      },
+      {
+        description:
+          'Gemengde plus, min, keer- en gedeeld door sommen tot 1000 met de tafels tot 20',
+        shortCodes: ['tf', 'tg'],
+        color: 'cyan',
         operators: ['plus', 'minus', 'times', 'divide'],
         maxAnswer: 1000,
         maxTable: 20,
@@ -103,7 +113,7 @@ const sections: SectionInfoType[] = [
     rows: [
       {
         description: 'Gemengde plus- en minsommen tot 100',
-        shortCodes: ['tf', 'tg'],
+        shortCodes: ['th', 'ti'],
         color: 'lavender',
         operators: ['plus', 'minus'],
         maxAnswer: 10,
@@ -112,7 +122,7 @@ const sections: SectionInfoType[] = [
       },
       {
         description: 'Gemengde plus- en minsommen tot 100',
-        shortCodes: ['th', 'ti'],
+        shortCodes: ['tj', 'tk'],
         color: 'red',
         operators: ['plus', 'minus'],
         maxAnswer: 100,
@@ -121,7 +131,7 @@ const sections: SectionInfoType[] = [
       },
       {
         description: 'Gemengde plus- en minsommen tot 1000',
-        shortCodes: ['tj', 'tk'],
+        shortCodes: ['tl', 'tm'],
         color: 'orange',
         operators: ['plus', 'minus'],
         maxAnswer: 1000,
@@ -131,7 +141,7 @@ const sections: SectionInfoType[] = [
       {
         description:
           'Gemengde keer- en gedeeld door sommen met de tafels tot 10',
-        shortCodes: ['tl', 'tm'],
+        shortCodes: ['tn', 'to'],
         color: 'yellow',
         operators: ['times', 'divide'],
         maxAnswer: 1000,
@@ -141,7 +151,7 @@ const sections: SectionInfoType[] = [
       {
         description:
           'Gemengde keer- en gedeeld door sommen met de tafels tot 20',
-        shortCodes: ['tn', 'to'],
+        shortCodes: ['tp', 'tq'],
         color: 'lime',
         operators: ['times', 'divide'],
         maxAnswer: 1000,
@@ -151,7 +161,7 @@ const sections: SectionInfoType[] = [
       {
         description:
           'Gemengde plus, min, keer- en gedeeld door sommen tot 100 met de tafels tot 10',
-        shortCodes: ['tp', 'tq'],
+        shortCodes: ['tr', 'ts'],
         color: 'green',
         operators: ['plus', 'minus', 'times', 'divide'],
         maxAnswer: 100,
@@ -160,9 +170,19 @@ const sections: SectionInfoType[] = [
       },
       {
         description:
-          'Gemengde plus, min, keer- en gedeeld door sommen tot 1000 met de tafels tot 20',
-        shortCodes: ['tr', 'ts'],
+          'Gemengde plus, min, keer- en gedeeld door sommen tot 1000 met de tafels tot 10',
+        shortCodes: ['tt', 'tu'],
         color: 'mint',
+        operators: ['plus', 'minus', 'times', 'divide'],
+        maxAnswer: 1000,
+        maxTable: 20,
+        puzzle: true,
+      },
+      {
+        description:
+          'Gemengde plus, min, keer- en gedeeld door sommen tot 1000 met de tafels tot 20',
+        shortCodes: ['tv', 'tw'],
+        color: 'cyan',
         operators: ['plus', 'minus', 'times', 'divide'],
         maxAnswer: 1000,
         maxTable: 20,

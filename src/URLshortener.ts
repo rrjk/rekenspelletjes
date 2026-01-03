@@ -1253,6 +1253,22 @@ const urls: (() => string)[] = [
     mixedSumsGameLink(
       ['plus', 'minus', 'times', 'divide'],
       1000,
+      10,
+      false,
+      60,
+    ),
+  () =>
+    mixedSumsGameLink(
+      ['plus', 'minus', 'times', 'divide'],
+      1000,
+      10,
+      false,
+      180,
+    ),
+  () =>
+    mixedSumsGameLink(
+      ['plus', 'minus', 'times', 'divide'],
+      1000,
       20,
       false,
       60,
@@ -1265,7 +1281,7 @@ const urls: (() => string)[] = [
       false,
       180,
     ),
-  //tf
+  //th
   () => mixedSumsGameLink(['plus', 'minus'], 10, 10, true, 60),
   () => mixedSumsGameLink(['plus', 'minus'], 10, 10, true, 180),
   () => mixedSumsGameLink(['plus', 'minus'], 100, 10, true, 60),
@@ -1283,6 +1299,16 @@ const urls: (() => string)[] = [
   () =>
     mixedSumsGameLink(['plus', 'minus', 'times', 'divide'], 100, 10, true, 180),
   () =>
+    mixedSumsGameLink(['plus', 'minus', 'times', 'divide'], 1000, 10, true, 60),
+  () =>
+    mixedSumsGameLink(
+      ['plus', 'minus', 'times', 'divide'],
+      1000,
+      10,
+      true,
+      180,
+    ),
+  () =>
     mixedSumsGameLink(['plus', 'minus', 'times', 'divide'], 1000, 20, true, 60),
   () =>
     mixedSumsGameLink(
@@ -1292,7 +1318,7 @@ const urls: (() => string)[] = [
       true,
       180,
     ),
-  //tt
+  //tx
 ];
 
 const urlParams = new URLSearchParams(window.location.search);
