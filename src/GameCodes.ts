@@ -53,7 +53,8 @@ export const gameCodes: GameInfoType[] = [
   { gameCode: 'Z', name: 'Deelsommen met splitsen' },
   { gameCode: 'AA', name: 'Dobbelsteen spel' },
   { gameCode: 'AB', name: 'Hoeveel vingers spel' },
-  { gameCode: 'AC', name: 'Gemengde sommen' },
+  { gameCode: 'AC', name: 'Gemengde sommen met puzzel' },
+  { gameCode: 'AD', name: 'Gemengde sommen zonder puzzel' },
 ];
 
 export function getGameDescription(gameCode: string): string {

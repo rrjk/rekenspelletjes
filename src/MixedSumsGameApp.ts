@@ -221,6 +221,8 @@ export class MixedSumsGameApp extends TimeLimitedGame2 {
 
     this.includePuzzle = true;
     this.includePuzzle = !urlParams.has('excludePuzzle');
+    if (this.includePuzzle) this.gameLogger.setMainCode('AC');
+    else this.gameLogger.setMainCode('AD');
   }
 
   private determineMaxIdenticalLastUsed() {
