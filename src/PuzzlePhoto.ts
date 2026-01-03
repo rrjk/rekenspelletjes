@@ -1,4 +1,4 @@
-import { LitElement, html, css, svg } from 'lit';
+import { LitElement, html, css } from 'lit';
 import type {
   HTMLTemplateResult,
   SVGTemplateResult,
@@ -9,35 +9,21 @@ import { customElement, property, state } from 'lit/decorators.js';
 
 import { create } from 'mutative';
 
-import { UnexpectedValueError } from './UnexpectedValueError';
 import { randomFromSet, randomFromSetAndSplice } from './Randomizer';
+import { directions, pathPuzzlePiece, type PuzzleBlob } from './PuzzlePiece';
 
 interface PuzzlePieceInfo {
   x: number;
   y: number;
   pieceType: PieceType;
-  topEdge: HorizontalEdge;
-  rightEdge: VerticalEdge;
-  bottomEdge: HorizontalEdge;
-  leftEdge: VerticalEdge;
+  topEdge: PuzzleBlob;
+  rightEdge: PuzzleBlob;
+  bottomEdge: PuzzleBlob;
+  leftEdge: PuzzleBlob;
 }
 
-const horizontalBlobEdges = ['bottomBlob', 'topBlob'] as const;
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const horizontalStraightEdges = ['straight'] as const;
-type HorizontalEdge =
-  | (typeof horizontalBlobEdges)[number]
-  | (typeof horizontalStraightEdges)[number];
-
-const verticalBlobEdges = ['leftBlob', 'rightBlob'] as const;
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const verticalStraightEdges = ['straight'] as const;
-type VerticalEdge =
-  | (typeof verticalBlobEdges)[number]
-  | (typeof verticalStraightEdges)[number];
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const pieceTypes = ['outline', 'filled'] as const;
-
 type PieceType = (typeof pieceTypes)[number];
 
 const availablePuzzlePhotos = [
@@ -131,55 +117,6 @@ export class PuzzlePhoto extends LitElement {
       this.updateNumberVisiblePieces();
   }
 
-  renderPuzzlePiece(puzzlePiece: PuzzlePieceInfo): SVGTemplateResult {
-    const topSegment = this.determineHorizontalEdge(puzzlePiece.topEdge);
-    const rightSegment = this.determineVerticalEdge(puzzlePiece.rightEdge);
-    const bottomSegment = this.determineHorizontalEdge(puzzlePiece.bottomEdge);
-    const leftSegment = this.determineVerticalEdge(puzzlePiece.leftEdge);
-
-    if (
-      puzzlePiece.pieceType !== 'filled' &&
-      puzzlePiece.pieceType !== 'outline'
-    )
-      throw new UnexpectedValueError(puzzlePiece.pieceType);
-
-    return svg`<path class="${puzzlePiece.pieceType}" d="
-      M${puzzlePiece.x * PuzzlePhoto.pieceWidth},${puzzlePiece.y * PuzzlePhoto.pieceHeight}      
-      ${leftSegment}      
-      ${bottomSegment}
-      M${puzzlePiece.x * PuzzlePhoto.pieceWidth},${puzzlePiece.y * PuzzlePhoto.pieceHeight} 
-      ${topSegment}
-      ${rightSegment}
-      "></path>
-    `;
-  }
-
-  determineVerticalEdge(edgeType: VerticalEdge): string {
-    switch (edgeType) {
-      case 'leftBlob':
-        return this.pathSegmentLeftBlob();
-      case 'rightBlob':
-        return this.pathSegmentRightBlob();
-      case 'straight':
-        return this.pathSegmentStraightVertical();
-      default:
-        throw new UnexpectedValueError(edgeType);
-    }
-  }
-
-  determineHorizontalEdge(edgeType: HorizontalEdge): string {
-    switch (edgeType) {
-      case 'bottomBlob':
-        return this.pathSegmentBottomBlob();
-      case 'topBlob':
-        return this.pathSegmentTopBlob();
-      case 'straight':
-        return this.pathSegmentStraightHorizontal();
-      default:
-        throw new UnexpectedValueError(edgeType);
-    }
-  }
-
   updateNumberVisiblePieces() {
     let cappedNumberVisiblePieces = this.numberVisiblePieces;
     if (cappedNumberVisiblePieces < 0) cappedNumberVisiblePieces = 0;
@@ -232,7 +169,7 @@ export class PuzzlePhoto extends LitElement {
             'straight';
         else
           this.puzzlePieceInfo[this.locationToIndex(column, row)].bottomEdge =
-            randomFromSet(horizontalBlobEdges);
+            randomFromSet(directions);
 
         if (column === 0)
           this.puzzlePieceInfo[this.locationToIndex(column, row)].leftEdge =
@@ -248,53 +185,13 @@ export class PuzzlePhoto extends LitElement {
             'straight';
         else
           this.puzzlePieceInfo[this.locationToIndex(column, row)].rightEdge =
-            randomFromSet(verticalBlobEdges);
+            randomFromSet(directions);
 
         this.puzzlePieceInfo[
           row + PuzzlePhoto.numberColumns * column
         ].pieceType = 'filled';
       }
     }
-  }
-
-  pathSegmentStraightHorizontal(): string {
-    return `l75,0`;
-  }
-
-  pathSegmentStraightVertical(): string {
-    return `l0,50`;
-  }
-
-  pathSegmentTopBlob(): string {
-    return `
-      c15,-0.65 33.96,3.53 29.34,-6.47 
-      c-4.62,-10 25.38,-10 15,0 
-      c-10.38, 10 15.66,8.43 30.66, 6.47
-    `;
-  }
-
-  pathSegmentLeftBlob(): string {
-    return `
-      c0.62,10 9.11,26.72 -5.89,19.77
-      c-15,-6.96 -15,13.04 0,10
-      c15,-3.05 3.93,10.23 5.89,20.23
-    `;
-  }
-
-  pathSegmentRightBlob(): string {
-    return `
-      c-0.17,10 -7.92,26.02 7.08,19.68
-      c15,-6.35 15,13.65 0,10
-      c-15,-3.66 -4.72,10.32 -7.08,20.32
-    `;
-  }
-
-  pathSegmentBottomBlob(): string {
-    return `
-      c15,1.51 42.09,-6.25 32.19,3.75
-      c-9.9,10 20.1,10 15,0
-      c-5.1,-10 12.81,-4.04 27.81,-3.75
-    `;
   }
 
   static get styles(): CSSResultArray {
@@ -323,7 +220,19 @@ export class PuzzlePhoto extends LitElement {
     if (PuzzlePhoto.numberPieces > this.numberVisiblePieces) {
       for (const puzzlePiece of this.puzzlePieceInfo) {
         renderedPuzzlePieces[puzzlePiece.pieceType].push(
-          svg`${this.renderPuzzlePiece(puzzlePiece)}`,
+          pathPuzzlePiece(
+            puzzlePiece.x * PuzzlePhoto.pieceWidth,
+            puzzlePiece.y * PuzzlePhoto.pieceHeight,
+            PuzzlePhoto.pieceWidth,
+            PuzzlePhoto.pieceHeight,
+            {
+              left: puzzlePiece.leftEdge,
+              right: puzzlePiece.rightEdge,
+              bottom: puzzlePiece.bottomEdge,
+              top: puzzlePiece.topEdge,
+            },
+            puzzlePiece.pieceType,
+          ),
         );
       }
     }

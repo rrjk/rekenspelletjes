@@ -1,5 +1,8 @@
-import { LitElement, html, css, svg } from 'lit';
 import {
+  LitElement,
+  html,
+  css,
+  svg,
   HTMLTemplateResult,
   CSSResultGroup,
   SVGTemplateResult,
@@ -13,7 +16,7 @@ import { operatorToSymbol } from './Operator';
 import { pathPuzzlePiece } from './PuzzlePiece';
 
 @customElement('icon-mixed-sums')
-export class IconClockPair extends LitElement {
+export class IconMixedSums extends LitElement {
   @property({ type: Boolean })
   private accessor plus = false;
   @property({ type: Boolean })
@@ -70,8 +73,10 @@ export class IconClockPair extends LitElement {
         stroke-width: 3px;
       }
 
+      rect,
       path {
         stroke: black;
+        fill: var(--fill-color, red);
         stroke-width: 2;
       }
     `;
@@ -84,10 +89,8 @@ export class IconClockPair extends LitElement {
           y="-5"
           width="105"
           height="105"
-          stroke="black"
           stroke-width="3px"
           rx="20px"
-          fill=${getColorInfo(this.color).mainColorCode}
         />
     `;
   }
@@ -96,14 +99,12 @@ export class IconClockPair extends LitElement {
     let backgroundBlock: SVGTemplateResult | typeof nothing = nothing;
 
     if (this.puzzlePiece) {
-      backgroundBlock = pathPuzzlePiece(
-        0,
-        -5,
-        105,
-        105,
-        ['straight', 'straight', 'inwards', 'inwards'],
-        this.color,
-      );
+      backgroundBlock = pathPuzzlePiece(0, -5, 105, 105, {
+        left: 'straight',
+        bottom: 'straight',
+        right: 'negative',
+        top: 'positive',
+      });
     } else {
       backgroundBlock = this.renderNoPuzzleBackgroundBlock();
     }
@@ -155,6 +156,11 @@ export class IconClockPair extends LitElement {
       );
 
     return html`
+      <style>
+        :host {
+          --fill-color: ${getColorInfo(this.color).mainColorCode};
+        }
+      </style>
       <svg ViewBox="-5 -10 115 115">
         ${backgroundBlock} ${operators} ${maxs}
       </svg>
