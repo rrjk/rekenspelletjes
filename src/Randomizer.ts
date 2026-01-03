@@ -16,6 +16,14 @@ export function randomFromSet<T>(arrayOfPossibleValues: readonly T[]): T {
   return arrayOfPossibleValues[selectedIndex];
 }
 
+export function randomFromIterable<T>(iterable: Iterable<T>): T {
+  const ar = Array.from(iterable);
+  const numberOfPossibleValues = ar.length;
+  const selectedIndex = randomIntFromRange(0, numberOfPossibleValues - 1);
+
+  return ar[selectedIndex];
+}
+
 /** Return a random element from an array and remove that element from the array
  * @param arrayOfPossibleValues array with possible values to select from. Will be spliced.
  * @returns random element from the arrayOfPossibleValues

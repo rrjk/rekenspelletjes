@@ -3,7 +3,7 @@ import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
 import { customElement } from 'lit/decorators.js';
 
-import './NumberedBalloon';
+import './IconMixedSums';
 
 @customElement('test-app')
 export class TestApp extends LitElement {
@@ -15,19 +15,38 @@ export class TestApp extends LitElement {
           height: 100%;
           display: block;
         }
-        numbered-balloon {
-          width: 75px;
-          height: auto;
+        icon-mixed-sums {
+          width: 96px;
+          height: 96px;
         }
       `,
     ];
   }
+
   protected renderTest(): HTMLTemplateResult {
-    return html` <numbered-balloon
-      color="purple"
-      stringsToShow='["×","2,3,4", "5,6,7,8","9,10"]'
-      fontSizeFactor="0.35"
-    ></numbered-balloon>`;
+    return html`
+      <icon-mixed-sums
+        color="lavender"
+        puzzlePiece
+        maxAnswer="1000"
+        maxTable="30"
+        plus
+        minus
+        divide
+      ></icon-mixed-sums>
+      <icon-mixed-sums
+        color="blue"
+        maxAnswer="10"
+        maxTable="10"
+        divide
+      ></icon-mixed-sums>
+      <icon-mixed-sums
+        color="yellow"
+        maxAnswer="10"
+        maxTable="10"
+        plus
+      ></icon-mixed-sums>
+    `;
   }
 
   protected render(): HTMLTemplateResult {
