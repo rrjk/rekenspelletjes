@@ -21,9 +21,10 @@ import './PuzzlePhotoFrame';
 import type { Digit } from './DigitKeyboard';
 import './DigitKeyboard';
 
-import { Operator, operators } from './Operator';
+import { Operator, operators, operatorToDutch } from './Operator';
 import { UnexpectedValueError } from './UnexpectedValueError';
 import { classMap } from 'lit/directives/class-map.js';
+import { joinWithEn } from './Utils';
 
 const allEnabledDigits = [
   false,
@@ -87,16 +88,19 @@ export class MixedSumsGameApp extends TimeLimitedGame2 {
     this.parseUrl();
   }
 
+  get maxTable(): number {
+    return this.eligibleTables.reduce((max, currentValue) =>
+      Math.max(max, currentValue),
+    );
+  }
+
   /** Determine maximum number of digits for operand 1 */
   determineMaxDigitsOperand1() {
     this.maxDigitsOperand1 = -1;
     if (this.eligibleOperators.includes('divide')) {
-      const maxTable = this.eligibleTables.reduce((max, currentValue) =>
-        Math.max(max, currentValue),
-      );
       this.maxDigitsOperand1 = Math.max(
         this.maxDigitsOperand1,
-        numberDigitsInNumber(10 * maxTable),
+        numberDigitsInNumber(10 * this.maxTable),
       );
     }
     if (this.eligibleOperators.includes('times')) {
@@ -120,12 +124,9 @@ export class MixedSumsGameApp extends TimeLimitedGame2 {
       this.eligibleOperators.includes('times') ||
       this.eligibleOperators.includes('divide')
     ) {
-      const maxTable = this.eligibleTables.reduce((max, currentValue) =>
-        Math.max(max, currentValue),
-      );
       this.maxDigitsOperand2 = Math.max(
         this.maxDigitsOperand2,
-        numberDigitsInNumber(maxTable),
+        numberDigitsInNumber(this.maxTable),
       );
     }
     if (
@@ -331,6 +332,41 @@ export class MixedSumsGameApp extends TimeLimitedGame2 {
         this.numberNok += 1;
       });
     }
+  }
+
+  get gameOverIntroductionText(): HTMLTemplateResult {
+    let timeDescription = '';
+    if (this.gameTime % 60 === 0) {
+      if (this.gameTime / 60 === 1) timeDescription = `1 minuut`;
+      else timeDescription = `${this.gameTime / 60} minuten`;
+    } else {
+      if (this.gameTime === 1) timeDescription = `1 seconde`;
+      else timeDescription = `${this.gameTime} seconden`;
+    }
+
+    let plusMinusDescription: HTMLTemplateResult | typeof nothing = nothing;
+    if (
+      this.eligibleOperators.includes('plus') ||
+      this.eligibleOperators.includes('minus')
+    )
+      plusMinusDescription = html`<p>
+        Het maximale antwoord was ${this.maximumNumber}.
+      </p>`;
+
+    let timesDivideDescription: HTMLTemplateResult | typeof nothing = nothing;
+    if (
+      this.eligibleOperators.includes('times') ||
+      this.eligibleOperators.includes('divide')
+    )
+      timesDivideDescription = html`<p>
+        De grootste tafel was ${this.maxTable}.
+      </p>`;
+
+    return html`<p>
+        Je hebt ${timeDescription} gespeeld met
+        ${joinWithEn(this.eligibleOperators.map(elm => operatorToDutch(elm)))}.
+      </p>
+      ${plusMinusDescription} ${timesDivideDescription}`;
   }
 
   static get styles(): CSSResultArray {

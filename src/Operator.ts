@@ -40,3 +40,22 @@ export function operatorToSymbol(operator: Operator): string {
       throw new UnexpectedValueError(operator);
   }
 }
+
+/** Convert an Operator to a dutch text
+ * @param operator Operator to convert
+ * @returns Dutch text for the operator
+ */
+export function operatorToDutch(operator: Operator): string {
+  switch (operator) {
+    case 'plus':
+      return 'plus';
+    case 'minus':
+      return 'min';
+    case 'divide':
+      return 'gedeeld door';
+    case 'times':
+      return 'keer';
+    default:
+      throw new UnexpectedValueError(operator);
+  }
+}
