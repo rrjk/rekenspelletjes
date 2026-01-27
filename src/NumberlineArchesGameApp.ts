@@ -228,7 +228,7 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
       tensInRightOperand = randomIntFromRange(1, tensInMax - tensInMin - 1);
     }
     const tensInLeftOperand = randomIntFromRange(
-      tensInRightOperand,
+      tensInRightOperand + tensInMin,
       tensInMax - 1,
     );
 
@@ -264,7 +264,7 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
       tensInRightOperand = randomIntFromRange(1, tensInMax - tensInMin - 2);
     }
     const tensInLeftOperand = randomIntFromRange(
-      tensInRightOperand + 1,
+      tensInRightOperand + tensInMin + 1,
       tensInMax - 1,
     );
     return {
