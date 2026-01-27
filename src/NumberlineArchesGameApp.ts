@@ -29,7 +29,7 @@ import './Arch';
 
 import './DigitKeyboard';
 
-import { determineRequiredDigit } from './NumberHelperFunctions';
+import { determineRequiredDigit, getRange } from './NumberHelperFunctions';
 
 import type {
   JumpsOfTenType,
@@ -123,6 +123,7 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
   private accessor emoji: string = NumberlineArchesGameApp.neutralEmoji;
 
   private currentNumberlineNumber = 0;
+  private previousSinglesRightOperand = -1;
 
   /** Start a new game.
    */
@@ -216,7 +217,10 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
 
     /* First we determine how many singles we want in the right operand
      */
-    const singlesInRightOperand = randomIntFromRange(1, 9);
+    const allowedSinglesInRightOperand = getRange(1, 9).filter(
+      e => e !== this.previousSinglesRightOperand,
+    );
+    const singlesInRightOperand = randomFromSet(allowedSinglesInRightOperand);
 
     /** Then we determine the number of singles in the left operand, taking into
      * account we do not want to split the singles.
@@ -249,7 +253,10 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
      * By starting with determining the number of singles in the right operand, we make
      * these truely random
      */
-    const singlesInRightOperand = randomIntFromRange(2, 9);
+    const allowedSinglesInRightOperand = getRange(2, 9).filter(
+      e => e !== this.previousSinglesRightOperand,
+    );
+    const singlesInRightOperand = randomFromSet(allowedSinglesInRightOperand);
 
     /** Then we determine the number of singles in the left operand, taking into
      * account we also want to cross a ten.
@@ -281,7 +288,10 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
 
     /* First we determine how many singles we want in the right operand
      */
-    const singlesInRightOperand = randomIntFromRange(1, 9);
+    const allowedSinglesInRightOperand = getRange(1, 9).filter(
+      e => e !== this.previousSinglesRightOperand,
+    );
+    const singlesInRightOperand = randomFromSet(allowedSinglesInRightOperand);
 
     /** Then we determine the number of singles in the left operand, taking into
      * account we do not want to split the singles.
@@ -317,7 +327,10 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
      * By starting with determining the number of singles in the right operand, we make
      * these truely random
      */
-    const singlesInRightOperand = randomIntFromRange(2, 9);
+    const allowedSinglesInRightOperand = getRange(2, 9).filter(
+      e => e !== this.previousSinglesRightOperand,
+    );
+    const singlesInRightOperand = randomFromSet(allowedSinglesInRightOperand);
 
     /** Then we determine the number of singles in the left operand, taking into
      * account we also want to cross a ten.
