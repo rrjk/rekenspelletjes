@@ -993,10 +993,26 @@ const urls: (() => string)[] = [
     getallenlijnBoogjesSpelLink(0, 20, 'noSplit', 'noJumpsOfTen', 180, 'minus'),
   () =>
     getallenlijnBoogjesSpelLink(0, 20, 'noSplit', 'noJumpsOfTen', 300, 'minus'),
+  //nz
   () =>
-    getallenlijnBoogjesSpelLink(0, 20, 'noSplit', 'jumpsOfTen', 180, 'minus'),
+    getallenlijnBoogjesSpelLink(
+      10,
+      20,
+      'noSplit',
+      'noJumpsOfTen',
+      180,
+      'minus',
+    ),
   () =>
-    getallenlijnBoogjesSpelLink(0, 20, 'noSplit', 'jumpsOfTen', 300, 'minus'),
+    getallenlijnBoogjesSpelLink(
+      10,
+      20,
+      'noSplit',
+      'noJumpsOfTen',
+      300,
+      'minus',
+    ),
+  //ob
   () =>
     getallenlijnBoogjesSpelLink(0, 20, 'split', 'noJumpsOfTen', 180, 'minus'),
   () =>

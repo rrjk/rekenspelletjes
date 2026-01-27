@@ -41,6 +41,19 @@ const sections: SectionInfoType[] = [
     ],
   },
   {
+    min: 10,
+    max: 20,
+    archLocation: 'below',
+    rows: [
+      {
+        description: '- minsommen, zonder over het tiental heen te gaan',
+        shortCodes: ['nz', 'oa'],
+        color: 'cyan',
+        arches: [{ from: 8, to: 4 }],
+      },
+    ],
+  },
+  {
     min: 0,
     max: 20,
     archLocation: 'below',
@@ -50,15 +63,6 @@ const sections: SectionInfoType[] = [
         shortCodes: ['nx', 'ny'],
         color: 'orange',
         arches: [{ from: 8, to: 3 }],
-      },
-      {
-        description: '- minsommen, zonder splitsen, met boogjes van tien',
-        shortCodes: ['nz', 'oa'],
-        color: 'brown',
-        arches: [
-          { from: 16, to: 6 },
-          { from: 6, to: 3 },
-        ],
       },
       {
         description: '- minsommen, met splitsen, zonder boogjes van tien',
