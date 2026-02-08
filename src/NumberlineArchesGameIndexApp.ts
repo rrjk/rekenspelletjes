@@ -40,6 +40,7 @@ const sections: SectionInfoType[] = [
       },
     ],
   },
+  /*
   {
     min: 10,
     max: 20,
@@ -53,6 +54,7 @@ const sections: SectionInfoType[] = [
       },
     ],
   },
+*/
   {
     min: 0,
     max: 20,
