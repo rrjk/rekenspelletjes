@@ -9,7 +9,7 @@ import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
 import { TimeLimitedGame2 } from './TimeLimitedGame2';
 import { GameLogger } from './GameLogger';
-import { randomFromSet, randomIntFromRange } from './Randomizer';
+import { randomFromSet } from './Randomizer';
 
 import './RealHeight';
 import './DynamicGrid';
@@ -29,20 +29,18 @@ import './Arch';
 
 import './DigitKeyboard';
 
-import { determineRequiredDigit, getRange } from './NumberHelperFunctions';
+import { determineRequiredDigit } from './NumberHelperFunctions';
 
 import type {
   JumpsOfTenType,
   OperatorType,
   SplitType,
 } from './NumberlineArchesGameAppLink';
-
-interface LeftRightOperandSplitType {
-  tensInLeftOperand: number;
-  singlesInLeftOperand: number;
-  tensInRightOperand: number;
-  singlesInRightOperand: number;
-}
+import {
+  CreateMinusSum,
+  CreatePlusSum,
+  LeftRightOperandType,
+} from './SumCreationHelpers';
 
 function operatorAsString(operator: OperatorType) {
   if (operator === 'plus') return '+';
@@ -123,7 +121,7 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
   private accessor emoji: string = NumberlineArchesGameApp.neutralEmoji;
 
   private currentNumberlineNumber = 0;
-  private previousSinglesRightOperand = -1;
+  private previousSinglesRightOperand: undefined | number = undefined;
 
   /** Start a new game.
    */
@@ -211,151 +209,6 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
     if (this.operator === 'minus') this.gameLogger.setSubCode('b');
   }
 
-  determineLeftRightOperandNoSplitMinus(): LeftRightOperandSplitType {
-    const tensInMin = Math.floor(this.minNumber / 10);
-    const tensInMax = Math.floor(this.maxNumber / 10);
-
-    /* First we determine how many singles we want in the right operand
-     */
-    const allowedSinglesInRightOperand = getRange(1, 9).filter(
-      e => e !== this.previousSinglesRightOperand,
-    );
-    const singlesInRightOperand = randomFromSet(allowedSinglesInRightOperand);
-
-    /** Then we determine the number of singles in the left operand, taking into
-     * account we do not want to split the singles.
-     */
-    const singlesInLeftOperand = randomIntFromRange(singlesInRightOperand, 9);
-
-    let tensInRightOperand = 0;
-    if (this.jumpsOfTen === 'jumpsOfTen') {
-      tensInRightOperand = randomIntFromRange(1, tensInMax - tensInMin - 1);
-    }
-    const tensInLeftOperand = randomIntFromRange(
-      tensInRightOperand + tensInMin,
-      tensInMax - 1,
-    );
-
-    return {
-      tensInLeftOperand,
-      singlesInLeftOperand,
-      tensInRightOperand,
-      singlesInRightOperand,
-    };
-  }
-
-  determineLeftRightOperandWithSplitMinus(): LeftRightOperandSplitType {
-    const tensInMin = Math.floor(this.minNumber / 10);
-    const tensInMax = Math.floor(this.maxNumber / 10);
-
-    /* First we determine how many singles we want in the right operand
-     * As we always want to cross tens, one doesn't work as it can't be split
-     * By starting with determining the number of singles in the right operand, we make
-     * these truely random
-     */
-    const allowedSinglesInRightOperand = getRange(2, 9).filter(
-      e => e !== this.previousSinglesRightOperand,
-    );
-    const singlesInRightOperand = randomFromSet(allowedSinglesInRightOperand);
-
-    /** Then we determine the number of singles in the left operand, taking into
-     * account we also want to cross a ten.
-     */
-    const singlesInLeftOperand = randomIntFromRange(
-      1,
-      singlesInRightOperand - 1,
-    );
-
-    let tensInRightOperand = 0;
-    if (this.jumpsOfTen === 'jumpsOfTen') {
-      tensInRightOperand = randomIntFromRange(1, tensInMax - tensInMin - 2);
-    }
-    const tensInLeftOperand = randomIntFromRange(
-      tensInRightOperand + tensInMin + 1,
-      tensInMax - 1,
-    );
-    return {
-      tensInLeftOperand,
-      singlesInLeftOperand,
-      tensInRightOperand,
-      singlesInRightOperand,
-    };
-  }
-
-  determineLeftRightOperandNoSplitPlus(): LeftRightOperandSplitType {
-    const tensInMin = Math.floor(this.minNumber / 10);
-    const tensInMax = Math.floor(this.maxNumber / 10);
-
-    /* First we determine how many singles we want in the right operand
-     */
-    const allowedSinglesInRightOperand = getRange(1, 9).filter(
-      e => e !== this.previousSinglesRightOperand,
-    );
-    const singlesInRightOperand = randomFromSet(allowedSinglesInRightOperand);
-
-    /** Then we determine the number of singles in the left operand, taking into
-     * account we do not want to split the singles.
-     */
-    const singlesInLeftOperand = randomIntFromRange(
-      1,
-      10 - singlesInRightOperand,
-    );
-
-    let tensInRightOperand = 0;
-    if (this.jumpsOfTen === 'jumpsOfTen') {
-      tensInRightOperand = randomIntFromRange(1, tensInMax - tensInMin - 1);
-    }
-    const tensInLeftOperand = randomIntFromRange(
-      tensInMin,
-      tensInMax - tensInRightOperand - 1,
-    );
-
-    return {
-      tensInLeftOperand,
-      singlesInLeftOperand,
-      tensInRightOperand,
-      singlesInRightOperand,
-    };
-  }
-
-  determineLeftRightOperandWithSplitPlus(): LeftRightOperandSplitType {
-    const tensInMin = Math.floor(this.minNumber / 10);
-    const tensInMax = Math.floor(this.maxNumber / 10);
-
-    /* First we determine how many singles we want in the right operand
-     * As we always want to cross tens, one doesn't work as it can't be split
-     * By starting with determining the number of singles in the right operand, we make
-     * these truely random
-     */
-    const allowedSinglesInRightOperand = getRange(2, 9).filter(
-      e => e !== this.previousSinglesRightOperand,
-    );
-    const singlesInRightOperand = randomFromSet(allowedSinglesInRightOperand);
-
-    /** Then we determine the number of singles in the left operand, taking into
-     * account we also want to cross a ten.
-     */
-    const singlesInLeftOperand = randomIntFromRange(
-      11 - singlesInRightOperand,
-      9,
-    );
-
-    let tensInRightOperand = 0;
-    if (this.jumpsOfTen === 'jumpsOfTen') {
-      tensInRightOperand = randomIntFromRange(1, tensInMax - tensInMin - 2);
-    }
-    const tensInLeftOperand = randomIntFromRange(
-      tensInMin,
-      tensInMax - tensInRightOperand - 2,
-    );
-    return {
-      tensInLeftOperand,
-      singlesInLeftOperand,
-      tensInRightOperand,
-      singlesInRightOperand,
-    };
-  }
-
   newRound() {
     if (this.operator === 'plus') {
       this.newRoundPlus();
@@ -376,113 +229,92 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
 
   newRoundMinus() {
     this.operator = 'minus';
-    let leftRightOperand: LeftRightOperandSplitType = {
-      tensInLeftOperand: 0,
-      singlesInLeftOperand: 0,
-      tensInRightOperand: 0,
-      singlesInRightOperand: 0,
+
+    let sum: LeftRightOperandType = {
+      leftOperand: 0,
+      rightOperand: 0,
+      answer: 0,
     };
 
-    if (this.split === 'noSplit') {
-      leftRightOperand = this.determineLeftRightOperandNoSplitMinus();
-    } else if (this.split === 'split') {
-      leftRightOperand = this.determineLeftRightOperandWithSplitMinus();
+    let minTenJumps = 0;
+    let maxTenJumps = 0;
+    if (this.jumpsOfTen === 'jumpsOfTen') {
+      minTenJumps = 1;
+      maxTenJumps = 100;
     }
 
-    // Calculate the complete exercise
-    this.leftOperand =
-      leftRightOperand.tensInLeftOperand * 10 +
-      leftRightOperand.singlesInLeftOperand;
-    this.rightOperand =
-      leftRightOperand.tensInRightOperand * 10 +
-      leftRightOperand.singlesInRightOperand;
-    this.answer = this.leftOperand - this.rightOperand;
+    sum = CreateMinusSum(
+      this.minNumber,
+      this.maxNumber,
+      minTenJumps,
+      maxTenJumps,
+      this.split,
+      this.previousSinglesRightOperand,
+    );
 
-    // Ensure we do not get the min and max of the numberline in the exercise
-    if (
-      this.answer === this.minNumber &&
-      leftRightOperand.singlesInRightOperand > 1 &&
-      this.rightOperand > 1
-    ) {
-      leftRightOperand.singlesInRightOperand -= 1;
-      this.rightOperand -= 1;
-      this.answer += 1;
-    } else if (this.answer === this.maxNumber) {
-      console.assert(this.leftOperand !== this.minNumber);
-      leftRightOperand.singlesInLeftOperand += 1;
-      this.leftOperand += 1;
-      this.answer += 1;
-    }
+    this.leftOperand = sum.leftOperand;
+    this.rightOperand = sum.rightOperand;
+    this.answer = sum.answer;
+
+    this.previousSinglesRightOperand = sum.rightOperand % 10;
 
     // Now we have to find the required arches
-    const leftOperandToPreviousMultipleOfTen =
-      leftRightOperand.singlesInLeftOperand;
+    const leftOperandToPreviousMultipleOfTen = sum.leftOperand % 10;
 
-    if (
-      leftOperandToPreviousMultipleOfTen <=
-      leftRightOperand.singlesInRightOperand
-    )
+    if (leftOperandToPreviousMultipleOfTen <= sum.rightOperand % 10)
       this.firstArch = leftOperandToPreviousMultipleOfTen;
-    else this.firstArch = leftRightOperand.singlesInRightOperand;
+    else this.firstArch = sum.rightOperand % 10;
 
-    this.lastArch = leftRightOperand.singlesInRightOperand - this.firstArch;
+    this.lastArch = (sum.rightOperand % 10) - this.firstArch;
 
-    this.numberTenArches = leftRightOperand.tensInRightOperand;
+    this.numberTenArches = Math.floor(sum.rightOperand / 10);
   }
 
   newRoundPlus() {
     this.operator = 'plus';
-    let leftRightOperand: LeftRightOperandSplitType = {
-      tensInLeftOperand: 0,
-      singlesInLeftOperand: 0,
-      tensInRightOperand: 0,
-      singlesInRightOperand: 0,
+
+    let sum: LeftRightOperandType = {
+      leftOperand: 0,
+      rightOperand: 0,
+      answer: 0,
     };
 
-    if (this.split === 'noSplit') {
-      leftRightOperand = this.determineLeftRightOperandNoSplitPlus();
-    } else if (this.split === 'split') {
-      leftRightOperand = this.determineLeftRightOperandWithSplitPlus();
+    let minTenJumps = 0;
+    let maxTenJumps = 0;
+    if (this.jumpsOfTen === 'jumpsOfTen') {
+      minTenJumps = 1;
+      maxTenJumps = 100;
     }
 
-    // Calculate the complete exercise
-    this.leftOperand =
-      leftRightOperand.tensInLeftOperand * 10 +
-      leftRightOperand.singlesInLeftOperand;
-    this.rightOperand =
-      leftRightOperand.tensInRightOperand * 10 +
-      leftRightOperand.singlesInRightOperand;
-    this.answer = this.leftOperand + this.rightOperand;
+    sum = CreatePlusSum(
+      this.minNumber,
+      this.maxNumber,
+      minTenJumps,
+      maxTenJumps,
+      this.split,
+      this.previousSinglesRightOperand,
+    );
 
-    // Ensure we do not get the min and max of the numberline in the exercise
-    if (
-      this.answer === this.maxNumber &&
-      leftRightOperand.singlesInRightOperand > 1 &&
-      this.rightOperand > 1
-    ) {
-      leftRightOperand.singlesInRightOperand -= 1;
-      this.rightOperand -= 1;
-      this.answer -= 1;
-    } else if (this.answer === this.maxNumber) {
-      console.assert(this.leftOperand !== this.minNumber);
-      leftRightOperand.singlesInLeftOperand -= 1;
-      this.leftOperand -= 1;
-      this.answer -= 1;
-    }
+    this.leftOperand = sum.leftOperand;
+    this.rightOperand = sum.rightOperand;
+    this.answer = sum.answer;
+
+    this.previousSinglesRightOperand = sum.rightOperand % 10;
 
     // Now we have to find the required arches
-    const leftOperandToNextMultipleOfTen =
-      10 - leftRightOperand.singlesInLeftOperand;
+    const leftOperandToNextMultipleOfTen = 10 - (sum.leftOperand % 10); //leftRightOperand.singlesInLeftOperand;
 
     if (
-      leftOperandToNextMultipleOfTen <= leftRightOperand.singlesInRightOperand
+      leftOperandToNextMultipleOfTen <=
+      sum.rightOperand % 10 // leftRightOperand.singlesInRightOperand
     )
       this.firstArch = leftOperandToNextMultipleOfTen;
-    else this.firstArch = leftRightOperand.singlesInRightOperand;
+    else this.firstArch = sum.rightOperand % 10; // leftRightOperand.singlesInRightOperand;
 
-    this.lastArch = leftRightOperand.singlesInRightOperand - this.firstArch;
+    this.lastArch = (sum.rightOperand % 10) - this.firstArch; // leftRightOperand.singlesInRightOperand - this.firstArch;
 
-    this.numberTenArches = leftRightOperand.tensInRightOperand;
+    //this.numberTenArches = leftRightOperand.tensInRightOperand;
+    this.numberTenArches = Math.floor(sum.rightOperand / 10);
   }
 
   processWrongAnswer(): void {
