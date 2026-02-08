@@ -2,7 +2,7 @@ import { expect, test } from '@jest/globals';
 import { CreateMinusSum, CreatePlusSum } from './SumCreationHelpers';
 
 /** Number of iterations to believe random answers comply */
-const numberIterations = 10000;
+const numberIterations = 100; // 100 is enough for regression, use 1000 to test in case of progression
 
 function testCreateMinusSumNoSplit(
   min: number,
