@@ -1,6 +1,6 @@
 import { html, css, LitElement, nothing } from 'lit';
 
-import { customElement } from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
 
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
@@ -9,6 +9,7 @@ import { Color, getColorInfo } from './Colors';
 
 import './IconHourglassButton';
 import './NumberLineV2';
+import { OperatorType } from './NumberlineArchesGameAppLink';
 
 type ArchesLocationType = 'below' | 'above';
 
@@ -26,7 +27,60 @@ interface SectionInfoType {
   rows: RowInfoType[];
 }
 
-const sections: SectionInfoType[] = [
+const plusSections: SectionInfoType[] = [
+  {
+    min: 0,
+    max: 10,
+    archLocation: 'above',
+    rows: [
+      {
+        description: '- plussommen, zonder over het tiental heen te gaan',
+        shortCodes: ['nf', 'ng'],
+        color: 'olive',
+        arches: [{ from: 3, to: 7 }],
+      },
+    ],
+  },
+  /*
+  {
+    min: 10,
+    max: 20,
+    archLocation: 'below',
+    rows: [
+      {
+        description: '- minsommen, zonder over het tiental heen te gaan',
+        shortCodes: ['nz', 'oa'],
+        color: 'cyan',
+        arches: [{ from: 8, to: 4 }],
+      },
+    ],
+  },
+*/
+  {
+    min: 0,
+    max: 20,
+    archLocation: 'above',
+    rows: [
+      {
+        description: '- plussommen, zonder over het tiental heen te gaan',
+        shortCodes: ['nh', 'ni'],
+        color: 'lavender',
+        arches: [{ from: 3, to: 8 }],
+      },
+      {
+        description: '- plussommen, met splitsen, zonder boogjes van tien',
+        shortCodes: ['nl', 'nm'],
+        color: 'apricot',
+        arches: [
+          { from: 6, to: 10 },
+          { from: 10, to: 15 },
+        ],
+      },
+    ],
+  },
+];
+
+const minusSections: SectionInfoType[] = [
   {
     min: 0,
     max: 10,
@@ -81,6 +135,9 @@ const sections: SectionInfoType[] = [
 
 @customElement('numberline-arches-game-index-app')
 export class NumberlineArchesGameIndexApp extends LitElement {
+  @property()
+  accessor operator: OperatorType = 'plus';
+
   static get styles(): CSSResultArray {
     return [
       css`
@@ -193,10 +250,14 @@ export class NumberlineArchesGameIndexApp extends LitElement {
   }
 
   render(): HTMLTemplateResult[] {
+    const operatorText =
+      this.operator === 'plus' ? 'plus sommen' : 'min sommen';
     const renderItems: HTMLTemplateResult[] = [
-      html`<h2>Getallenlijn boogjes spel met minsommen</h2>`,
+      html`<h2>Getallenlijn boogjes spel met ${operatorText}</h2>`,
     ];
-    for (const section of sections) {
+    const sectionsToUse =
+      this.operator === 'minus' ? minusSections : plusSections;
+    for (const section of sectionsToUse) {
       renderItems.push(html`<h3>Van ${section.min} tot ${section.max}</h3>`);
       renderItems.push(
         html`<div class="buttonTable">
