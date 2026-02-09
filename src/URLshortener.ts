@@ -950,53 +950,237 @@ const urls: (() => string)[] = [
   () => springOpGetallenlijnLink(0, 50, ['show10TickMarks'], 180),
   // nf
   () =>
-    getallenlijnBoogjesSpelLink(0, 10, 'noSplit', 'noJumpsOfTen', 180, 'plus'),
+    getallenlijnBoogjesSpelLink(
+      0,
+      10,
+      0,
+      10,
+      'noSplit',
+      'noJumpsOfTen',
+      180,
+      'plus',
+    ),
   () =>
-    getallenlijnBoogjesSpelLink(0, 10, 'noSplit', 'noJumpsOfTen', 300, 'plus'),
+    getallenlijnBoogjesSpelLink(
+      0,
+      10,
+      0,
+      10,
+      'noSplit',
+      'noJumpsOfTen',
+      300,
+      'plus',
+    ),
   // nh
   () =>
-    getallenlijnBoogjesSpelLink(0, 20, 'noSplit', 'noJumpsOfTen', 180, 'plus'),
+    getallenlijnBoogjesSpelLink(
+      0,
+      20,
+      0,
+      20,
+      'noSplit',
+      'noJumpsOfTen',
+      180,
+      'plus',
+    ),
   () =>
-    getallenlijnBoogjesSpelLink(0, 20, 'noSplit', 'noJumpsOfTen', 300, 'plus'),
+    getallenlijnBoogjesSpelLink(
+      0,
+      20,
+      0,
+      20,
+      'noSplit',
+      'noJumpsOfTen',
+      300,
+      'plus',
+    ),
   // nj
   () =>
-    getallenlijnBoogjesSpelLink(10, 20, 'noSplit', 'noJumpsOfTen', 180, 'plus'),
+    getallenlijnBoogjesSpelLink(
+      10,
+      20,
+      0,
+      20,
+      'noSplit',
+      'noJumpsOfTen',
+      180,
+      'plus',
+    ),
   () =>
-    getallenlijnBoogjesSpelLink(10, 20, 'noSplit', 'noJumpsOfTen', 300, 'plus'),
+    getallenlijnBoogjesSpelLink(
+      10,
+      20,
+      0,
+      20,
+      'noSplit',
+      'noJumpsOfTen',
+      300,
+      'plus',
+    ),
   //nk
   () =>
-    getallenlijnBoogjesSpelLink(0, 20, 'split', 'noJumpsOfTen', 180, 'plus'),
+    getallenlijnBoogjesSpelLink(
+      0,
+      20,
+      0,
+      20,
+      'split',
+      'noJumpsOfTen',
+      180,
+      'plus',
+    ),
   () =>
-    getallenlijnBoogjesSpelLink(0, 20, 'split', 'noJumpsOfTen', 300, 'plus'),
+    getallenlijnBoogjesSpelLink(
+      0,
+      20,
+      0,
+      20,
+      'split',
+      'noJumpsOfTen',
+      300,
+      'plus',
+    ),
   // nn
   () =>
-    getallenlijnBoogjesSpelLink(0, 100, 'noSplit', 'noJumpsOfTen', 180, 'plus'),
+    getallenlijnBoogjesSpelLink(
+      0,
+      100,
+      0,
+      100,
+      'noSplit',
+      'noJumpsOfTen',
+      180,
+      'plus',
+    ),
   () =>
-    getallenlijnBoogjesSpelLink(0, 100, 'noSplit', 'noJumpsOfTen', 300, 'plus'),
+    getallenlijnBoogjesSpelLink(
+      0,
+      100,
+      0,
+      100,
+      'noSplit',
+      'noJumpsOfTen',
+      300,
+      'plus',
+    ),
   () =>
-    getallenlijnBoogjesSpelLink(0, 100, 'noSplit', 'jumpsOfTen', 180, 'plus'),
+    getallenlijnBoogjesSpelLink(
+      0,
+      100,
+      0,
+      100,
+      'noSplit',
+      'jumpsOfTen',
+      180,
+      'plus',
+    ),
   () =>
-    getallenlijnBoogjesSpelLink(0, 100, 'noSplit', 'jumpsOfTen', 300, 'plus'),
+    getallenlijnBoogjesSpelLink(
+      0,
+      100,
+      0,
+      100,
+      'noSplit',
+      'jumpsOfTen',
+      300,
+      'plus',
+    ),
   () =>
-    getallenlijnBoogjesSpelLink(0, 100, 'split', 'noJumpsOfTen', 180, 'plus'),
+    getallenlijnBoogjesSpelLink(
+      0,
+      100,
+      0,
+      100,
+      'split',
+      'noJumpsOfTen',
+      180,
+      'plus',
+    ),
   () =>
-    getallenlijnBoogjesSpelLink(0, 100, 'split', 'noJumpsOfTen', 300, 'plus'),
-  () => getallenlijnBoogjesSpelLink(0, 100, 'split', 'jumpsOfTen', 180, 'plus'),
-  () => getallenlijnBoogjesSpelLink(0, 100, 'split', 'jumpsOfTen', 300, 'plus'),
+    getallenlijnBoogjesSpelLink(
+      0,
+      100,
+      0,
+      100,
+      'split',
+      'noJumpsOfTen',
+      300,
+      'plus',
+    ),
+  () =>
+    getallenlijnBoogjesSpelLink(
+      0,
+      100,
+      0,
+      100,
+      'split',
+      'jumpsOfTen',
+      180,
+      'plus',
+    ),
+  () =>
+    getallenlijnBoogjesSpelLink(
+      0,
+      100,
+      0,
+      100,
+      'split',
+      'jumpsOfTen',
+      300,
+      'plus',
+    ),
   // nv
   () =>
-    getallenlijnBoogjesSpelLink(0, 10, 'noSplit', 'noJumpsOfTen', 180, 'minus'),
+    getallenlijnBoogjesSpelLink(
+      0,
+      10,
+      0,
+      10,
+      'noSplit',
+      'noJumpsOfTen',
+      180,
+      'minus',
+    ),
   () =>
-    getallenlijnBoogjesSpelLink(0, 10, 'noSplit', 'noJumpsOfTen', 300, 'minus'),
+    getallenlijnBoogjesSpelLink(
+      0,
+      10,
+      0,
+      10,
+      'noSplit',
+      'noJumpsOfTen',
+      300,
+      'minus',
+    ),
   // nx
   () =>
-    getallenlijnBoogjesSpelLink(0, 20, 'noSplit', 'noJumpsOfTen', 180, 'minus'),
+    getallenlijnBoogjesSpelLink(
+      0,
+      20,
+      0,
+      20,
+      'noSplit',
+      'noJumpsOfTen',
+      180,
+      'minus',
+    ),
   () =>
-    getallenlijnBoogjesSpelLink(0, 20, 'noSplit', 'noJumpsOfTen', 300, 'minus'),
+    getallenlijnBoogjesSpelLink(
+      0,
+      20,
+      0,
+      20,
+      'noSplit',
+      'noJumpsOfTen',
+      300,
+      'minus',
+    ),
   //nz
   () =>
     getallenlijnBoogjesSpelLink(
       10,
+      20,
+      0,
       20,
       'noSplit',
       'noJumpsOfTen',
@@ -1006,6 +1190,8 @@ const urls: (() => string)[] = [
   () =>
     getallenlijnBoogjesSpelLink(
       10,
+      20,
+      0,
       20,
       'noSplit',
       'noJumpsOfTen',
@@ -1014,12 +1200,32 @@ const urls: (() => string)[] = [
     ),
   //ob
   () =>
-    getallenlijnBoogjesSpelLink(0, 20, 'split', 'noJumpsOfTen', 180, 'minus'),
+    getallenlijnBoogjesSpelLink(
+      0,
+      20,
+      0,
+      20,
+      'split',
+      'noJumpsOfTen',
+      180,
+      'minus',
+    ),
   () =>
-    getallenlijnBoogjesSpelLink(0, 20, 'split', 'noJumpsOfTen', 300, 'minus'),
+    getallenlijnBoogjesSpelLink(
+      0,
+      20,
+      0,
+      20,
+      'split',
+      'noJumpsOfTen',
+      300,
+      'minus',
+    ),
   // od
   () =>
     getallenlijnBoogjesSpelLink(
+      0,
+      100,
       0,
       100,
       'noSplit',
@@ -1031,23 +1237,79 @@ const urls: (() => string)[] = [
     getallenlijnBoogjesSpelLink(
       0,
       100,
+      0,
+      100,
       'noSplit',
       'noJumpsOfTen',
       300,
       'minus',
     ),
   () =>
-    getallenlijnBoogjesSpelLink(0, 100, 'noSplit', 'jumpsOfTen', 180, 'minus'),
+    getallenlijnBoogjesSpelLink(
+      0,
+      100,
+      0,
+      100,
+      'noSplit',
+      'jumpsOfTen',
+      180,
+      'minus',
+    ),
   () =>
-    getallenlijnBoogjesSpelLink(0, 100, 'noSplit', 'jumpsOfTen', 300, 'minus'),
+    getallenlijnBoogjesSpelLink(
+      0,
+      100,
+      0,
+      100,
+      'noSplit',
+      'jumpsOfTen',
+      300,
+      'minus',
+    ),
   () =>
-    getallenlijnBoogjesSpelLink(0, 100, 'split', 'noJumpsOfTen', 180, 'minus'),
+    getallenlijnBoogjesSpelLink(
+      0,
+      100,
+      0,
+      100,
+      'split',
+      'noJumpsOfTen',
+      180,
+      'minus',
+    ),
   () =>
-    getallenlijnBoogjesSpelLink(0, 100, 'split', 'noJumpsOfTen', 300, 'minus'),
+    getallenlijnBoogjesSpelLink(
+      0,
+      100,
+      0,
+      100,
+      'split',
+      'noJumpsOfTen',
+      300,
+      'minus',
+    ),
   () =>
-    getallenlijnBoogjesSpelLink(0, 100, 'split', 'jumpsOfTen', 180, 'minus'),
+    getallenlijnBoogjesSpelLink(
+      0,
+      100,
+      0,
+      100,
+      'split',
+      'jumpsOfTen',
+      180,
+      'minus',
+    ),
   () =>
-    getallenlijnBoogjesSpelLink(0, 100, 'split', 'jumpsOfTen', 300, 'minus'),
+    getallenlijnBoogjesSpelLink(
+      0,
+      100,
+      0,
+      100,
+      'split',
+      'jumpsOfTen',
+      300,
+      'minus',
+    ),
   // ol indexSommenTot100DubbelSplitsen.html - sums without visible split
   () => sommenMetSplitsenLink('split2Till100', ['plus'], 60, 'hideSplits'),
   () => sommenMetSplitsenLink('split2Till100', ['plus'], 180, 'hideSplits'),

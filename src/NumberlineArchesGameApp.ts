@@ -1,6 +1,6 @@
 import { html, css, nothing } from 'lit';
 
-import { customElement, property, state } from 'lit/decorators.js';
+import { customElement, state } from 'lit/decorators.js';
 import { ref } from 'lit/directives/ref.js';
 
 import { create } from 'mutative';
@@ -67,11 +67,23 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
 
   private gameLogger = new GameLogger('X', '');
 
-  @property()
-  accessor minNumber = 0;
-  @property()
-  accessor maxNumber = 100;
+  /* Properties that are set via the URL */
+  @state()
+  private accessor minNumber = 0;
+  @state()
+  private accessor maxNumber = 100;
+  @state()
+  private accessor minNumberline = 0;
+  @state()
+  private accessor maxNumberline = 100;
+  @state()
+  private accessor operator: OperatorType = 'plus';
+  @state()
+  private accessor split: SplitType = 'noSplit';
+  @state()
+  private accessor jumpsOfTen: JumpsOfTenType = 'noJumpsOfTen';
 
+  /* Game state properties */
   @state()
   private accessor leftOperand = 7;
   @state()
@@ -84,12 +96,6 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
   private accessor lastArch = 0;
   @state()
   private accessor numberTenArches = 0;
-  @state()
-  private accessor operator: OperatorType = 'plus';
-  @state()
-  private accessor split: SplitType = 'noSplit';
-  @state()
-  private accessor jumpsOfTen: JumpsOfTenType = 'noJumpsOfTen';
   @state()
   private accessor arches: ArchType[] = [];
   @state()
@@ -153,19 +159,39 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
 
   protected parseUrl(): void {
     const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.has('min')) {
-      const parsedMin = parseInt(urlParams.get('min') || '', 10);
-      if (!parsedMin) this.minNumber = 0;
-      else this.minNumber = Math.floor(parsedMin / 10) * 10;
-      if (this.minNumber < 0) this.minNumber = 0;
-    }
-    if (urlParams.has('max')) {
-      const parsedMax = parseInt(urlParams.get('max') || '', 10);
-      if (!parsedMax) this.maxNumber = 100;
-      else this.maxNumber = Math.ceil(parsedMax / 10) * 10;
-      if (this.maxNumber <= this.minNumber)
-        this.maxNumber = this.minNumber + 10;
-    }
+
+    const parsedMin = parseInt(urlParams.get('min') || '', 10);
+    if (Number.isNaN(parsedMin)) this.minNumber = 0;
+    else this.minNumber = Math.floor(parsedMin / 10) * 10;
+    if (this.minNumber < 0) this.minNumber = 0;
+
+    const parsedMax = parseInt(urlParams.get('max') || '', 10);
+    if (Number.isNaN(parsedMax)) this.maxNumber = 100;
+    else this.maxNumber = Math.ceil(parsedMax / 10) * 10;
+    if (this.maxNumber <= this.minNumber) this.maxNumber = this.minNumber + 10;
+
+    const parsedMinNumberline = parseInt(
+      urlParams.get('minNumberline') || '',
+      10,
+    );
+    if (Number.isNaN(parsedMinNumberline)) this.minNumberline = this.minNumber;
+    else
+      this.minNumberline = Math.min(
+        Math.floor(parsedMinNumberline / 10) * 10,
+        this.minNumber,
+      );
+
+    const parsedMaxNumberline = parseInt(
+      urlParams.get('maxNumberline') || '',
+      10,
+    );
+    if (Number.isNaN(parsedMaxNumberline)) this.maxNumberline = this.maxNumber;
+    else
+      this.maxNumberline = Math.max(
+        Math.ceil(parsedMaxNumberline / 10) * 10,
+        this.maxNumber,
+      );
+
     if (urlParams.has('split')) {
       const split = urlParams.get('split');
       if (split === 'split' || split === 'noSplit') this.split = split;
@@ -183,7 +209,7 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
       this.maxNumber - this.minNumber === 10
     ) {
       console.error(
-        'A numberline of length 10 cannot be combined with split === split or jumpsOfTen === jumpsOfTen, falling back to no jumps of ten and no splitting.',
+        'A maxNumber - minNumber  of  10 cannot be combined with split === split or jumpsOfTen === jumpsOfTen, falling back to no jumps of ten and no splitting.',
       );
       this.split = 'noSplit';
       this.jumpsOfTen = 'noJumpsOfTen';
@@ -195,7 +221,7 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
       this.maxNumber - this.minNumber === 20
     ) {
       console.error(
-        'A numberline of length 20 cannot be combined with split === split and jumpsOfTen === jumpsOfTen, falling back to no jumps of ten.',
+        'A maxNumber - minNumber of 20 cannot be combined with split === split and jumpsOfTen === jumpsOfTen, falling back to no jumps of ten.',
       );
       this.jumpsOfTen = 'noJumpsOfTen';
     }
@@ -250,6 +276,7 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
       maxTenJumps,
       this.split,
       this.previousSinglesRightOperand,
+      this.minNumber === this.minNumberline,
     );
 
     this.leftOperand = sum.leftOperand;
@@ -293,6 +320,8 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
       maxTenJumps,
       this.split,
       this.previousSinglesRightOperand,
+      this.minNumber === this.minNumberline,
+      this.maxNumber === this.maxNumberline,
     );
 
     this.leftOperand = sum.leftOperand;
@@ -592,9 +621,9 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
         ${ref(this.numberLineAreaChange)}
       >
         <number-line-v2
-          min=${this.minNumber}
-          max=${this.maxNumber}
-          .fixedNumbers=${[this.minNumber, this.maxNumber]}
+          min=${this.minNumberline}
+          max=${this.maxNumberline}
+          .fixedNumbers=${[this.minNumberline, this.maxNumberline]}
           .aboveArches=${aboveArches}
           .belowArches=${belowArches}
           .numberBoxes=${this.numberBoxes}

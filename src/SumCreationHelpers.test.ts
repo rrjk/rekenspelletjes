@@ -10,6 +10,7 @@ function testCreateMinusSumNoSplit(
   lowestTenJump: number,
   highestTenJump: number,
   exclude: number,
+  excludeMin: boolean,
 ): void {
   const ret = CreateMinusSum(
     min,
@@ -18,6 +19,7 @@ function testCreateMinusSumNoSplit(
     highestTenJump,
     'noSplit',
     exclude,
+    excludeMin,
   );
   expect(ret.leftOperand).toBeGreaterThan(min);
   expect(ret.leftOperand).toBeLessThan(max);
@@ -25,7 +27,8 @@ function testCreateMinusSumNoSplit(
   expect(ret.rightOperand).toBeLessThanOrEqual(highestTenJump * 10 + 9);
   expect(ret.rightOperand).not.toBe(exclude);
   expect(ret.answer).toBe(ret.leftOperand - ret.rightOperand);
-  expect(ret.answer).toBeGreaterThan(min);
+  if (excludeMin) expect(ret.answer).toBeGreaterThan(min);
+  else expect(ret.answer).toBeGreaterThanOrEqual(min);
   expect(ret.answer).toBeLessThan(max);
   const singlesInLeftOperandOrTen =
     ret.leftOperand % 10 === 0 ? 10 : ret.leftOperand % 10;
@@ -40,6 +43,7 @@ function testCreateMinusSumWithSplit(
   lowestTenJump: number,
   highestTenJump: number,
   exclude: number,
+  excludeMin: boolean,
 ): void {
   const ret = CreateMinusSum(
     min,
@@ -48,6 +52,7 @@ function testCreateMinusSumWithSplit(
     highestTenJump,
     'split',
     exclude,
+    excludeMin,
   );
   expect(ret.leftOperand).toBeGreaterThan(min);
   expect(ret.leftOperand).toBeLessThan(max);
@@ -55,7 +60,8 @@ function testCreateMinusSumWithSplit(
   expect(ret.rightOperand).toBeLessThanOrEqual(highestTenJump * 10 + 9);
   expect(ret.rightOperand).not.toBe(exclude);
   expect(ret.answer).toBe(ret.leftOperand - ret.rightOperand);
-  expect(ret.answer).toBeGreaterThan(min);
+  if (excludeMin) expect(ret.answer).toBeGreaterThan(min);
+  else expect(ret.answer).toBeGreaterThanOrEqual(min);
   expect(ret.answer).toBeLessThan(max);
   expect((ret.leftOperand % 10) - (ret.rightOperand % 10)).toBeLessThan(0);
 }
@@ -66,6 +72,8 @@ function testCreatePlusSumNoSplit(
   lowestTenJump: number,
   highestTenJump: number,
   exclude: number,
+  excludeMin: boolean,
+  excludeMax: boolean,
 ): void {
   const ret = CreatePlusSum(
     min,
@@ -74,11 +82,18 @@ function testCreatePlusSumNoSplit(
     highestTenJump,
     'noSplit',
     exclude,
+    excludeMin,
+    excludeMax,
   );
-  expect(ret.leftOperand).toBeGreaterThan(min);
-  expect(ret.leftOperand).toBeLessThan(max);
-  expect(ret.answer).toBeGreaterThan(min);
-  expect(ret.answer).toBeLessThan(max);
+  if (excludeMin) {
+    expect(ret.leftOperand).toBeGreaterThan(min);
+    expect(ret.answer).toBeGreaterThan(min);
+  } else {
+    expect(ret.leftOperand).toBeGreaterThanOrEqual(min);
+    expect(ret.answer).toBeGreaterThanOrEqual(min);
+  }
+  if (excludeMax) expect(ret.answer).toBeLessThan(max);
+  else expect(ret.answer).toBeLessThanOrEqual(max);
   expect(ret.rightOperand).toBeGreaterThanOrEqual(lowestTenJump * 10 + 1);
   expect(ret.rightOperand).toBeLessThanOrEqual(highestTenJump * 10 + 9);
   expect(ret.rightOperand % 10).not.toBe(exclude);
@@ -94,6 +109,8 @@ function testCreatePlusSumWithSplit(
   lowestTenJump: number,
   highestTenJump: number,
   exclude: number,
+  excludeMin: boolean,
+  excludeMax: boolean,
 ): void {
   const ret = CreatePlusSum(
     min,
@@ -102,15 +119,22 @@ function testCreatePlusSumWithSplit(
     highestTenJump,
     'split',
     exclude,
+    excludeMin,
+    excludeMax,
   );
-  expect(ret.leftOperand).toBeGreaterThan(min);
-  expect(ret.leftOperand).toBeLessThan(max);
+  if (excludeMin) {
+    expect(ret.leftOperand).toBeGreaterThan(min);
+    expect(ret.answer).toBeGreaterThan(min);
+  } else {
+    expect(ret.leftOperand).toBeGreaterThanOrEqual(min);
+    expect(ret.answer).toBeGreaterThanOrEqual(min);
+  }
+  if (excludeMax) expect(ret.answer).toBeLessThan(max);
+  else expect(ret.answer).toBeLessThanOrEqual(max);
   expect(ret.rightOperand).toBeGreaterThanOrEqual(lowestTenJump * 10 + 1);
   expect(ret.rightOperand).toBeLessThanOrEqual(highestTenJump * 10 + 9);
   expect(ret.rightOperand).not.toBe(exclude);
   expect(ret.answer).toBe(ret.leftOperand + ret.rightOperand);
-  expect(ret.answer).toBeGreaterThan(min);
-  expect(ret.answer).toBeLessThan(max);
   expect(
     (ret.leftOperand % 10) + (ret.rightOperand % 10),
   ).toBeGreaterThanOrEqual(10);
@@ -146,66 +170,80 @@ describe('Assertions raised in CreateMinusSum with splits', () => {
   });
 });
 
-describe('Postconditions always met for CreateMinusSum with no splits, ', () => {
+describe('Postconditions always met for CreateMinusSum with no splits - min not allowed, ', () => {
   test(`no ten jumps and a numberline from 30-80.`, () => {
     for (let j = 0; j < numberIterations; j++) {
-      testCreateMinusSumNoSplit(30, 80, 0, 0, j % 10);
+      testCreateMinusSumNoSplit(30, 80, 0, 0, j % 10, true);
     }
   });
 
   test(`no ten jumps and a numberline from 0-10.`, () => {
     for (let j = 0; j < numberIterations; j++) {
-      testCreateMinusSumNoSplit(0, 10, 0, 0, j % 10);
+      testCreateMinusSumNoSplit(0, 10, 0, 0, j % 10, true);
     }
   });
 
   test(`no ten jumps and a numberline from 10-20.`, () => {
     for (let j = 0; j < numberIterations; j++) {
-      testCreateMinusSumNoSplit(10, 20, 0, 0, j % 10);
+      testCreateMinusSumNoSplit(10, 20, 0, 0, j % 10, true);
     }
   });
 
   test(`with ten jumps and a numberline from 30-80.`, () => {
     for (let j = 0; j < numberIterations; j++) {
-      testCreateMinusSumNoSplit(30, 80, 0, 2, j % 10);
+      testCreateMinusSumNoSplit(30, 80, 0, 2, j % 10, true);
     }
   });
 
   test(`with ten jumps and a numberline from 0-20.`, () => {
     for (let j = 0; j < numberIterations; j++) {
-      testCreateMinusSumNoSplit(0, 20, 0, 1, j % 10);
+      testCreateMinusSumNoSplit(0, 20, 0, 1, j % 10, true);
     }
   });
 
-  test(`with ten jumps and a numberline from 0-20, where the max number of ten jumps is specified higher than possible.`, () => {
+  test(`with ten jumps and a numberline from 0-20, where the max number of ten jumps is specified higher than possible. - min not allowed`, () => {
     for (let j = 0; j < numberIterations; j++) {
-      testCreateMinusSumNoSplit(0, 20, 0, 2, j % 10);
+      testCreateMinusSumNoSplit(0, 20, 0, 2, j % 10, true);
     }
   });
 });
 
-describe('Postconditions always met for CreateMinusSum with splits, ', () => {
+describe('Postconditions always met for CreateMinusSum with no splits - min allowed, ', () => {
+  test(`no ten jumps and a numberline from 0-10.`, () => {
+    for (let j = 0; j < numberIterations; j++) {
+      testCreateMinusSumNoSplit(0, 10, 0, 0, j % 10, false);
+    }
+  });
+
+  test(`with ten jumps and a numberline from 0-20.`, () => {
+    for (let j = 0; j < numberIterations; j++) {
+      testCreateMinusSumNoSplit(0, 20, 0, 1, j % 10, false);
+    }
+  });
+});
+
+describe('Postconditions always met for CreateMinusSum with splits - min not allowed, ', () => {
   test(`with no ten jumps and a numberline from 30-80.`, () => {
     for (let j = 0; j < numberIterations; j++) {
-      testCreateMinusSumWithSplit(30, 80, 0, 0, j % 10);
+      testCreateMinusSumWithSplit(30, 80, 0, 0, j % 10, true);
     }
   });
 
   test(`with ten jumps and a numberline from 30-80, where number of ten jumps is specified way to high.`, () => {
     for (let j = 0; j < numberIterations; j++) {
-      testCreateMinusSumWithSplit(30, 80, 1, 100, j % 10);
+      testCreateMinusSumWithSplit(30, 80, 1, 100, j % 10, true);
     }
   });
 
   test(`with no ten jumps and a numberline from 0-20.`, () => {
     for (let j = 0; j < numberIterations; j++) {
-      testCreateMinusSumWithSplit(0, 20, 0, 0, j % 10);
+      testCreateMinusSumWithSplit(0, 20, 0, 0, j % 10, true);
     }
   });
 
   test(`with ten jumps and a numberline from 0-30.`, () => {
     for (let j = 0; j < numberIterations; j++) {
-      testCreateMinusSumWithSplit(10, 30, 0, 1, j % 10);
+      testCreateMinusSumWithSplit(10, 30, 0, 1, j % 10, true);
     }
   });
 });
@@ -240,66 +278,74 @@ describe('Assertions raised in CreatePlusSum with splits', () => {
   });
 });
 
-describe('Postconditions always met for CreatePlusSum with no splits, ', () => {
+describe('Postconditions always met for CreatePlusSum with no splits, min and max not allowed', () => {
   test(`no ten jumps and a numberline from 30-80.`, () => {
     for (let j = 0; j < numberIterations; j++) {
-      testCreatePlusSumNoSplit(30, 80, 0, 0, j % 10);
+      testCreatePlusSumNoSplit(30, 80, 0, 0, j % 10, true, true);
     }
   });
 
   test(`no ten jumps and a numberline from 0-10.`, () => {
     for (let j = 0; j < numberIterations; j++) {
-      testCreatePlusSumNoSplit(0, 10, 0, 0, j % 10);
+      testCreatePlusSumNoSplit(0, 10, 0, 0, j % 10, true, true);
     }
   });
 
   test(`no ten jumps and a numberline from 10-20.`, () => {
     for (let j = 0; j < numberIterations; j++) {
-      testCreatePlusSumNoSplit(10, 20, 0, 0, j % 10);
+      testCreatePlusSumNoSplit(10, 20, 0, 0, j % 10, true, true);
     }
   });
 
   test(`with ten jumps and a numberline from 30-80.`, () => {
     for (let j = 0; j < numberIterations; j++) {
-      testCreatePlusSumNoSplit(30, 80, 0, 2, j % 10);
+      testCreatePlusSumNoSplit(30, 80, 0, 2, j % 10, true, true);
     }
   });
 
   test(`with ten jumps and a numberline from 0-20.`, () => {
     for (let j = 0; j < numberIterations; j++) {
-      testCreatePlusSumNoSplit(0, 20, 0, 1, j % 10);
-    }
-  });
-
-  test(`with ten jumps and a numberline from 0-20, where the max number of ten jumps is specified higher than possible.`, () => {
-    for (let j = 0; j < numberIterations; j++) {
-      testCreatePlusSumNoSplit(0, 20, 0, 2, j % 10);
+      testCreatePlusSumNoSplit(0, 20, 0, 1, j % 10, true, true);
     }
   });
 });
 
-describe('Postconditions always met for CreatePlusSum with splits, ', () => {
+describe('Postconditions always met for CreatePlusSum with no splits, min and max both allowed', () => {
+  test(`no ten jumps and a numberline from 0-10.`, () => {
+    for (let j = 0; j < numberIterations; j++) {
+      testCreatePlusSumNoSplit(0, 10, 0, 0, j % 10, false, false);
+    }
+  });
+
+  test(`with ten jumps and a numberline from 0-20.`, () => {
+    for (let j = 0; j < numberIterations; j++) {
+      testCreatePlusSumNoSplit(0, 20, 0, 1, j % 10, false, false);
+    }
+  });
+});
+
+describe('Postconditions always met for CreatePlusSum with splits, min and max not allowed, ', () => {
   test(`with no ten jumps and a numberline from 30-80.`, () => {
     for (let j = 0; j < numberIterations; j++) {
-      testCreatePlusSumWithSplit(30, 80, 0, 0, j % 10);
+      testCreatePlusSumWithSplit(30, 80, 0, 0, j % 10, true, true);
     }
   });
 
   test(`with ten jumps and a numberline from 30-80, where number of ten jumps is specified way to high.`, () => {
     for (let j = 0; j < numberIterations; j++) {
-      testCreatePlusSumWithSplit(30, 80, 1, 100, j % 10);
+      testCreatePlusSumWithSplit(30, 80, 1, 100, j % 10, true, true);
     }
   });
 
   test(`with no ten jumps and a numberline from 0-20.`, () => {
     for (let j = 0; j < numberIterations; j++) {
-      testCreatePlusSumWithSplit(0, 20, 0, 0, j % 10);
+      testCreatePlusSumWithSplit(0, 20, 0, 0, j % 10, true, true);
     }
   });
 
-  test(`with ten jumps and a numberline from 0-30.`, () => {
+  test(`with ten jumps and a numberline from 10-30.`, () => {
     for (let j = 0; j < numberIterations; j++) {
-      testCreatePlusSumWithSplit(10, 30, 0, 1, j % 10);
+      testCreatePlusSumWithSplit(10, 30, 0, 1, j % 10, true, true);
     }
   });
 });

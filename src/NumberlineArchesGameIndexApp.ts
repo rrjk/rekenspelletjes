@@ -15,60 +15,53 @@ type ArchesLocationType = 'below' | 'above';
 
 interface RowInfoType {
   description: string;
+  min: number;
+  max: number;
   shortCodes: string[];
   color: Color;
   arches: ArchType[];
 }
 
 interface SectionInfoType {
-  min: number;
-  max: number;
+  minNumberline: number;
+  maxNumberline: number;
   archLocation: ArchesLocationType;
   rows: RowInfoType[];
 }
 
 const plusSections: SectionInfoType[] = [
   {
-    min: 0,
-    max: 10,
+    minNumberline: 0,
+    maxNumberline: 10,
     archLocation: 'above',
     rows: [
       {
         description: '- plussommen, zonder over het tiental heen te gaan',
+        min: 0,
+        max: 10,
         shortCodes: ['nf', 'ng'],
         color: 'olive',
         arches: [{ from: 3, to: 7 }],
       },
     ],
   },
-  /*
   {
-    min: 10,
-    max: 20,
-    archLocation: 'below',
-    rows: [
-      {
-        description: '- minsommen, zonder over het tiental heen te gaan',
-        shortCodes: ['nz', 'oa'],
-        color: 'cyan',
-        arches: [{ from: 8, to: 4 }],
-      },
-    ],
-  },
-*/
-  {
-    min: 0,
-    max: 20,
+    minNumberline: 0,
+    maxNumberline: 20,
     archLocation: 'above',
     rows: [
       {
         description: '- plussommen, zonder over het tiental heen te gaan',
-        shortCodes: ['nh', 'ni'],
+        min: 10,
+        max: 20,
+        shortCodes: ['nj', 'nk'],
         color: 'lavender',
-        arches: [{ from: 3, to: 8 }],
+        arches: [{ from: 13, to: 18 }],
       },
       {
         description: '- plussommen, met splitsen, zonder boogjes van tien',
+        min: 0,
+        max: 20,
         shortCodes: ['nl', 'nm'],
         color: 'apricot',
         arches: [
@@ -82,46 +75,37 @@ const plusSections: SectionInfoType[] = [
 
 const minusSections: SectionInfoType[] = [
   {
-    min: 0,
-    max: 10,
+    minNumberline: 0,
+    maxNumberline: 10,
     archLocation: 'below',
     rows: [
       {
         description: '- minsommen, zonder over het tiental heen te gaan',
+        min: 0,
+        max: 10,
         shortCodes: ['nv', 'nw'],
         color: 'pink',
         arches: [{ from: 9, to: 3 }],
       },
     ],
   },
-  /*
   {
-    min: 10,
-    max: 20,
+    minNumberline: 0,
+    maxNumberline: 20,
     archLocation: 'below',
     rows: [
       {
         description: '- minsommen, zonder over het tiental heen te gaan',
-        shortCodes: ['nz', 'oa'],
-        color: 'cyan',
-        arches: [{ from: 8, to: 4 }],
-      },
-    ],
-  },
-*/
-  {
-    min: 0,
-    max: 20,
-    archLocation: 'below',
-    rows: [
-      {
-        description: '- minsommen, zonder over het tiental heen te gaan',
-        shortCodes: ['nx', 'ny'],
+        min: 10,
+        max: 20,
+        shortCodes: ['nz', 'ma'],
         color: 'orange',
-        arches: [{ from: 8, to: 3 }],
+        arches: [{ from: 18, to: 13 }],
       },
       {
         description: '- minsommen, met splitsen, zonder boogjes van tien',
+        min: 0,
+        max: 20,
         shortCodes: ['ob', 'oc'],
         color: 'olive',
         arches: [
@@ -181,6 +165,8 @@ export class NumberlineArchesGameIndexApp extends LitElement {
     shortCode: string,
     min: number,
     max: number,
+    minNumberline: number,
+    maxNumberline: number,
     arches: ArchType[],
     archesLocation: ArchesLocationType,
     color: Color,
@@ -192,8 +178,8 @@ export class NumberlineArchesGameIndexApp extends LitElement {
     else if (archesLocation === 'below') belowArches = arches;
 
     let iconNumberLineLength = 10;
-    if (max - min > 10) iconNumberLineLength = 20;
-    if (max - min > 20) iconNumberLineLength = 30;
+    if (maxNumberline - minNumberline > 10) iconNumberLineLength = 20;
+    if (maxNumberline - minNumberline > 20) iconNumberLineLength = 30;
     return html`
       <icon-hourglass-button
         title="Getallenlijn boogjes spel ${min} tot ${max} ${description}"
@@ -220,6 +206,8 @@ export class NumberlineArchesGameIndexApp extends LitElement {
     shortCodes: string[],
     min: number,
     max: number,
+    minNumberline: number,
+    maxNumberline: number,
     arches: ArchType[],
     archesLocation: ArchesLocationType,
     color: Color,
@@ -231,6 +219,8 @@ export class NumberlineArchesGameIndexApp extends LitElement {
         shortCodes[0],
         min,
         max,
+        minNumberline,
+        maxNumberline,
         arches,
         archesLocation,
         color,
@@ -241,6 +231,8 @@ export class NumberlineArchesGameIndexApp extends LitElement {
         shortCodes[1],
         min,
         max,
+        minNumberline,
+        maxNumberline,
         arches,
         archesLocation,
         color,
@@ -258,15 +250,22 @@ export class NumberlineArchesGameIndexApp extends LitElement {
     const sectionsToUse =
       this.operator === 'minus' ? minusSections : plusSections;
     for (const section of sectionsToUse) {
-      renderItems.push(html`<h3>Van ${section.min} tot ${section.max}</h3>`);
+      renderItems.push(
+        html`<h3>
+          Op een getallenlijn van ${section.minNumberline} tot
+          ${section.maxNumberline}
+        </h3>`,
+      );
       renderItems.push(
         html`<div class="buttonTable">
           ${section.rows.map(row =>
             this.renderRow(
               ['3min', '5min'],
               row.shortCodes,
-              section.min,
-              section.max,
+              row.min,
+              row.max,
+              section.minNumberline,
+              section.maxNumberline,
               row.arches,
               section.archLocation,
               row.color,

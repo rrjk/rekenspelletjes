@@ -27,6 +27,7 @@ export function CreateMinusSum(
   highestTensJump: number,
   split: Split,
   excludedSinglesRightOperand: undefined | number,
+  excludeMin = true,
 ): LeftRightOperandType {
   if (min % 10 !== 0 || max % 10 !== 0)
     throw new RangeError(
@@ -80,7 +81,7 @@ export function CreateMinusSum(
     case 'noSplit':
       minSinglesInRightOperand = 1;
       maxSinglesInRightOperand = 9;
-      if (tensInLeftOperand - tensInRightOperand === tensInMin) {
+      if (excludeMin && tensInLeftOperand - tensInRightOperand === tensInMin) {
         /* If the right operand would be 9, we can only end up on the minimum, which is not allowed */
         maxSinglesInRightOperand = 8;
       }
@@ -110,7 +111,7 @@ export function CreateMinusSum(
     case 'noSplit':
       minSinglesInLeftOperand = 0;
       maxSinglesInLeftOperand = 9;
-      if (tensInLeftOperand - tensInRightOperand === tensInMin)
+      if (excludeMin && tensInLeftOperand - tensInRightOperand === tensInMin)
         /* To prevent ending up at the min of the numberline, the singles in the left operand need to be more the singles in the right operand */
         minSinglesInLeftOperand = singlesInRightOperand + 1;
       else
@@ -158,6 +159,8 @@ export function CreatePlusSum(
   highestTensJump: number,
   split: Split,
   excludedSinglesRightOperand: number | undefined,
+  excludeMin = true,
+  excludeMax = true,
 ): LeftRightOperandType {
   if (min % 10 !== 0 || max % 10 !== 0)
     throw new RangeError(
@@ -211,7 +214,10 @@ export function CreatePlusSum(
     case 'noSplit':
       minSinglesInRightOperand = 1;
       maxSinglesInRightOperand = 9;
-      if (tensInLeftOperand + tensInRightOperand === tensInMax - 1) {
+      if (
+        excludeMax &&
+        tensInLeftOperand + tensInRightOperand === tensInMax - 1
+      ) {
         /* If the right operand would be 9, we can only end up on the maxinum, which is not allowed */
         maxSinglesInRightOperand = 8;
       }
@@ -241,13 +247,16 @@ export function CreatePlusSum(
     case 'noSplit':
       minSinglesInLeftOperand = 0;
       maxSinglesInLeftOperand = 9;
-      if (tensInLeftOperand + tensInRightOperand + 1 === tensInMax)
+      if (
+        excludeMax &&
+        tensInLeftOperand + tensInRightOperand + 1 === tensInMax
+      )
         /* To prevent ending up at the max of the numberline, the singles in the left operand plus the singles in the right operand may not add up to 10*/
         maxSinglesInLeftOperand = 9 - singlesInRightOperand;
       else
         /* Otherwise the may edd up to 10  */
         maxSinglesInLeftOperand = 10 - singlesInRightOperand;
-      if (tensInLeftOperand === tensInMin) {
+      if (excludeMin && tensInLeftOperand === tensInMin) {
         /* To prevent min being the min of the numberline, the singles in the left operand may not be 0 */
         minSinglesInLeftOperand = 1;
       }
