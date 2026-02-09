@@ -9,7 +9,6 @@ import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
 import { TimeLimitedGame2 } from './TimeLimitedGame2';
 import { GameLogger } from './GameLogger';
-import { randomFromSet } from './Randomizer';
 
 import './RealHeight';
 import './DynamicGrid';
@@ -247,7 +246,7 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
 
     this.arches = [];
 
-    this.emoji = NumberlineArchesGameApp.neutralEmoji;
+    // this.emoji = NumberlineArchesGameApp.neutralEmoji;
 
     this.archesPadActive = true;
     this.gameActive = true;
@@ -347,12 +346,14 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
   }
 
   processWrongAnswer(): void {
-    this.emoji = randomFromSet(NumberlineArchesGameApp.sadFaces);
+    // this.emoji = randomFromSet(NumberlineArchesGameApp.sadFaces);
     this.numberNok += 1;
   }
 
   processCorrectSubAnswer(): void {
-    this.emoji = randomFromSet(NumberlineArchesGameApp.happyFaces);
+    // this.emoji = randomFromSet(NumberlineArchesGameApp.happyFaces);
+    // if (NumberlineArchesGameApp.sadFaces.includes(this.emoji))
+    //  this.emoji = NumberlineArchesGameApp.neutralEmoji;
   }
 
   numberLineAreaChange(numberLineArea: Element | undefined) {
@@ -455,6 +456,7 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
         newPartialNumberlineNumber === this.answer
       ) {
         this.numberOk += 1;
+        // this.emoji = randomFromSet(NumberlineArchesGameApp.happyFaces);
         this.newRound();
       }
     } else {
