@@ -1,6 +1,6 @@
 import { html, css, nothing } from 'lit';
 
-import { customElement, property, state } from 'lit/decorators.js';
+import { customElement, state } from 'lit/decorators.js';
 import { ref } from 'lit/directives/ref.js';
 
 import { create } from 'mutative';
@@ -9,7 +9,6 @@ import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
 import { TimeLimitedGame2 } from './TimeLimitedGame2';
 import { GameLogger } from './GameLogger';
-import { randomFromSet, randomIntFromRange } from './Randomizer';
 
 import './RealHeight';
 import './DynamicGrid';
@@ -36,13 +35,11 @@ import type {
   OperatorType,
   SplitType,
 } from './NumberlineArchesGameAppLink';
-
-interface LeftRightOperandSplitType {
-  tensInLeftOperand: number;
-  singlesInLeftOperand: number;
-  tensInRightOperand: number;
-  singlesInRightOperand: number;
-}
+import {
+  CreateMinusSum,
+  CreatePlusSum,
+  LeftRightOperandType,
+} from './SumCreationHelpers';
 
 function operatorAsString(operator: OperatorType) {
   if (operator === 'plus') return '+';
@@ -69,11 +66,23 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
 
   private gameLogger = new GameLogger('X', '');
 
-  @property()
-  accessor minNumber = 0;
-  @property()
-  accessor maxNumber = 100;
+  /* Properties that are set via the URL */
+  @state()
+  private accessor minNumber = 0;
+  @state()
+  private accessor maxNumber = 100;
+  @state()
+  private accessor minNumberline = 0;
+  @state()
+  private accessor maxNumberline = 100;
+  @state()
+  private accessor operator: OperatorType = 'plus';
+  @state()
+  private accessor split: SplitType = 'noSplit';
+  @state()
+  private accessor jumpsOfTen: JumpsOfTenType = 'noJumpsOfTen';
 
+  /* Game state properties */
   @state()
   private accessor leftOperand = 7;
   @state()
@@ -86,12 +95,6 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
   private accessor lastArch = 0;
   @state()
   private accessor numberTenArches = 0;
-  @state()
-  private accessor operator: OperatorType = 'plus';
-  @state()
-  private accessor split: SplitType = 'noSplit';
-  @state()
-  private accessor jumpsOfTen: JumpsOfTenType = 'noJumpsOfTen';
   @state()
   private accessor arches: ArchType[] = [];
   @state()
@@ -123,6 +126,7 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
   private accessor emoji: string = NumberlineArchesGameApp.neutralEmoji;
 
   private currentNumberlineNumber = 0;
+  private previousSinglesRightOperand: undefined | number = undefined;
 
   /** Start a new game.
    */
@@ -154,19 +158,39 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
 
   protected parseUrl(): void {
     const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.has('min')) {
-      const parsedMin = parseInt(urlParams.get('min') || '', 10);
-      if (!parsedMin) this.minNumber = 0;
-      else this.minNumber = Math.floor(parsedMin / 10) * 10;
-      if (this.minNumber < 0) this.minNumber = 0;
-    }
-    if (urlParams.has('max')) {
-      const parsedMax = parseInt(urlParams.get('max') || '', 10);
-      if (!parsedMax) this.maxNumber = 100;
-      else this.maxNumber = Math.ceil(parsedMax / 10) * 10;
-      if (this.maxNumber <= this.minNumber)
-        this.maxNumber = this.minNumber + 10;
-    }
+
+    const parsedMin = parseInt(urlParams.get('min') || '', 10);
+    if (Number.isNaN(parsedMin)) this.minNumber = 0;
+    else this.minNumber = Math.floor(parsedMin / 10) * 10;
+    if (this.minNumber < 0) this.minNumber = 0;
+
+    const parsedMax = parseInt(urlParams.get('max') || '', 10);
+    if (Number.isNaN(parsedMax)) this.maxNumber = 100;
+    else this.maxNumber = Math.ceil(parsedMax / 10) * 10;
+    if (this.maxNumber <= this.minNumber) this.maxNumber = this.minNumber + 10;
+
+    const parsedMinNumberline = parseInt(
+      urlParams.get('minNumberline') || '',
+      10,
+    );
+    if (Number.isNaN(parsedMinNumberline)) this.minNumberline = this.minNumber;
+    else
+      this.minNumberline = Math.min(
+        Math.floor(parsedMinNumberline / 10) * 10,
+        this.minNumber,
+      );
+
+    const parsedMaxNumberline = parseInt(
+      urlParams.get('maxNumberline') || '',
+      10,
+    );
+    if (Number.isNaN(parsedMaxNumberline)) this.maxNumberline = this.maxNumber;
+    else
+      this.maxNumberline = Math.max(
+        Math.ceil(parsedMaxNumberline / 10) * 10,
+        this.maxNumber,
+      );
+
     if (urlParams.has('split')) {
       const split = urlParams.get('split');
       if (split === 'split' || split === 'noSplit') this.split = split;
@@ -184,7 +208,7 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
       this.maxNumber - this.minNumber === 10
     ) {
       console.error(
-        'A numberline of length 10 cannot be combined with split === split or jumpsOfTen === jumpsOfTen, falling back to no jumps of ten and no splitting.',
+        'A maxNumber - minNumber  of  10 cannot be combined with split === split or jumpsOfTen === jumpsOfTen, falling back to no jumps of ten and no splitting.',
       );
       this.split = 'noSplit';
       this.jumpsOfTen = 'noJumpsOfTen';
@@ -196,7 +220,7 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
       this.maxNumber - this.minNumber === 20
     ) {
       console.error(
-        'A numberline of length 20 cannot be combined with split === split and jumpsOfTen === jumpsOfTen, falling back to no jumps of ten.',
+        'A maxNumber - minNumber of 20 cannot be combined with split === split and jumpsOfTen === jumpsOfTen, falling back to no jumps of ten.',
       );
       this.jumpsOfTen = 'noJumpsOfTen';
     }
@@ -208,139 +232,6 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
     }
     if (this.operator === 'plus') this.gameLogger.setSubCode('a');
     if (this.operator === 'minus') this.gameLogger.setSubCode('b');
-  }
-
-  determineLeftRightOperandNoSplitMinus(): LeftRightOperandSplitType {
-    const tensInMin = Math.floor(this.minNumber / 10);
-    const tensInMax = Math.floor(this.maxNumber / 10);
-
-    /* First we determine how many singles we want in the right operand
-     */
-    const singlesInRightOperand = randomIntFromRange(1, 9);
-
-    /** Then we determine the number of singles in the left operand, taking into
-     * account we do not want to split the singles.
-     */
-    const singlesInLeftOperand = randomIntFromRange(singlesInRightOperand, 9);
-
-    let tensInRightOperand = 0;
-    if (this.jumpsOfTen === 'jumpsOfTen') {
-      tensInRightOperand = randomIntFromRange(1, tensInMax - tensInMin - 1);
-    }
-    const tensInLeftOperand = randomIntFromRange(
-      tensInRightOperand,
-      tensInMax - 1,
-    );
-
-    return {
-      tensInLeftOperand,
-      singlesInLeftOperand,
-      tensInRightOperand,
-      singlesInRightOperand,
-    };
-  }
-
-  determineLeftRightOperandWithSplitMinus(): LeftRightOperandSplitType {
-    const tensInMin = Math.floor(this.minNumber / 10);
-    const tensInMax = Math.floor(this.maxNumber / 10);
-
-    /* First we determine how many singles we want in the right operand
-     * As we always want to cross tens, one doesn't work as it can't be split
-     * By starting with determining the number of singles in the right operand, we make
-     * these truely random
-     */
-    const singlesInRightOperand = randomIntFromRange(2, 9);
-
-    /** Then we determine the number of singles in the left operand, taking into
-     * account we also want to cross a ten.
-     */
-    const singlesInLeftOperand = randomIntFromRange(
-      1,
-      singlesInRightOperand - 1,
-    );
-
-    let tensInRightOperand = 0;
-    if (this.jumpsOfTen === 'jumpsOfTen') {
-      tensInRightOperand = randomIntFromRange(1, tensInMax - tensInMin - 2);
-    }
-    const tensInLeftOperand = randomIntFromRange(
-      tensInRightOperand + 1,
-      tensInMax - 1,
-    );
-    return {
-      tensInLeftOperand,
-      singlesInLeftOperand,
-      tensInRightOperand,
-      singlesInRightOperand,
-    };
-  }
-
-  determineLeftRightOperandNoSplitPlus(): LeftRightOperandSplitType {
-    const tensInMin = Math.floor(this.minNumber / 10);
-    const tensInMax = Math.floor(this.maxNumber / 10);
-
-    /* First we determine how many singles we want in the right operand
-     */
-    const singlesInRightOperand = randomIntFromRange(1, 9);
-
-    /** Then we determine the number of singles in the left operand, taking into
-     * account we do not want to split the singles.
-     */
-    const singlesInLeftOperand = randomIntFromRange(
-      1,
-      10 - singlesInRightOperand,
-    );
-
-    let tensInRightOperand = 0;
-    if (this.jumpsOfTen === 'jumpsOfTen') {
-      tensInRightOperand = randomIntFromRange(1, tensInMax - tensInMin - 1);
-    }
-    const tensInLeftOperand = randomIntFromRange(
-      tensInMin,
-      tensInMax - tensInRightOperand - 1,
-    );
-
-    return {
-      tensInLeftOperand,
-      singlesInLeftOperand,
-      tensInRightOperand,
-      singlesInRightOperand,
-    };
-  }
-
-  determineLeftRightOperandWithSplitPlus(): LeftRightOperandSplitType {
-    const tensInMin = Math.floor(this.minNumber / 10);
-    const tensInMax = Math.floor(this.maxNumber / 10);
-
-    /* First we determine how many singles we want in the right operand
-     * As we always want to cross tens, one doesn't work as it can't be split
-     * By starting with determining the number of singles in the right operand, we make
-     * these truely random
-     */
-    const singlesInRightOperand = randomIntFromRange(2, 9);
-
-    /** Then we determine the number of singles in the left operand, taking into
-     * account we also want to cross a ten.
-     */
-    const singlesInLeftOperand = randomIntFromRange(
-      11 - singlesInRightOperand,
-      9,
-    );
-
-    let tensInRightOperand = 0;
-    if (this.jumpsOfTen === 'jumpsOfTen') {
-      tensInRightOperand = randomIntFromRange(1, tensInMax - tensInMin - 2);
-    }
-    const tensInLeftOperand = randomIntFromRange(
-      tensInMin,
-      tensInMax - tensInRightOperand - 2,
-    );
-    return {
-      tensInLeftOperand,
-      singlesInLeftOperand,
-      tensInRightOperand,
-      singlesInRightOperand,
-    };
   }
 
   newRound() {
@@ -355,7 +246,7 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
 
     this.arches = [];
 
-    this.emoji = NumberlineArchesGameApp.neutralEmoji;
+    // this.emoji = NumberlineArchesGameApp.neutralEmoji;
 
     this.archesPadActive = true;
     this.gameActive = true;
@@ -363,122 +254,106 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
 
   newRoundMinus() {
     this.operator = 'minus';
-    let leftRightOperand: LeftRightOperandSplitType = {
-      tensInLeftOperand: 0,
-      singlesInLeftOperand: 0,
-      tensInRightOperand: 0,
-      singlesInRightOperand: 0,
+
+    let sum: LeftRightOperandType = {
+      leftOperand: 0,
+      rightOperand: 0,
+      answer: 0,
     };
 
-    if (this.split === 'noSplit') {
-      leftRightOperand = this.determineLeftRightOperandNoSplitMinus();
-    } else if (this.split === 'split') {
-      leftRightOperand = this.determineLeftRightOperandWithSplitMinus();
+    let minTenJumps = 0;
+    let maxTenJumps = 0;
+    if (this.jumpsOfTen === 'jumpsOfTen') {
+      minTenJumps = 1;
+      maxTenJumps = 100;
     }
 
-    // Calculate the complete exercise
-    this.leftOperand =
-      leftRightOperand.tensInLeftOperand * 10 +
-      leftRightOperand.singlesInLeftOperand;
-    this.rightOperand =
-      leftRightOperand.tensInRightOperand * 10 +
-      leftRightOperand.singlesInRightOperand;
-    this.answer = this.leftOperand - this.rightOperand;
+    sum = CreateMinusSum(
+      this.minNumber,
+      this.maxNumber,
+      minTenJumps,
+      maxTenJumps,
+      this.split,
+      this.previousSinglesRightOperand,
+      this.minNumber === this.minNumberline,
+    );
 
-    // Ensure we do not get the min and max of the numberline in the exercise
-    if (
-      this.answer === this.minNumber &&
-      leftRightOperand.singlesInRightOperand > 1 &&
-      this.rightOperand > 1
-    ) {
-      leftRightOperand.singlesInRightOperand -= 1;
-      this.rightOperand -= 1;
-      this.answer += 1;
-    } else if (this.answer === this.maxNumber) {
-      console.assert(this.leftOperand !== this.minNumber);
-      leftRightOperand.singlesInLeftOperand += 1;
-      this.leftOperand += 1;
-      this.answer += 1;
-    }
+    this.leftOperand = sum.leftOperand;
+    this.rightOperand = sum.rightOperand;
+    this.answer = sum.answer;
+
+    this.previousSinglesRightOperand = sum.rightOperand % 10;
 
     // Now we have to find the required arches
-    const leftOperandToPreviousMultipleOfTen =
-      leftRightOperand.singlesInLeftOperand;
+    const leftOperandToPreviousMultipleOfTen = sum.leftOperand % 10;
 
-    if (
-      leftOperandToPreviousMultipleOfTen <=
-      leftRightOperand.singlesInRightOperand
-    )
+    if (leftOperandToPreviousMultipleOfTen <= sum.rightOperand % 10)
       this.firstArch = leftOperandToPreviousMultipleOfTen;
-    else this.firstArch = leftRightOperand.singlesInRightOperand;
+    else this.firstArch = sum.rightOperand % 10;
 
-    this.lastArch = leftRightOperand.singlesInRightOperand - this.firstArch;
+    this.lastArch = (sum.rightOperand % 10) - this.firstArch;
 
-    this.numberTenArches = leftRightOperand.tensInRightOperand;
+    this.numberTenArches = Math.floor(sum.rightOperand / 10);
   }
 
   newRoundPlus() {
     this.operator = 'plus';
-    let leftRightOperand: LeftRightOperandSplitType = {
-      tensInLeftOperand: 0,
-      singlesInLeftOperand: 0,
-      tensInRightOperand: 0,
-      singlesInRightOperand: 0,
+
+    let sum: LeftRightOperandType = {
+      leftOperand: 0,
+      rightOperand: 0,
+      answer: 0,
     };
 
-    if (this.split === 'noSplit') {
-      leftRightOperand = this.determineLeftRightOperandNoSplitPlus();
-    } else if (this.split === 'split') {
-      leftRightOperand = this.determineLeftRightOperandWithSplitPlus();
+    let minTenJumps = 0;
+    let maxTenJumps = 0;
+    if (this.jumpsOfTen === 'jumpsOfTen') {
+      minTenJumps = 1;
+      maxTenJumps = 100;
     }
 
-    // Calculate the complete exercise
-    this.leftOperand =
-      leftRightOperand.tensInLeftOperand * 10 +
-      leftRightOperand.singlesInLeftOperand;
-    this.rightOperand =
-      leftRightOperand.tensInRightOperand * 10 +
-      leftRightOperand.singlesInRightOperand;
-    this.answer = this.leftOperand + this.rightOperand;
+    sum = CreatePlusSum(
+      this.minNumber,
+      this.maxNumber,
+      minTenJumps,
+      maxTenJumps,
+      this.split,
+      this.previousSinglesRightOperand,
+      this.minNumber === this.minNumberline,
+      this.maxNumber === this.maxNumberline,
+    );
 
-    // Ensure we do not get the min and max of the numberline in the exercise
-    if (
-      this.answer === this.maxNumber &&
-      leftRightOperand.singlesInRightOperand > 1 &&
-      this.rightOperand > 1
-    ) {
-      leftRightOperand.singlesInRightOperand -= 1;
-      this.rightOperand -= 1;
-      this.answer -= 1;
-    } else if (this.answer === this.maxNumber) {
-      console.assert(this.leftOperand !== this.minNumber);
-      leftRightOperand.singlesInLeftOperand -= 1;
-      this.leftOperand -= 1;
-      this.answer -= 1;
-    }
+    this.leftOperand = sum.leftOperand;
+    this.rightOperand = sum.rightOperand;
+    this.answer = sum.answer;
+
+    this.previousSinglesRightOperand = sum.rightOperand % 10;
 
     // Now we have to find the required arches
-    const leftOperandToNextMultipleOfTen =
-      10 - leftRightOperand.singlesInLeftOperand;
+    const leftOperandToNextMultipleOfTen = 10 - (sum.leftOperand % 10); //leftRightOperand.singlesInLeftOperand;
 
     if (
-      leftOperandToNextMultipleOfTen <= leftRightOperand.singlesInRightOperand
+      leftOperandToNextMultipleOfTen <=
+      sum.rightOperand % 10 // leftRightOperand.singlesInRightOperand
     )
       this.firstArch = leftOperandToNextMultipleOfTen;
-    else this.firstArch = leftRightOperand.singlesInRightOperand;
+    else this.firstArch = sum.rightOperand % 10; // leftRightOperand.singlesInRightOperand;
 
-    this.lastArch = leftRightOperand.singlesInRightOperand - this.firstArch;
+    this.lastArch = (sum.rightOperand % 10) - this.firstArch; // leftRightOperand.singlesInRightOperand - this.firstArch;
 
-    this.numberTenArches = leftRightOperand.tensInRightOperand;
+    //this.numberTenArches = leftRightOperand.tensInRightOperand;
+    this.numberTenArches = Math.floor(sum.rightOperand / 10);
   }
 
   processWrongAnswer(): void {
-    this.emoji = randomFromSet(NumberlineArchesGameApp.sadFaces);
+    // this.emoji = randomFromSet(NumberlineArchesGameApp.sadFaces);
     this.numberNok += 1;
   }
 
   processCorrectSubAnswer(): void {
-    this.emoji = randomFromSet(NumberlineArchesGameApp.happyFaces);
+    // this.emoji = randomFromSet(NumberlineArchesGameApp.happyFaces);
+    // if (NumberlineArchesGameApp.sadFaces.includes(this.emoji))
+    //  this.emoji = NumberlineArchesGameApp.neutralEmoji;
   }
 
   numberLineAreaChange(numberLineArea: Element | undefined) {
@@ -581,6 +456,7 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
         newPartialNumberlineNumber === this.answer
       ) {
         this.numberOk += 1;
+        // this.emoji = randomFromSet(NumberlineArchesGameApp.happyFaces);
         this.newRound();
       }
     } else {
@@ -747,9 +623,9 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
         ${ref(this.numberLineAreaChange)}
       >
         <number-line-v2
-          min=${this.minNumber}
-          max=${this.maxNumber}
-          .fixedNumbers=${[this.minNumber, this.maxNumber]}
+          min=${this.minNumberline}
+          max=${this.maxNumberline}
+          .fixedNumbers=${[this.minNumberline, this.maxNumberline]}
           .aboveArches=${aboveArches}
           .belowArches=${belowArches}
           .numberBoxes=${this.numberBoxes}
