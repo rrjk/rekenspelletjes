@@ -385,12 +385,19 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
       this.firstArch = 0;
     }
 
+    let active: ActiveEnum = 'active';
+    let nmbr: number | undefined = undefined;
+    if (this.currentNumberlineNumber !== this.answer) {
+      active = 'notActive';
+      nmbr = this.currentNumberlineNumber;
+    }
+
     if (this.currentNumberlineNumber !== previousNumberlineNumber) {
       this.numberBoxes = create(this.numberBoxes, draft => {
         draft.push({
           position: this.currentNumberlineNumber,
-          nmbr: undefined,
-          active: 'active',
+          nmbr: nmbr,
+          active: active,
         });
       });
       this.arches = [
@@ -398,8 +405,8 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
         { from: previousNumberlineNumber, to: this.currentNumberlineNumber },
       ];
       this.processCorrectSubAnswer();
-      this.archesPadActive = false;
-      this.keyPadActive = true;
+      this.archesPadActive = active === 'active' ? false : true;
+      this.keyPadActive = active === 'active' ? true : false;
       this.crossedOutArches = [];
     } else {
       this.processWrongAnswer();
