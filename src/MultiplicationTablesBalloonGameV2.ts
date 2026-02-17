@@ -22,6 +22,12 @@ import {
 } from './Randomizer';
 
 import { GameLogger } from './GameLogger';
+import {
+  AscendingImage,
+  getGameVariant,
+} from './MultiplicationTablesBalloonGameVariants';
+import { UnexpectedValueError } from './UnexpectedValueError';
+import { operatorToSymbol } from './Operator';
 
 interface ItemInfo extends ItemInfoInterface {
   nmbr: number;
@@ -34,61 +40,38 @@ interface ExerciseInfo {
   operator: Operator;
 }
 
-type gameType =
-  | 'timesTill10'
-  | 'timesAndDivideAbove10'
-  | 'timesAbove10'
-  | 'timesAndDivideTill10';
-
-function operatorToSymbol(operator: Operator) {
-  if (operator === 'times') return '×';
-  if (operator === 'divide') return '∶';
-  throw Error('Internal software error: unexpected operator');
-}
-
 @customElement('mutiplication-tables-balloon-game-app-v2')
 export class MultiplicationTablesBalloonGameV2 extends AscendingItemsGameApp<
   ExerciseInfo,
   ItemInfo
 > {
+  private tablesToUse: readonly number[] = [];
+  private operatorsToUse: readonly Operator[] = [];
+  private colorsetToUse: readonly Color[] = [];
   @state()
-  private accessor gameType: gameType = 'timesTill10';
-
-  private tablesToUse: number[] = [];
-  private operatorsToUse: Operator[] = [];
+  private accessor ascendingImageToUse: AscendingImage = 'balloon';
   private gameLogger = new GameLogger('D', '');
   private lastTableUsed = 0;
   private lastMultiplierUsed = 0;
 
   get imageName(): string {
-    switch (this.gameType) {
-      case 'timesTill10':
+    switch (this.ascendingImageToUse) {
+      case 'balloon':
         return 'ballon';
-      case 'timesAndDivideAbove10':
+      case 'ufo':
         return 'ufo';
-      case 'timesAndDivideTill10':
+      case 'rocket':
         return 'raket';
-      case 'timesAbove10':
+      case 'zeppelin':
         return 'zeppelin';
+      default:
+        throw new UnexpectedValueError(this.ascendingImageToUse);
     }
-    throw RangeError('Internal SW error - itemImage not recognized');
   }
 
   /** Provides a fresh color set array based on the itemImage that can be used and changed etc. */
   getColorSet(): Color[] {
-    switch (this.gameType) {
-      case 'timesTill10':
-        return [...legacyBalloonColors];
-      case 'timesAndDivideAbove10':
-        return [...setOf20Colors];
-      case 'timesAndDivideTill10':
-        return [...setOf20Colors];
-      case 'timesAbove10':
-        return [...setOf20Colors];
-    }
-    throw RangeError(
-      'Internal SW error - gameType ${this.gameType} is not according to type definition',
-    );
+    return [...this.colorsetToUse];
   }
 
   get welcomeMessage(): HTMLTemplateResult {
@@ -100,59 +83,83 @@ export class MultiplicationTablesBalloonGameV2 extends AscendingItemsGameApp<
     this.parseUrl();
   }
 
+  private parseUrlWithVariant(urlParams: URLSearchParams): void {
+    const variant = urlParams.get('variant');
+    if (variant === null)
+      throw Error(
+        'Internal SW Error, parseUrlWithVariant called while there is no variant in the URL',
+      );
+    const extendedVariantInfo = getGameVariant(variant);
+    this.tablesToUse = extendedVariantInfo.tables;
+    this.operatorsToUse = extendedVariantInfo.operators;
+    this.colorsetToUse = extendedVariantInfo.colorSet;
+    this.ascendingImageToUse = extendedVariantInfo.image;
+    this.gameLogger.setMainCode(extendedVariantInfo.mainCode);
+    this.gameLogger.setSubCode(variant);
+  }
+
   private parseUrl(): void {
     const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('variant')) this.parseUrlWithVariant(urlParams);
+    else this.parseUrlWithoutVariant(urlParams);
+  }
 
+  private parseUrlWithoutVariant(urlParams: URLSearchParams): void {
     let tableAbove10 = false;
     let divideIncluded = false;
 
     const tablesFromUrl = urlParams.getAll('table');
-    this.tablesToUse = [];
+    const tables: number[] = [];
     for (const tableAsString of tablesFromUrl) {
       const table = parseInt(tableAsString, 10);
       if (
         !Number.isNaN(table) &&
         table >= 1 &&
         table <= 100 &&
-        !this.tablesToUse.find(value => value === table)
+        !tables.find(value => value === table)
       ) {
-        this.tablesToUse.push(table);
+        tables.push(table);
         if (table > 10) tableAbove10 = true;
       }
     }
-    if (this.tablesToUse.length === 0)
-      this.tablesToUse = [2, 3, 4, 5, 6, 7, 8, 9, 10];
+    if (tables.length === 0) this.tablesToUse = [2, 3, 4, 5, 6, 7, 8, 9, 10];
+    else this.tablesToUse = tables;
 
     const operatorsFromUrl = urlParams.getAll('operator');
-    this.operatorsToUse = [];
+    const operators: Operator[] = [];
     for (const operator of operatorsFromUrl) {
       if (
         (operator === 'times' || operator === 'divide') &&
-        !this.operatorsToUse.find(value => value === operator)
+        !operators.find(value => value === operator)
       ) {
-        this.operatorsToUse.push(operator);
+        operators.push(operator);
         if (operator === 'divide') divideIncluded = true;
       }
     }
-    if (this.operatorsToUse.length === 0) this.operatorsToUse.push('times');
+    if (operators.length === 0) operators.push('times');
+    this.operatorsToUse = operators;
 
     if (!tableAbove10 && !divideIncluded) {
-      this.gameType = 'timesTill10';
       this.gameLogger.setMainCode('D');
+      this.ascendingImageToUse = 'balloon';
+      this.colorsetToUse = legacyBalloonColors;
     }
     if (!tableAbove10 && divideIncluded) {
-      this.gameType = 'timesAndDivideTill10';
       this.gameLogger.setMainCode('C');
+      this.colorsetToUse = setOf20Colors;
+      this.ascendingImageToUse = 'rocket';
       throw new Error('rocket game is not yet supported');
     }
     if (tableAbove10 && !divideIncluded) {
-      this.gameType = 'timesAbove10';
       this.gameLogger.setMainCode('K');
+      this.colorsetToUse = setOf20Colors;
+      this.ascendingImageToUse = 'zeppelin';
       throw new Error('zeppelin game is not yet supported');
     }
     if (tableAbove10 && divideIncluded) {
-      this.gameType = 'timesAndDivideAbove10';
+      this.colorsetToUse = setOf20Colors;
       this.gameLogger.setMainCode('M');
+      this.ascendingImageToUse = 'ufo';
     }
   }
 
@@ -167,7 +174,7 @@ export class MultiplicationTablesBalloonGameV2 extends AscendingItemsGameApp<
     const itemInfo: ItemInfo[] = [];
     const possibleColors = this.getColorSet();
 
-    let allowedTables: number[];
+    let allowedTables: readonly number[];
     if (this.tablesToUse.length < 2) allowedTables = this.tablesToUse;
     else
       allowedTables = this.tablesToUse.filter(
@@ -322,10 +329,16 @@ export class MultiplicationTablesBalloonGameV2 extends AscendingItemsGameApp<
   }
 
   renderItem(itemInfo: ItemInfo): HTMLTemplateResult {
-    if (this.gameType === 'timesAndDivideAbove10')
-      return this.renderFlyingSaucer(itemInfo);
-    else if (this.gameType === 'timesTill10')
-      return this.renderBalloon(itemInfo);
-    throw Error('Internal SW error - gameType not implemented');
+    switch (this.ascendingImageToUse) {
+      case 'balloon':
+        return this.renderBalloon(itemInfo);
+      case 'ufo':
+        return this.renderFlyingSaucer(itemInfo);
+      case 'rocket':
+      case 'zeppelin':
+        throw new Error('Internal SW error - ascending image not implemented');
+      default:
+        throw new UnexpectedValueError(this.ascendingImageToUse);
+    }
   }
 }
