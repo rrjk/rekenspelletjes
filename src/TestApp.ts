@@ -3,7 +3,7 @@ import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
 import { customElement } from 'lit/decorators.js';
 
-import './IconMixedSums';
+import './IconHourglassButtonV2';
 
 @customElement('test-app')
 export class TestApp extends LitElement {
@@ -15,9 +15,26 @@ export class TestApp extends LitElement {
           height: 100%;
           display: block;
         }
-        icon-mixed-sums {
-          width: 96px;
-          height: 96px;
+        icon-hourglass-button-v2 {
+          width: 200px;
+        }
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+          object-position: center center;
+        }
+
+        div {
+          height: 200px;
+          width: 200px;
+          aspect-ratio: 2 / 1;
+          background-color: red;
+        }
+
+        div:hover {
+          background-color: blue;
         }
       `,
     ];
@@ -25,27 +42,9 @@ export class TestApp extends LitElement {
 
   protected renderTest(): HTMLTemplateResult {
     return html`
-      <icon-mixed-sums
-        color="lavender"
-        puzzlePiece
-        maxAnswer="1000"
-        maxTable="30"
-        plus
-        minus
-        divide
-      ></icon-mixed-sums>
-      <icon-mixed-sums
-        color="blue"
-        maxAnswer="10"
-        maxTable="10"
-        divide
-      ></icon-mixed-sums>
-      <icon-mixed-sums
-        color="yellow"
-        maxAnswer="10"
-        maxTable="10"
-        plus
-      ></icon-mixed-sums>
+      <icon-hourglass-button-v2 timeCode="a" gameCode="D-b-a"
+        ><img src="../images/egg.png" />
+      </icon-hourglass-button-v2>
     `;
   }
 
