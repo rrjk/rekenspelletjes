@@ -1,9 +1,11 @@
 import { LitElement, html, css, unsafeCSS } from 'lit';
 import type { HTMLTemplateResult, CSSResultGroup } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
+import { createRef, Ref, ref } from 'lit/directives/ref.js';
+
+import { computePosition, flip, shift, offset } from '@floating-ui/dom';
 
 import { type TimeCode, hourGlassIcons, stringToTimeCode } from './TimeCodes';
-import { classMap } from 'lit/directives/class-map.js';
 
 @customElement('icon-hourglass-button-v2')
 export class IconHourglassButton extends LitElement {
@@ -19,15 +21,10 @@ export class IconHourglassButton extends LitElement {
   @property()
   accessor description = '';
 
-  @state()
-  accessor touched = false;
-
-  mouseDownTimeOut = 0;
-  clickInProgress = false;
-
-  handleMouseUpBound = this.handleMouseUp.bind(this);
-  handleHoverStartBound = this.handleHoverStart.bind(this);
-  handleHoverEndBound = this.handleHoverEnd.bind(this);
+  /** Reference to the description dialog. */
+  descriptionRef: Ref<HTMLDialogElement> = createRef();
+  /** Reference to the i button */
+  iButtonRef: Ref<SVGElement> = createRef();
 
   static get styles(): CSSResultGroup {
     return css`
@@ -75,11 +72,12 @@ export class IconHourglassButton extends LitElement {
           border-radius: 8cqh;
         }
       }
+
       svg#infoButton {
         aspect-ratio: 1;
         width: 80%;
         grid-area: informationIcon;
-        font-size: 80px;
+        font-size: 70px;
         dominant-baseline: middle;
         text-anchor: middle;
         font-family: 'Georgia';
@@ -103,6 +101,19 @@ export class IconHourglassButton extends LitElement {
         background-position: center;
       }
 
+      dialog#description {
+        margin: 0;
+        inset: auto;
+        max-width: 100px;
+        width: max-context;
+        background-color: #efefef;
+        border: 1px grey solid;
+      }
+
+      #description:focus {
+        outline: none;
+      }
+
       .timeCodeA {
         background-image: url(${unsafeCSS(hourGlassIcons.a.href)});
       }
@@ -114,73 +125,51 @@ export class IconHourglassButton extends LitElement {
       }
     `;
   }
-  /*
-  connectedCallback(): void {
-    super.connectedCallback();
-    this.addEventListener('mouseenter', this.handleHoverStartBound);
-    this.addEventListener('mouseleave', this.handleHoverEndBound);
+
+  handleClickInfo(evt: Event) {
+    evt.stopPropagation();
+
+    if (this.descriptionRef.value && this.iButtonRef.value) {
+      // We first need to show the dialog, as otherwise computePosition doesn't work
+      this.descriptionRef.value.showPopover();
+
+      computePosition(this.iButtonRef.value, this.descriptionRef.value, {
+        placement: 'top',
+        middleware: [offset(4), flip(), shift({ padding: 5 })],
+      })
+        .then(({ x, y }) => {
+          if (this.descriptionRef.value && this.iButtonRef.value) {
+            this.descriptionRef.value.style.left = `${x}px`;
+            this.descriptionRef.value.style.top = `${y}px`;
+          }
+        })
+        .catch(() => {
+          // An error occured in the compute Position, we simply don't change the coordinates, the description will appear on the middle of the viewport.
+          console.error(`computePosition failed - description not shown`);
+        });
+    }
   }
 
-  disconnectedCallback(): void {
-    super.disconnectedCallback();
-    this.removeEventListener('mouseenter', this.handleHoverStartBound);
-    this.removeEventListener('mouseleave', this.handleHoverEndBound);
-  }
-*/
-  handleMouseDown(evt: Event) {
-    //console.log(`mouseDown`);
-    evt.preventDefault();
-    this.clickInProgress = true;
-    document.addEventListener('mouseup', this.handleMouseUpBound);
-    document.addEventListener('touchend', this.handleMouseUpBound);
-    this.mouseDownTimeOut = window.setTimeout(
-      () => this.handleLongClick(),
-      500,
-    );
+  handleDescriptionToggle(/*evt: ToggleEvent*/) {
+    // console.log(`toggle event`);
+    // console.log(evt);
   }
 
-  handleMouseUp() {
-    //console.log(`mouseUp`);
-    //console.log(this.mouseDownTimeOut);
-    if (this.mouseDownTimeOut) {
-      window.clearTimeout(this.mouseDownTimeOut);
-      this.mouseDownTimeOut = 0;
-      //console.log(`short click`);
-    } // else if (this.clickInProgress) console.log(`long click over`);
-    // else console.log(`mouse up but no click in progress`);
-    this.clickInProgress = false;
-    this.touched = false;
-    document.removeEventListener('mouseup', this.handleMouseUpBound);
-    document.removeEventListener('touchend', this.handleMouseUpBound);
-  }
-
-  handleLongClick() {
-    // console.log(`long click`);
-    this.touched = true;
-    this.mouseDownTimeOut = 0;
-  }
-
-  handleHoverStart() {
-    // console.log('hover start');
-  }
-
-  handleHoverEnd() {
-    // console.log('hover end');
+  handleClickMain() {
+    // console.log(`main click`);
   }
 
   render(): HTMLTemplateResult {
-    const clss = { touched: this.touched };
     return html`
-      <div
-        id="gameButton"
-        class=${classMap(clss)}
-        @mousedown=${(evt: Event) => this.handleMouseDown(evt)}
-        @mouseenter=${() => this.handleHoverStart()}
-        @mouseleave=${() => this.handleHoverEnd()}
-      >
+      <div id="gameButton" @click=${() => this.handleClickMain()}>
         <div id="gameIcon"><slot></slot></div>
         <div id="hourGlassIcon" class="timeCodeA"></div>
-        <svg id="infoButton" viewBox="-50 -50 100 100">
+        <svg
+          viewBox="-50 -50 100 100"
+          id="infoButton"
+          @click=${(evt: Event) => this.handleClickInfo(evt)}
+          ${ref(this.iButtonRef)}
+        >
           <circle
             cx="0"
             cy="0"
@@ -192,6 +181,9 @@ export class IconHourglassButton extends LitElement {
           <text x="0" y="7">i</text>
         </svg>
       </div>
+      <dialog id="description" popover ${ref(this.descriptionRef)}>
+        ${this.description}
+      </dialog>
     `;
   }
 }

@@ -80,6 +80,7 @@
     "typescript-eslint": "^8.33.0"
   },
   "dependencies": {
+    "@floating-ui/dom": "^1.7.6",
     "@lit-labs/observers": "^2.0.4",
     "bezier-js": "^6.1.4",
     "color2k": "^2.0.3",

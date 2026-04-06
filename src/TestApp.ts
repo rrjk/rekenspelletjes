@@ -42,7 +42,10 @@ export class TestApp extends LitElement {
 
   protected renderTest(): HTMLTemplateResult {
     return html`
-      <icon-hourglass-button-v2 timeCode="a" gameCode="D-b-a"
+      <icon-hourglass-button-v2
+        timeCode="a"
+        gameCode="D-b-a"
+        description="Plussommen tot de 10"
         ><img src="../images/egg.png" />
       </icon-hourglass-button-v2>
     `;
