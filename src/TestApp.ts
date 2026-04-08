@@ -17,6 +17,7 @@ export class TestApp extends LitElement {
         }
         icon-hourglass-button-v2 {
           width: 200px;
+          height: 90px;
         }
 
         img {
@@ -44,8 +45,16 @@ export class TestApp extends LitElement {
     return html`
       <icon-hourglass-button-v2
         timeCode="a"
-        gameCode="D-b-a"
-        description="Plussommen tot de 10"
+        mainCode="D"
+        variant="a"
+        description="Plussommen tot de 10 en dan nog een beetje meer"
+        ><img src="../images/egg.png" />
+      </icon-hourglass-button-v2>
+      <icon-hourglass-button-v2
+        timeCode="b"
+        mainCode="D"
+        variant="b"
+        description="Plussommen tot de 10 en dat was het"
         ><img src="../images/egg.png" />
       </icon-hourglass-button-v2>
     `;

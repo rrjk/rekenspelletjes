@@ -1,9 +1,15 @@
 import { LitElement, html, css, unsafeCSS } from 'lit';
 import type { HTMLTemplateResult, CSSResultGroup } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { createRef, Ref, ref } from 'lit/directives/ref.js';
+import { classMap } from 'lit/directives/class-map.js';
 
-import { computePosition, flip, shift, offset } from '@floating-ui/dom';
+import {
+  computePosition,
+  flip,
+  shift,
+  offset,
+  autoUpdate,
+} from '@floating-ui/dom';
 
 import { type TimeCode, hourGlassIcons, stringToTimeCode } from './TimeCodes';
 
@@ -13,18 +19,21 @@ export class IconHourglassButton extends LitElement {
   @property({ converter: stringToTimeCode })
   accessor timeCode: TimeCode = 'a';
 
-  /** Which gameCode to link to  */
+  /** Which mainCode to link to  */
   @property()
-  accessor gameCode = 'a';
+  accessor mainCode = 'a';
+
+  /** Which variant to link to  */
+  @property()
+  accessor variant = 'a';
 
   /** Description to show */
   @property()
   accessor description = '';
 
-  /** Reference to the description dialog. */
-  descriptionRef: Ref<HTMLDialogElement> = createRef();
-  /** Reference to the i button */
-  iButtonRef: Ref<SVGElement> = createRef();
+  descriptionDialogCleanup = () => {
+    /*nothing*/
+  };
 
   static get styles(): CSSResultGroup {
     return css`
@@ -34,6 +43,7 @@ export class IconHourglassButton extends LitElement {
         display: grid;
         justify-items: center;
         align-items: center;
+        position: relative;
       }
 
       a {
@@ -55,10 +65,6 @@ export class IconHourglassButton extends LitElement {
         box-sizing: border-box;
       }
 
-      div#gameButton.touched {
-        background-color: yellow;
-      }
-
       @container (aspect-ratio < 2) {
         div#gameButton {
           width: 100cqw;
@@ -73,10 +79,20 @@ export class IconHourglassButton extends LitElement {
         }
       }
 
-      svg#infoButton {
+      button#infoButton {
         aspect-ratio: 1;
         width: 80%;
         grid-area: informationIcon;
+        border: none;
+        margin: 0;
+        padding: 0;
+        background-color: transparent;
+        z-index: 2;
+      }
+
+      svg {
+        width: 100%;
+        height: 100%;
         font-size: 70px;
         dominant-baseline: middle;
         text-anchor: middle;
@@ -104,8 +120,9 @@ export class IconHourglassButton extends LitElement {
       dialog#description {
         margin: 0;
         inset: auto;
-        max-width: 100px;
-        width: max-context;
+        max-width: 50%;
+        width: max-content;
+
         background-color: #efefef;
         border: 1px grey solid;
       }
@@ -123,65 +140,79 @@ export class IconHourglassButton extends LitElement {
       .timeCodeC {
         background-image: url(${unsafeCSS(hourGlassIcons.c.href)});
       }
+
+      .stretched-link {
+        position: absolute;
+        inset: 0; /* top:0; right:0; bottom:0; left:0 */
+        z-index: 1;
+      }
     `;
   }
 
-  handleClickInfo(evt: Event) {
-    evt.stopPropagation();
-
-    if (this.descriptionRef.value && this.iButtonRef.value) {
-      // We first need to show the dialog, as otherwise computePosition doesn't work
-      this.descriptionRef.value.showPopover();
-
-      computePosition(this.iButtonRef.value, this.descriptionRef.value, {
-        placement: 'top',
-        middleware: [offset(4), flip(), shift({ padding: 5 })],
-      })
-        .then(({ x, y }) => {
-          if (this.descriptionRef.value && this.iButtonRef.value) {
-            this.descriptionRef.value.style.left = `${x}px`;
-            this.descriptionRef.value.style.top = `${y}px`;
-          }
-        })
-        .catch(() => {
-          // An error occured in the compute Position, we simply don't change the coordinates, the description will appear on the middle of the viewport.
-          console.error(`computePosition failed - description not shown`);
+  handleDescriptionToggle(evt: ToggleEvent) {
+    if (evt.newState === 'open') {
+      const button = evt.source as HTMLButtonElement;
+      const dialog = evt.target as HTMLDialogElement;
+      if (button && dialog) {
+        this.descriptionDialogCleanup = autoUpdate(button, dialog, () => {
+          computePosition(button, dialog, {
+            placement: 'top',
+            middleware: [offset(4), flip(), shift({ padding: 5 })],
+          })
+            .then(({ x, y }) => {
+              dialog.style.left = `${x}px`;
+              dialog.style.top = `${y}px`;
+            })
+            .catch(() => {
+              // An error occured in the compute Position, we simply don't change the coordinates, the description will appear on the middle of the viewport.
+              console.error(
+                `computePosition failed - description shown at wrong location`,
+              );
+            });
         });
+      }
+    } else {
+      if (this.descriptionDialogCleanup) {
+        this.descriptionDialogCleanup();
+      }
     }
   }
 
-  handleDescriptionToggle(/*evt: ToggleEvent*/) {
-    // console.log(`toggle event`);
-    // console.log(evt);
-  }
-
-  handleClickMain() {
-    // console.log(`main click`);
-  }
-
   render(): HTMLTemplateResult {
+    const hourGlassClasses = {
+      timeCodeA:
+        this.timeCode === 'a' ||
+        (this.timeCode !== 'b' && this.timeCode !== 'c'),
+      timeCodeB: this.timeCode === 'b',
+      timeCodeC: this.timeCode === 'c',
+    };
     return html`
-      <div id="gameButton" @click=${() => this.handleClickMain()}>
+      <div id="gameButton">
         <div id="gameIcon"><slot></slot></div>
-        <div id="hourGlassIcon" class="timeCodeA"></div>
-        <svg
-          viewBox="-50 -50 100 100"
-          id="infoButton"
-          @click=${(evt: Event) => this.handleClickInfo(evt)}
-          ${ref(this.iButtonRef)}
-        >
-          <circle
-            cx="0"
-            cy="0"
-            r="45"
-            fill="none"
-            stroke="black"
-            stroke-width="5px"
-          />
-          <text x="0" y="7">i</text>
-        </svg>
+        <div id="hourGlassIcon" class=${classMap(hourGlassClasses)}></div>
+        <button id="infoButton" popovertarget="description">
+          <svg viewBox="-50 -50 100 100">
+            <circle
+              cx="0"
+              cy="0"
+              r="45"
+              fill="none"
+              stroke="black"
+              stroke-width="5px"
+            />
+            <text x="0" y="7">i</text>
+          </svg>
+        </button>
       </div>
-      <dialog id="description" popover ${ref(this.descriptionRef)}>
+      <a
+        href="../t?${this.mainCode}-${this.variant}-${this.timeCode}"
+        class="stretched-link"
+      ></a>
+      <dialog
+        id="description"
+        popover
+        @toggle=${(evt: ToggleEvent) => this.handleDescriptionToggle(evt)}
+      >
         ${this.description}
       </dialog>
     `;
