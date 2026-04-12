@@ -3,7 +3,7 @@ import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
 import { customElement } from 'lit/decorators.js';
 
-import './IconHourglassButtonV2';
+import './MultiplicationTablesBalloonGameIcon';
 
 @customElement('test-app')
 export class TestApp extends LitElement {
@@ -15,9 +15,10 @@ export class TestApp extends LitElement {
           height: 100%;
           display: block;
         }
-        icon-hourglass-button-v2 {
-          width: 200px;
-          height: 90px;
+
+        multiplication-tables-balloon-game-icon {
+          height: 200px;
+          width: 100px;
         }
 
         img {
@@ -33,30 +34,24 @@ export class TestApp extends LitElement {
           aspect-ratio: 2 / 1;
           background-color: red;
         }
-
-        div:hover {
-          background-color: blue;
-        }
       `,
     ];
   }
 
   protected renderTest(): HTMLTemplateResult {
     return html`
-      <icon-hourglass-button-v2
-        timeCode="a"
-        mainCode="D"
+      <multiplication-tables-balloon-game-icon
         variant="a"
-        description="Plussommen tot de 10 en dan nog een beetje meer"
-        ><img src="../images/egg.png" />
-      </icon-hourglass-button-v2>
-      <icon-hourglass-button-v2
-        timeCode="b"
-        mainCode="D"
+      ></multiplication-tables-balloon-game-icon>
+      <multiplication-tables-balloon-game-icon
         variant="b"
-        description="Plussommen tot de 10 en dat was het"
-        ><img src="../images/egg.png" />
-      </icon-hourglass-button-v2>
+      ></multiplication-tables-balloon-game-icon>
+      <multiplication-tables-balloon-game-icon
+        variant="c"
+      ></multiplication-tables-balloon-game-icon>
+      <multiplication-tables-balloon-game-icon
+        variant="d"
+      ></multiplication-tables-balloon-game-icon>
     `;
   }
 

@@ -13,6 +13,9 @@ const defaultUrl = new URL('./index.html', baseUrl);
 
 const baseURLs: Partial<Record<string, URL>> = {
   D: new URL('./TafeltjesOefenenSpel.html', baseUrl),
+  K: new URL('./TafeltjesOefenenSpel.html', baseUrl),
+  C: new URL('./TafeltjesOefenenSpel.html', baseUrl),
+  M: new URL('./TafeltjesOefenenSpel.html', baseUrl),
 };
 
 let newUrl = defaultUrl;
