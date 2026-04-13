@@ -38,7 +38,7 @@ export class IconHourglassButton extends LitElement {
   static get styles(): CSSResultGroup {
     return css`
       :host {
-        aspect-ratio: 2 /1;
+        aspect-ratio: 1.8 /1;
         container-type: size;
         display: grid;
         justify-items: center;
@@ -51,28 +51,28 @@ export class IconHourglassButton extends LitElement {
       }
 
       div#gameButton {
-        aspect-ratio: 2 / 1;
+        aspect-ratio: 1.8 / 1;
         display: grid;
         background-color: lightgrey;
         border: 1px solid black;
         justify-items: center;
         align-items: center;
         grid-template-rows: 81% 19%;
-        grid-template-columns: 57% 33% 10%;
+        grid-template-columns: 56% 33% 11%;
         grid-template-areas:
           'gameIcon hourGlassIcon blank'
           'gameIcon hourGlassIcon informationIcon';
         box-sizing: border-box;
       }
 
-      @container (aspect-ratio < 2) {
+      @container (aspect-ratio < 1.8) {
         div#gameButton {
           width: 100cqw;
           border-radius: 8cqw;
         }
       }
 
-      @container (aspect-ratio >= 2) {
+      @container (aspect-ratio >= 1.8) {
         div#gameButton {
           height: 100cqh;
           border-radius: 8cqh;
@@ -101,8 +101,8 @@ export class IconHourglassButton extends LitElement {
 
       #gameIcon {
         grid-area: gameIcon;
-        height: 85%;
-        width: 85%;
+        height: 95%;
+        width: 95%;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -157,6 +157,7 @@ export class IconHourglassButton extends LitElement {
         this.descriptionDialogCleanup = autoUpdate(button, dialog, () => {
           computePosition(button, dialog, {
             placement: 'top',
+            strategy: 'fixed',
             middleware: [offset(4), flip(), shift({ padding: 5 })],
           })
             .then(({ x, y }) => {

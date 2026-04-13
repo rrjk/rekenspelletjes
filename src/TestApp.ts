@@ -4,6 +4,7 @@ import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 import { customElement } from 'lit/decorators.js';
 
 import './MultiplicationTablesBalloonGameIcon';
+import './MultiplicationTablesBalloonHourglassGameIcon';
 
 @customElement('test-app')
 export class TestApp extends LitElement {
@@ -19,6 +20,11 @@ export class TestApp extends LitElement {
         multiplication-tables-balloon-game-icon {
           height: 200px;
           width: 100px;
+        }
+
+        multiplication-tables-balloon-hourglass-game-icon {
+          width: 100px;
+          background-color: blue;
         }
 
         img {
@@ -43,15 +49,10 @@ export class TestApp extends LitElement {
       <multiplication-tables-balloon-game-icon
         variant="a"
       ></multiplication-tables-balloon-game-icon>
-      <multiplication-tables-balloon-game-icon
-        variant="b"
-      ></multiplication-tables-balloon-game-icon>
-      <multiplication-tables-balloon-game-icon
-        variant="c"
-      ></multiplication-tables-balloon-game-icon>
-      <multiplication-tables-balloon-game-icon
-        variant="d"
-      ></multiplication-tables-balloon-game-icon>
+      <multiplication-tables-balloon-hourglass-game-icon
+        variant="a"
+        timeCode="b"
+      ></multiplication-tables-balloon-hourglass-game-icon>
     `;
   }
 

@@ -57,7 +57,7 @@ function getTablesForTableSet(tableSet: TableSet): number[] {
 
 function getTableStringForTableSet(tableSet: TableSet): string {
   if (typeof tableSet === 'number') {
-    return `tafel van${tableSet}`;
+    return `tafel van ${tableSet}`;
   }
   switch (tableSet) {
     case 'firstHalf':
@@ -82,57 +82,58 @@ interface VariantInfo {
 }
 
 const defaultVariant: VariantInfo = {
-  iconColor: 'red',
+  iconColor: 'maroon',
   operators: ['times'],
-  tableSet: 2,
+  tableSet: 10,
 };
 
 const gameVariants: Partial<Record<string, VariantInfo>> = {
   a: defaultVariant,
-  b: { iconColor: 'orange', operators: ['times'], tableSet: 5 },
-  c: { iconColor: 'olive', operators: ['times'], tableSet: 3 },
-  d: { iconColor: 'yellow', operators: ['times'], tableSet: 4 },
-  e: { iconColor: 'lime', operators: ['times'], tableSet: 'firstHalf' },
-  f: { iconColor: 'green', operators: ['times'], tableSet: 6 },
-  g: { iconColor: 'mint', operators: ['times'], tableSet: 7 },
-  h: { iconColor: 'cyan', operators: ['times'], tableSet: 8 },
-  i: { iconColor: 'blue', operators: ['times'], tableSet: 9 },
-  j: {
+  b: { iconColor: 'red', operators: ['times'], tableSet: 2 },
+  c: { iconColor: 'orange', operators: ['times'], tableSet: 5 },
+  d: { iconColor: 'olive', operators: ['times'], tableSet: 3 },
+  e: { iconColor: 'yellow', operators: ['times'], tableSet: 4 },
+  f: { iconColor: 'lime', operators: ['times'], tableSet: 'firstHalf' },
+  g: { iconColor: 'green', operators: ['times'], tableSet: 6 },
+  h: { iconColor: 'mint', operators: ['times'], tableSet: 7 },
+  i: { iconColor: 'cyan', operators: ['times'], tableSet: 8 },
+  j: { iconColor: 'blue', operators: ['times'], tableSet: 9 },
+  k: {
     iconColor: 'purple',
     operators: ['times'],
     tableSet: '2-10',
   },
-  k: { iconColor: 'red', operators: ['divide'], tableSet: 11 },
-  l: { iconColor: 'orange', operators: ['divide'], tableSet: 12 },
-  m: { iconColor: 'yellow', operators: ['divide'], tableSet: 13 },
-  n: { iconColor: 'lime', operators: ['divide'], tableSet: 14 },
-  o: { iconColor: 'green', operators: ['divide'], tableSet: '11-14' },
-  p: { iconColor: 'cyan', operators: ['divide'], tableSet: 15 },
-  q: { iconColor: 'blue', operators: ['divide'], tableSet: 16 },
-  r: { iconColor: 'purple', operators: ['divide'], tableSet: 17 },
-  s: { iconColor: 'magenta', operators: ['divide'], tableSet: 18 },
-  t: { iconColor: 'lavender', operators: ['divide'], tableSet: 19 },
-  u: {
+  l: { iconColor: 'red', operators: ['divide'], tableSet: 11 },
+  m: { iconColor: 'orange', operators: ['divide'], tableSet: 12 },
+  n: { iconColor: 'yellow', operators: ['divide'], tableSet: 13 },
+  o: { iconColor: 'lime', operators: ['divide'], tableSet: 14 },
+  p: { iconColor: 'green', operators: ['divide'], tableSet: '11-14' },
+  q: { iconColor: 'cyan', operators: ['divide'], tableSet: 15 },
+  r: { iconColor: 'blue', operators: ['divide'], tableSet: 16 },
+  s: { iconColor: 'purple', operators: ['divide'], tableSet: 17 },
+  t: { iconColor: 'magenta', operators: ['divide'], tableSet: 18 },
+  u: { iconColor: 'lavender', operators: ['divide'], tableSet: 19 },
+  v: {
     iconColor: 'grey',
     operators: ['divide'],
     tableSet: '11-19',
   },
 
-  v: { iconColor: 'maroon', operators: ['divide', 'times'], tableSet: 11 },
-  w: { iconColor: 'brown', operators: ['divide', 'times'], tableSet: 12 },
-  x: { iconColor: 'olive', operators: ['divide', 'times'], tableSet: 13 },
-  y: { iconColor: 'teal', operators: ['divide', 'times'], tableSet: 14 },
-  z: {
+  w: { iconColor: 'maroon', operators: ['divide', 'times'], tableSet: 11 },
+  x: { iconColor: 'brown', operators: ['divide', 'times'], tableSet: 12 },
+  y: { iconColor: 'olive', operators: ['divide', 'times'], tableSet: 13 },
+  z: { iconColor: 'teal', operators: ['divide', 'times'], tableSet: 14 },
+  aa: {
     iconColor: 'navy',
     operators: ['divide', 'times'],
     tableSet: '11-14',
   },
-  aa: { iconColor: 'pink', operators: ['divide', 'times'], tableSet: 15 },
-  ab: { iconColor: 'apricot', operators: ['divide', 'times'], tableSet: 16 },
-  ac: { iconColor: 'beige', operators: ['divide', 'times'], tableSet: 17 },
-  ad: { iconColor: 'mint', operators: ['divide', 'times'], tableSet: 18 },
-  ae: { iconColor: 'black', operators: ['divide', 'times'], tableSet: 19 },
-  af: {
+  ab: { iconColor: 'pink', operators: ['divide', 'times'], tableSet: 15 },
+  ac: { iconColor: 'apricot', operators: ['divide', 'times'], tableSet: 16 },
+  ad: { iconColor: 'beige', operators: ['divide', 'times'], tableSet: 17 },
+  ae: { iconColor: 'mint', operators: ['divide', 'times'], tableSet: 18 },
+  af: { iconColor: 'black', operators: ['divide', 'times'], tableSet: 19 },
+  ag: {
     iconColor: 'white',
     operators: ['divide', 'times'],
     tableSet: '11-19',
@@ -182,6 +183,7 @@ export function getGameVariant(subCode: string): ExtendedVariantInfo {
     } else if (variantInfo.operators.length > 1) {
       description = `Delen en vermenigvuldigen met de ${getTableStringForTableSet(variantInfo.tableSet)}.`;
     }
+
     if (isTableSetBelow10(variantInfo.tableSet)) {
       return {
         ...variantInfo,
@@ -200,7 +202,9 @@ export function getGameVariant(subCode: string): ExtendedVariantInfo {
   } else if (variantInfo.operators.includes('times')) {
     // Here we are sure it does not include divide, hence we have the balloon or zeppelin game.
     const description = `Vermenigvuldigen met de ${getTableStringForTableSet(variantInfo.tableSet)}.`;
-
+    console.log(
+      `tableSet: ${variantInfo.tableSet}, description: ${description}`,
+    );
     if (isTableSetBelow10(variantInfo.tableSet)) {
       // We have only times, only tables till 10
       return {
