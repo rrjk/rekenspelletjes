@@ -11,6 +11,7 @@ import { Color, legacyBalloonColors, setOf20Colors } from './Colors';
 
 import './FlyingSaucer';
 import './NumberedBalloon';
+import './RocketImageV2';
 
 import { Operator } from './MultiplicationTablesBalloonGameLinkV2';
 import {
@@ -148,7 +149,6 @@ export class MultiplicationTablesBalloonGameV2 extends AscendingItemsGameApp<
       this.gameLogger.setMainCode('C');
       this.colorsetToUse = setOf20Colors;
       this.ascendingImageToUse = 'rocket';
-      throw new Error('rocket game is not yet supported');
     }
     if (tableAbove10 && !divideIncluded) {
       this.gameLogger.setMainCode('K');
@@ -291,6 +291,11 @@ export class MultiplicationTablesBalloonGameV2 extends AscendingItemsGameApp<
           height: 80%;
         }
 
+        rocket-image {
+          width: 70%;
+          height: 70%;
+        }
+
         svg {
           text-anchor: middle;
           dominant-baseline: middle;
@@ -328,6 +333,14 @@ export class MultiplicationTablesBalloonGameV2 extends AscendingItemsGameApp<
     `;
   }
 
+  renderRocket(itemInfo: ItemInfo): HTMLTemplateResult {
+    return html` <rocket-image
+      .color=${itemInfo.color}
+      .nmbrToShow=${itemInfo.nmbr}
+      ?disabled=${itemInfo.disabled}
+    ></rocket-image>`;
+  }
+
   renderItem(itemInfo: ItemInfo): HTMLTemplateResult {
     switch (this.ascendingImageToUse) {
       case 'balloon':
@@ -335,6 +348,7 @@ export class MultiplicationTablesBalloonGameV2 extends AscendingItemsGameApp<
       case 'ufo':
         return this.renderFlyingSaucer(itemInfo);
       case 'rocket':
+        return this.renderRocket(itemInfo);
       case 'zeppelin':
         throw new Error('Internal SW error - ascending image not implemented');
       default:

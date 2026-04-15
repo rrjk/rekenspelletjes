@@ -3,8 +3,7 @@ import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
 import { customElement } from 'lit/decorators.js';
 
-import './MultiplicationTablesBalloonGameIcon';
-import './MultiplicationTablesBalloonHourglassGameIcon';
+import './RocketImageV2';
 
 @customElement('test-app')
 export class TestApp extends LitElement {
@@ -40,19 +39,18 @@ export class TestApp extends LitElement {
           aspect-ratio: 2 / 1;
           background-color: red;
         }
+
+        rocket-image {
+          width: 100px;
+          height: 200px;
+        }
       `,
     ];
   }
 
   protected renderTest(): HTMLTemplateResult {
     return html`
-      <multiplication-tables-balloon-game-icon
-        variant="a"
-      ></multiplication-tables-balloon-game-icon>
-      <multiplication-tables-balloon-hourglass-game-icon
-        variant="a"
-        timeCode="b"
-      ></multiplication-tables-balloon-hourglass-game-icon>
+      <rocket-image nmbrToShow="7" color="green" disabled></rocket-image>
     `;
   }
 
