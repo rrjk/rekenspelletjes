@@ -41,7 +41,7 @@ function getTablesForTableSet(tableSet: TableSet): number[] {
   }
   switch (tableSet) {
     case 'firstHalf':
-      return [2, 3, 4, 5, 6, 7, 8, 9, 10];
+      return [2, 3, 4, 5, 10];
     case '2-10':
       return [2, 3, 4, 5, 6, 7, 8, 9, 10];
     case '11-14':
@@ -49,7 +49,7 @@ function getTablesForTableSet(tableSet: TableSet): number[] {
     case '11-19':
       return [11, 12, 13, 14, 15, 16, 17, 18, 19];
     case 'tens':
-      return [10, 20];
+      return [10, 20, 30, 40, 50, 60, 70, 80, 90];
     default:
       throw new UnexpectedValueError(tableSet);
   }
@@ -88,85 +88,96 @@ const defaultVariant: VariantInfo = {
 };
 
 const gameVariants: Partial<Record<string, VariantInfo>> = {
-  a: defaultVariant,
-  b: { iconColor: 'red', operators: ['times'], tableSet: 2 },
-  c: { iconColor: 'orange', operators: ['times'], tableSet: 5 },
-  d: { iconColor: 'olive', operators: ['times'], tableSet: 3 },
-  e: { iconColor: 'yellow', operators: ['times'], tableSet: 4 },
-  f: { iconColor: 'lime', operators: ['times'], tableSet: 'firstHalf' },
-  g: { iconColor: 'green', operators: ['times'], tableSet: 6 },
-  h: { iconColor: 'mint', operators: ['times'], tableSet: 7 },
-  i: { iconColor: 'cyan', operators: ['times'], tableSet: 8 },
-  j: { iconColor: 'blue', operators: ['times'], tableSet: 9 },
-  k: {
+  aa: defaultVariant,
+  ab: { iconColor: 'red', operators: ['times'], tableSet: 2 },
+  ac: { iconColor: 'orange', operators: ['times'], tableSet: 5 },
+  ad: { iconColor: 'olive', operators: ['times'], tableSet: 3 },
+  ae: { iconColor: 'yellow', operators: ['times'], tableSet: 4 },
+  af: { iconColor: 'lime', operators: ['times'], tableSet: 'firstHalf' },
+  ag: { iconColor: 'green', operators: ['times'], tableSet: 6 },
+  ah: { iconColor: 'mint', operators: ['times'], tableSet: 7 },
+  ai: { iconColor: 'cyan', operators: ['times'], tableSet: 8 },
+  aj: { iconColor: 'blue', operators: ['times'], tableSet: 9 },
+  ak: {
     iconColor: 'purple',
     operators: ['times'],
     tableSet: '2-10',
   },
+  ba: { iconColor: 'maroon', operators: ['divide'], tableSet: 10 },
+  bb: { iconColor: 'red', operators: ['divide'], tableSet: 2 },
+  bc: { iconColor: 'orange', operators: ['divide'], tableSet: 5 },
+  bd: { iconColor: 'yellow', operators: ['divide'], tableSet: 3 },
+  be: { iconColor: 'lime', operators: ['divide'], tableSet: 4 },
+  bf: { iconColor: 'green', operators: ['divide'], tableSet: 'firstHalf' },
+  bg: { iconColor: 'cyan', operators: ['divide'], tableSet: 6 },
+  bh: { iconColor: 'navy', operators: ['divide'], tableSet: 7 },
+  bi: { iconColor: 'blue', operators: ['divide'], tableSet: 8 },
+  bj: { iconColor: 'purple', operators: ['divide'], tableSet: 9 },
+  bk: { iconColor: 'magenta', operators: ['divide'], tableSet: '2-10' },
 
-  l: { iconColor: 'maroon', operators: ['divide'], tableSet: 10 },
-  m: { iconColor: 'red', operators: ['divide'], tableSet: 2 },
-  n: { iconColor: 'orange', operators: ['divide'], tableSet: 5 },
-  o: { iconColor: 'yellow', operators: ['divide'], tableSet: 3 },
-  p: { iconColor: 'lime', operators: ['divide'], tableSet: 4 },
-  q: { iconColor: 'green', operators: ['divide'], tableSet: 'firstHalf' },
-  r: { iconColor: 'cyan', operators: ['divide'], tableSet: 6 },
-  s: { iconColor: 'navy', operators: ['divide'], tableSet: 7 },
-  t: { iconColor: 'blue', operators: ['divide'], tableSet: 8 },
-  u: { iconColor: 'purple', operators: ['divide'], tableSet: 9 },
-  v: { iconColor: 'magenta', operators: ['divide'], tableSet: '2-10' },
-
-  w: { iconColor: 'magenta', operators: ['divide', 'times'], tableSet: 10 },
-  x: { iconColor: 'purple', operators: ['divide', 'times'], tableSet: 2 },
-  y: { iconColor: 'blue', operators: ['divide', 'times'], tableSet: 5 },
-  z: { iconColor: 'navy', operators: ['divide', 'times'], tableSet: 3 },
-  aa: { iconColor: 'cyan', operators: ['divide', 'times'], tableSet: 4 },
-  ab: {
-    iconColor: 'green',
+  ca: { iconColor: 'magenta', operators: ['divide', 'times'], tableSet: 10 },
+  cb: { iconColor: 'purple', operators: ['divide', 'times'], tableSet: 2 },
+  cc: { iconColor: 'blue', operators: ['divide', 'times'], tableSet: 5 },
+  cd: { iconColor: 'navy', operators: ['divide', 'times'], tableSet: 3 },
+  ce: { iconColor: 'cyan', operators: ['divide', 'times'], tableSet: 4 },
+  cf: {
+    iconColor: 'mint',
     operators: ['divide', 'times'],
     tableSet: 'firstHalf',
   },
-  ac: { iconColor: 'lime', operators: ['divide', 'times'], tableSet: 6 },
-  ad: { iconColor: 'yellow', operators: ['divide', 'times'], tableSet: 7 },
-  ae: { iconColor: 'orange', operators: ['divide', 'times'], tableSet: 8 },
-  af: { iconColor: 'red', operators: ['divide', 'times'], tableSet: 9 },
-  ag: { iconColor: 'maroon', operators: ['divide', 'times'], tableSet: '2-10' },
+  cg: { iconColor: 'lime', operators: ['divide', 'times'], tableSet: 6 },
+  ch: { iconColor: 'yellow', operators: ['divide', 'times'], tableSet: 7 },
+  ci: { iconColor: 'orange', operators: ['divide', 'times'], tableSet: 8 },
+  cj: { iconColor: 'red', operators: ['divide', 'times'], tableSet: 9 },
+  ck: { iconColor: 'maroon', operators: ['divide', 'times'], tableSet: '2-10' },
 
-  ah: { iconColor: 'red', operators: ['divide'], tableSet: 11 },
-  ai: { iconColor: 'orange', operators: ['divide'], tableSet: 12 },
-  aj: { iconColor: 'yellow', operators: ['divide'], tableSet: 13 },
-  ak: { iconColor: 'lime', operators: ['divide'], tableSet: 14 },
-  al: { iconColor: 'green', operators: ['divide'], tableSet: '11-14' },
-  am: { iconColor: 'cyan', operators: ['divide'], tableSet: 15 },
-  an: { iconColor: 'blue', operators: ['divide'], tableSet: 16 },
-  ao: { iconColor: 'purple', operators: ['divide'], tableSet: 17 },
-  ap: { iconColor: 'magenta', operators: ['divide'], tableSet: 18 },
-  aq: { iconColor: 'lavender', operators: ['divide'], tableSet: 19 },
-  ar: {
+  da: { iconColor: 'red', operators: ['divide'], tableSet: 11 },
+  db: { iconColor: 'orange', operators: ['divide'], tableSet: 12 },
+  dc: { iconColor: 'yellow', operators: ['divide'], tableSet: 13 },
+  dd: { iconColor: 'lime', operators: ['divide'], tableSet: 14 },
+  de: { iconColor: 'green', operators: ['divide'], tableSet: '11-14' },
+  df: { iconColor: 'cyan', operators: ['divide'], tableSet: 15 },
+  dg: { iconColor: 'blue', operators: ['divide'], tableSet: 16 },
+  dh: { iconColor: 'purple', operators: ['divide'], tableSet: 17 },
+  di: { iconColor: 'magenta', operators: ['divide'], tableSet: 18 },
+  dj: { iconColor: 'lavender', operators: ['divide'], tableSet: 19 },
+  dk: {
     iconColor: 'grey',
     operators: ['divide'],
     tableSet: '11-19',
   },
 
-  as: { iconColor: 'maroon', operators: ['divide', 'times'], tableSet: 11 },
-  at: { iconColor: 'brown', operators: ['divide', 'times'], tableSet: 12 },
-  au: { iconColor: 'olive', operators: ['divide', 'times'], tableSet: 13 },
-  av: { iconColor: 'teal', operators: ['divide', 'times'], tableSet: 14 },
-  aw: {
+  ea: { iconColor: 'maroon', operators: ['divide', 'times'], tableSet: 11 },
+  eb: { iconColor: 'brown', operators: ['divide', 'times'], tableSet: 12 },
+  ec: { iconColor: 'olive', operators: ['divide', 'times'], tableSet: 13 },
+  ed: { iconColor: 'teal', operators: ['divide', 'times'], tableSet: 14 },
+  ee: {
     iconColor: 'navy',
     operators: ['divide', 'times'],
     tableSet: '11-14',
   },
-  ax: { iconColor: 'pink', operators: ['divide', 'times'], tableSet: 15 },
-  ay: { iconColor: 'apricot', operators: ['divide', 'times'], tableSet: 16 },
-  az: { iconColor: 'beige', operators: ['divide', 'times'], tableSet: 17 },
-  ba: { iconColor: 'mint', operators: ['divide', 'times'], tableSet: 18 },
-  bb: { iconColor: 'black', operators: ['divide', 'times'], tableSet: 19 },
-  bc: {
+  ef: { iconColor: 'pink', operators: ['divide', 'times'], tableSet: 15 },
+  eg: { iconColor: 'apricot', operators: ['divide', 'times'], tableSet: 16 },
+  eh: { iconColor: 'beige', operators: ['divide', 'times'], tableSet: 17 },
+  ei: { iconColor: 'mint', operators: ['divide', 'times'], tableSet: 18 },
+  ej: { iconColor: 'black', operators: ['divide', 'times'], tableSet: 19 },
+  ek: {
     iconColor: 'white',
     operators: ['divide', 'times'],
     tableSet: '11-19',
   },
+  fa: { iconColor: 'maroon', operators: ['times'], tableSet: 'tens' },
+  fb: { iconColor: 'red', operators: ['times'], tableSet: 11 },
+  fc: { iconColor: 'orange', operators: ['times'], tableSet: 12 },
+  fd: { iconColor: 'yellow', operators: ['times'], tableSet: 13 },
+  fe: { iconColor: 'lime', operators: ['times'], tableSet: 14 },
+  ff: { iconColor: 'brown', operators: ['times'], tableSet: '11-14' },
+  fg: { iconColor: 'green', operators: ['times'], tableSet: 15 },
+  fh: { iconColor: 'cyan', operators: ['times'], tableSet: 16 },
+  fi: { iconColor: 'blue', operators: ['times'], tableSet: 17 },
+  fj: { iconColor: 'purple', operators: ['times'], tableSet: 18 },
+  fk: { iconColor: 'magenta', operators: ['times'], tableSet: 19 },
+  fl: { iconColor: 'pink', operators: ['times'], tableSet: '11-19' },
 };
 
 export interface ExtendedVariantInfo extends VariantInfo {
@@ -231,9 +242,6 @@ export function getGameVariant(subCode: string): ExtendedVariantInfo {
   } else if (variantInfo.operators.includes('times')) {
     // Here we are sure it does not include divide, hence we have the balloon or zeppelin game.
     const description = `Vermenigvuldigen met de ${getTableStringForTableSet(variantInfo.tableSet)}.`;
-    console.log(
-      `tableSet: ${variantInfo.tableSet}, description: ${description}`,
-    );
     if (isTableSetBelow10(variantInfo.tableSet)) {
       // We have only times, only tables till 10
       return {

@@ -36,34 +36,57 @@ export class FlyingSaurcer extends LitElement {
 
     ret.push(css`
       :host {
-        display: inline-block;
+        aspect-ratio: 36 / 36.5;
+        min-width: 0;
+        min-height: 0;
+        container-type: size;
+        display: grid;
+        justify-items: center;
+        align-items: center;
+        position: relative;
+      }
+
+      @container (aspect-ratio < 0.9863) {
+        svg {
+          width: 100cqw;
+        }
+      }
+
+      @container (aspect-ratio >= 0.9863) {
+        svg {
+          height: 100cqh;
+        }
       }
 
       svg {
         text-anchor: middle;
-        width: 100%;
-        height: 100%;
       }
 
       text {
+        font-family: 'Arial';
+        fill: #ffffff;
+        stroke: #000000;
+        stroke-width: 0.15em;
+        paint-order: stroke;
+        text-anchor: middle;
         dominant-baseline: mathematical;
       }
 
       .oneDigit,
       .twoDigit {
-        font-size: 19px;
+        font-size: 16px;
       }
 
       .threeDigit {
-        font-size: 13px;
+        font-size: 12px;
       }
 
       .fourDigit {
-        font-size: 10px;
+        font-size: 8px;
       }
 
       .symbol {
-        font-size: 8px;
+        font-size: 7px;
         font-weight: bold;
       }
 
@@ -106,7 +129,7 @@ export class FlyingSaurcer extends LitElement {
           fill: var(--dotColor);
         }
         text {
-          fill: black;
+          fill: #ffffff;
         }
       }
     `);
@@ -218,7 +241,6 @@ export class FlyingSaurcer extends LitElement {
         xmlns="http://www.w3.org/2000/svg"
         xmlns:xlink="http://www.w3.org/1999/xlink"
         preserveAspectRatio="xMidYMid meet"
-        fill="#000000"
       >
         <g id="SVGRepo_iconCarrier">
           <path

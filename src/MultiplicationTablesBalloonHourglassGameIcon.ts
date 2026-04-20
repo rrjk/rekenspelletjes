@@ -27,6 +27,7 @@ export class MultiplicationTablesBalloonHourglassGameIcon extends LitElement {
         align-items: center;
         aspect-ratio: 1.8 / 1;
         container-type: size;
+        position: relative;
       }
 
       @container (aspect-ratio > 1.8) {
@@ -49,9 +50,6 @@ export class MultiplicationTablesBalloonHourglassGameIcon extends LitElement {
   }
 
   render(): HTMLTemplateResult {
-    console.log(
-      `Rendering hourglass icon with variant ${this.variant} and timeCode ${this.timeCode}`,
-    );
     const variantInfo = getGameVariant(this.variant);
     return html` <icon-hourglass-button-v2
       .timeCode=${this.timeCode}

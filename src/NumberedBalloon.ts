@@ -6,17 +6,11 @@ import type {
 } from 'lit';
 
 import { customElement, property } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
 
 import { getColorInfo, type Color, stringToColor } from './Colors';
 import { desaturate, saturate } from 'color2k';
-
-function convertJSON<T>(value: string | null): T {
-  if (value !== null) {
-    const parsedValue = JSON.parse(value) as T;
-    return parsedValue;
-  }
-  throw new Error(`illegally formatted attribute provided`);
-}
+import { convertJSON } from './Utils';
 
 type ShortLong = 'short' | 'long';
 
@@ -58,11 +52,48 @@ export class NumberedBalloon extends LitElement {
   @property({ converter: stringToShortLong })
   accessor ropeLength: ShortLong = 'long';
 
+  static aspectRatioLongRope = 160 / 280; // Equal to the aspect ratio of the svg used for the balloon image
+  static aspectRatioShortRope = 160 / 220; // Equal to the aspect ratio of the svg used for the balloon image
+
   static get styles(): CSSResultArray {
     return [
       css`
         :host {
-          display: block;
+          aspect-ratio: var(
+            --aspect-ratio,
+            ${NumberedBalloon.aspectRatioLongRope}
+          );
+          min-width: 0;
+          min-height: 0;
+          container-type: size;
+          display: grid;
+          justify-items: center;
+          align-items: center;
+          position: relative;
+        }
+
+        @container (aspect-ratio < ${NumberedBalloon.aspectRatioLongRope}) {
+          svg.longRope {
+            width: 100cqw;
+          }
+        }
+
+        @container (aspect-ratio >= ${NumberedBalloon.aspectRatioLongRope}) {
+          svg.longRope {
+            height: 100cqh;
+          }
+        }
+
+        @container (aspect-ratio < ${NumberedBalloon.aspectRatioShortRope}) {
+          svg.shortRope {
+            width: 100cqw;
+          }
+        }
+
+        @container (aspect-ratio >= ${NumberedBalloon.aspectRatioShortRope}) {
+          svg.shortRope {
+            height: 100cqh;
+          }
         }
 
         .crossOut {
@@ -164,10 +195,12 @@ export class NumberedBalloon extends LitElement {
     const numberLines = this.stringsToShow.length;
 
     const firstLineYOffset = -(nmbrLines - 1) / 2;
+    const baseY = numberLines === 1 ? 130 : 120;
 
     for (let i = 0; i < numberLines; i++) {
+      const y = baseY + (firstLineYOffset + i) * fontSize * 1.0;
       content.push(
-        svg`<tspan class="string"  style="font-size:${fontSize}px;" x="100" y="${120 + (firstLineYOffset + i) * fontSize * 1.1}">${this.stringsToShow[i]}</tspan>`,
+        svg`<tspan class="string"  style="font-size:${fontSize}px;" x="100" y="${y}">${this.stringsToShow[i]}</tspan>`,
       );
     }
 
@@ -189,10 +222,28 @@ export class NumberedBalloon extends LitElement {
 
   render(): HTMLTemplateResult {
     let svgHeight = 0;
-    if (this.ropeLength === 'short') svgHeight = 220;
-    else if (this.ropeLength === 'long') svgHeight = 280;
+    let classes = {};
+    if (this.ropeLength === 'short') {
+      classes = { shortRope: true, longRope: false };
+      svgHeight = 220;
+    } else if (this.ropeLength === 'long') {
+      classes = { shortRope: false, longRope: true };
+      svgHeight = 280;
+    }
     return html`
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="20 20 160 ${svgHeight}">
+      <style>
+        :root {
+          --aspect-ratio: ${this.ropeLength === 'short'
+            ? NumberedBalloon.aspectRatioShortRope
+            : NumberedBalloon.aspectRatioLongRope};
+        }
+      </style>
+
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="20 20 161 ${svgHeight}"
+        class=${classMap(classes)}
+      >
         <!-- Gradient for the Balloon -->
         <defs>
           <linearGradient

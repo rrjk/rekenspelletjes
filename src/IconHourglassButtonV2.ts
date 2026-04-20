@@ -2,6 +2,12 @@ import { LitElement, html, css, unsafeCSS } from 'lit';
 import type { HTMLTemplateResult, CSSResultGroup } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
+/* The following import are only used to store the iButton reference. Once the source property of
+ * the ToggleEvent gets widescale support, these imports can be removed and the button can
+ * be obtained from the event.
+ * See https://caniuse.com/mdn-api_toggleevent_source for more details on the support of the source property.
+ */
+import { createRef, Ref, ref } from 'lit/directives/ref.js';
 
 import {
   computePosition,
@@ -30,6 +36,13 @@ export class IconHourglassButton extends LitElement {
   /** Description to show */
   @property()
   accessor description = '';
+
+  /* The iButton reference is used to keep track of the information button event. Once the source property of
+   * the ToggleEvent gets widescale support, we no longer need this reference and the button can
+   * be obtained from the event.
+   * See https://caniuse.com/mdn-api_toggleevent_source for more details on the support of the source property.
+   */
+  iButton: Ref<HTMLButtonElement> = createRef();
 
   descriptionDialogCleanup = () => {
     /*nothing*/
@@ -99,15 +112,6 @@ export class IconHourglassButton extends LitElement {
         font-family: 'Georgia';
       }
 
-      #gameIcon {
-        grid-area: gameIcon;
-        height: 95%;
-        width: 95%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
       #hourGlassIcon {
         grid-area: hourGlassIcon;
         height: 85%;
@@ -115,6 +119,13 @@ export class IconHourglassButton extends LitElement {
         background-size: contain;
         background-repeat: no-repeat;
         background-position: center;
+      }
+
+      div#gameIcon {
+        grid-area: gameIcon;
+        position: relative;
+        width: 95%;
+        height: 95%;
       }
 
       dialog#description {
@@ -151,7 +162,14 @@ export class IconHourglassButton extends LitElement {
 
   handleDescriptionToggle(evt: ToggleEvent) {
     if (evt.newState === 'open') {
-      const button = evt.source as HTMLButtonElement;
+      /* The iButton reference is used to keep track of the information button event. Once the source property of
+       * the ToggleEvent gets widescale support, we no longer need this reference and the button can
+       * be obtained from the event using
+       * const button = evt.source as HTMLButtonElement;
+       * See https://caniuse.com/mdn-api_toggleevent_source for more details on the support of the source property.
+       */
+
+      const button = this.iButton.value;
       const dialog = evt.target as HTMLDialogElement;
       if (button && dialog) {
         this.descriptionDialogCleanup = autoUpdate(button, dialog, () => {
@@ -187,11 +205,23 @@ export class IconHourglassButton extends LitElement {
       timeCodeB: this.timeCode === 'b',
       timeCodeC: this.timeCode === 'c',
     };
+    /* The iButton reference is used to keep track of the information button event. Once the source property of
+     * the ToggleEvent gets widescale support, we no longer need this reference and the button can
+     * be obtained from the event.
+     * See https://caniuse.com/mdn-api_toggleevent_source for more details on the support of the source property.
+     */
+
     return html`
       <div id="gameButton">
-        <div id="gameIcon"><slot></slot></div>
+        <div id="gameIcon">
+          <slot></slot>
+        </div>
         <div id="hourGlassIcon" class=${classMap(hourGlassClasses)}></div>
-        <button id="infoButton" popovertarget="description">
+        <button
+          id="infoButton"
+          popovertarget="description"
+          ${ref(this.iButton)}
+        >
           <svg viewBox="-50 -50 100 100">
             <circle
               cx="0"

@@ -3,7 +3,11 @@ import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
 import { customElement } from 'lit/decorators.js';
 
+import './ZeppelinImageV2';
 import './RocketImageV2';
+import './NumberedBalloon';
+import './MultiplicationTablesBalloonGameIcon';
+import './MultiplicationTablesBalloonHourglassGameIcon';
 
 @customElement('test-app')
 export class TestApp extends LitElement {
@@ -22,27 +26,11 @@ export class TestApp extends LitElement {
         }
 
         multiplication-tables-balloon-hourglass-game-icon {
-          width: 100px;
-          background-color: blue;
+          width: 150px;
         }
 
-        img {
-          width: 100%;
-          height: 100%;
-          object-fit: contain;
-          object-position: center center;
-        }
-
-        div {
-          height: 200px;
-          width: 200px;
-          aspect-ratio: 2 / 1;
-          background-color: red;
-        }
-
-        rocket-image {
-          width: 100px;
-          height: 200px;
+        div.vSpace {
+          height: 20px;
         }
       `,
     ];
@@ -50,7 +38,41 @@ export class TestApp extends LitElement {
 
   protected renderTest(): HTMLTemplateResult {
     return html`
-      <rocket-image nmbrToShow="7" color="green" disabled></rocket-image>
+      <multiplication-tables-balloon-hourglass-game-icon
+        variant="af"
+        timeCode="a"
+      >
+      </multiplication-tables-balloon-hourglass-game-icon>
+      <div class="vSpace"></div>
+      <multiplication-tables-balloon-hourglass-game-icon
+        variant="bf"
+        timeCode="b"
+      >
+      </multiplication-tables-balloon-hourglass-game-icon>
+      <div class="vSpace"></div>
+      <multiplication-tables-balloon-hourglass-game-icon
+        variant="cf"
+        timeCode="c"
+      >
+      </multiplication-tables-balloon-hourglass-game-icon>
+      <div class="vSpace"></div>
+      <multiplication-tables-balloon-hourglass-game-icon
+        variant="df"
+        timeCode="a"
+      >
+      </multiplication-tables-balloon-hourglass-game-icon>
+      <div class="vSpace"></div>
+      <multiplication-tables-balloon-hourglass-game-icon
+        variant="ee"
+        timeCode="a"
+      >
+      </multiplication-tables-balloon-hourglass-game-icon>
+      <div class="vSpace"></div>
+      <multiplication-tables-balloon-hourglass-game-icon
+        variant="fb"
+        timeCode="a"
+      >
+      </multiplication-tables-balloon-hourglass-game-icon>
     `;
   }
 

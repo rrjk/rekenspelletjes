@@ -10,6 +10,7 @@ import { classMap } from 'lit/directives/class-map.js';
 
 import { getColorInfo, type Color, stringToColor } from './Colors';
 import { numberDigitsInNumber } from './NumberHelperFunctions';
+import { convertJSON } from './Utils';
 
 @customElement('rocket-image')
 export class RocketImage extends LitElement {
@@ -25,11 +26,45 @@ export class RocketImage extends LitElement {
   @property({ type: Boolean })
   accessor disabled = false;
 
+  /** Strings to show, each array element will be shown on a separate row.
+   * In case both a number and strings are provided, the strings will be shown
+   */
+  @property({ converter: convertJSON<string[]> })
+  accessor stringsToShow: string[] = [];
+
+  /** Factor to use for the fontsize in case strings are provided
+   * fontSizeFactor equal to 1 is the size for
+   *  putting one row with an M in the balloon.
+   */
+  @property({ type: Number })
+  accessor fontSizeFactor = 1;
+
+  static aspectRatio = 70 / 128; // Equal to the aspect ratio of the svg used for the rocket image
+
   static get styles(): CSSResultArray {
     return [
       css`
         :host {
-          display: block;
+          aspect-ratio: ${RocketImage.aspectRatio};
+          min-width: 0;
+          min-height: 0;
+          container-type: size;
+          display: grid;
+          justify-items: center;
+          align-items: center;
+          position: relative;
+        }
+
+        @container (aspect-ratio < ${RocketImage.aspectRatio}) {
+          svg {
+            width: 100cqw;
+          }
+        }
+
+        @container (aspect-ratio >= ${RocketImage.aspectRatio}) {
+          svg {
+            height: 100cqh;
+          }
         }
 
         .crossOut {
@@ -91,14 +126,47 @@ export class RocketImage extends LitElement {
     };
 
     return svg`
-      <text x="64" y="68" class=${classMap(classes)}>
+      <text x="64" y="62 " class=${classMap(classes)}>
         ${this.nmbrToShow}
       </text>`;
+  }
+
+  renderStrings(): SVGTemplateResult {
+    const nmbrLines = this.stringsToShow.length;
+    let lengthLongestLine = 0;
+    for (const line of this.stringsToShow) {
+      if (line.length > lengthLongestLine) lengthLongestLine = line.length;
+    }
+
+    const fontSize = this.fontSizeFactor * 85;
+
+    const content: SVGTemplateResult[] = [];
+    const numberLines = this.stringsToShow.length;
+
+    const firstLineYOffset = -(nmbrLines - 1) / 2;
+
+    for (let i = 0; i < numberLines; i++) {
+      content.push(
+        svg`<tspan class="string"  style="font-size:${fontSize}px;" x="64" y="${60 + (firstLineYOffset + i) * fontSize * 0.9}">${this.stringsToShow[i]}</tspan>`,
+      );
+    }
+
+    return svg`
+      <text
+        x="29"
+        y="0"
+        class="string"
+      >
+        ${content}
+      </text>
+    `;
   }
 
   renderContent(): SVGTemplateResult {
     if (this.disabled) {
       return this.renderDisabled();
+    } else if (this.stringsToShow.length > 0) {
+      return this.renderStrings();
     } else {
       return this.renderNumber();
     }
@@ -146,7 +214,7 @@ export class RocketImage extends LitElement {
       />
       <circle
         cx="64"
-        cy="31.6"
+        cy="25"
         fill="lightgrey"
         r="6.7"
         stroke=${lineColor}

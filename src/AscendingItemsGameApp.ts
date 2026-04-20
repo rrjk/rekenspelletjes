@@ -142,7 +142,7 @@ export abstract class AscendingItemsGameApp<
       css`
         div#gameArea {
           display: grid;
-          grid-template-rows: 5% 23% auto 12%;
+          grid-template-rows: 5% 23% auto 20%;
           grid-template-columns: 100%;
           grid-template-areas:
             'top'
@@ -175,8 +175,8 @@ export abstract class AscendingItemsGameApp<
         }
 
         div.item {
-          width: calc(15vmin);
-          height: calc(15vmin);
+          width: 20vmin;
+          height: 100%;
         }
       `,
     ];

@@ -182,8 +182,8 @@ export class SplitGameV2 extends AscendingItemsGameApp<ExerciseInfo, ItemInfo> {
       ...super.styles,
       css`
         numbered-balloon {
-          width: 80%;
-          height: 80%;
+          width: 100%;
+          height: 100%;
         }
 
         simple-split-widget {

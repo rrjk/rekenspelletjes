@@ -12,6 +12,7 @@ import { Color, legacyBalloonColors, setOf20Colors } from './Colors';
 import './FlyingSaucer';
 import './NumberedBalloon';
 import './RocketImageV2';
+import './ZeppelinImageV2';
 
 import { Operator } from './MultiplicationTablesBalloonGameLinkV2';
 import {
@@ -282,18 +283,23 @@ export class MultiplicationTablesBalloonGameV2 extends AscendingItemsGameApp<
       ...super.styles,
       css`
         flying-saucer {
-          width: 100%;
-          height: 100%;
-        }
-
-        numbered-balloon {
           width: 80%;
           height: 80%;
         }
 
+        numbered-balloon {
+          width: 100%;
+          height: 100%;
+        }
+
         rocket-image {
-          width: 70%;
-          height: 70%;
+          width: 90%;
+          height: 90%;
+        }
+
+        zeppelin-image {
+          width: 90%;
+          height: 100%;
         }
 
         svg {
@@ -341,6 +347,14 @@ export class MultiplicationTablesBalloonGameV2 extends AscendingItemsGameApp<
     ></rocket-image>`;
   }
 
+  renderZeppelin(itemInfo: ItemInfo): HTMLTemplateResult {
+    return html` <zeppelin-image
+      .color=${itemInfo.color}
+      .nmbrToShow=${itemInfo.nmbr}
+      ?disabled=${itemInfo.disabled}
+    ></zeppelin-image>`;
+  }
+
   renderItem(itemInfo: ItemInfo): HTMLTemplateResult {
     switch (this.ascendingImageToUse) {
       case 'balloon':
@@ -350,7 +364,7 @@ export class MultiplicationTablesBalloonGameV2 extends AscendingItemsGameApp<
       case 'rocket':
         return this.renderRocket(itemInfo);
       case 'zeppelin':
-        throw new Error('Internal SW error - ascending image not implemented');
+        return this.renderZeppelin(itemInfo);
       default:
         throw new UnexpectedValueError(this.ascendingImageToUse);
     }

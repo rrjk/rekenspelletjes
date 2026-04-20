@@ -1,27 +1,104 @@
 import { html, css, LitElement } from 'lit';
 
-import { customElement } from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
 
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
 import './MultiplicationTablesBalloonHourglassGameIcon';
+
+type Game =
+  | 'balloonMultiplicationGame'
+  | 'rocketMultiplicationGame'
+  | 'zeppelinMultiplicationGame'
+  | 'flyingSaucerMultiplicationGame';
+
+/**
+ * Convert a string into an Game.
+ * In case an illegal string is provided, which does not resolve to a game
+ * balloonMultiplicationGame is returned.
+ *
+ * @param value string to convert
+ * @returns string converted to an Operator
+ */
+export function convertGame(value: string | null): Game {
+  switch (value) {
+    case 'balloonMultiplicationGame':
+    case 'rocketMultiplicationGame':
+    case 'zeppelinMultiplicationGame':
+    case 'flyingSaucerMultiplicationGame':
+      return value;
+    default:
+      return 'balloonMultiplicationGame';
+  }
+}
 
 interface SectionInfoType {
   title: string;
   rows: string[];
 }
 
-const sections: SectionInfoType[] = [
-  {
-    title: 'Balonnenspel: tafeltjes oefenen',
-    rows: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k'],
-  },
-];
+interface GameInfoType {
+  balloonMultiplicationGame: SectionInfoType[];
+  rocketMultiplicationGame: SectionInfoType[];
+  zeppelinMultiplicationGame: SectionInfoType[];
+  flyingSaucerMultiplicationGame: SectionInfoType[];
+}
+
+const sections: GameInfoType = {
+  balloonMultiplicationGame: [
+    {
+      title: 'Balonnenspel: tafeltjes oefenen',
+      rows: ['aa', 'ab', 'ac', 'ad', 'ae', 'af', 'ag', 'ah', 'ai', 'aj', 'ak'],
+    },
+  ],
+  rocketMultiplicationGame: [
+    {
+      title: 'Raketspel: Deelsommen met de tafeltjes',
+      rows: ['ba', 'bb', 'bc', 'bd', 'be', 'bf', 'bg', 'bh', 'bi', 'bj', 'bk'],
+    },
+    {
+      title: 'Raketspel: Deelsommen en keersommen met de tafeltjes.',
+      rows: ['ca', 'cb', 'cc', 'cd', 'ce', 'cf', 'cg', 'ch', 'ci', 'cj', 'ck'],
+    },
+  ],
+  zeppelinMultiplicationGame: [
+    {
+      title: 'Zeppelinspel: Keersommen boven de 10',
+      rows: [
+        'fa',
+        'fb',
+        'fc',
+        'fd',
+        'fe',
+        'ff',
+        'fg',
+        'fh',
+        'fi',
+        'fj',
+        'fk',
+        'fl',
+      ],
+    },
+  ],
+  flyingSaucerMultiplicationGame: [
+    {
+      title: 'Delen met de tafels boven de 10',
+      rows: ['da', 'db', 'dc', 'dd', 'de', 'df', 'dg', 'dh', 'di', 'dj', 'dk'],
+    },
+    {
+      title: 'Delen en vermenigvuldigen door elkaar, met de tafels boven de 10',
+      rows: ['ea', 'eb', 'ec', 'ed', 'ee', 'ef', 'eg', 'eh', 'ei', 'ej', 'ek'],
+    },
+  ],
+};
 
 const durations = ['a', 'b'];
 
 @customElement('balloon-multiplication-game-index-app-v2')
 export class BalloonMultiplicationGameIndexApp extends LitElement {
+  @property({ converter: convertGame })
+  accessor game: Game = 'balloonMultiplicationGame';
+
   static get styles(): CSSResultArray {
     return [
       css`
@@ -58,7 +135,7 @@ export class BalloonMultiplicationGameIndexApp extends LitElement {
 
   render(): HTMLTemplateResult[] {
     const renderItems: HTMLTemplateResult[] = [];
-    for (const section of sections) {
+    for (const section of sections[this.game]) {
       renderItems.push(html`
         <h2>${section.title}</h2>
         <div class="buttonTable">
