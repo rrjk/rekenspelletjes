@@ -8,6 +8,7 @@ import './RocketImageV2';
 import './NumberedBalloon';
 import './MultiplicationTablesBalloonGameIcon';
 import './MultiplicationTablesBalloonHourglassGameIcon';
+import './MixedSumsGameIcon';
 
 @customElement('test-app')
 export class TestApp extends LitElement {
@@ -32,6 +33,11 @@ export class TestApp extends LitElement {
         div.vSpace {
           height: 20px;
         }
+
+        mixed-sums-game-icon {
+          width: 200px;
+          height: 200px;
+        }
       `,
     ];
   }
@@ -44,35 +50,11 @@ export class TestApp extends LitElement {
       >
       </multiplication-tables-balloon-hourglass-game-icon>
       <div class="vSpace"></div>
-      <multiplication-tables-balloon-hourglass-game-icon
-        variant="bf"
-        timeCode="b"
-      >
-      </multiplication-tables-balloon-hourglass-game-icon>
+      <mixed-sums-game-icon variant="af"></mixed-sums-game-icon>
       <div class="vSpace"></div>
-      <multiplication-tables-balloon-hourglass-game-icon
-        variant="cf"
-        timeCode="c"
-      >
-      </multiplication-tables-balloon-hourglass-game-icon>
+      <mixed-sums-game-icon variant="bc"></mixed-sums-game-icon>
       <div class="vSpace"></div>
-      <multiplication-tables-balloon-hourglass-game-icon
-        variant="df"
-        timeCode="a"
-      >
-      </multiplication-tables-balloon-hourglass-game-icon>
-      <div class="vSpace"></div>
-      <multiplication-tables-balloon-hourglass-game-icon
-        variant="ee"
-        timeCode="a"
-      >
-      </multiplication-tables-balloon-hourglass-game-icon>
-      <div class="vSpace"></div>
-      <multiplication-tables-balloon-hourglass-game-icon
-        variant="fb"
-        timeCode="a"
-      >
-      </multiplication-tables-balloon-hourglass-game-icon>
+      <mixed-sums-game-icon variant=""></mixed-sums-game-icon>
     `;
   }
 
