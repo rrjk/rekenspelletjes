@@ -6,13 +6,13 @@ import {
   AscendingItemsGameApp,
   ItemInfoInterface,
   RoundInfo,
-} from './AscendingItemsGameApp';
-import { Color, legacyBalloonColors, setOf20Colors } from './Colors';
+} from '../AscendingItemsGameApp';
+import { Color, legacyBalloonColors, setOf20Colors } from '../Colors';
 
-import './FlyingSaucer';
-import './NumberedBalloon';
-import './RocketImageV2';
-import './ZeppelinImageV2';
+import '../FlyingSaucer';
+import '../NumberedBalloon';
+import '../RocketImageV2';
+import '../ZeppelinImageV2';
 
 import { Operator } from './MultiplicationTablesBalloonGameLinkV2';
 import {
@@ -21,15 +21,15 @@ import {
   randomFromSetAndSplice,
   rangeWithGaps,
   shuffleArray,
-} from './Randomizer';
+} from '../Randomizer';
 
-import { GameLogger } from './GameLogger';
+import { GameLogger } from '../GameLogger';
 import {
   AscendingImage,
   getGameVariant,
 } from './MultiplicationTablesBalloonGameVariants';
-import { UnexpectedValueError } from './UnexpectedValueError';
-import { operatorToSymbol } from './Operator';
+import { UnexpectedValueError } from '../UnexpectedValueError';
+import { operatorToSymbol } from '../Operator';
 
 interface ItemInfo extends ItemInfoInterface {
   nmbr: number;

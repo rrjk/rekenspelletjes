@@ -1,6 +1,6 @@
-import { Color, legacyBalloonColors, setOf20Colors } from './Colors';
-import { MultiplicationOperator } from './Operator';
-import { UnexpectedValueError } from './UnexpectedValueError';
+import { Color, legacyBalloonColors, setOf20Colors } from '../Colors';
+import { MultiplicationOperator } from '../Operator';
+import { UnexpectedValueError } from '../UnexpectedValueError';
 
 export const ascendingImages = [
   'balloon',

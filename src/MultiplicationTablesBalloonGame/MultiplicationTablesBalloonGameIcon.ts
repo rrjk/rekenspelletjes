@@ -7,13 +7,13 @@ import {
   getGameVariant,
 } from './MultiplicationTablesBalloonGameVariants';
 
-import { UnexpectedValueError } from './UnexpectedValueError';
+import { UnexpectedValueError } from '../UnexpectedValueError';
 
-import './NumberedBalloon';
-import './RocketImageV2';
-import './ZeppelinImageV2';
-import './FlyingSaucer';
-import { operatorToSymbol } from './Operator';
+import '../NumberedBalloon';
+import '../RocketImageV2';
+import '../ZeppelinImageV2';
+import '../FlyingSaucer';
+import { operatorToSymbol } from '../Operator';
 
 @customElement('multiplication-tables-balloon-game-icon')
 export class MultiplicationTablesBalloonGameIcon extends LitElement {

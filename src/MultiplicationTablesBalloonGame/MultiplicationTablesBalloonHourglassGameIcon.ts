@@ -2,10 +2,10 @@ import { LitElement, html, css } from 'lit';
 import type { HTMLTemplateResult, CSSResultGroup } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
-import { type TimeCode, stringToTimeCode } from './TimeCodes';
+import { type TimeCode, stringToTimeCode } from '../TimeCodes';
 import { getGameVariant } from './MultiplicationTablesBalloonGameVariants';
 
-import './IconHourglassButtonV2';
+import '../IconHourglassButtonV2';
 import './MultiplicationTablesBalloonGameIcon';
 
 @customElement('multiplication-tables-balloon-hourglass-game-icon')

@@ -6,8 +6,8 @@ import { customElement } from 'lit/decorators.js';
 import './ZeppelinImageV2';
 import './RocketImageV2';
 import './NumberedBalloon';
-import './MultiplicationTablesBalloonGameIcon';
-import './MultiplicationTablesBalloonHourglassGameIcon';
+import './MultiplicationTablesBalloonGame/MultiplicationTablesBalloonGameIcon';
+import './MultiplicationTablesBalloonGame/MultiplicationTablesBalloonHourglassGameIcon';
 import './MixedSumsGameIcon';
 
 @customElement('test-app')
