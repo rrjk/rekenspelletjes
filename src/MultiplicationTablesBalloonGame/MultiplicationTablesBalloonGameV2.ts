@@ -91,6 +91,7 @@ export class MultiplicationTablesBalloonGameV2 extends AscendingItemsGameApp<
       throw Error(
         'Internal SW Error, parseUrlWithVariant called while there is no variant in the URL',
       );
+    // Empty string is handled by getGameVariant's fallback to defaultVariant
     const extendedVariantInfo = getGameVariant(variant);
     this.tablesToUse = extendedVariantInfo.tables;
     this.operatorsToUse = extendedVariantInfo.operators;

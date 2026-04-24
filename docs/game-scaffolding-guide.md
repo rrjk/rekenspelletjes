@@ -83,6 +83,7 @@ function determineMainCode(variantInfo: VariantInfo): string {
 function createDescription(variantInfo: VariantInfo): string {
   // Logic to create human-readable description
   // Use operatorToDutch() if using operators
+  // Use joinWithEn() from '../Utils' for natural Dutch lists (e.g., "1, 2 en 3")
   return 'Game description';
 }
 
@@ -104,10 +105,70 @@ export function get<GameName>Variant(variant: string): ExtendedVariantInfo {
 
 **Key Points:**
 
-- Use short codes like `aa`, `ab`, `ac` for variants (first letter = category, second letter = difficulty)
+- Use short codes like `aa`, `ab`, `ac` for variants
+- **Variant naming pattern**: First letter indicates the section (a, b, c...), second letter increments within the section (a, b, c...)
+  - Section 1 variants: `aa`, `ab`, `ac`, `ad`, etc.
+  - Section 2 variants: `ba`, `bb`, `bc`, `bd`, etc.
+  - Section 3 variants: `ca`, `cb`, `cc`, `cd`, etc.
+- **Do not create duplicate variants for different time codes** - time codes are handled separately in the index app (each variant row shows two buttons with different time codes)
 - Group variants by category (a-series, b-series, etc.)
 - The `get<GameName>Variant` function is the single source of truth for variant metadata
 - Return `ExtendedVariantInfo` with all properties needed by icons and index pages
+- **Export `gameVariants`** so it can be tested
+
+### Step 2.5: Create `<GameName>Variants.test.ts`
+
+This file tests the variant definitions to ensure they are correct.
+
+**Template:**
+
+```typescript
+import {
+  get<GameName>Variant,
+  gameVariants,
+  type ExtendedVariantInfo,
+} from './<GameName>Variants';
+
+test('gameVariants has expected keys', () => {
+  expect(Object.keys(gameVariants)).toStrictEqual([
+    'aa',
+    'ab',
+    'ac',
+    // ... add all variant codes
+  ]);
+});
+
+test('get<GameName>Variant for aa', () => {
+  const extendedVariant = get<GameName>Variant('aa');
+  expect(extendedVariant.iconColor).toBe('lavender');
+  expect(extendedVariant.mainCode).toBe('A');
+  expect(extendedVariant.description).toBe('Game description');
+  // Test other properties as needed
+});
+
+// Add tests for each variant...
+
+test('get<GameName>Variant for unknown variant returns default', () => {
+  const extendedVariant = get<GameName>Variant('unknown');
+  expect(extendedVariant.iconColor).toBe('green');
+  // Test default values
+});
+
+test('ExtendedVariantInfo type validation', () => {
+  const variant: ExtendedVariantInfo = get<GameName>Variant('aa');
+  expect(typeof variant.iconColor).toBe('string');
+  // Test other type validations
+});
+```
+
+**Key Points:**
+
+- Test that `gameVariants` has all expected keys
+- Test representative variants for each code path (e.g., single digit, multi digit, full range)
+- Test that unknown variants return the default
+- Test type validation for `ExtendedVariantInfo`
+- Export `gameVariants` from the variants file to enable testing
+- **Don't test every variant individually** - test key code paths only to keep tests maintainable
 
 ### Step 3: Create `<GameName>GameIcon.ts`
 
@@ -586,6 +647,7 @@ throw new UnexpectedValueError(value);
 
 - [ ] Create `src/<GameName>/` directory
 - [ ] Create `<GameName>Variants.ts` with variant definitions
+- [ ] Create `<GameName>Variants.test.ts` with test suite
 - [ ] Create `<GameName>GameIcon.ts` with icon rendering
 - [ ] Create `<GameName>HourglassGameIcon.ts` with hourglass wrapper
 - [ ] Create `<GameName>IndexAppV2.ts` with index page
@@ -598,6 +660,7 @@ throw new UnexpectedValueError(value);
 - [ ] Test all variant codes work
 - [ ] Test explicit parameter URLs work
 - [ ] Test index page navigation
+- [ ] Run test suite to verify variants
 
 ## Migration Instructions for Existing Games
 

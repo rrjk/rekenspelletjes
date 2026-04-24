@@ -175,6 +175,7 @@ export class MixedSumsGameApp extends TimeLimitedGame2 {
       throw Error(
         'Internal SW Error, parseUrlWithVariant called while there is no variant in the URL',
       );
+    // Empty string is handled by getMixedSumsGameVariant's fallback to defaultVariant
     const extendedVariantInfo = getMixedSumsGameVariant(variant);
 
     this.eligibleTables = getRange(2, extendedVariantInfo.maxTable);
