@@ -6,27 +6,27 @@ import {
   AscendingItemsGameApp,
   ItemInfoInterface,
   RoundInfo,
-} from './AscendingItemsGameApp';
+} from '../AscendingItemsGameApp';
 import {
   Color,
   setOf20Colors,
   legacyBalloonColors,
   neonFusionColors,
-} from './Colors';
+} from '../Colors';
 
-import './NumberedBalloon';
+import '../NumberedBalloon';
 
-import './SimpleSplitWidget';
+import '../SimpleSplitWidget';
 
 import {
   numberArrayToRangeText,
   randomFromSet,
   randomFromSetAndSplice,
   shuffleArray,
-} from './Randomizer';
+} from '../Randomizer';
 
-import { GameLogger } from './GameLogger';
-import { getRange } from './NumberHelperFunctions';
+import { GameLogger } from '../GameLogger';
+import { getRange } from '../NumberHelperFunctions';
 
 interface ItemInfo extends ItemInfoInterface {
   nmbr: number;
@@ -39,7 +39,7 @@ interface ExerciseInfo {
   secondSplit: number;
 }
 
-/** Customer element for a game to exercise is splitting numbers
+/** Customeelement for a game to exercise is splitting numbers
  * The player has to click the proper ballon.
  *
  * The followin url parameters are supported
@@ -47,8 +47,11 @@ interface ExerciseInfo {
  * - number* - Number that have to split. May be one number, may be multiple numbers. Allowed numbers 3-10
  * - colorSet - Colorset to use for the balloons. Possible values: setOf20Colors, neonFusionColors, legacyBalloonColors. Default: legacyBalloonColors
  */
-@customElement('split-game-v2-app')
-export class SplitGameV2 extends AscendingItemsGameApp<ExerciseInfo, ItemInfo> {
+@customElement('split-balloon-game-app')
+export class SplitBalloonGameApp extends AscendingItemsGameApp<
+  ExerciseInfo,
+  ItemInfo
+> {
   private possibleNumbersToSplit: number[] = [];
   private gameLogger = new GameLogger('R', '');
 
