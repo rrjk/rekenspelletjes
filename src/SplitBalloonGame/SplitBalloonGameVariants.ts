@@ -48,7 +48,7 @@ const gameVariants: Record<string, VariantInfo> = {
   // Multiple digit splitting - Meerdere cijfers splitsen (section b)
   ba: {
     iconColor: 'navy',
-    numbersToSplit: [1, 2, 3, 4, 5, 10],
+    numbersToSplit: [3, 4, 5, 10],
   },
   bb: {
     iconColor: 'blue',
@@ -56,7 +56,7 @@ const gameVariants: Record<string, VariantInfo> = {
   },
   bc: {
     iconColor: 'purple',
-    numbersToSplit: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    numbersToSplit: [3, 4, 5, 6, 7, 8, 9, 10],
   },
 };
 
@@ -78,16 +78,16 @@ function createDescription(variantInfo: VariantInfo): string {
   } else {
     const sorted = [...numbers].sort((a, b) => a - b);
     if (
-      sorted.length === 6 &&
-      sorted[0] === 1 &&
-      sorted[4] === 5 &&
-      sorted[5] === 10
+      sorted.length === 4 &&
+      sorted[0] === 3 &&
+      sorted[2] === 5 &&
+      sorted[3] === 10
     ) {
-      return 'Splitsingen van 1 t/m 5 en 10';
+      return 'Splitsingen van 3 t/m 5 en 10';
     } else if (sorted.length === 5 && sorted[0] === 6 && sorted[4] === 10) {
       return 'Splitsingen van 6 t/m 10';
-    } else if (sorted.length === 10 && sorted[0] === 1 && sorted[9] === 10) {
-      return 'Splitsingen van 1 t/m 10';
+    } else if (sorted.length === 8 && sorted[0] === 3 && sorted[7] === 10) {
+      return 'Splitsingen van 3 t/m 10';
     } else {
       return `Splitsingen van ${joinWithEn(sorted)}`;
     }

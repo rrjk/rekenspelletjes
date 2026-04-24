@@ -40,16 +40,16 @@ export class SplitBalloonGameIcon extends LitElement {
       // Group numbers for display (e.g., "1 2 3", "4 5 10")
       const sorted = [...numbers].sort((a, b) => a - b);
       if (
-        sorted.length === 6 &&
-        sorted[0] === 1 &&
-        sorted[4] === 5 &&
-        sorted[5] === 10
+        sorted.length === 4 &&
+        sorted[0] === 3 &&
+        sorted[2] === 5 &&
+        sorted[3] === 10
       ) {
-        splits.push('1 2 3', '4 5 10');
+        splits.push('4 5', '5 10');
       } else if (sorted.length === 5 && sorted[0] === 6 && sorted[4] === 10) {
         splits.push('6 7', '8 9 10');
-      } else if (sorted.length === 10 && sorted[0] === 1 && sorted[9] === 10) {
-        splits.push('1 2 3', '4 5 6 7', '8 9 10');
+      } else if (sorted.length === 8 && sorted[0] === 3 && sorted[7] === 10) {
+        splits.push('3 4', '5 6 7', '8 9 10');
       } else {
         // Default: split into groups of 3
         for (let i = 0; i < sorted.length; i += 3) {
