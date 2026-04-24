@@ -1,10 +1,12 @@
 # Game Variant / Icon / Index Pattern
 
 This document describes the pattern used for two game families in this repository:
+
 - `MultiplicationTablesBalloonGame` (multiplication tables balloon/rocket/zeppelin/UFO)
 - `MixedSumsGame` (mixed addition/subtraction and multiplication/division)
 
 It is intended to help scaffold new games with the same structure for:
+
 - variant metadata
 - icon rendering
 - hourglass button wrapping
@@ -12,21 +14,24 @@ It is intended to help scaffold new games with the same structure for:
 
 ## Pattern Overview
 
-Each game family is organized into four layers:
+Each game family is organized into five layers:
 
 1. **Variant definitions** — centralized data describing game variants.
 2. **Icon component** — renders a visual icon based on variant metadata.
 3. **Hourglass wrapper component** — places the icon inside a reusable hourglass button type.
-4. **Index app component** — builds the game selection page from titled variant rows.
+4. **Main App component** — handles URL parsing and game configuration.
+5. **Index app component** — builds the game selection page from titled variant rows.
 
 This pattern separates data from rendering and keeps shared metadata logic in one place.
 
 ## 1. Variant configuration
 
 ### Purpose
+
 `*GameVariants.ts` contains the variant table for a family.
 
 ### What it includes
+
 - a variant dictionary keyed by short codes (`aa`, `ab`, `ba`, ...)
 - properties like:
   - icon type / color
@@ -37,7 +42,22 @@ This pattern separates data from rendering and keeps shared metadata logic in on
   - human-readable `description`
   - optional `image` or `tables`
 
+### Variant naming convention
+
+- First letter indicates the section (a, b, c...), second letter increments within the section
+- Section 1 variants: `aa`, `ab`, `ac`, `ad`, etc.
+- Section 2 variants: `ba`, `bb`, `bc`, `bd`, etc.
+- Section 3 variants: `ca`, `cb`, `cc`, `cd`, etc.
+- Do not create duplicate variants for different time codes - time codes are handled separately in the index app (each variant row shows two buttons with different time codes)
+
+### Default variant pattern
+
+- Define a `defaultVariant` object with fallback values
+- Use it when unknown variant codes are passed to `get*Variant`
+- Export `gameVariants` to enable testing
+
 ### Examples
+
 - `MultiplicationTablesBalloonGameVariants.ts`
   - defines table sets and operator combinations
   - returns extended info with `mainCode`, `colorSet`, `image`, `description`, `tables`
@@ -48,15 +68,18 @@ This pattern separates data from rendering and keeps shared metadata logic in on
 ## 2. Icon component
 
 ### Purpose
+
 `*GameIcon.ts` renders the visual icon for a variant.
 
 ### Pattern
+
 - Accepts a `variant` property.
 - Reads metadata via `get*Variant(variant)`.
 - Chooses icon sub-rendering based on metadata.
 - Uses shared rendering utilities when needed.
 
 ### Implementation notes
+
 - `MultiplicationTablesBalloonGameIcon.ts`
   - renders balloons, rockets, zeppelins, or flying saucers
   - chooses variant-specific text arrangement and font size
@@ -68,9 +91,11 @@ This pattern separates data from rendering and keeps shared metadata logic in on
 ## 3. Hourglass-wrapper component
 
 ### Purpose
+
 `*HourglassGameIcon.ts` wraps a game icon in an hourglass button card.
 
 ### Pattern
+
 - Accepts `timeCode` and `variant` properties.
 - Reads variant metadata and passes:
   - `mainCode`
@@ -79,24 +104,48 @@ This pattern separates data from rendering and keeps shared metadata logic in on
 - Renders the specific game icon as a slot child.
 
 ### Example
+
 - `MultiplicationTablesBalloonHourglassGameIcon.ts`
 - `MixedSumsHourglassGameIcon.ts`
 
 This wrapper reuses the same button chrome while keeping game-specific visuals modular.
 
-## 4. Index app component
+## 4. Main App component with dual URL parsing
 
 ### Purpose
+
+`*GameApp.ts` is the main game component that handles URL parsing for both variant-based and explicit parameter modes.
+
+### Pattern
+
+- Implement two URL parsing methods: `parseUrlWithVariant` and `parseUrlWithoutVariant`
+- `parseUrlWithVariant` uses `get*Variant` to get all configuration from a single variant code
+- `parseUrlWithoutVariant` parses individual URL parameters for legacy support
+- Both methods set the same internal game properties for consistency
+- Use `GameLogger` to track game statistics with mainCode and subCode
+- The main `parseUrl` method dispatches to the appropriate parser based on URL parameters
+
+### Example
+
+- `MixedSumsGameApp.ts` - Shows dual URL parsing (variant + explicit parameters)
+- `MultiplicationTablesBalloonGameV2.ts` - Shows dual URL parsing with image type selection
+
+## 5. Index app component
+
+### Purpose
+
 `*GameIndexAppV2.ts` builds the page that shows available variant buttons.
 
 ### Pattern
+
 - Define `sections` grouped by concept or difficulty.
 - Each section contains a `title` and `rows` of variant codes.
 - Render rows as two related hourglass buttons with different `timeCode` values.
 - Use a generic `@property` converter to map URL or attribute strings into a page type.
 
 ### Example
-- `BalloonMultiplicationIndexAppV2.ts`
+
+- `MultiplicationTablesBalloonGameIndexAppV2.ts`
   - supports multiple game families in one index app via `game` property
 - `MixedSumsGameIndexAppV2.ts`
   - currently supports a single `mixedSums` page with puzzle and no-puzzle sections
@@ -106,7 +155,8 @@ This wrapper reuses the same button chrome while keeping game-specific visuals m
 1. `IndexAppV2` chooses variant codes and renders `*HourglassGameIcon` rows.
 2. `*HourglassGameIcon` loads variant metadata and passes it to the hourglass button.
 3. `*GameIcon` renders the visual icon from the same metadata.
-4. `get*Variant` is the single source of truth for variant properties.
+4. `*GameApp` parses URLs and uses variant metadata to configure the game.
+5. `get*Variant` is the single source of truth for variant properties.
 
 This ensures a variant only needs to be defined once and all UI layers stay consistent.
 
@@ -125,39 +175,153 @@ This ensures a variant only needs to be defined once and all UI layers stay cons
    - define section groups and variant rows
    - render rows with `*HourglassGameIcon`
    - optionally add `indexPage`/`game` converters for multiple pages
-5. Add the new components to the relevant HTML landing pages.
+5. Create `src/<NewGame>Variants.test.ts`
+   - test that `gameVariants` has all expected keys
+   - test representative variants for each code path
+   - test that unknown variants return the default
+   - test type validation for `ExtendedVariantInfo`
+6. Create `src/<NewGame>App.ts` with dual URL parsing
+   - implement `parseUrlWithVariant` for variant-based URLs
+   - implement `parseUrlWithoutVariant` for explicit parameter URLs (legacy support)
+   - configure GameLogger with mainCode and subCode
+7. Add the new components to the relevant HTML landing pages.
+   - Add script reference to main `index.html`
+   - Create game-specific HTML page with `<new-game-app>` element
+   - Create index page HTML with `<new-game-index-app-v2>` element
 
-## Improvement ideas
+## Common shared utilities
 
-### 1. Factor shared variant metadata helpers
-- Create reusable base types for `VariantInfo`, `ExtendedVariantInfo`, and description generation.
-- Extract common conversion functions like `determineMainCode` and `determineSumCategoryText`.
+### Color handling
 
-### 2. Reduce duplication between game families
-- Introduce a generic icon renderer or helper functions for operator-based icons.
-- Share the hourglass wrapper component if its API is identical.
+```typescript
+import { Color, getColorInfo } from '../Colors';
+// In render:
+--fill-color: ${getColorInfo(variantInfo.iconColor).mainColorCode};
+```
 
-### 3. Make variant definitions more data-driven
-- Use explicit variant categories such as `puzzle` / `rectangle` / `iconGroup`.
-- Store display rows in the same file or a dedicated page config to avoid separate section duplication.
+### Operator handling
 
-### 4. Type-safe variant keys
-- Replace raw `string` variant props with a union of literal variant keys.
-- This improves compile-time safety when scaffolding new variants.
+```typescript
+import { Operator, operatorToDutch, operatorToSymbol } from '../Operator';
+// Convert to Dutch text: operatorToDutch('plus') → 'plus'
+// Convert to symbol: operatorToSymbol('times') → '×'
+```
 
-### 5. Centralize index page configuration
-- Use a generic `IndexPage` builder that can take section metadata and component references.
-- This would let all games share the same render logic and only supply per-game config.
+### Time code handling
 
-### 6. Clarify fallback and V1 compatibility
-- Keep `V1` pages only as legacy fallback; prefer a single `V2` index pattern.
-- Document the migration path for new pages and new variant families.
+```typescript
+import { type TimeCode, stringToTimeCode } from '../TimeCodes';
+// Use as property converter:
+@property({ converter: stringToTimeCode })
+accessor timeCode: TimeCode = 'a';
+```
 
-## Summary
+### Error handling
 
-The existing design is a clean, layered pattern that keeps:
-- variant data centralized
-- icon rendering separate from button wrapping
-- index layout data-driven
+```typescript
+import { UnexpectedValueError } from '../UnexpectedValueError';
+// Throw for unexpected values:
+throw new UnexpectedValueError(value);
+```
 
-For future games, follow this structure and consider extracting the shared bits into generic utilities or base components to make new game scaffolding faster and less error prone.
+### Dutch list formatting
+
+```typescript
+import { joinWithEn } from '../Utils';
+// Format natural Dutch lists: joinWithEn([1, 2, 3]) → '1, 2 en 3'
+```
+
+## Checklist for new games
+
+- [ ] Create `src/<GameName>/` directory
+- [ ] Create `<GameName>Variants.ts` with variant definitions
+- [ ] Create `<GameName>Variants.test.ts` with test suite
+- [ ] Create `<GameName>GameIcon.ts` with icon rendering
+- [ ] Create `<GameName>HourglassGameIcon.ts` with hourglass wrapper
+- [ ] Create `<GameName>App.ts` with dual URL parsing
+- [ ] Create `<GameName>IndexAppV2.ts` with index page
+- [ ] Update main `index.html` with script reference
+- [ ] Create game-specific HTML page
+- [ ] Create index page HTML
+- [ ] Test the game renders correctly
+- [ ] Test all variant codes work
+- [ ] Test explicit parameter URLs work (backward compatibility)
+- [ ] Test index page navigation
+- [ ] Run test suite to verify variants
+
+## Migration instructions for existing games
+
+If you have an existing game with a `GameApp.ts` file and want to migrate it to the variant-based pattern:
+
+### Step 1: Analyze existing GameApp.ts
+
+Examine the current `GameApp.ts` to identify:
+
+- What URL parameters it currently parses
+- What game configuration properties it uses
+- What the current mainCode logic is
+- What game-specific state it maintains
+
+### Step 2: Create variants file
+
+Create `<GameName>Variants.ts` based on the existing game configuration:
+
+- Define `VariantInfo` interface with all game-specific properties
+- Create variant codes for each common configuration combination
+- Implement `get<GameName>Variant` to return extended metadata
+- Add helper functions to determine mainCode and description
+
+### Step 3: Update GameApp.ts URL parsing
+
+Modify the existing `GameApp.ts` to support both parsing methods:
+
+- Keep the existing `parseUrl` method or create a new one
+- Extract the current URL parsing logic into `parseUrlWithoutVariant`
+- Add new `parseUrlWithVariant` method that uses the variants file
+- Update the main `parseUrl` to dispatch based on `variant` parameter presence
+
+### Step 4: Create icon component
+
+Create `<GameName>GameIcon.ts`:
+
+- Import `get<GameName>Variant` from the variants file
+- Accept a `variant` property
+- Render the icon based on variant metadata
+- Use the same visual style as the existing game
+
+### Step 5: Create hourglass wrapper
+
+Create `<GameName>HourglassGameIcon.ts`:
+
+- Copy the template from the scaffolding guide
+- Update imports and custom element name
+- No other changes needed
+
+### Step 6: Create index app
+
+Create `<GameName>IndexAppV2.ts`:
+
+- Define sections based on your variant groupings
+- List variant codes in each section
+- Use the hourglass wrapper to render buttons
+
+### Step 7: Update HTML files
+
+- Add script references to main `index.html`
+- Create or update the game-specific HTML page
+- Create a new index page HTML file
+
+### Step 8: Test both URL modes
+
+Ensure both URL modes work:
+
+- Variant-based URL: `<GamePage>.html?variant=aa`
+- Explicit parameter URL: `<GamePage>.html?operator=plus&operator=minus&maxAnswer=100`
+
+### Step 9: Clean up legacy code
+
+Once migration is complete and tested:
+
+- Remove any legacy GameLink files (they are no longer needed)
+- Update any hardcoded URLs to use variant codes where appropriate
+- Consider deprecating explicit parameter URLs in documentation
