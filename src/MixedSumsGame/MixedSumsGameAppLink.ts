@@ -1,4 +1,4 @@
-import { Operator } from './Operator';
+import { Operator } from '../Operator';
 
 /** Create link for mixed sums game
  * @param operators - Operators to use

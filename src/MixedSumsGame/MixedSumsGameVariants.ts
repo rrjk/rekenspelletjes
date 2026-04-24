@@ -1,7 +1,7 @@
-import { Color } from './Colors';
-import { Operator, operatorToDutch } from './Operator';
-import { UnexpectedValueError } from './UnexpectedValueError';
-import { joinWithEn } from './Utils';
+import { Color } from '../Colors';
+import { Operator, operatorToDutch } from '../Operator';
+import { UnexpectedValueError } from '../UnexpectedValueError';
+import { joinWithEn } from '../Utils';
 
 export const mixedSumIcon = ['rectangle', 'puzzlePiece'] as const;
 

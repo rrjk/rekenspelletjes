@@ -23,7 +23,7 @@ import { multiplicationTablesGameLinkV2 } from './MultiplicationTablesBalloonGam
 import { divisionWithSplitAppLink } from './DivisionWithSplitAppLink';
 import { dieFaceGameAppLink } from './DieFaceGameAppLink';
 import { howManyFingersGameAppLink } from './HowManyFingersGameAppLink';
-import { mixedSumsGameLink } from './MixedSumsGameAppLink';
+import { mixedSumsGameLink } from './MixedSumsGame/MixedSumsGameAppLink';
 
 /** Function to determine the number belonging to a string of lower case letters
  * a equals 0, b equals 1 etc

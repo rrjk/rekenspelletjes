@@ -8,7 +8,7 @@ import './RocketImageV2';
 import './NumberedBalloon';
 import './MultiplicationTablesBalloonGame/MultiplicationTablesBalloonGameIcon';
 import './MultiplicationTablesBalloonGame/MultiplicationTablesBalloonHourglassGameIcon';
-import './MixedSumsGameIcon';
+import './MixedSumsGame/MixedSumsGameIcon';
 
 @customElement('test-app')
 export class TestApp extends LitElement {

@@ -8,9 +8,9 @@ import { customElement, property } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 
 import { getMixedSumsGameVariant } from './MixedSumsGameVariants';
-import { Color, getColorInfo } from './Colors';
-import { Operator, operatorToSymbol } from './Operator';
-import { pathPuzzlePiece } from './PuzzlePiece';
+import { Color, getColorInfo } from '../Colors';
+import { Operator, operatorToSymbol } from '../Operator';
+import { pathPuzzlePiece } from '../PuzzlePiece';
 
 interface IconInfo {
   icon: 'rectangle' | 'puzzlePiece';

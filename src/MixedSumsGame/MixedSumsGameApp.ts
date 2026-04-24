@@ -5,26 +5,26 @@ import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
 import { create } from 'mutative';
 
-import { TimeLimitedGame2 } from './TimeLimitedGame2';
-import { GameLogger } from './GameLogger';
+import { TimeLimitedGame2 } from '../TimeLimitedGame2';
+import { GameLogger } from '../GameLogger';
 
-import { randomFromSet, randomIntFromRange } from './Randomizer';
+import { randomFromSet, randomIntFromRange } from '../Randomizer';
 
 import {
   getRange,
   numberDigitsInNumber,
   splitInDigits,
-} from './NumberHelperFunctions';
+} from '../NumberHelperFunctions';
 
-import './SimpleSumWidget';
-import './PuzzlePhotoFrame';
-import type { Digit } from './DigitKeyboard';
-import './DigitKeyboard';
+import '../SimpleSumWidget';
+import '../PuzzlePhotoFrame';
+import type { Digit } from '../DigitKeyboard';
+import '../DigitKeyboard';
 
-import { Operator, operators, operatorToDutch } from './Operator';
-import { UnexpectedValueError } from './UnexpectedValueError';
+import { Operator, operators, operatorToDutch } from '../Operator';
+import { UnexpectedValueError } from '../UnexpectedValueError';
 import { classMap } from 'lit/directives/class-map.js';
-import { joinWithEn } from './Utils';
+import { joinWithEn } from '../Utils';
 
 import { getMixedSumsGameVariant } from './MixedSumsGameVariants';
 
