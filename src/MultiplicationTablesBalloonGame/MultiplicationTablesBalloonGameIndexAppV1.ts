@@ -4,10 +4,10 @@ import { customElement } from 'lit/decorators.js';
 
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
-import { Color } from './Colors';
+import { Color } from '../Colors';
 
-import './IconHourglassButton';
-import './NumberedBalloon';
+import '../IconHourglassButton';
+import '../NumberedBalloon';
 
 type TableSet = 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 'firstHalf' | 'all';
 

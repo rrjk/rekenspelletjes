@@ -19,7 +19,7 @@ export function splitInDigits(nmbr: number): number[] {
   return ret;
 }
 
-/** Actibe digits to number */
+/** Active digits to number */
 export function numberWithActiveDigits(
   nmbr: number,
   activeDigits: number,

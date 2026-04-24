@@ -1,7 +1,17 @@
 import { UnexpectedValueError } from './UnexpectedValueError';
 
-export const operators = ['times', 'divide', 'plus', 'minus'] as const;
-export type Operator = (typeof operators)[number];
+export const multiplicationOperators = ['times', 'divide'] as const;
+export type MultiplicationOperator = (typeof multiplicationOperators)[number];
+
+export const additionOperators = ['plus', 'minus'] as const;
+export type additionOperator = (typeof additionOperators)[number];
+
+export const operators = [
+  ...multiplicationOperators,
+  ...additionOperators,
+] as const;
+export type Operator = additionOperator | MultiplicationOperator;
+
 /**
  * Convert a string into an Operator.
  * In case an illegal string is provided, which does not resolve to an operator

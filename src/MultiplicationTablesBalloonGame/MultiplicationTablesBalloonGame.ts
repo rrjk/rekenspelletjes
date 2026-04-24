@@ -3,21 +3,21 @@ import { customElement, state } from 'lit/decorators.js';
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 import { darken, lighten } from 'color2k';
 
-import { TimeLimitedGame2 } from './TimeLimitedGame2';
+import { TimeLimitedGame2 } from '../TimeLimitedGame2';
 import {
   randomFromSet,
   randomFromSetAndSplice,
   randomIntFromRange,
-} from './Randomizer';
-import './AscendingBalloons';
+} from '../Randomizer';
+import '../AscendingBalloons';
 import type {
   Answers,
   AscendingBalloons,
   ImageType,
-} from './AscendingBalloons';
-import { GameLogger } from './GameLogger';
-import { getZeppelinAsSvgUrl } from './ZeppelinImage';
-import { Operator } from './MultiplicationTablesBalloonGameLink';
+} from '../AscendingBalloons';
+import { GameLogger } from '../GameLogger';
+import { getZeppelinAsSvgUrl } from '../ZeppelinImage';
+import { Operator } from '../MultiplicationTablesBalloonGame/MultiplicationTablesBalloonGameLink';
 
 @customElement('mutiplication-tables-balloon-game-app')
 export class MultiplicationTablesBalloonGameApp extends TimeLimitedGame2 {

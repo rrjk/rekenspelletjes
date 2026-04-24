@@ -3,7 +3,12 @@ import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
 import { customElement } from 'lit/decorators.js';
 
-import './IconMixedSums';
+import './ZeppelinImageV2';
+import './RocketImageV2';
+import './NumberedBalloon';
+import './MultiplicationTablesBalloonGame/MultiplicationTablesBalloonGameIcon';
+import './MultiplicationTablesBalloonGame/MultiplicationTablesBalloonHourglassGameIcon';
+import './MixedSumsGame/MixedSumsGameIcon';
 
 @customElement('test-app')
 export class TestApp extends LitElement {
@@ -15,9 +20,23 @@ export class TestApp extends LitElement {
           height: 100%;
           display: block;
         }
-        icon-mixed-sums {
-          width: 96px;
-          height: 96px;
+
+        multiplication-tables-balloon-game-icon {
+          height: 200px;
+          width: 100px;
+        }
+
+        multiplication-tables-balloon-hourglass-game-icon {
+          width: 150px;
+        }
+
+        div.vSpace {
+          height: 20px;
+        }
+
+        mixed-sums-game-icon {
+          width: 200px;
+          height: 200px;
         }
       `,
     ];
@@ -25,27 +44,17 @@ export class TestApp extends LitElement {
 
   protected renderTest(): HTMLTemplateResult {
     return html`
-      <icon-mixed-sums
-        color="lavender"
-        puzzlePiece
-        maxAnswer="1000"
-        maxTable="30"
-        plus
-        minus
-        divide
-      ></icon-mixed-sums>
-      <icon-mixed-sums
-        color="blue"
-        maxAnswer="10"
-        maxTable="10"
-        divide
-      ></icon-mixed-sums>
-      <icon-mixed-sums
-        color="yellow"
-        maxAnswer="10"
-        maxTable="10"
-        plus
-      ></icon-mixed-sums>
+      <multiplication-tables-balloon-hourglass-game-icon
+        variant="af"
+        timeCode="a"
+      >
+      </multiplication-tables-balloon-hourglass-game-icon>
+      <div class="vSpace"></div>
+      <mixed-sums-game-icon variant="af"></mixed-sums-game-icon>
+      <div class="vSpace"></div>
+      <mixed-sums-game-icon variant="bc"></mixed-sums-game-icon>
+      <div class="vSpace"></div>
+      <mixed-sums-game-icon variant=""></mixed-sums-game-icon>
     `;
   }
 

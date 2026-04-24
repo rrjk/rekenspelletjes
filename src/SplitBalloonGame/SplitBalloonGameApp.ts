@@ -6,27 +6,24 @@ import {
   AscendingItemsGameApp,
   ItemInfoInterface,
   RoundInfo,
-} from './AscendingItemsGameApp';
-import {
-  Color,
-  setOf20Colors,
-  legacyBalloonColors,
-  neonFusionColors,
-} from './Colors';
+} from '../AscendingItemsGameApp';
+import { Color, legacyBalloonColors } from '../Colors';
 
-import './NumberedBalloon';
+import '../NumberedBalloon';
 
-import './SimpleSplitWidget';
+import '../SimpleSplitWidget';
 
 import {
   numberArrayToRangeText,
   randomFromSet,
   randomFromSetAndSplice,
   shuffleArray,
-} from './Randomizer';
+} from '../Randomizer';
 
-import { GameLogger } from './GameLogger';
-import { getRange } from './NumberHelperFunctions';
+import { GameLogger } from '../GameLogger';
+import { getRange } from '../NumberHelperFunctions';
+
+import { getSplitBalloonGameVariant } from './SplitBalloonGameVariants';
 
 interface ItemInfo extends ItemInfoInterface {
   nmbr: number;
@@ -39,16 +36,19 @@ interface ExerciseInfo {
   secondSplit: number;
 }
 
-/** Customer element for a game to exercise is splitting numbers
- * The player has to click the proper ballon.
+/** Custom element for a game to exercise is splitting numbers
+ * The player has to click the proper balloon.
  *
- * The followin url parameters are supported
+ * The following url parameters are supported
+ * - variant - Variant code (e.g., sl, br, bt, etc.) - uses predefined configurations
  * - time - Time to play in seconds
- * - number* - Number that have to split. May be one number, may be multiple numbers. Allowed numbers 3-10
- * - colorSet - Colorset to use for the balloons. Possible values: setOf20Colors, neonFusionColors, legacyBalloonColors. Default: legacyBalloonColors
+ * - number* - Number that have to split. May be one number, may be multiple numbers. Allowed numbers 3-10 (legacy mode)
  */
-@customElement('split-game-v2-app')
-export class SplitGameV2 extends AscendingItemsGameApp<ExerciseInfo, ItemInfo> {
+@customElement('split-balloon-game-app')
+export class SplitBalloonGameApp extends AscendingItemsGameApp<
+  ExerciseInfo,
+  ItemInfo
+> {
   private possibleNumbersToSplit: number[] = [];
   private gameLogger = new GameLogger('R', '');
 
@@ -66,9 +66,27 @@ export class SplitGameV2 extends AscendingItemsGameApp<ExerciseInfo, ItemInfo> {
     this.parseUrl();
   }
 
-  private parseUrl(): void {
-    const urlParams = new URLSearchParams(window.location.search);
+  /** Parse URL with variant parameter */
+  private parseUrlWithVariant(urlParams: URLSearchParams): void {
+    const variant = urlParams.get('variant');
+    if (variant === null)
+      throw Error(
+        'Internal SW Error, parseUrlWithVariant called while there is no variant in the URL',
+      );
+    // Empty string is handled by getSplitBalloonGameVariant's fallback to defaultVariant
+    const extendedVariantInfo = getSplitBalloonGameVariant(variant);
 
+    this.possibleNumbersToSplit = [...extendedVariantInfo.numbersToSplit];
+
+    // All variants use legacyBalloonColors
+    this.possibleColors = [...legacyBalloonColors];
+
+    this.gameLogger.setMainCode(extendedVariantInfo.mainCode);
+    this.gameLogger.setSubCode(variant);
+  }
+
+  /** Parse URL with explicit parameters (legacy support) */
+  private parseUrlWithoutVariant(urlParams: URLSearchParams): void {
     const nmbrsFromUrl = urlParams.getAll('number');
     this.possibleNumbersToSplit = [];
     for (const nmbrAsString of nmbrsFromUrl) {
@@ -85,15 +103,23 @@ export class SplitGameV2 extends AscendingItemsGameApp<ExerciseInfo, ItemInfo> {
     if (this.possibleNumbersToSplit.length === 0)
       this.possibleNumbersToSplit = [9];
 
-    const colorParam = urlParams.get('colorSet');
-    // colorParam might be null. but then the following if constuction will fall throigh to the last else.
-    if (colorParam === 'setOf20Colors')
-      this.possibleColors = [...setOf20Colors];
-    else if (colorParam === 'neonFusionColors')
-      this.possibleColors = [...neonFusionColors];
-    else if (colorParam === 'legacyBalloonColors')
-      this.possibleColors = [...legacyBalloonColors];
-    else this.possibleColors = [...legacyBalloonColors]; // Default color set is legacy balloon colors.
+    // All variants use legacyBalloonColors
+    this.possibleColors = [...legacyBalloonColors];
+
+    // Determine mainCode based on parsed parameters
+    this.gameLogger.setMainCode(this.determineMainCodeFromParams());
+  }
+
+  /** Main URL parsing function */
+  private parseUrl(): void {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('variant')) this.parseUrlWithVariant(urlParams);
+    else this.parseUrlWithoutVariant(urlParams);
+  }
+
+  /** Determine mainCode from explicit parameters */
+  private determineMainCodeFromParams(): string {
+    return 'R';
   }
 
   executeGameOverActions(): void {
@@ -182,8 +208,8 @@ export class SplitGameV2 extends AscendingItemsGameApp<ExerciseInfo, ItemInfo> {
       ...super.styles,
       css`
         numbered-balloon {
-          width: 80%;
-          height: 80%;
+          width: 100%;
+          height: 100%;
         }
 
         simple-split-widget {

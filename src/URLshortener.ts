@@ -9,7 +9,7 @@ import { klokPaartjesLink } from './ClockPairingAppLink';
 import { somPaartjesLink } from './CombineToSolveSumAppLink';
 import { eierdoosTellenLink } from './EggCountingAppLink';
 import { springOpGetallenlijnLink } from './JumpOnNumberLineAppLink';
-import { ballonnenSpelLink } from './MultiplicationTablesBalloonGameLink';
+import { ballonnenSpelLink } from './MultiplicationTablesBalloonGame/MultiplicationTablesBalloonGameLink';
 import { getallenlijnBoogjesSpelLink } from './NumberlineArchesGameAppLink';
 import { groepjesVanHerkennenLink } from './RecognizeGroupsAppLink';
 import { sorterenLink } from './SortingGameAppLink';
@@ -19,11 +19,11 @@ import { splitsenOpWaardeLink } from './TensSplitAppLink';
 import { welkeHandHeeftMeerStippenLink } from './WhichIsBiggerAppLink';
 import { breukenPaartjesLink } from './FractionsPairMatchingAppLink';
 import { hexagonnenSpelLink } from './SquaresBalloonGameLink';
-import { multiplicationTablesGameLinkV2 } from './MultiplicationTablesBalloonGameLinkV2';
+import { multiplicationTablesGameLinkV2 } from './MultiplicationTablesBalloonGame/MultiplicationTablesBalloonGameLinkV2';
 import { divisionWithSplitAppLink } from './DivisionWithSplitAppLink';
 import { dieFaceGameAppLink } from './DieFaceGameAppLink';
 import { howManyFingersGameAppLink } from './HowManyFingersGameAppLink';
-import { mixedSumsGameLink } from './MixedSumsGameAppLink';
+import { mixedSumsGameLink } from './MixedSumsGame/MixedSumsGameAppLink';
 
 /** Function to determine the number belonging to a string of lower case letters
  * a equals 0, b equals 1 etc

@@ -5,26 +5,28 @@ import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
 import { create } from 'mutative';
 
-import { TimeLimitedGame2 } from './TimeLimitedGame2';
-import { GameLogger } from './GameLogger';
+import { TimeLimitedGame2 } from '../TimeLimitedGame2';
+import { GameLogger } from '../GameLogger';
 
-import { randomFromSet, randomIntFromRange } from './Randomizer';
+import { randomFromSet, randomIntFromRange } from '../Randomizer';
 
 import {
   getRange,
   numberDigitsInNumber,
   splitInDigits,
-} from './NumberHelperFunctions';
+} from '../NumberHelperFunctions';
 
-import './SimpleSumWidget';
-import './PuzzlePhotoFrame';
-import type { Digit } from './DigitKeyboard';
-import './DigitKeyboard';
+import '../SimpleSumWidget';
+import '../PuzzlePhotoFrame';
+import type { Digit } from '../DigitKeyboard';
+import '../DigitKeyboard';
 
-import { Operator, operators, operatorToDutch } from './Operator';
-import { UnexpectedValueError } from './UnexpectedValueError';
+import { Operator, operators, operatorToDutch } from '../Operator';
+import { UnexpectedValueError } from '../UnexpectedValueError';
 import { classMap } from 'lit/directives/class-map.js';
-import { joinWithEn } from './Utils';
+import { joinWithEn } from '../Utils';
+
+import { getMixedSumsGameVariant } from './MixedSumsGameVariants';
 
 const allEnabledDigits = [
   false,
@@ -76,6 +78,7 @@ export class MixedSumsGameApp extends TimeLimitedGame2 {
   private eligibleOperators: Operator[] = []; // We use an array as we need to often select a element randomly and hence need direct access
   private eligibleTables: number[] = []; // We use an array as we need to often select a element randomly and hence need direct access
   private maximumNumber = 10;
+  private gameText = '';
 
   private lastAnswerUsed = 0;
   private lastOperatorUsed: Operator = 'times';
@@ -166,12 +169,34 @@ export class MixedSumsGameApp extends TimeLimitedGame2 {
     }
   }
 
-  parseUrl(): void {
-    const urlParams = new URLSearchParams(window.location.search);
+  private parseUrlWithVariant(urlParams: URLSearchParams): void {
+    const variant = urlParams.get('variant');
+    if (variant === null)
+      throw Error(
+        'Internal SW Error, parseUrlWithVariant called while there is no variant in the URL',
+      );
+    // Empty string is handled by getMixedSumsGameVariant's fallback to defaultVariant
+    const extendedVariantInfo = getMixedSumsGameVariant(variant);
 
-    this.eligibleTables = [];
+    this.eligibleTables = getRange(2, extendedVariantInfo.maxTable);
+
+    this.maximumNumber = extendedVariantInfo.maxAnswer;
+    this.eligibleOperators = [...extendedVariantInfo.operators];
+    this.gameLogger.setMainCode(extendedVariantInfo.mainCode);
+    this.gameLogger.setSubCode(variant);
+    this.includePuzzle = extendedVariantInfo.icon === 'puzzlePiece';
+    this.gameText = extendedVariantInfo.description;
+
+    this.determineMaxDigitsOperand1();
+    this.determineMaxDigitsOperand2();
+    this.determineMaxDigitsAnswer();
+    this.determineMaxIdenticalLastUsed();
+  }
+
+  parseUrlWithoutVariant(urlParams: URLSearchParams): void {
     this.eligibleTables = [];
     this.maximumNumber = 10;
+    this.gameText = 'Los de some op.';
 
     /* Determine the set of operators to use based on the URL
      * We deliberately do not check for duplicates to allow influecing how often an operator is selected
@@ -226,6 +251,12 @@ export class MixedSumsGameApp extends TimeLimitedGame2 {
     else this.gameLogger.setMainCode('AD');
   }
 
+  private parseUrl(): void {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('variant')) this.parseUrlWithVariant(urlParams);
+    else this.parseUrlWithoutVariant(urlParams);
+  }
+
   private determineMaxIdenticalLastUsed() {
     if (this.eligibleOperators.length === 1)
       this.maxIdenticalOperatorsLastUsed = Number.POSITIVE_INFINITY;
@@ -241,7 +272,7 @@ export class MixedSumsGameApp extends TimeLimitedGame2 {
 
   /** Get the text to show in the game over dialog */
   get welcomeMessage(): HTMLTemplateResult {
-    return html`<p>Los de som op.</p>`;
+    return html`<p>${this.gameText}</p>`;
   }
 
   /** Get the title for the welcome dialog. */

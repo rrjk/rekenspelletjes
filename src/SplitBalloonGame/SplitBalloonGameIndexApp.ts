@@ -4,10 +4,10 @@ import { customElement } from 'lit/decorators.js';
 
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
-import { Color } from './Colors';
+import { Color } from '../Colors';
 
-import './IconHourglassButton';
-import './NumberedBalloon';
+import '../IconHourglassButton';
+import '../NumberedBalloon';
 
 interface RowInfoType {
   description: string;
@@ -100,8 +100,8 @@ const sections: SectionInfoType[] = [
   },
 ];
 
-@customElement('split-game-v2-index-app')
-export class SplitGameV2IndexApp extends LitElement {
+@customElement('split-balloon-game-index-app')
+export class SplitBalloonGameIndexApp extends LitElement {
   static get styles(): CSSResultArray {
     return [
       css`

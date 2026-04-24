@@ -57,7 +57,7 @@ export function* rangeWithGaps(
   }
 }
 
-export function splitInConsecutiveRanges(orig: number[]): number[][] {
+export function splitInConsecutiveRanges(orig: readonly number[]): number[][] {
   const ret: number[][] = [];
   let subRange: number[] = [];
   const origCopy = [...orig];
@@ -80,7 +80,7 @@ export function splitInConsecutiveRanges(orig: number[]): number[][] {
   return ret;
 }
 
-export function numberArrayToRangeText(orig: number[]): string {
+export function numberArrayToRangeText(orig: readonly number[]): string {
   const rangesAsString: string[] = [];
   const ranges = splitInConsecutiveRanges(orig);
 
