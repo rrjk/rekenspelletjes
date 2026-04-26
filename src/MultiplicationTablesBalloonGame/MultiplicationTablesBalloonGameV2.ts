@@ -156,7 +156,6 @@ export class MultiplicationTablesBalloonGameV2 extends AscendingItemsGameApp<
       this.gameLogger.setMainCode('K');
       this.colorsetToUse = setOf20Colors;
       this.ascendingImageToUse = 'zeppelin';
-      throw new Error('zeppelin game is not yet supported');
     }
     if (tableAbove10 && divideIncluded) {
       this.colorsetToUse = setOf20Colors;
