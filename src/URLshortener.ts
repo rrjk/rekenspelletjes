@@ -21,7 +21,7 @@ import { hexagonnenSpelLink } from './SquaresBalloonGameLink';
 import { multiplicationTablesGameLinkV2 } from './MultiplicationTablesBalloonGame/MultiplicationTablesBalloonGameLinkV2';
 import { divisionWithSplitAppLink } from './DivisionWithSplitAppLink';
 import { dieFaceGameAppLink } from './DieFaceGameAppLink';
-import { howManyFingersGameAppLink } from './HowManyFingersGameAppLink';
+import { howManyFingersGameAppLink } from './HowManyFingersGame/HowManyFingersGameAppLink';
 import { mixedSumsGameLink } from './MixedSumsGame/MixedSumsGameAppLink';
 
 /** Function to determine the number belonging to a string of lower case letters

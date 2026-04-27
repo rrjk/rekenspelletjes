@@ -4,14 +4,14 @@ import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
 import { create } from 'mutative';
 
-import { TimeLimitedGame2 } from './TimeLimitedGame2';
-import { GameLogger } from './GameLogger';
+import { TimeLimitedGame2 } from '../TimeLimitedGame2';
+import { GameLogger } from '../GameLogger';
 
-import { randomFromSet } from './Randomizer';
+import { randomFromSet } from '../Randomizer';
 
-import type { Digit } from './DigitKeyboard';
-import './DigitKeyboard';
-import { possibleNumberFingers, PossibleNumberFingers } from './HandFace';
+import type { Digit } from '../DigitKeyboard';
+import '../DigitKeyboard';
+import { possibleNumberFingers, PossibleNumberFingers } from '../HandFace';
 
 const allDigitsEnabled = [
   false,
