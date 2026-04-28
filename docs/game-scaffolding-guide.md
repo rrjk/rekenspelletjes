@@ -1,15 +1,30 @@
-# Game Scaffolding Guide for AI
+# Game Scaffolding Guide
 
-This document provides detailed instructions for creating a new game family following the established pattern used by `MixedSumsGame` and `MultiplicationTablesBalloonGame`.
+This guide explains the pattern for creating game families with variant-based configuration (used by `MixedSumsGame` and `MultiplicationTablesBalloonGame`).
 
-## Pattern Overview
+## Quick Reference
 
-Each game family consists of these core files in `src/<GameName>/`:
+**Core files in `src/<GameName>/`:**
 
-1. **`<GameName>Variants.ts`** - Variant metadata and configuration
-2. **`<GameName>Icon.ts`** - Visual icon rendering
-3. **`<GameName>HourglassIcon.ts`** - Hourglass button wrapper
-4. **`<GameName>IndexAppV2.ts`** - Index page component
+- `<GameName>Variants.ts` - Variant metadata (export `gameVariants` for testing)
+- `<GameName>Variants.test.ts` - Variant tests
+- `<GameName>Icon.ts` - Visual icon rendering
+- `<GameName>HourglassGameIcon.ts` - Hourglass button wrapper
+- `<GameName>IndexAppV2.ts` - Index page component
+- `<GameName>App.ts` - Main game with dual URL parsing (variant + explicit)
+
+**Variant naming:** `aa`, `ab`, `ac` (section 1), `ba`, `bb`, `bc` (section 2), etc.
+**Game naming:** Always include "Game" suffix (e.g., `MyNewGame`, not `MyNew`).
+
+**URL modes:**
+
+- **Variant-based** (recommended): `?variant=aa` - uses pre-configured variant
+- **Explicit parameters** (legacy): `?operator=plus&maxAnswer=100` - parses individual params
+
+**When to use which:**
+
+- Use variant-based for new games and index pages
+- Keep explicit parameter parsing for backward compatibility with existing URLs
 
 ## AI Scaffolding Instructions
 
@@ -25,105 +40,69 @@ Replace `<GameName>` with your game name in PascalCase (e.g., `MyNewGame`). **Im
 
 ### Step 2: Create `<GameName>Variants.ts`
 
-This file defines all game variants and their metadata.
-
-**Template:**
+Defines all game variants and their metadata.
 
 ```typescript
 import { Color } from '../Colors';
 import { UnexpectedValueError } from '../UnexpectedValueError';
-// Import other game-specific types as needed
 
-// Define game-specific icon types ONLY if you have genuinely different icon types
-// that cannot be determined from other variant properties (e.g., min/max, operators)
-// If the same icon component can handle all cases, skip this and don't add an icon field
+// Define icon types ONLY if genuinely different (not determinable from other properties)
 export const gameIcons = ['iconType1', 'iconType2'] as const;
 export type GameIcon = (typeof gameIcons)[number];
 
-// Define the base variant interface
 interface <GameName>VariantInfo {
   iconColor: Color;
-  // Add game-specific properties here:
-  // - icon: GameIcon (ONLY if you have genuinely different icon types that cannot be determined from other properties)
-  //   If the same icon component can handle all cases based on other parameters (e.g., min/max), do NOT add an icon field
-  // - operators: Operator[] (if using operators)
-  // - difficulty bounds (maxAnswer, maxTable, tableSet, etc.)
+  // Add game-specific properties: icon?, operators?, maxAnswer?, tables?, etc.
 }
 
-// Define the default variant
 const defaultVariant: <GameName>VariantInfo = {
   iconColor: 'green',
-  // Add default values for all properties
+  // Add default values
 };
 
-// Define all variants keyed by short codes (aa, ab, ac, ba, bb, etc.)
-const <gameName>Variants: Record<string, <GameName>VariantInfo> = {
+// Export for testing
+export const <gameName>Variants: Record<string, <GameName>VariantInfo> = {
   aa: defaultVariant,
-  ab: {
-    iconColor: 'red',
-    // override other properties as needed
-  },
+  ab: { iconColor: 'red' /* overrides */ },
   // Add more variants...
 };
 
-// Define the extended variant interface
 export interface <GameName>ExtendedVariantInfo extends <GameName>VariantInfo {
   mainCode: string;
   description: string;
-  // Add other derived properties:
-  // - colorSet: readonly Color[]
-  // - image: AscendingImage
-  // - tables: number[]
+  // Add derived properties: colorSet?, image?, tables?
 }
 
-// Create helper functions to determine derived properties
 function determineMainCode(variantInfo: <GameName>VariantInfo): string {
-  // Logic to determine mainCode based on variant properties
-  // Example: switch on icon type or operator combination
-  return 'A'; // Default
+  // Logic to determine mainCode (e.g., switch on icon type or operators)
+  return 'A';
 }
 
 function createDescription(variantInfo: <GameName>VariantInfo): string {
-  // Logic to create human-readable description
-  // Use operatorToDutch() if using operators
-  // Use joinWithEn() from '../Utils' for natural Dutch lists (e.g., "1, 2 en 3")
+  // Use operatorToDutch() and joinWithEn() from '../Utils' for Dutch lists
   return 'Game description';
 }
 
-// Main function to get extended variant info
 export function get<GameName>Variant(variant: string): <GameName>ExtendedVariantInfo {
   const variantInfo = <gameName>Variants[variant] || defaultVariant;
-
-  const mainCode = determineMainCode(variantInfo);
-  const description = createDescription(variantInfo);
-
   return {
     ...variantInfo,
-    mainCode,
-    description,
+    mainCode: determineMainCode(variantInfo),
+    description: createDescription(variantInfo),
     // Add other derived properties
   };
 }
 ```
 
-**Key Points:**
+**Key points:**
 
-- Use short codes like `aa`, `ab`, `ac` for variants
-- **Variant naming pattern**: First letter indicates the section (a, b, c...), second letter increments within the section (a, b, c...)
-  - Section 1 variants: `aa`, `ab`, `ac`, `ad`, etc.
-  - Section 2 variants: `ba`, `bb`, `bc`, `bd`, etc.
-  - Section 3 variants: `ca`, `cb`, `cc`, `cd`, etc.
-- **Do not create duplicate variants for different time codes** - time codes are handled separately in the index app (each variant row shows two buttons with different time codes)
-- Group variants by category (a-series, b-series, etc.)
-- The `get<GameName>Variant` function is the single source of truth for variant metadata
-- Return `ExtendedVariantInfo` with all properties needed by icons, index pages, and the actual game
-- **Export `gameVariants`** so it can be tested
+- Variant codes: `aa`, `ab`, `ac` (section 1), `ba`, `bb`, `bc` (section 2), etc.
+- Don't create duplicate variants for different time codes (handled in index app)
+- Export `<gameName>Variants` for testing
 
 ### Step 2.5: Create `<GameName>Variants.test.ts`
 
-This file tests the variant definitions to ensure they are correct.
-
-**Template:**
+Tests variant definitions.
 
 ```typescript
 import {
@@ -134,10 +113,7 @@ import {
 
 test('<gameName>Variants has expected keys', () => {
   expect(Object.keys(<gameName>Variants)).toStrictEqual([
-    'aa',
-    'ab',
-    'ac',
-    // ... add all variant codes
+    'aa', 'ab', 'ac', /* all variant codes */
   ]);
 });
 
@@ -146,55 +122,38 @@ test('get<GameName>Variant for aa', () => {
   expect(extendedVariant.iconColor).toBe('lavender');
   expect(extendedVariant.mainCode).toBe('A');
   expect(extendedVariant.description).toBe('Game description');
-  // Test other properties as needed
 });
-
-// Add tests for each variant...
 
 test('get<GameName>Variant for unknown variant returns default', () => {
   const extendedVariant = get<GameName>Variant('unknown');
   expect(extendedVariant.iconColor).toBe('green');
-  // Test default values
 });
 
 test('<GameName>ExtendedVariantInfo type validation', () => {
   const variant: <GameName>ExtendedVariantInfo = get<GameName>Variant('aa');
   expect(typeof variant.iconColor).toBe('string');
-  // Test other type validations
 });
 ```
 
-**Key Points:**
+**Key points:**
 
-- Test that `gameVariants` has all expected keys
-- Test representative variants for each code path (e.g., single digit, multi digit, full range)
-- Test that unknown variants return the default
-- Test type validation for `ExtendedVariantInfo`
-- Export `gameVariants` from the variants file to enable testing
-- **Don't test every variant individually** - test key code paths only to keep tests maintainable
+- Test expected keys, representative variants, unknown variant fallback, and type validation
+- Don't test every variant individually - test key code paths only
 
 ### Step 3: Create `<GameName>Icon.ts`
 
-This file renders the visual icon for each variant.
-
-**Template:**
+Renders the visual icon for each variant.
 
 ```typescript
 import { LitElement, html, css } from 'lit';
 import type { HTMLTemplateResult, CSSResultGroup } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
-import {
-  <GameName>ExtendedVariantInfo,
-  get<GameName>Variant,
-} from './<GameName>Variants';
-
+import { <GameName>ExtendedVariantInfo, get<GameName>Variant } from './<GameName>Variants';
 import { UnexpectedValueError } from '../UnexpectedValueError';
-// Import other shared components as needed
 
 @customElement('<game-name>-icon')
 export class <GameName>Icon extends LitElement {
-  /** Gamevariant */
   @property({ type: String })
   accessor variant = '';
 
@@ -222,7 +181,6 @@ export class <GameName>Icon extends LitElement {
         align-items: center;
       }
 
-      /* Inner content (e.g., hand-face, balloon, etc.) */
       .iconContent {
         width: 95%;
         height: 95%;
@@ -230,70 +188,41 @@ export class <GameName>Icon extends LitElement {
     `;
   }
 
-  // Create render methods for each icon type if multiple types exist
-  private renderIconType1(variantInfo: ExtendedVariantInfo): HTMLTemplateResult {
-    return html`<!-- SVG or component for icon type 1 -->`;
-  }
-
-  private renderIconType2(variantInfo: <GameName>ExtendedVariantInfo): HTMLTemplateResult {
-    return html`<!-- SVG or component for icon type 2 -->`;
+  private renderIconType1(variantInfo: <GameName>ExtendedVariantInfo): HTMLTemplateResult {
+    return html`<!-- SVG or component -->`;
   }
 
   render(): HTMLTemplateResult {
     const variantInfo = get<GameName>Variant(this.variant);
-
-    // Choose render method based on variant properties
     if (variantInfo.icon === 'iconType1') {
       return this.renderIconType1(variantInfo);
-    } else if (variantInfo.icon === 'iconType2') {
-      return this.renderIconType2(variantInfo);
-    } else {
-      throw new UnexpectedValueError(variantInfo.icon);
     }
+    throw new UnexpectedValueError(variantInfo.icon);
   }
 }
 ```
 
-**Key Points:**
-
-- Accept a `variant` property (string)
-- Use `get<GameName>Variant(this.variant)` to get metadata
-- Render different icon types based on variant properties
-- Use CSS container queries for responsive sizing
-- Import shared components from `../` directory
-
-**CSS Grid Sizing Best Practices:**
-
-- **Always add `min-width: 0` and `min-height: 0`** to the `.iconContainer` (or any grid item that contains content)
-- In CSS Grid, grid items have a default `min-width: auto` and `min-height: auto`, which prevents them from shrinking smaller than their content
-- Without these properties, child content (like images or components) can force the container to expand beyond its intended size
-- Use a percentage less than 100% (e.g., 90%) for the icon container to provide visual breathing room within the host element
-- Size the inner content (e.g., `.iconContent`) to a high percentage (e.g., 95%) of the container to maximize display while respecting constraints
+**CSS Grid sizing:** Always add `min-width: 0` and `min-height: 0` to grid items to prevent content from forcing expansion.
 
 ### Step 4: Create `<GameName>HourglassGameIcon.ts`
 
-This wraps the game icon in an hourglass button.
-
-**Template:**
+Wraps the game icon in an hourglass button. Copy this template exactly - only change the custom element name and imports.
 
 ```typescript
 import { LitElement, html, css } from 'lit';
-import type { HTMLTemplateResult, CSSResultGroup } from 'lit';
+import type { CSSResultGroup, HTMLTemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
 import { type TimeCode, stringToTimeCode } from '../TimeCodes';
 import { get<GameName>Variant } from './<GameName>Variants';
-
 import '../IconHourglassButtonV2';
 import './<GameName>Icon';
 
 @customElement('<game-name>-hourglass-game-icon')
 export class <GameName>HourglassGameIcon extends LitElement {
-  /** What time to use for the hourglass */
   @property({ converter: stringToTimeCode })
   accessor timeCode: TimeCode = 'a';
 
-  /** Which variant to link to */
   @property({ type: String })
   accessor variant = '';
 
@@ -309,21 +238,14 @@ export class <GameName>HourglassGameIcon extends LitElement {
       }
 
       @container (aspect-ratio > 1.8) {
-        icon-hourglass-button-v2 {
-          height: 100cqh;
-        }
+        icon-hourglass-button-v2 { height: 100cqh; }
       }
 
       @container (aspect-ratio <= 1.8) {
-        icon-hourglass-button-v2 {
-          width: 100cqw;
-        }
+        icon-hourglass-button-v2 { width: 100cqw; }
       }
 
-      <game-name>-icon {
-        height: 100%;
-        width: 100%;
-      }
+      <game-name>-icon { height: 100%; width: 100%; }
     `;
   }
 
@@ -341,17 +263,9 @@ export class <GameName>HourglassGameIcon extends LitElement {
 }
 ```
 
-**Key Points:**
-
-- Copy this template exactly - only change the custom element name and imports
-- The CSS and structure are identical across all games
-- Pass `timeCode`, `mainCode`, `variant`, and `description` to the hourglass button
-
 ### Step 5: Create `<GameName>IndexAppV2.ts`
 
-This creates the index page showing all variant buttons.
-
-**Template:**
+Creates the index page showing all variant buttons.
 
 ```typescript
 import { html, css, LitElement } from 'lit';
@@ -360,40 +274,22 @@ import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
 import './<GameName>HourglassGameIcon';
 
-// Define page types if supporting multiple index pages
-type IndexPage = 'defaultPage'; // Add more as needed
+type IndexPage = 'defaultPage';
 
-// Converter function for page type
 export function convertIndexPage(value: string | null): IndexPage {
   switch (value) {
-    case 'defaultPage':
-      return value;
-    default:
-      return 'defaultPage';
+    case 'defaultPage': return value;
+    default: return 'defaultPage';
   }
 }
 
-interface SectionInfoType {
-  title: string;
-  rows: string[];
-}
+interface SectionInfoType { title: string; rows: string[]; }
+interface IndexPageType { defaultPage: SectionInfoType[]; }
 
-interface IndexPageType {
-  defaultPage: SectionInfoType[];
-  // Add more pages if needed
-}
-
-// Define sections with variant codes
 const sections: IndexPageType = {
   defaultPage: [
-    {
-      title: 'Section Title',
-      rows: ['aa', 'ab', 'ac', 'ad'],
-    },
-    {
-      title: 'Another Section',
-      rows: ['ba', 'bb', 'bc', 'bd'],
-    },
+    { title: 'Section Title', rows: ['aa', 'ab', 'ac', 'ad'] },
+    { title: 'Another Section', rows: ['ba', 'bb', 'bc', 'bd'] },
   ],
 };
 
@@ -407,9 +303,7 @@ export class <GameName>IndexApp extends LitElement {
   static get styles(): CSSResultArray {
     return [
       css`
-        :host {
-          font-size: x-large;
-        }
+        :host { font-size: x-large; }
         .buttonTable {
           position: relative;
           display: flex;
@@ -418,23 +312,15 @@ export class <GameName>IndexApp extends LitElement {
           justify-content: space-around;
           width: min(400px, 90vw);
         }
-        <game-name>-hourglass-game-icon {
-          width: 47%;
-        }
+        <game-name>-hourglass-game-icon { width: 47%; }
       `,
     ];
   }
 
   renderRow(variant: string): HTMLTemplateResult {
     return html`
-      <<game-name>-hourglass-game-icon
-        variant=${variant}
-        timeCode=${durations[0]}
-      ></<game-name>-hourglass-game-icon>
-      <<game-name>-hourglass-game-icon
-        variant=${variant}
-        timeCode=${durations[1]}
-      ></<game-name>-hourglass-game-icon>
+      <<game-name>-hourglass-game-icon variant=${variant} timeCode=${durations[0]}></<game-name>-hourglass-game-icon>
+      <<game-name>-hourglass-game-icon variant=${variant} timeCode=${durations[1]}></<game-name>-hourglass-game-icon>
     `;
   }
 
@@ -448,28 +334,15 @@ export class <GameName>IndexApp extends LitElement {
         </div>
       `);
     }
-    renderItems.push(
-      html` <p>
-        <a href="index.html">Terug naar het hoofdmenu</a>
-      </p>`,
-    );
+    renderItems.push(html` <p><a href="index.html">Terug naar het hoofdmenu</a></p>`);
     return renderItems;
   }
 }
 ```
 
-**Key Points:**
-
-- Group variants into sections with titles
-- Each row shows two buttons with different time codes
-- Use `durations` array to control time options
-- Add a link back to the main index page
-
 ### Step 6: Create `<GameName>App.ts` with URL Parsing
 
-This is the main game component that handles URL parsing for both variant-based and explicit parameter modes.
-
-**Template:**
+Main game component with dual URL parsing (variant-based and explicit parameters).
 
 ```typescript
 import { html, css } from 'lit';
@@ -477,21 +350,13 @@ import { customElement, state } from 'lit/decorators.js';
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
 import { GameLogger } from '../GameLogger';
-// Import other game-specific base classes as needed
 // import { TimeLimitedGame2 } from '../TimeLimitedGame2';
 // import { AscendingItemsGameApp } from '../AscendingItemsGameApp';
-
 import { get<GameName>Variant } from './<GameName>Variants';
 
 @customElement('<game-name>-app')
 export class <GameName>App extends /* TimeLimitedGame2 or AscendingItemsGameApp */ {
-  // Game state properties
-  @state()
-  private accessor gameProperty1 = defaultValue1;
-  @state()
-  private accessor gameProperty2 = defaultValue2;
-
-  // Private game configuration properties
+  @state() private accessor gameProperty1 = defaultValue1;
   private eligibleOperators: Operator[] = [];
   private eligibleTables: number[] = [];
   private maximumNumber = 10;
@@ -503,55 +368,39 @@ export class <GameName>App extends /* TimeLimitedGame2 or AscendingItemsGameApp 
     this.parseUrl();
   }
 
-  /** Parse URL with variant parameter */
   private parseUrlWithVariant(urlParams: URLSearchParams): void {
     const variant = urlParams.get('variant');
-    if (variant === null)
-      throw Error(
-        'Internal SW Error, parseUrlWithVariant called while there is no variant in the URL',
-      );
+    if (variant === null) throw Error('Internal SW Error: no variant in URL');
     const extendedVariantInfo = get<GameName>Variant(variant);
 
-    // Set game configuration from variant metadata
     this.eligibleTables = extendedVariantInfo.tables;
     this.eligibleOperators = extendedVariantInfo.operators;
     this.maximumNumber = extendedVariantInfo.maxAnswer;
-    // Set other game-specific properties from variant
-
-    // Configure game logger
     this.gameLogger.setMainCode(extendedVariantInfo.mainCode);
     this.gameLogger.setSubCode(variant);
     this.gameText = extendedVariantInfo.description;
-
-    // Set any other derived properties
     this.determineMaxDigits();
   }
 
-  /** Parse URL with explicit parameters (legacy support) */
   private parseUrlWithoutVariant(urlParams: URLSearchParams): void {
-    // Set default values
     this.eligibleOperators = [];
     this.eligibleTables = [];
     this.maximumNumber = 10;
     this.gameText = 'Default game description';
 
-    // Parse operators from URL
     const operatorsFromUrl = urlParams.getAll('operator');
     for (const operatorString of operatorsFromUrl) {
       const operator = operators.find(elm => elm === operatorString);
       if (operator !== undefined) this.eligibleOperators.push(operator);
     }
-    if (this.eligibleOperators.length === 0)
-      this.eligibleOperators = [...defaultOperators];
+    if (this.eligibleOperators.length === 0) this.eligibleOperators = [...defaultOperators];
 
-    // Parse other parameters from URL
     const maxFromUrl = urlParams.get('maxAnswer');
     if (maxFromUrl !== null) {
       const maxAsInt = parseInt(maxFromUrl, 10);
       if (!Number.isNaN(maxAsInt)) this.maximumNumber = maxAsInt;
     }
 
-    // Parse tables/other game-specific parameters
     const tablesFromUrl = urlParams.getAll('table');
     for (const tableAsString of tablesFromUrl) {
       const table = parseInt(tableAsString, 10);
@@ -559,72 +408,48 @@ export class <GameName>App extends /* TimeLimitedGame2 or AscendingItemsGameApp 
         this.eligibleTables.push(table);
       }
     }
-    if (this.eligibleTables.length === 0)
-      this.eligibleTables = [2, 3, 4, 5, 6, 7, 8, 9, 10];
+    if (this.eligibleTables.length === 0) this.eligibleTables = [2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-    // Determine mainCode based on parsed parameters
     this.gameLogger.setMainCode(this.determineMainCodeFromParams());
-
-    // Set derived properties
     this.determineMaxDigits();
   }
 
-  /** Main URL parsing function */
   private parseUrl(): void {
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.has('variant')) this.parseUrlWithVariant(urlParams);
     else this.parseUrlWithoutVariant(urlParams);
   }
 
-  /** Determine mainCode from explicit parameters */
   private determineMainCodeFromParams(): string {
-    // Logic to determine mainCode based on parsed parameters
-    // Example: switch on operator combination or table ranges
-    return 'A'; // Default
+    return 'A'; // Logic based on parsed parameters
   }
 
-  /** Determine derived properties like max digits */
   private determineMaxDigits(): void {
-    // Calculate max digits for operands and answer based on game configuration
+    // Calculate max digits based on game configuration
   }
 
   // Implement other required game methods...
-  // - startNewGame()
-  // - welcomeMessage
-  // - welcomeDialogTitle
-  // - executeGameOverActions()
-  // - renderGameContent()
-  // - etc.
 }
 ```
 
-**Key Points:**
-
-- Implement two URL parsing methods: `parseUrlWithVariant` and `parseUrlWithoutVariant`
-- `parseUrlWithVariant` uses `get<GameName>Variant` to get all configuration from a single variant code
-- `parseUrlWithoutVariant` parses individual URL parameters for legacy support
-- Both methods set the same internal game properties for consistency
-- Use `GameLogger` to track game statistics with mainCode and subCode
-- The `parseUrl` method dispatches to the appropriate parser based on URL parameters
-
 ### Step 7: Update HTML Files
 
-Add the new game to the relevant HTML files:
+Add the new game to HTML files:
 
-1. **Main index.html** - Add script reference and icon:
+1. **Main index.html** - Add script reference:
 
 ```html
 <script type="module" src="../src/<GameName>/<GameName>Icon.ts"></script>
 ```
 
-2. **Create game-specific HTML page** (e.g., `<GamePage>.html`):
+2. **Game-specific HTML page** (e.g., `<GamePage>.html`):
 
 ```html
 <<game-name>-app></<game-name>-app>
 <script type="module" src="../src/<GameName>/<GameName>App.ts"></script>
 ```
 
-3. **Create index page HTML** (e.g., `index<GameName>.html`):
+3. **Index page HTML** (e.g., `index<GameName>.html`):
 
 ```html
 <<game-name>-game-index-app-v2 indexPage="defaultPage"></<game-name>-game-index-app-v2>
@@ -633,117 +458,94 @@ Add the new game to the relevant HTML files:
 
 ### Step 8: Update Import References
 
-If the new game is referenced from other files (e.g., `TestApp.ts`, `URLshortener.ts`), update the import paths:
+If referenced from other files (e.g., `TestApp.ts`, `URLshortener.ts`):
 
 ```typescript
 import './<GameName>/<GameName>Icon';
 ```
 
-## Common Patterns to Reuse
+## Common Patterns
 
-### Color Handling
+**Color handling:**
 
 ```typescript
 import { Color, getColorInfo } from '../Colors';
-// In render:
 --fill-color: ${getColorInfo(variantInfo.iconColor).mainColorCode};
 ```
 
-### Operator Handling
+**Operator handling:**
 
 ```typescript
 import { Operator, operatorToDutch, operatorToSymbol } from '../Operator';
-// Convert to Dutch text: operatorToDutch('plus') → 'plus'
-// Convert to symbol: operatorToSymbol('times') → '×'
+operatorToDutch('plus') → 'plus'
+operatorToSymbol('times') → '×'
 ```
 
-### Time Code Handling
+**Time code handling:**
 
 ```typescript
 import { type TimeCode, stringToTimeCode } from '../TimeCodes';
-// Use as property converter:
 @property({ converter: stringToTimeCode })
 accessor timeCode: TimeCode = 'a';
 ```
 
-### Error Handling
+**Error handling:**
 
 ```typescript
 import { UnexpectedValueError } from '../UnexpectedValueError';
-// Throw for unexpected values:
 throw new UnexpectedValueError(value);
 ```
 
-## Checklist for New Games
+## Checklist
 
 - [ ] Create `src/<GameName>/` directory
-- [ ] Create `<GameName>Variants.ts` with variant definitions
-- [ ] Create `<GameName>Variants.test.ts` with test suite
-- [ ] Create `<GameName>Icon.ts` with icon rendering
-- [ ] Create `<GameName>HourglassGameIcon.ts` with hourglass wrapper
-- [ ] Create `<GameName>IndexAppV2.ts` with index page
-- [ ] Create `<GameName>App.ts` with URL parsing (variant-based and explicit)
-- [ ] Update main `index.html` with script reference
+- [ ] Create `<GameName>Variants.ts` (export `gameVariants`)
+- [ ] Create `<GameName>Variants.test.ts`
+- [ ] Create `<GameName>Icon.ts`
+- [ ] Create `<GameName>HourglassGameIcon.ts`
+- [ ] Create `<GameName>IndexAppV2.ts`
+- [ ] Create `<GameName>App.ts` with dual URL parsing
+- [ ] Update main `index.html`
 - [ ] Create game-specific HTML page
 - [ ] Create index page HTML
-- [ ] Update import references in other files
-- [ ] Test the game renders correctly
-- [ ] Test all variant codes work
-- [ ] Test explicit parameter URLs work
-- [ ] Test index page navigation
-- [ ] Run test suite to verify variants
+- [ ] Update import references
+- [ ] Test variant-based URLs
+- [ ] Test explicit parameter URLs
+- [ ] Run test suite
 
 ## Migration Instructions for Existing Games
 
-If you have an existing game with a `GameApp.ts` file and want to migrate it to the variant-based pattern:
+To migrate an existing game to the variant-based pattern:
 
 ### Step 1: Analyze Existing GameApp.ts
 
-Examine the current `GameApp.ts` to identify:
+Identify:
 
-- What URL parameters it currently parses
-- What game configuration properties it uses
-- What the current mainCode logic is
-- What game-specific state it maintains
+- URL parameters currently parsed
+- Game configuration properties used
+- Current mainCode logic
+- Game-specific state
 
-**Important**: Ask the user which main game code (e.g., 'A', 'B', 'O', etc.) should be used for this game. The main game code is used in the URL shortening system and should match the code defined in `GameCodes.ts`. This code will be returned by the `determineMainCode()` function in your variants file.
-
-**Also ask**: Whether additional main codes are needed for this game. Most games only need one main code. Only add additional main codes (e.g., different codes for different difficulty levels or configurations) after getting explicit confirmation from the user.
+**Important:** Ask the user which main game code (e.g., 'A', 'B', 'O') should be used. This must match `GameCodes.ts`. Ask if additional main codes are needed (most games only need one).
 
 ### Step 2: Create Variants File
 
-Create `<GameName>Variants.ts` based on the existing game configuration:
+Create `<GameName>Variants.ts` based on existing configuration:
 
-1. Define `VariantInfo` interface with all game-specific properties
-2. Create variant codes for each common configuration combination
-3. Implement `get<GameName>Variant` to return extended metadata
-4. Add helper functions to determine mainCode and description
-
-**Example migration approach:**
-
-- If the game has operator parameters, create variants for each operator combination
-- If the game has difficulty levels, create variants for each level
-- Group variants logically (a-series for easy, b-series for medium, etc.)
+- Define `VariantInfo` interface with game-specific properties
+- Create variant codes for each configuration combination
+- Implement `get<GameName>Variant` to return extended metadata
+- Add helper functions for mainCode and description
 
 ### Step 3: Update GameApp.ts URL Parsing
 
-Modify the existing `GameApp.ts` to support both parsing methods:
+Modify existing `GameApp.ts`:
 
-1. Keep the existing `parseUrl` method or create a new one
-2. Extract the current URL parsing logic into `parseUrlWithoutVariant`
-3. Add new `parseUrlWithVariant` method that uses the variants file
-4. Update the main `parseUrl` to dispatch based on `variant` parameter presence
-
-**Example changes:**
+- Extract current parsing logic into `parseUrlWithoutVariant`
+- Add `parseUrlWithVariant` method using variants file
+- Update main `parseUrl` to dispatch based on `variant` parameter presence
 
 ```typescript
-// Before (single parsing method)
-private parseUrl(): void {
-  const urlParams = new URLSearchParams(window.location.search);
-  // Parse all parameters directly
-}
-
-// After (dual parsing methods)
 private parseUrl(): void {
   const urlParams = new URLSearchParams(window.location.search);
   if (urlParams.has('variant')) this.parseUrlWithVariant(urlParams);
@@ -751,91 +553,49 @@ private parseUrl(): void {
 }
 ```
 
-### Step 4: Create Icon Component
+### Step 4-6: Create Components
 
-Create `<GameName>Icon.ts`:
+Follow Steps 3-5 from the scaffolding instructions to create:
 
-1. Import `get<GameName>Variant` from the variants file
-2. Accept a `variant` property
-3. Render the icon based on variant metadata
-4. Use the same visual style as the existing game
-
-### Step 5: Create Hourglass Wrapper
-
-Create `<GameName>HourglassGameIcon.ts`:
-
-1. Copy the template from the scaffolding guide
-2. Update imports and custom element name
-3. No other changes needed
-
-### Step 6: Create Index App
-
-Create `<GameName>IndexAppV2.ts`:
-
-1. Define sections based on your variant groupings
-2. List variant codes in each section
-3. Use the hourglass wrapper to render buttons
+- `<GameName>Icon.ts`
+- `<GameName>HourglassGameIcon.ts`
+- `<GameName>IndexAppV2.ts`
 
 ### Step 7: Update HTML Files
 
-1. Add script references to main `index.html`
-2. Create or update the game-specific HTML page
-3. Create a new index page HTML file
+Add script references to main `index.html`, create/update game-specific HTML page, and create index page HTML.
 
 ### Step 8: Test Both URL Modes
 
-Ensure both URL modes work:
+Test variant-based (`?variant=aa`) and explicit parameter URLs (`?operator=plus&maxAnswer=100`).
 
-**Variant-based URL:**
+### Step 9: Clean Up
 
-```
-<GamePage>.html?variant=aa
-```
+**Important:** Do NOT modify `URLshortener.ts` - the existing shortcode system must continue working. Use URLshortener2.ts for new variant-based URL generation.
 
-**Explicit parameter URL:**
+## Migration Checklist
 
-```
-<GamePage>.html?operator=plus&operator=minus&maxAnswer=100
-```
-
-### Step 9: Clean Up Legacy Code
-
-Once migration is complete and tested:
-
-- **Important**: Do NOT modify `URLshortener.ts` - the existing shortcode system must continue working. Keep using the original `GameLink` function in URLshortener.ts as-is.
-- Update any hardcoded URLs to use variant codes where appropriate
-- Consider deprecating explicit parameter URLs in documentation
-- The variant system uses URLshortener2.ts for URL generation, but URLshortener.ts should continue using the original link functions for backward compatibility with existing shortcodes.
-
-### Migration Checklist
-
-- [ ] Analyze existing GameApp.ts URL parsing
-- [ ] Create `<GameName>Variants.ts` with all existing configurations
-- [ ] Add `parseUrlWithVariant` method to GameApp.ts
+- [ ] Analyze existing GameApp.ts
+- [ ] Create `<GameName>Variants.ts`
+- [ ] Add `parseUrlWithVariant` to GameApp.ts
 - [ ] Rename existing parsing to `parseUrlWithoutVariant`
-- [ ] Update main `parseUrl` to dispatch based on variant parameter
-- [ ] Create `<GameName>Icon.ts`
-- [ ] Create `<GameName>HourglassGameIcon.ts`
-- [ ] Create `<GameName>IndexAppV2.ts`
+- [ ] Update main `parseUrl` dispatch logic
+- [ ] Create icon, hourglass wrapper, and index app
 - [ ] Update HTML files
-- [ ] Test variant-based URLs
-- [ ] Test explicit parameter URLs (ensure backward compatibility)
-- [ ] Verify URLshortener2.ts has mapping for main game code
-- [ ] Update documentation
+- [ ] Test both URL modes
+- [ ] Verify URLshortener2.ts has main code mapping
 
 ## Examples to Reference
 
 - **MixedSumsGame**: Simple variant system with icon shapes and operators
 
-  - `MixedSumsGameApp.ts` - Shows dual URL parsing (variant + explicit parameters)
-  - `MixedSumsGameVariants.ts` - Variant definitions with icon types and operators
+  - `MixedSumsGameApp.ts` - Dual URL parsing
+  - `MixedSumsGameVariants.ts` - Variant definitions
   - `MixedSumsGameIcon.ts` - SVG-based icon rendering
-  - `MixedSumsGameIndexAppV2.ts` - Single-page index with sections
+  - `MixedSumsGameIndexAppV2.ts` - Single-page index
 
 - **MultiplicationTablesBalloonGame**: Complex variant system with multiple image types
-  - `MultiplicationTablesBalloonGameV2.ts` - Shows dual URL parsing with image type selection
-  - `MultiplicationTablesBalloonGameVariants.ts` - Complex variant logic with table sets and image types
-  - `MultiplicationTablesBalloonGameIcon.ts` - Component-based icon rendering (balloon, rocket, zeppelin, UFO)
-  - `MultiplicationTablesBalloonGameIndexAppV2.ts` - Multi-page index supporting different game types
-
-Use these as templates when creating similar game types.
+  - `MultiplicationTablesBalloonGameV2.ts` - Dual URL parsing with image type selection
+  - `MultiplicationTablesBalloonGameVariants.ts` - Complex variant logic
+  - `MultiplicationTablesBalloonGameIcon.ts` - Component-based icon rendering
+  - `MultiplicationTablesBalloonGameIndexAppV2.ts` - Multi-page index
