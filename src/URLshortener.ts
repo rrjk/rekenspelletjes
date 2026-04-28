@@ -16,7 +16,7 @@ import { splitsenLink } from './SplitAppLink';
 import { sommenMetSplitsenLink } from './SumsWithSplitAppLink';
 import { splitsenOpWaardeLink } from './TensSplitAppLink';
 import { welkeHandHeeftMeerStippenLink } from './WhichIsBiggerAppLink';
-import { breukenPaartjesLink } from './FractionsPairMatchingAppLink';
+import { breukenPaartjesLink } from './FractionsPairMatchingGame/FractionsPairMatchingAppLink';
 import { hexagonnenSpelLink } from './SquaresBalloonGameLink';
 import { multiplicationTablesGameLinkV2 } from './MultiplicationTablesBalloonGame/MultiplicationTablesBalloonGameLinkV2';
 import { divisionWithSplitAppLink } from './DivisionWithSplitAppLink';

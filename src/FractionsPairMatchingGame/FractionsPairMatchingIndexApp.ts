@@ -4,12 +4,12 @@ import { customElement } from 'lit/decorators.js';
 
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
-import { Color, getColorInfo } from './Colors';
+import { Color, getColorInfo } from '../Colors';
 
-import './IconHourglassButton';
-import './FractionElement';
+import '../IconHourglassButton';
+import '../FractionElement';
 import { FractionPairMatchingGameType } from './FractionsPairMatchingAppLink';
-import { Fraction, FractionRepresentation } from './Fraction';
+import { Fraction, FractionRepresentation } from '../Fraction';
 
 interface RowInfoType {
   description: string;

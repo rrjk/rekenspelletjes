@@ -4,14 +4,14 @@ import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
 import { customElement } from 'lit/decorators.js';
 
-import { FractionAndRepresentation, FractionRepresentation } from './Fraction';
-import './FractionElement';
+import { FractionAndRepresentation, FractionRepresentation } from '../Fraction';
+import '../FractionElement';
 
-import type { Pair } from './PairMatchingApp';
-import { PairMatchingApp } from './PairMatchingApp';
-import { GameLogger } from './GameLogger';
-import { randomFromSet, randomFromSetAndSplice } from './Randomizer';
-import { FractionPairMatchingGameType } from './FractionsPairMatchingAppLink';
+import type { Pair } from '../PairMatchingApp';
+import { PairMatchingApp } from '../PairMatchingApp';
+import { GameLogger } from '../GameLogger';
+import { randomFromSet, randomFromSetAndSplice } from '../Randomizer';
+import { FractionPairMatchingGameType } from '../FractionsPairMatchingGame/FractionsPairMatchingAppLink';
 
 type DenumeratorFrequecy = { denumerator: number; frequency: number };
 type DenumeratorFrequecies = DenumeratorFrequecy[];
