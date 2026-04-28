@@ -28,6 +28,8 @@ This guide explains the pattern for creating game families with variant-based co
 
 ## AI Scaffolding Instructions
 
+**Post-generation step:** Always run `npm run format:prettier` after generating code.
+
 ### Step 1: Create the Game Directory
 
 Create a new directory under `src/`:
@@ -36,7 +38,7 @@ Create a new directory under `src/`:
 src/<GameName>/
 ```
 
-Replace `<GameName>` with your game name in PascalCase (e.g., `MyNewGame`). **Important: The game name should always include "Game" at the end (e.g., `MyNewGame`, not `MyNew`).**
+Replace `<GameName>` with your game name in PascalCase (e.g., `MyNewGame`).
 
 ### Step 2: Create `<GameName>Variants.ts`
 
@@ -96,7 +98,6 @@ export function get<GameName>Variant(variant: string): <GameName>ExtendedVariant
 
 **Key points:**
 
-- Variant codes: `aa`, `ab`, `ac` (section 1), `ba`, `bb`, `bc` (section 2), etc.
 - Don't create duplicate variants for different time codes (handled in index app)
 - Export `<gameName>Variants` for testing
 
@@ -466,6 +467,29 @@ import './<GameName>/<GameName>Icon';
 
 ## Common Patterns
 
+**Import statement rules:**
+
+- Combine all imports from one file in a single statement
+- When migrating existing code, NEVER change import paths to files that don't exist
+- Always verify the target file exists before changing an import statement
+- Keep the original import path if you're unsure of the correct location
+
+```typescript
+// GOOD: Combine all imports from one file in a single statement
+import {
+  Fraction,
+  FractionAndRepresentation,
+  type FractionRepresentation,
+  type DenumeratorPossibleNumerators,
+} from '../Fraction';
+
+// BAD: Multiple separate imports from the same file
+import { Fraction } from '../Fraction';
+import { FractionAndRepresentation } from '../Fraction';
+import type { FractionRepresentation } from '../Fraction';
+import type { DenumeratorPossibleNumerators } from '../Fraction';
+```
+
 **Color handling:**
 
 ```typescript
@@ -509,6 +533,7 @@ throw new UnexpectedValueError(value);
 - [ ] Create game-specific HTML page
 - [ ] Create index page HTML
 - [ ] Update import references
+- [ ] Run `npm run format:prettier`
 - [ ] Test variant-based URLs
 - [ ] Test explicit parameter URLs
 - [ ] Run test suite
@@ -545,6 +570,13 @@ Modify existing `GameApp.ts`:
 - Add `parseUrlWithVariant` method using variants file
 - Update main `parseUrl` to dispatch based on `variant` parameter presence
 
+**CRITICAL:** When modifying import statements during migration:
+
+- NEVER change import paths to files that don't exist
+- Always verify the target file exists before changing an import
+- If you need to add a new import, use the existing import structure as a guide
+- Combine multiple imports from the same file into a single statement
+
 ```typescript
 private parseUrl(): void {
   const urlParams = new URLSearchParams(window.location.search);
@@ -569,7 +601,18 @@ Add script references to main `index.html`, create/update game-specific HTML pag
 
 Test variant-based (`?variant=aa`) and explicit parameter URLs (`?operator=plus&maxAnswer=100`).
 
-### Step 9: Clean Up
+### Step 9: Update URLshortener2.ts
+
+Add the game's main code to the `baseURLs` mapping in `src/URLshortener2.ts`:
+
+```typescript
+const baseURLs: Partial<Record<string, URL>> = {
+  // ... existing mappings
+  <MainCode>: new URL('./<GamePage>.html', baseUrl),
+};
+```
+
+Replace `<MainCode>` with the game's main code (e.g., 'I', 'A', 'B') and `<GamePage>.html` with the game's HTML file.
 
 **Important:** Do NOT modify `URLshortener.ts` - the existing shortcode system must continue working. Use URLshortener2.ts for new variant-based URL generation.
 

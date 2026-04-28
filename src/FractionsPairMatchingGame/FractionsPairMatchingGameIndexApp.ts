@@ -8,7 +8,7 @@ import { Color, getColorInfo } from '../Colors';
 
 import '../IconHourglassButton';
 import '../FractionElement';
-import { FractionPairMatchingGameType } from './FractionsPairMatchingAppLink';
+import type { FractionPairMatchingGameType } from './FractionsPairMatchingGameVariants';
 import { Fraction, FractionRepresentation } from '../Fraction';
 
 interface RowInfoType {
