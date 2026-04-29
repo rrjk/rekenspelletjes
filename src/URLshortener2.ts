@@ -12,15 +12,16 @@ const baseUrl = new URL(`../Rekenspelletjes/`, import.meta.url);
 const defaultUrl = new URL('./index.html', baseUrl);
 
 const baseURLs: Partial<Record<string, URL>> = {
-  D: new URL('./TafeltjesOefenenSpel.html', baseUrl),
-  K: new URL('./TafeltjesOefenenSpel.html', baseUrl),
   C: new URL('./TafeltjesOefenenSpel.html', baseUrl),
+  D: new URL('./TafeltjesOefenenSpel.html', baseUrl),
+  I: new URL('./BreukenPaartjesSpel.html', baseUrl),
+  K: new URL('./TafeltjesOefenenSpel.html', baseUrl),
   M: new URL('./TafeltjesOefenenSpel.html', baseUrl),
-  AB: new URL('./HoeveelVingersSpel.html', baseUrl),
   R: new URL('./SplitsenV2.html', baseUrl),
+  X: new URL('./GetallenlijnBoogjesSpel.html', baseUrl),
+  AB: new URL('./HoeveelVingersSpel.html', baseUrl),
   AC: new URL('./GemengdeSommen.html', baseUrl),
   AD: new URL('./GemengdeSommen.html', baseUrl),
-  I: new URL('./BreukenPaartjesSpel.html', baseUrl),
 };
 
 let newUrl = defaultUrl;

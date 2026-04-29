@@ -40,6 +40,10 @@ import {
   CreatePlusSum,
   LeftRightOperandType,
 } from '../SumCreationHelpers';
+import {
+  getNumberlineArchesGameVariant,
+  type NumberlineArchesGameExtendedVariantInfo,
+} from './NumberlineArchesGameVariants';
 
 function operatorAsString(operator: OperatorType) {
   if (operator === 'plus') return '+';
@@ -156,9 +160,25 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
     this.parseUrl();
   }
 
-  protected parseUrl(): void {
-    const urlParams = new URLSearchParams(window.location.search);
+  private parseUrlWithVariant(urlParams: URLSearchParams): void {
+    const variant = urlParams.get('variant');
+    if (variant === null) throw Error('Internal SW Error: no variant in URL');
+    const extendedVariantInfo: NumberlineArchesGameExtendedVariantInfo =
+      getNumberlineArchesGameVariant(variant);
 
+    this.minNumber = extendedVariantInfo.min;
+    this.maxNumber = extendedVariantInfo.max;
+    this.minNumberline = extendedVariantInfo.minNumberline;
+    this.maxNumberline = extendedVariantInfo.maxNumberline;
+    this.operator = extendedVariantInfo.operator;
+    this.split = extendedVariantInfo.split;
+    this.jumpsOfTen = extendedVariantInfo.jumpsOfTen;
+
+    this.gameLogger.setMainCode(extendedVariantInfo.mainCode);
+    this.gameLogger.setSubCode(variant);
+  }
+
+  private parseUrlWithoutVariant(urlParams: URLSearchParams): void {
     const parsedMin = parseInt(urlParams.get('min') || '', 10);
     if (Number.isNaN(parsedMin)) this.minNumber = 0;
     else this.minNumber = Math.floor(parsedMin / 10) * 10;
@@ -232,6 +252,12 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
     }
     if (this.operator === 'plus') this.gameLogger.setSubCode('a');
     if (this.operator === 'minus') this.gameLogger.setSubCode('b');
+  }
+
+  protected parseUrl(): void {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('variant')) this.parseUrlWithVariant(urlParams);
+    else this.parseUrlWithoutVariant(urlParams);
   }
 
   newRound() {

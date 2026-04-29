@@ -100,6 +100,8 @@ export function get<GameName>Variant(variant: string): <GameName>ExtendedVariant
 
 - Don't create duplicate variants for different time codes (handled in index app)
 - Export `<gameName>Variants` for testing
+- **Important:** Each variant should represent a unique game configuration, not different time durations. The index app handles showing multiple time codes (e.g., 'b' and 'c') for the same variant.
+- **Default variant:** The `defaultVariant` should always equal variant `aa`. Add a comment like `// Default: aa` to make this clear. The icon color and all other aspects of the default variant should be taken from the first found variant (aa).
 
 ### Step 2.5: Create `<GameName>Variants.test.ts`
 
@@ -465,6 +467,84 @@ If referenced from other files (e.g., `TestApp.ts`, `URLshortener.ts`):
 import './<GameName>/<GameName>Icon';
 ```
 
+## Common Pitfalls and Lessons Learned
+
+### Issue 1: Duplicate Variants for Time Codes
+
+**Problem:** Creating duplicate variants (e.g., `aa`, `ab` with identical configurations) to show different time durations on the index page.
+
+**Solution:** Don't create duplicate variants for different time codes. The index app handles showing multiple time codes for the same variant. Each variant should represent a unique game configuration only.
+
+**Example:**
+
+````typescript
+// WRONG - duplicate variants for time codes
+export const gameVariants = {
+  aa: { /* config */ },
+  ab: { /* same config */ }, // duplicate!
+};
+
+// CORRECT - unique variants only
+export const gameVariants = {
+  aa: { /* config */ },
+  ba: { /* different config */ },
+};
+
+// In index app, show multiple time codes for same variant
+const durations = ['b', 'c']; // 3 and 5 minutes
+renderRow(variant: string) {
+  return html`
+    <game-hourglass-game-icon variant=${variant} timeCode=${durations[0]}></game-hourglass-game-icon>
+    <game-hourglass-game-icon variant=${variant} timeCode=${durations[1]}></game-hourglass-game-icon>
+  `;
+}
+```
+
+### Issue 2: Forgetting to Update URLshortener2.ts
+**Problem:** Links don't work because the game code mapping wasn't added to `URLshortener2.ts`.
+
+**Solution:** Always add the game's main code to the `baseURLs` mapping in `src/URLshortener2.ts` after creating the game.
+
+**Example:**
+```typescript
+const baseURLs: Partial<Record<string, URL>> = {
+  // ... existing mappings
+  X: new URL('./GetallenlijnBoogjesSpel.html', baseUrl),
+};
+```
+
+**Important:** Do NOT modify `URLshortener.ts` - the existing shortcode system must continue working. Use URLshortener2.ts for new variant-based URL generation.
+
+**Code organization:** Keep the `baseURLs` maincodes sorted alphabetically, with single-letter codes before two-letter codes (e.g., C, D, I, K, M, R, X, AB, AC, AD). This maintains consistency and makes the file easier to maintain.
+
+**Example:** If the original icon shows min-max text below a visual element, the new icon should also include this:
+
+```typescript
+render(): HTMLTemplateResult {
+  return html`
+    <div class="iconContainer">
+      <div class="iconContent">
+        <visual-element></visual-element>
+        <span class="minMaxText">${variantInfo.min} － ${variantInfo.max}</span>
+      </div>
+    </div>
+  `;
+}
+```
+
+### Issue 4: Using Incorrect Time Codes
+
+**Problem:** Assuming all games use time codes 'a' and 'b' when the game actually uses different codes (e.g., 'b' and 'c' for 3 and 5 minutes).
+
+**Solution:** Check the original index app or game configuration to determine which time codes the game uses. Not all games use the default time codes.
+
+**Example:**
+
+```typescript
+// Check original implementation for time codes
+const durations = ['b', 'c']; // 3 minutes and 5 minutes, not 'a' and 'b'
+```
+
 ## Common Patterns
 
 **Import statement rules:**
@@ -642,3 +722,4 @@ Replace `<MainCode>` with the game's main code (e.g., 'I', 'A', 'B') and `<GameP
   - `MultiplicationTablesBalloonGameVariants.ts` - Complex variant logic
   - `MultiplicationTablesBalloonGameIcon.ts` - Component-based icon rendering
   - `MultiplicationTablesBalloonGameIndexAppV2.ts` - Multi-page index
+````
