@@ -1,10 +1,4 @@
-export type FractionPairMatchingGameType =
-  | 'fractionToPie'
-  | 'equalFractions'
-  | 'fractionToDecimal'
-  | 'fractionToPercentage'
-  | 'percentageToDecimal'
-  | 'percentageToPie';
+import type { FractionPairMatchingGameType } from './FractionsPairMatchingGameVariants';
 
 /** Create link for fraction pair matchinggame.
  * @param gameType - game type

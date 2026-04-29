@@ -31,19 +31,19 @@ test('getSplitBalloonGameVariant for single digit variant (aa)', () => {
 test('getSplitBalloonGameVariant for multi digit variant (ba)', () => {
   const extendedVariant = getSplitBalloonGameVariant('ba');
   expect(extendedVariant.iconColor).toBe('navy');
-  expect(extendedVariant.numbersToSplit).toStrictEqual([1, 2, 3, 4, 5, 10]);
+  expect(extendedVariant.numbersToSplit).toStrictEqual([3, 4, 5, 10]);
   expect(extendedVariant.mainCode).toBe('R');
-  expect(extendedVariant.description).toBe('Splitsingen van 1 t/m 5 en 10');
+  expect(extendedVariant.description).toBe('Splitsingen van 3 t/m 5 en 10');
 });
 
 test('getSplitBalloonGameVariant for full range variant (bc)', () => {
   const extendedVariant = getSplitBalloonGameVariant('bc');
   expect(extendedVariant.iconColor).toBe('purple');
   expect(extendedVariant.numbersToSplit).toStrictEqual([
-    1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+    3, 4, 5, 6, 7, 8, 9, 10,
   ]);
   expect(extendedVariant.mainCode).toBe('R');
-  expect(extendedVariant.description).toBe('Splitsingen van 1 t/m 10');
+  expect(extendedVariant.description).toBe('Splitsingen van 3 t/m 10');
 });
 
 test('getSplitBalloonGameVariant for unknown variant returns default', () => {

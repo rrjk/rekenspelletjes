@@ -121,7 +121,7 @@ export abstract class PairMatchingApp<
   private accessor gridItems: GridCellMapping[] = [];
 
   /** Maximum number of pairs to show (set via URL parameter) */
-  private maxNumberOfPairs = 10;
+  protected maxNumberOfPairs = 10;
   /** Number of pairs currently visible */
   private currentNumberOfPairs = 0;
   /** Next pair number, used as index in cells */
@@ -170,7 +170,7 @@ export abstract class PairMatchingApp<
 
   constructor() {
     super();
-    this.parseUrl();
+    this.parseNumberPairsFromUrl();
   }
 
   private clearGridItems() {
@@ -251,8 +251,11 @@ export abstract class PairMatchingApp<
     });
   }
 
-  protected parseUrl(): void {
+  protected parseNumberPairsFromUrl(): void {
     const urlParams = new URLSearchParams(window.location.search);
+    // Skip parsing if variant parameter is present (variant-based mode)
+    if (urlParams.has('variant')) return;
+
     if (urlParams.has('numberOfPairs')) {
       this.maxNumberOfPairs = parseInt(
         urlParams.get('numberOfPairs') || '10',

@@ -4,8 +4,8 @@ import { customElement } from 'lit/decorators.js';
 
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
-import './IconHourglassButton';
-import './HandFace';
+import '../IconHourglassButton';
+import '../HandFace';
 import { PossibleNumberFingers } from './HowManyFingersGameAppLink';
 
 interface RowInfoType {

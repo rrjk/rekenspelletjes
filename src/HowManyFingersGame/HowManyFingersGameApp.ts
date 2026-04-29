@@ -4,14 +4,19 @@ import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
 import { create } from 'mutative';
 
-import { TimeLimitedGame2 } from './TimeLimitedGame2';
-import { GameLogger } from './GameLogger';
+import { TimeLimitedGame2 } from '../TimeLimitedGame2';
+import { GameLogger } from '../GameLogger';
 
-import { randomFromSet } from './Randomizer';
+import { randomFromSet } from '../Randomizer';
 
-import type { Digit } from './DigitKeyboard';
-import './DigitKeyboard';
-import { possibleNumberFingers, PossibleNumberFingers } from './HandFace';
+import type { Digit } from '../DigitKeyboard';
+import '../DigitKeyboard';
+import { possibleNumberFingers, PossibleNumberFingers } from '../HandFace';
+
+import {
+  getHowManyFingersGameVariant,
+  type HowManyFingersGameExtendedVariantInfo,
+} from './HowManyFingersGameVariants';
 
 const allDigitsEnabled = [
   false,
@@ -44,12 +49,30 @@ export class HowManyFingersGameApp extends TimeLimitedGame2 {
 
   constructor() {
     super();
-    this.parseUrlParameters();
+    this.parseUrl();
   }
 
-  protected parseUrlParameters(): void {
-    const urlParams = new URLSearchParams(window.location.search);
+  /** Parse URL with variant parameter */
+  private parseUrlWithVariant(urlParams: URLSearchParams): void {
+    const variant = urlParams.get('variant');
+    if (variant === null)
+      throw Error(
+        'Internal SW Error, parseUrlWithVariant called while there is no variant in the URL',
+      );
+    const extendedVariantInfo: HowManyFingersGameExtendedVariantInfo =
+      getHowManyFingersGameVariant(variant);
 
+    // Set game configuration from variant metadata
+    this.minNumberFingers = extendedVariantInfo.minFingers;
+    this.maxNumberFingers = extendedVariantInfo.maxFingers;
+
+    // Configure game logger
+    this.gameLogger.setMainCode(extendedVariantInfo.mainCode);
+    this.gameLogger.setSubCode(variant);
+  }
+
+  /** Parse URL with explicit parameters (legacy support) */
+  private parseUrlWithoutVariant(urlParams: URLSearchParams): void {
     const minAsString = urlParams.get('min');
     if (minAsString !== null) {
       const min = parseInt(minAsString, 10);
@@ -65,6 +88,16 @@ export class HowManyFingersGameApp extends TimeLimitedGame2 {
         this.maxNumberFingers = max;
       } // Otherwise we'll keep the default
     }
+
+    // Set mainCode (only one main code for this game)
+    this.gameLogger.setMainCode('AB');
+  }
+
+  /** Main URL parsing function */
+  private parseUrl(): void {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('variant')) this.parseUrlWithVariant(urlParams);
+    else this.parseUrlWithoutVariant(urlParams);
   }
 
   static get styles(): CSSResultArray {

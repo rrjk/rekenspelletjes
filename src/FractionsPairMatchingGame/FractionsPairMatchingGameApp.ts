@@ -1,17 +1,24 @@
 import { html, css } from 'lit';
-
+import { customElement } from 'lit/decorators.js';
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
-import { customElement } from 'lit/decorators.js';
+import { PairMatchingApp } from '../PairMatchingApp';
+import { GameLogger } from '../GameLogger';
+import { randomFromSet, randomFromSetAndSplice } from '../Randomizer';
+import {
+  FractionAndRepresentation,
+  type FractionRepresentation,
+} from '../Fraction';
+import type { Pair } from '../PairMatchingApp';
 
-import { FractionAndRepresentation, FractionRepresentation } from './Fraction';
-import './FractionElement';
+import '../FractionElement'; // Needed to be able to use the custom element <fraction-element>
+import { UnexpectedValueError } from '../UnexpectedValueError';
 
-import type { Pair } from './PairMatchingApp';
-import { PairMatchingApp } from './PairMatchingApp';
-import { GameLogger } from './GameLogger';
-import { randomFromSet, randomFromSetAndSplice } from './Randomizer';
-import { FractionPairMatchingGameType } from './FractionsPairMatchingAppLink';
+import {
+  getFractionsPairMatchingGameVariant,
+  convertFractionPairMatchingGameType,
+  type FractionPairMatchingGameType,
+} from './FractionsPairMatchingGameVariants';
 
 type DenumeratorFrequecy = { denumerator: number; frequency: number };
 type DenumeratorFrequecies = DenumeratorFrequecy[];
@@ -95,12 +102,18 @@ const gameToDenumeratorFrequencies: GameToDenumeratorFrequencies = [
   },
 ];
 
-@customElement('fraction-pair-matching-app')
-export class FractionMatchingGameApp extends PairMatchingApp<FractionAndRepresentation> {
+@customElement('fractions-pair-matching-game-app')
+export class FractionsPairMatchingGameApp extends PairMatchingApp<FractionAndRepresentation> {
   potentialDenumerators: number[] = [];
   potentialNumerators: DenumeratorPossibleNumerators = [];
 
   private gameLogger = new GameLogger('I', '');
+  private gameText = '';
+
+  constructor() {
+    super();
+    this.parseUrl();
+  }
 
   private representations: {
     exercise: FractionRepresentation;
@@ -129,7 +142,7 @@ export class FractionMatchingGameApp extends PairMatchingApp<FractionAndRepresen
   }
 
   get welcomeMessage(): HTMLTemplateResult {
-    return html`<p>Sleep de breuken die hetzelfde zijn over elkaar.</p>`;
+    return html`<p>${this.gameText}</p>`;
   }
 
   /** Get the title for the welcome dialog. */
@@ -181,51 +194,68 @@ export class FractionMatchingGameApp extends PairMatchingApp<FractionAndRepresen
     this.gameLogger.logGameOver();
   }
 
-  protected parseFractionMatchingFromUrl(): void {
+  private setRepresentationsAndDropAllowed(): void {
     this.dropAllowed = 'opositeElements';
 
-    const urlParams = new URLSearchParams(window.location.search);
-
-    if (urlParams.has('gameType')) {
-      const gameType = urlParams.get('gameType');
-      if (gameType === 'equalFractions') {
-        this.gameType = 'equalFractions';
+    switch (this.gameType) {
+      case 'equalFractions':
         this.representations.exercise = 'fraction';
         this.representations.answer = 'fraction';
         this.dropAllowed = 'allElements';
-      } else if (gameType === 'fractionToDecimal') {
-        this.gameType = 'fractionToDecimal';
+        break;
+      case 'fractionToDecimal':
         this.representations.exercise = 'fraction';
         this.representations.answer = 'decimal';
-        this.dropAllowed = 'opositeElements';
-      } else if (gameType === 'fractionToPercentage') {
-        this.gameType = 'fractionToPercentage';
+        break;
+      case 'fractionToPercentage':
         this.representations.exercise = 'fraction';
         this.representations.answer = 'percentage';
-        this.dropAllowed = 'opositeElements';
-      } else if (gameType === 'percentageToDecimal') {
-        this.gameType = 'percentageToDecimal';
+        break;
+      case 'percentageToDecimal':
         this.representations.exercise = 'percentage';
         this.representations.answer = 'decimal';
-        this.dropAllowed = 'opositeElements';
-      } else if (gameType === 'percentageToPie') {
-        this.gameType = 'percentageToPie';
+        break;
+      case 'percentageToPie':
         this.representations.exercise = 'percentage';
         this.representations.answer = 'piechart';
-        this.dropAllowed = 'opositeElements';
-      } else {
-        /* includes gameType === 'fractionToPie', which is default */
-        this.gameType = 'fractionToPie';
+        break;
+      case 'fractionToPie':
         this.representations.exercise = 'fraction';
         this.representations.answer = 'piechart';
-        this.dropAllowed = 'opositeElements';
-      }
+        break;
+      default:
+        throw new UnexpectedValueError(this.gameType);
     }
   }
 
-  constructor() {
-    super();
-    this.parseFractionMatchingFromUrl();
+  private parseUrlWithVariant(urlParams: URLSearchParams): void {
+    const variant = urlParams.get('variant');
+    if (variant === null) throw Error('Internal SW Error: no variant in URL');
+    const extendedVariantInfo = getFractionsPairMatchingGameVariant(variant);
+
+    this.gameType = extendedVariantInfo.gameType;
+    this.maxNumberOfPairs = extendedVariantInfo.numberOfPairs;
+    this.gameLogger.setMainCode(extendedVariantInfo.mainCode);
+    this.gameLogger.setSubCode(variant);
+    this.gameText = extendedVariantInfo.description;
+
+    this.setRepresentationsAndDropAllowed();
+  }
+
+  private parseUrlWithoutVariant(urlParams: URLSearchParams): void {
+    const gameType = urlParams.get('gameType');
+    this.gameType = convertFractionPairMatchingGameType(gameType);
+
+    this.maxNumberOfPairs = 10;
+    this.gameText = 'Breuken paren spel';
+
+    this.setRepresentationsAndDropAllowed();
+  }
+
+  private parseUrl(): void {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('variant')) this.parseUrlWithVariant(urlParams);
+    else this.parseUrlWithoutVariant(urlParams);
   }
 
   static get styles(): CSSResultArray {

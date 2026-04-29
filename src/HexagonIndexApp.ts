@@ -107,7 +107,7 @@ const sections: SectionInfoType[] = [
 ];
 
 @customElement('hexagon-game-index-app')
-export class FractionsPairMatchingGameIndexApp extends LitElement {
+export class HexagonGameIndexApp extends LitElement {
   static get styles(): CSSResultArray {
     return [
       css`

@@ -7,28 +7,28 @@ import { create } from 'mutative';
 
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
-import { TimeLimitedGame2 } from './TimeLimitedGame2';
-import { GameLogger } from './GameLogger';
+import { TimeLimitedGame2 } from '../TimeLimitedGame2';
+import { GameLogger } from '../GameLogger';
 
-import './RealHeight';
-import './DynamicGrid';
-import './DraggableElement';
-import './DropTargetContainer';
+import '../RealHeight';
+import '../DynamicGrid';
+import '../DraggableElement';
+import '../DropTargetContainer';
 
-import type { ActiveEnum, ArchType, NumberBoxInfo } from './NumberLineV2';
-import type { AboveBelowType } from './Arch';
+import type { ActiveEnum, ArchType, NumberBoxInfo } from '../NumberLineV2';
+import type { AboveBelowType } from '../Arch';
 import type {
   DropTargetElementInterface,
   DropTarget,
   DropEvent,
-} from './DraggableElement';
+} from '../DraggableElement';
 
-import './NumberLineV2';
-import './Arch';
+import '../NumberLineV2';
+import '../Arch';
 
-import './DigitKeyboard';
+import '../DigitKeyboard';
 
-import { determineRequiredDigit } from './NumberHelperFunctions';
+import { determineRequiredDigit } from '../NumberHelperFunctions';
 
 import type {
   JumpsOfTenType,
@@ -39,7 +39,11 @@ import {
   CreateMinusSum,
   CreatePlusSum,
   LeftRightOperandType,
-} from './SumCreationHelpers';
+} from '../SumCreationHelpers';
+import {
+  getNumberlineArchesGameVariant,
+  type NumberlineArchesGameExtendedVariantInfo,
+} from './NumberlineArchesGameVariants';
 
 function operatorAsString(operator: OperatorType) {
   if (operator === 'plus') return '+';
@@ -156,9 +160,25 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
     this.parseUrl();
   }
 
-  protected parseUrl(): void {
-    const urlParams = new URLSearchParams(window.location.search);
+  private parseUrlWithVariant(urlParams: URLSearchParams): void {
+    const variant = urlParams.get('variant');
+    if (variant === null) throw Error('Internal SW Error: no variant in URL');
+    const extendedVariantInfo: NumberlineArchesGameExtendedVariantInfo =
+      getNumberlineArchesGameVariant(variant);
 
+    this.minNumber = extendedVariantInfo.min;
+    this.maxNumber = extendedVariantInfo.max;
+    this.minNumberline = extendedVariantInfo.minNumberline;
+    this.maxNumberline = extendedVariantInfo.maxNumberline;
+    this.operator = extendedVariantInfo.operator;
+    this.split = extendedVariantInfo.split;
+    this.jumpsOfTen = extendedVariantInfo.jumpsOfTen;
+
+    this.gameLogger.setMainCode(extendedVariantInfo.mainCode);
+    this.gameLogger.setSubCode(variant);
+  }
+
+  private parseUrlWithoutVariant(urlParams: URLSearchParams): void {
     const parsedMin = parseInt(urlParams.get('min') || '', 10);
     if (Number.isNaN(parsedMin)) this.minNumber = 0;
     else this.minNumber = Math.floor(parsedMin / 10) * 10;
@@ -232,6 +252,12 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
     }
     if (this.operator === 'plus') this.gameLogger.setSubCode('a');
     if (this.operator === 'minus') this.gameLogger.setSubCode('b');
+  }
+
+  protected parseUrl(): void {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('variant')) this.parseUrlWithVariant(urlParams);
+    else this.parseUrlWithoutVariant(urlParams);
   }
 
   newRound() {

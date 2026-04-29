@@ -9,19 +9,19 @@ import { klokPaartjesLink } from './ClockPairingAppLink';
 import { somPaartjesLink } from './CombineToSolveSumAppLink';
 import { eierdoosTellenLink } from './EggCountingAppLink';
 import { springOpGetallenlijnLink } from './JumpOnNumberLineAppLink';
-import { getallenlijnBoogjesSpelLink } from './NumberlineArchesGameAppLink';
+import { getallenlijnBoogjesSpelLink } from './NumberlineArchesGame/NumberlineArchesGameAppLink';
 import { groepjesVanHerkennenLink } from './RecognizeGroupsAppLink';
 import { sorterenLink } from './SortingGameAppLink';
 import { splitsenLink } from './SplitAppLink';
 import { sommenMetSplitsenLink } from './SumsWithSplitAppLink';
 import { splitsenOpWaardeLink } from './TensSplitAppLink';
 import { welkeHandHeeftMeerStippenLink } from './WhichIsBiggerAppLink';
-import { breukenPaartjesLink } from './FractionsPairMatchingAppLink';
+import { breukenPaartjesLink } from './FractionsPairMatchingGame/FractionsPairMatchingGameAppLink';
 import { hexagonnenSpelLink } from './SquaresBalloonGameLink';
 import { multiplicationTablesGameLinkV2 } from './MultiplicationTablesBalloonGame/MultiplicationTablesBalloonGameLinkV2';
 import { divisionWithSplitAppLink } from './DivisionWithSplitAppLink';
 import { dieFaceGameAppLink } from './DieFaceGameAppLink';
-import { howManyFingersGameAppLink } from './HowManyFingersGameAppLink';
+import { howManyFingersGameAppLink } from './HowManyFingersGame/HowManyFingersGameAppLink';
 import { mixedSumsGameLink } from './MixedSumsGame/MixedSumsGameAppLink';
 
 /** Function to determine the number belonging to a string of lower case letters
