@@ -246,6 +246,7 @@ export class FractionsPairMatchingGameApp extends PairMatchingApp<FractionAndRep
     const gameType = urlParams.get('gameType');
     this.gameType = convertFractionPairMatchingGameType(gameType);
 
+    this.maxNumberOfPairs = 10;
     this.gameText = 'Breuken paren spel';
 
     this.setRepresentationsAndDropAllowed();
