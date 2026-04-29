@@ -9,7 +9,7 @@ import { klokPaartjesLink } from './ClockPairingAppLink';
 import { somPaartjesLink } from './CombineToSolveSumAppLink';
 import { eierdoosTellenLink } from './EggCountingAppLink';
 import { springOpGetallenlijnLink } from './JumpOnNumberLineAppLink';
-import { getallenlijnBoogjesSpelLink } from './NumberlineArchesGameAppLink';
+import { getallenlijnBoogjesSpelLink } from './NumberlineArchesGame/NumberlineArchesGameAppLink';
 import { groepjesVanHerkennenLink } from './RecognizeGroupsAppLink';
 import { sorterenLink } from './SortingGameAppLink';
 import { splitsenLink } from './SplitAppLink';

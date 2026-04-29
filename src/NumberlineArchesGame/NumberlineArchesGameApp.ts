@@ -7,28 +7,28 @@ import { create } from 'mutative';
 
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
-import { TimeLimitedGame2 } from './TimeLimitedGame2';
-import { GameLogger } from './GameLogger';
+import { TimeLimitedGame2 } from '../TimeLimitedGame2';
+import { GameLogger } from '../GameLogger';
 
-import './RealHeight';
-import './DynamicGrid';
-import './DraggableElement';
-import './DropTargetContainer';
+import '../RealHeight';
+import '../DynamicGrid';
+import '../DraggableElement';
+import '../DropTargetContainer';
 
-import type { ActiveEnum, ArchType, NumberBoxInfo } from './NumberLineV2';
-import type { AboveBelowType } from './Arch';
+import type { ActiveEnum, ArchType, NumberBoxInfo } from '../NumberLineV2';
+import type { AboveBelowType } from '../Arch';
 import type {
   DropTargetElementInterface,
   DropTarget,
   DropEvent,
-} from './DraggableElement';
+} from '../DraggableElement';
 
-import './NumberLineV2';
-import './Arch';
+import '../NumberLineV2';
+import '../Arch';
 
-import './DigitKeyboard';
+import '../DigitKeyboard';
 
-import { determineRequiredDigit } from './NumberHelperFunctions';
+import { determineRequiredDigit } from '../NumberHelperFunctions';
 
 import type {
   JumpsOfTenType,
@@ -39,7 +39,7 @@ import {
   CreateMinusSum,
   CreatePlusSum,
   LeftRightOperandType,
-} from './SumCreationHelpers';
+} from '../SumCreationHelpers';
 
 function operatorAsString(operator: OperatorType) {
   if (operator === 'plus') return '+';

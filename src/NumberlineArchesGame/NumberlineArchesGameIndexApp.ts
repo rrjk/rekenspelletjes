@@ -4,11 +4,11 @@ import { customElement, property } from 'lit/decorators.js';
 
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
-import type { ArchType } from './NumberLineV2';
-import { Color, getColorInfo } from './Colors';
+import type { ArchType } from '../NumberLineV2';
+import { Color, getColorInfo } from '../Colors';
 
-import './IconHourglassButton';
-import './NumberLineV2';
+import '../IconHourglassButton';
+import '../NumberLineV2';
 import { OperatorType } from './NumberlineArchesGameAppLink';
 
 type ArchesLocationType = 'below' | 'above';
