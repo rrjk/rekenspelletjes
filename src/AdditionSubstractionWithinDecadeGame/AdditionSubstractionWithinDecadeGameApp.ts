@@ -2,21 +2,22 @@ import { html, css } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
-import { TimeLimitedGame2 } from './TimeLimitedGame2';
+import { TimeLimitedGame2 } from '../TimeLimitedGame2';
 import {
   randomFromSet,
   randomFromSetAndSplice,
   randomIntFromRange,
-} from './Randomizer';
-import './AscendingBalloons';
-import type { Answers, AscendingBalloons } from './AscendingBalloons';
-import { GameLogger } from './GameLogger';
-import { Decade } from './AdditionSubstractionWithinDecadeAppLink';
+} from '../Randomizer';
+import '../AscendingBalloons';
+import type { Answers, AscendingBalloons } from '../AscendingBalloons';
+import { GameLogger } from '../GameLogger';
+import { Decade } from './AdditionSubstractionWithinDecadeGameAppLink';
+import { getAdditionSubstractionWithinDecadeGameVariant } from './AdditionSubstractionWithinDecadeGameVariants';
 
 type Operator = '+' | '-';
 
-@customElement('addition-substraction-within-decade-app')
-export class AdditionSubstractionWithinDecadeApp extends TimeLimitedGame2 {
+@customElement('addition-substraction-within-decade-game-app')
+export class AdditionSubstractionWithinDecadeGameApp extends TimeLimitedGame2 {
   @state()
   private accessor firstNumber = 1;
   @state()
@@ -37,9 +38,21 @@ export class AdditionSubstractionWithinDecadeApp extends TimeLimitedGame2 {
     this.parseUrl();
   }
 
-  private parseUrl(): void {
-    const urlParams = new URLSearchParams(window.location.search);
+  private parseUrlWithVariant(urlParams: URLSearchParams): void {
+    const variant = urlParams.get('variant');
+    if (variant === null) throw Error('Internal SW Error: no variant in URL');
+    const extendedVariantInfo =
+      getAdditionSubstractionWithinDecadeGameVariant(variant);
 
+    this.decades = extendedVariantInfo.decades;
+    this.operators = extendedVariantInfo.operators.map(op =>
+      op === 'plus' ? '+' : '-',
+    );
+    this.gameLogger.setMainCode(extendedVariantInfo.mainCode);
+    this.gameLogger.setSubCode(variant);
+  }
+
+  private parseUrlWithoutVariant(urlParams: URLSearchParams): void {
     const decadesFromUrl = urlParams.getAll('decade');
     decadesFromUrl.forEach(decadeAsString => {
       const decade = parseInt(decadeAsString, 10);
@@ -72,6 +85,12 @@ export class AdditionSubstractionWithinDecadeApp extends TimeLimitedGame2 {
       this.gameLogger.setSubCode('a');
     else if (this.operators.length === 1 && this.operators[0] === '-')
       this.gameLogger.setSubCode('b');
+  }
+
+  private parseUrl(): void {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('variant')) this.parseUrlWithVariant(urlParams);
+    else this.parseUrlWithoutVariant(urlParams);
   }
 
   /** Get the ascending balloons child */

@@ -73,6 +73,8 @@ export interface <GameName>ExtendedVariantInfo extends <GameName>VariantInfo {
   mainCode: string;
   description: string;
   // Add derived properties: colorSet?, image?, tables?
+  // IMPORTANT: If icon component needs example sums or other derived data,
+  // include them here (e.g., exampleSums: { text1: string; text2: string })
 }
 
 function determineMainCode(variantInfo: <GameName>VariantInfo): string {
@@ -91,7 +93,8 @@ export function get<GameName>Variant(variant: string): <GameName>ExtendedVariant
     ...variantInfo,
     mainCode: determineMainCode(variantInfo),
     description: createDescription(variantInfo),
-    // Add other derived properties
+    // Add other derived properties here (e.g., exampleSums, colorSet, image)
+    // IMPORTANT: If icon component needs this data, it MUST be in extended variant info
   };
 }
 ```
@@ -543,6 +546,69 @@ render(): HTMLTemplateResult {
 ```typescript
 // Check original implementation for time codes
 const durations = ['b', 'c']; // 3 minutes and 5 minutes, not 'a' and 'b'
+```
+
+### Issue 5: Icon Component Using Helper Functions Directly
+
+**Problem:** Icon component directly calling helper functions (like `getExampleSums`) instead of using data from the extended variant info. This breaks the intended architecture where the variant getter should provide all needed data.
+
+**Solution:** If the icon component needs derived data (example sums, calculated values, etc.), include it in the `ExtendedVariantInfo` interface and compute it in the `get<GameName>Variant` function. The icon component should only use data from `variantInfo`.
+
+**Example:**
+
+```typescript
+// WRONG - icon component calls helper directly
+import { getExampleSums } from './<GameName>Variants';
+
+render(): HTMLTemplateResult {
+  const variantInfo = get<GameName>Variant(this.variant);
+  const { text1, text2 } = getExampleSums(variantInfo); // BAD!
+  // ...
+}
+
+// CORRECT - data is in extended variant info
+export interface <GameName>ExtendedVariantInfo extends <GameName>VariantInfo {
+  mainCode: string;
+  description: string;
+  exampleSums: { text1: string; text2: string }; // Include here
+}
+
+export function get<GameName>Variant(variant: string): <GameName>ExtendedVariantInfo {
+  const variantInfo = <gameName>Variants[variant] || defaultVariant;
+  return {
+    ...variantInfo,
+    mainCode: determineMainCode(variantInfo),
+    description: createDescription(variantInfo),
+    exampleSums: getExampleSums(variantInfo), // Compute here
+  };
+}
+
+// Icon component uses data from variantInfo
+render(): HTMLTemplateResult {
+  const variantInfo = get<GameName>Variant(this.variant);
+  const { text1, text2 } = variantInfo.exampleSums; // GOOD!
+  // ...
+}
+```
+
+### Issue 6: Not Moving Main App and Link Files to New Directory
+
+**Problem:** When migrating an existing game, the main `<GameName>App.ts` and `<GameName>AppLink.ts` files are left in the `src/` directory instead of being moved to the new `src/<GameName>/` directory.
+
+**Solution:** Always move both the main App file and the Link file to the new game directory during migration. Update all import references in other files (e.g., `URLshortener.ts`, HTML files) to point to the new location.
+
+**Example:**
+
+```typescript
+// Move these files:
+src/<GameName>App.ts → src/<GameName>/<GameName>App.ts
+src/<GameName>AppLink.ts → src/<GameName>/<GameName>AppLink.ts
+
+// Update imports in URLshortener.ts:
+import { gameLink } from './<GameName>/<GameName>AppLink';
+
+// Update script references in HTML files:
+<script type="module" src="../src/<GameName>/<GameName>App.ts"></script>
 ```
 
 ## Common Patterns

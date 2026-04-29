@@ -1,5 +1,5 @@
-import { plusMinHeleTientallenLink } from './AdditionSubstractionWholeDecadeAppLink';
-import { plusMinBinnenTientalLink } from './AdditionSubstractionWithinDecadeAppLink';
+import { plusMinHeleTientallenLink } from './AdditionSubstractionWholeDecadeGame/AdditionSubstractionWholeDecadeGameAppLink';
+import { plusMinBinnenTientalLink } from './AdditionSubstractionWithinDecadeGame/AdditionSubstractionWithinDecadeGameAppLink';
 import {
   aanklikkenInTafelVolgordeLink,
   aanklikkenInVolgordeLink,

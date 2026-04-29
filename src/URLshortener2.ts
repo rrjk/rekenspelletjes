@@ -12,6 +12,7 @@ const baseUrl = new URL(`../Rekenspelletjes/`, import.meta.url);
 const defaultUrl = new URL('./index.html', baseUrl);
 
 const baseURLs: Partial<Record<string, URL>> = {
+  A: new URL('./PlusMinBinnenTiental.html', baseUrl),
   C: new URL('./TafeltjesOefenenSpel.html', baseUrl),
   D: new URL('./TafeltjesOefenenSpel.html', baseUrl),
   I: new URL('./BreukenPaartjesSpel.html', baseUrl),

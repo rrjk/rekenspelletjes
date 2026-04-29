@@ -2,20 +2,20 @@ import { html, css } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
-import { TimeLimitedGame2 } from './TimeLimitedGame2';
+import { TimeLimitedGame2 } from '../TimeLimitedGame2';
 import {
   randomFromSet,
   randomFromSetAndSplice,
   randomIntFromRange,
-} from './Randomizer';
-import './AscendingBalloons';
-import type { Answers, AscendingBalloons } from './AscendingBalloons';
-import { GameLogger } from './GameLogger';
+} from '../Randomizer';
+import '../AscendingBalloons';
+import type { Answers, AscendingBalloons } from '../AscendingBalloons';
+import { GameLogger } from '../GameLogger';
 
 type Operator = '+' | '-';
 
-@customElement('addition-substraction-whole-decade-app')
-export class AdditionSubstractionWholeDecadeApp extends TimeLimitedGame2 {
+@customElement('addition-substraction-whole-decade-game-app')
+export class AdditionSubstractionWholeDecadeGameApp extends TimeLimitedGame2 {
   @state()
   private accessor firstNumber = 1;
   @state()
@@ -35,7 +35,7 @@ export class AdditionSubstractionWholeDecadeApp extends TimeLimitedGame2 {
   constructor() {
     super();
     this.welcomeDialogImageUrl = new URL(
-      '../images/Mompitz Elli star-yellow.png',
+      '../../images/Mompitz Elli star-yellow.png',
       import.meta.url,
     );
     this.parseUrl();
