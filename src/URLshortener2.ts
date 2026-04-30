@@ -8,7 +8,7 @@ import {
 const urlParams = new URLSearchParams(window.location.search);
 const key = urlParams.keys().next().value;
 
-const baseUrl = new URL(`../Rekenspelletjes/`, import.meta.url);
+const baseUrl = new URL(`../../Rekenspelletjes/`, import.meta.url);
 const defaultUrl = new URL('./index.html', baseUrl);
 
 const baseURLs: Partial<Record<string, URL>> = {
