@@ -31,9 +31,7 @@ export class TestApp extends LitElement {
 
   protected renderTest(): HTMLTemplateResult {
     return html`
-      <addition-substraction-within-decade-game-icon
-        variant="aa"
-      ></addition-substraction-within-decade-game-icon>
+      <addition-substraction-within-decade-game-icon></addition-substraction-within-decade-game-icon>
       <div class="vSpace"></div>
       <addition-substraction-within-decade-game-icon
         variant="ab"
