@@ -15,7 +15,7 @@ export default {
     entryFileNames: 'src/[name]-[hash].js',
     chunkFileNames: 'src/[name]-[hash].js',
   },
-  input: 's/index.html',
+  input: 't/index.html',
   plugins: [
     html({
       minify: true,
