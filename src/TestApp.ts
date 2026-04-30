@@ -3,12 +3,7 @@ import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
 import { customElement } from 'lit/decorators.js';
 
-import './ZeppelinImageV2';
-import './RocketImageV2';
-import './NumberedBalloon';
-import './MultiplicationTablesBalloonGame/MultiplicationTablesBalloonGameIcon';
-import './MultiplicationTablesBalloonGame/MultiplicationTablesBalloonHourglassGameIcon';
-import './MixedSumsGame/MixedSumsGameIcon';
+import './NumberedKite';
 
 @customElement('test-app')
 export class TestApp extends LitElement {
@@ -21,22 +16,14 @@ export class TestApp extends LitElement {
           display: block;
         }
 
-        multiplication-tables-balloon-game-icon {
-          height: 200px;
-          width: 100px;
-        }
-
-        multiplication-tables-balloon-hourglass-game-icon {
-          width: 150px;
+        numbered-kite {
+          height: 100px;
+          width: 200px;
+          background-color: #f0f0f0;
         }
 
         div.vSpace {
           height: 20px;
-        }
-
-        mixed-sums-game-icon {
-          width: 200px;
-          height: 200px;
         }
       `,
     ];
@@ -44,17 +31,34 @@ export class TestApp extends LitElement {
 
   protected renderTest(): HTMLTemplateResult {
     return html`
-      <multiplication-tables-balloon-hourglass-game-icon
-        variant="af"
-        timeCode="a"
-      >
-      </multiplication-tables-balloon-hourglass-game-icon>
+      <numbered-kite
+        .nmbrToShow=${123}
+        .tailLength=${'long'}
+        .isDisabled=${false}
+        .color=${'green'}
+      ></numbered-kite>
       <div class="vSpace"></div>
-      <mixed-sums-game-icon variant="af"></mixed-sums-game-icon>
+      <numbered-kite
+        .nmbrToShow=${25}
+        .tailLength=${'long'}
+        .isDisabled=${false}
+        .color=${'lavender'}
+      ></numbered-kite>
       <div class="vSpace"></div>
-      <mixed-sums-game-icon variant="bc"></mixed-sums-game-icon>
+      <numbered-kite
+        .stringsToShow=${['3+4', '8-3']}
+        .fontSizeFactor=${0.6}
+        .tailLength=${'short'}
+        .isDisabled=${false}
+        .color=${'blue'}
+      ></numbered-kite>
       <div class="vSpace"></div>
-      <mixed-sums-game-icon variant=""></mixed-sums-game-icon>
+      <numbered-kite
+        .nmbrToShow=${15}
+        .tailLength=${'long'}
+        .disabled=${true}
+        .color=${'cyan'}
+      ></numbered-kite>
     `;
   }
 
