@@ -3,7 +3,7 @@ import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
 import { customElement } from 'lit/decorators.js';
 
-import './AdditionSubstractionWithinDecadeGame/AdditionSubstractionWithinDecadeGameIcon';
+import './NumberedStar';
 
 @customElement('test-app')
 export class TestApp extends LitElement {
@@ -14,16 +14,18 @@ export class TestApp extends LitElement {
           width: 100%;
           height: 100%;
           display: block;
+          padding: 20px;
         }
 
-        addition-substraction-within-decade-game-icon {
+        .star-container {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 20px;
+        }
+
+        numbered-star {
           height: 100px;
-          width: 200px;
-          background-color: #f0f0f0;
-        }
-
-        div.vSpace {
-          height: 20px;
+          width: 120px;
         }
       `,
     ];
@@ -31,39 +33,22 @@ export class TestApp extends LitElement {
 
   protected renderTest(): HTMLTemplateResult {
     return html`
-      <addition-substraction-within-decade-game-icon></addition-substraction-within-decade-game-icon>
-      <div class="vSpace"></div>
-      <addition-substraction-within-decade-game-icon
-        variant="ab"
-      ></addition-substraction-within-decade-game-icon>
-      <div class="vSpace"></div>
-      <addition-substraction-within-decade-game-icon
-        variant="ac"
-      ></addition-substraction-within-decade-game-icon>
-      <div class="vSpace"></div>
-      <addition-substraction-within-decade-game-icon
-        variant="ba"
-      ></addition-substraction-within-decade-game-icon>
-      <div class="vSpace"></div>
-      <addition-substraction-within-decade-game-icon
-        variant="bb"
-      ></addition-substraction-within-decade-game-icon>
-      <div class="vSpace"></div>
-      <addition-substraction-within-decade-game-icon
-        variant="bc"
-      ></addition-substraction-within-decade-game-icon>
-      <div class="vSpace"></div>
-      <addition-substraction-within-decade-game-icon
-        variant="ca"
-      ></addition-substraction-within-decade-game-icon>
-      <div class="vSpace"></div>
-      <addition-substraction-within-decade-game-icon
-        variant="cb"
-      ></addition-substraction-within-decade-game-icon>
-      <div class="vSpace"></div>
-      <addition-substraction-within-decade-game-icon
-        variant="cc"
-      ></addition-substraction-within-decade-game-icon>
+      <div class="star-container">
+        <numbered-star nmbrToShow="1" color="yellow"></numbered-star>
+        <numbered-star nmbrToShow="5" color="red"></numbered-star>
+        <numbered-star nmbrToShow="12" color="blue"></numbered-star>
+        <numbered-star nmbrToShow="99" color="green"></numbered-star>
+        <numbered-star nmbrToShow="100" color="purple"></numbered-star>
+        <numbered-star stringsToShow='["A"]' color="orange"></numbered-star>
+        <numbered-star
+          stringsToShow='["AB","C"]'
+          fontSizeFactor="0.5"
+          color="pink"
+        ></numbered-star>
+        <numbered-star nmbrToShow="7" color="yellow" disabled></numbered-star>
+        <numbered-star nmbrToShow="3" color="cyan"></numbered-star>
+        <numbered-star nmbrToShow="42" color="magenta"></numbered-star>
+      </div>
     `;
   }
 
