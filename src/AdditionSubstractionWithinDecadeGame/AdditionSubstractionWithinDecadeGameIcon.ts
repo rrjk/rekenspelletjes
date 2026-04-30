@@ -3,7 +3,7 @@ import type { HTMLTemplateResult, CSSResultGroup } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
 import { getAdditionSubstractionWithinDecadeGameVariant } from './AdditionSubstractionWithinDecadeGameVariants';
-import '../GameIconWithTextOverlay';
+import '../NumberedKite';
 
 @customElement('addition-substraction-within-decade-game-icon')
 export class AdditionSubstractionWithinDecadeGameIcon extends LitElement {
@@ -19,24 +19,9 @@ export class AdditionSubstractionWithinDecadeGameIcon extends LitElement {
         container-type: size;
       }
 
-      .iconContainer {
-        display: grid;
-        grid-template-columns: 100%;
-        grid-template-rows: 100%;
-        width: 90%;
-        height: 90%;
-        min-width: 0;
-        min-height: 0;
-        border-radius: 25%;
-        border: 2px solid black;
-        background-color: var(--fill-color);
-        justify-items: center;
-        align-items: center;
-      }
-
-      .iconContent {
-        width: 95%;
-        height: 95%;
+      numbered-kite {
+        width: 100%;
+        height: 100%;
       }
     `;
   }
@@ -47,17 +32,38 @@ export class AdditionSubstractionWithinDecadeGameIcon extends LitElement {
     );
     const { text1, text2 } = variantInfo.exampleSums;
 
+    const stringsToShow = [text1, text2].filter(s => s !== '');
+
+    let fontSizeFactor = 1;
+
+    if (stringsToShow.length === 0) {
+      stringsToShow.push('');
+    } else if (stringsToShow.length === 1) {
+      if (stringsToShow[0].length <= 3) {
+        fontSizeFactor = 0.7;
+      } else if (stringsToShow[0].length <= 4) {
+        fontSizeFactor = 0.6;
+      } else {
+        fontSizeFactor = 0.5;
+      }
+    } else if (stringsToShow.length === 2) {
+      if (stringsToShow[0].length <= 3 && stringsToShow[1].length <= 3) {
+        fontSizeFactor = 0.62;
+      } else if (stringsToShow[0].length <= 4 && stringsToShow[1].length <= 4) {
+        fontSizeFactor = 0.56;
+      } else {
+        fontSizeFactor = 0.55;
+      }
+    }
+
     return html`
-      <div class="iconContainer">
-        <div class="iconContent">
-          <game-icon-with-text-overlay
-            iconcolor=${variantInfo.iconColor}
-            image="kite"
-            text1=${text1}
-            text2=${text2}
-          ></game-icon-with-text-overlay>
-        </div>
-      </div>
+      <numbered-kite
+        .color=${variantInfo.iconColor}
+        .stringsToShow=${stringsToShow}
+        .tailLength=${'short'}
+        .disabled=${false}
+        .fontSizeFactor=${fontSizeFactor}
+      ></numbered-kite>
     `;
   }
 }

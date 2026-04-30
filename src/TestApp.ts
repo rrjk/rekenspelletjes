@@ -3,7 +3,7 @@ import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
 import { customElement } from 'lit/decorators.js';
 
-import './NumberedKite';
+import './AdditionSubstractionWithinDecadeGame/AdditionSubstractionWithinDecadeGameIcon';
 
 @customElement('test-app')
 export class TestApp extends LitElement {
@@ -16,7 +16,7 @@ export class TestApp extends LitElement {
           display: block;
         }
 
-        numbered-kite {
+        addition-substraction-within-decade-game-icon {
           height: 100px;
           width: 200px;
           background-color: #f0f0f0;
@@ -31,34 +31,41 @@ export class TestApp extends LitElement {
 
   protected renderTest(): HTMLTemplateResult {
     return html`
-      <numbered-kite
-        .nmbrToShow=${123}
-        .tailLength=${'long'}
-        .isDisabled=${false}
-        .color=${'green'}
-      ></numbered-kite>
+      <addition-substraction-within-decade-game-icon
+        variant="aa"
+      ></addition-substraction-within-decade-game-icon>
       <div class="vSpace"></div>
-      <numbered-kite
-        .nmbrToShow=${25}
-        .tailLength=${'long'}
-        .isDisabled=${false}
-        .color=${'lavender'}
-      ></numbered-kite>
+      <addition-substraction-within-decade-game-icon
+        variant="ab"
+      ></addition-substraction-within-decade-game-icon>
       <div class="vSpace"></div>
-      <numbered-kite
-        .stringsToShow=${['3+4', '8-3']}
-        .fontSizeFactor=${0.6}
-        .tailLength=${'short'}
-        .isDisabled=${false}
-        .color=${'blue'}
-      ></numbered-kite>
+      <addition-substraction-within-decade-game-icon
+        variant="ac"
+      ></addition-substraction-within-decade-game-icon>
       <div class="vSpace"></div>
-      <numbered-kite
-        .nmbrToShow=${15}
-        .tailLength=${'long'}
-        .disabled=${true}
-        .color=${'cyan'}
-      ></numbered-kite>
+      <addition-substraction-within-decade-game-icon
+        variant="ba"
+      ></addition-substraction-within-decade-game-icon>
+      <div class="vSpace"></div>
+      <addition-substraction-within-decade-game-icon
+        variant="bb"
+      ></addition-substraction-within-decade-game-icon>
+      <div class="vSpace"></div>
+      <addition-substraction-within-decade-game-icon
+        variant="bc"
+      ></addition-substraction-within-decade-game-icon>
+      <div class="vSpace"></div>
+      <addition-substraction-within-decade-game-icon
+        variant="ca"
+      ></addition-substraction-within-decade-game-icon>
+      <div class="vSpace"></div>
+      <addition-substraction-within-decade-game-icon
+        variant="cb"
+      ></addition-substraction-within-decade-game-icon>
+      <div class="vSpace"></div>
+      <addition-substraction-within-decade-game-icon
+        variant="cc"
+      ></addition-substraction-within-decade-game-icon>
     `;
   }
 
