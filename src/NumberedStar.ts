@@ -94,15 +94,15 @@ export class NumberedStar extends LitElement {
         }
 
         .oneDigit {
-          font-size: 65px;
+          font-size: 63px;
         }
 
         .twoDigit {
-          font-size: 60px;
+          font-size: 58px;
         }
 
         .threeDigit {
-          font-size: 53px;
+          font-size: 51px;
         }
 
         text {
@@ -129,14 +129,14 @@ export class NumberedStar extends LitElement {
     let classes = '';
     let y = 0;
     if (this.nmbrToShow < 10) {
-      y = 105;
+      y = 108;
       classes = 'number oneDigit';
     } else if (this.nmbrToShow < 100) {
       classes = 'number twoDigit';
-      y = 105;
+      y = 108;
     } else if (this.nmbrToShow < 1000) {
       classes = 'number threeDigit';
-      y = 105;
+      y = 108;
     }
 
     return svg`

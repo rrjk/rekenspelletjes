@@ -1,33 +1,44 @@
-import { html, css } from 'lit';
-import { customElement, state } from 'lit/decorators.js';
-import type { CSSResultArray, HTMLTemplateResult } from 'lit';
+import { customElement } from 'lit/decorators.js';
 
-import { TimeLimitedGame2 } from '../TimeLimitedGame2';
+import { css, CSSResultArray, html, HTMLTemplateResult } from 'lit';
+
+import {
+  AscendingItemsGameApp,
+  ItemInfoInterface,
+  RoundInfo,
+} from '../AscendingItemsGameApp';
+import { Color, setOf20Colors } from '../Colors';
+
+import '../NumberedStar';
+
 import {
   randomFromSet,
   randomFromSetAndSplice,
   randomIntFromRange,
+  shuffleArray,
 } from '../Randomizer';
-import '../AscendingBalloons';
-import type { Answers, AscendingBalloons } from '../AscendingBalloons';
-import { GameLogger } from '../GameLogger';
 
-type Operator = '+' | '-';
+import { GameLogger } from '../GameLogger';
+import { operatorToSymbol, AdditionOperator } from '../Operator';
+import { UnexpectedValueError } from '../UnexpectedValueError';
+
+interface ItemInfo extends ItemInfoInterface {
+  nmbr: number;
+  color: Color;
+}
+
+interface ExerciseInfo {
+  firstNumber: number;
+  secondNumber: number;
+  operator: AdditionOperator;
+}
 
 @customElement('addition-substraction-whole-decade-game-app')
-export class AdditionSubstractionWholeDecadeGameApp extends TimeLimitedGame2 {
-  @state()
-  private accessor firstNumber = 1;
-  @state()
-  private accessor secondNumber = 10;
-  @state()
-  private accessor operator: Operator = '+';
-  @state()
-  private accessor answers: Answers = { correct: 21, incorrect: [22, 23, 41] };
-  @state()
-  private accessor gameElementsDisabled = true;
-
-  private operators: Operator[] = [];
+export class AdditionSubstractionWholeDecadeGameApp extends AscendingItemsGameApp<
+  ExerciseInfo,
+  ItemInfo
+> {
+  private operators: AdditionOperator[] = [];
   private decadeFirst = false;
 
   private gameLogger = new GameLogger('B', '');
@@ -46,15 +57,18 @@ export class AdditionSubstractionWholeDecadeGameApp extends TimeLimitedGame2 {
 
     const operatorsFromUrl = urlParams.getAll('operator');
     operatorsFromUrl.forEach(operator => {
-      if (operator === 'plus' && !this.operators.find(value => value === '+'))
-        this.operators.push('+');
+      if (
+        operator === 'plus' &&
+        !this.operators.find(value => value === 'plus')
+      )
+        this.operators.push('plus');
       else if (
         operator === 'minus' &&
-        !this.operators.find(value => value === '-')
+        !this.operators.find(value => value === 'minus')
       )
-        this.operators.push('-');
+        this.operators.push('minus');
     });
-    if (this.operators.length === 0) this.operators.push('+');
+    if (this.operators.length === 0) this.operators.push('plus');
 
     if (urlParams.has('decadeFirst')) this.decadeFirst = true;
     else this.decadeFirst = false;
@@ -62,25 +76,20 @@ export class AdditionSubstractionWholeDecadeGameApp extends TimeLimitedGame2 {
     if (!this.decadeFirst) {
       if (this.operators.length === 2) {
         this.gameLogger.setSubCode('c');
-      } else if (this.operators[0] === '+') {
+      } else if (this.operators[0] === 'plus') {
         this.gameLogger.setSubCode('a');
-      } else if (this.operators[0] === '-') {
+      } else if (this.operators[0] === 'minus') {
         this.gameLogger.setSubCode('b');
       }
     } else if (this.decadeFirst) {
       if (this.operators.length === 2) {
         this.gameLogger.setSubCode('f');
-      } else if (this.operators[0] === '+') {
+      } else if (this.operators[0] === 'plus') {
         this.gameLogger.setSubCode('d');
-      } else if (this.operators[0] === '-') {
+      } else if (this.operators[0] === 'minus') {
         this.gameLogger.setSubCode('e');
       }
     }
-  }
-
-  /** Get the ascending balloons child */
-  private get ascendingBalloons(): AscendingBalloons {
-    return this.getElement('#ascendingBalloons');
   }
 
   /** Get all static styles */
@@ -88,25 +97,19 @@ export class AdditionSubstractionWholeDecadeGameApp extends TimeLimitedGame2 {
     return [
       ...super.styles,
       css`
-        .exercise {
-          font-size: calc(1em + 4vmin);
+        numbered-star {
+          width: 100%;
+          height: 100%;
+        }
+
+        svg {
+          text-anchor: middle;
+          dominant-baseline: middle;
+          font-size: 30px;
+          height: 100%;
         }
       `,
     ];
-  }
-
-  override async getUpdateComplete(): Promise<boolean> {
-    const result = await super.getUpdateComplete();
-    await this.ascendingBalloons.updateComplete;
-    return result;
-  }
-
-  /** Start a new game.
-   * Progress bar and counters are automatically reset.
-   */
-  startNewGame(): void {
-    super.startNewGame();
-    this.newRound();
   }
 
   get welcomeMessage(): HTMLTemplateResult {
@@ -114,17 +117,17 @@ export class AdditionSubstractionWholeDecadeGameApp extends TimeLimitedGame2 {
     let exerciseExamplesAsScentence = '';
 
     if (!this.decadeFirst) {
-      if (this.operators.find(value => value === '+')) {
+      if (this.operators.find(value => value === 'plus')) {
         exerciseExamples.push('33+20');
       }
-      if (this.operators.find(value => value === '-')) {
+      if (this.operators.find(value => value === 'minus')) {
         exerciseExamples.push(`56-30`);
       }
     } else if (this.decadeFirst) {
-      if (this.operators.find(value => value === '+')) {
+      if (this.operators.find(value => value === 'plus')) {
         exerciseExamples.push('50+8');
       }
-      if (this.operators.find(value => value === '-')) {
+      if (this.operators.find(value => value === 'minus')) {
         exerciseExamples.push(`70-5`);
       }
     }
@@ -145,49 +148,56 @@ export class AdditionSubstractionWholeDecadeGameApp extends TimeLimitedGame2 {
     return `Sommen met hele tientallen`;
   }
 
-  private handleCorrectAnswer(): void {
-    this.numberOk += 1;
-    this.newRound();
-  }
+  protected getRoundInfo(nmbrItems: number): RoundInfo<ExerciseInfo, ItemInfo> {
+    console.assert(nmbrItems === 4);
 
-  private handleWrongAnswer(): void {
-    this.numberNok += 1;
-  }
+    const exerciseInfo: ExerciseInfo = {
+      firstNumber: 0,
+      secondNumber: 0,
+      operator: 'plus',
+    };
+    const itemInfo: ItemInfo[] = [];
 
-  private handleAscensionComplete(): void {
-    this.numberNok += 1;
-    this.newRound();
-  }
-
-  private newRound() {
-    this.operator = randomFromSet(this.operators);
+    const operator = randomFromSet(this.operators);
     let answer: number;
 
     if (!this.decadeFirst) {
-      if (this.operator === '+') {
-        this.firstNumber = randomIntFromRange(1, 89);
-        this.secondNumber =
-          10 * randomIntFromRange(1, 9 - Math.floor(this.firstNumber / 10));
-        answer = this.firstNumber + this.secondNumber;
-      } else if (this.operator === '-') {
-        this.firstNumber = randomIntFromRange(11, 99);
-        this.secondNumber =
-          10 * randomIntFromRange(1, Math.floor(this.firstNumber / 10));
-        answer = this.firstNumber - this.secondNumber;
+      if (operator === 'plus') {
+        exerciseInfo.firstNumber = randomIntFromRange(1, 89);
+        exerciseInfo.secondNumber =
+          10 *
+          randomIntFromRange(1, 9 - Math.floor(exerciseInfo.firstNumber / 10));
+        answer = exerciseInfo.firstNumber + exerciseInfo.secondNumber;
+      } else if (operator === 'minus') {
+        exerciseInfo.firstNumber = randomIntFromRange(11, 99);
+        exerciseInfo.secondNumber =
+          10 * randomIntFromRange(1, Math.floor(exerciseInfo.firstNumber / 10));
+        answer = exerciseInfo.firstNumber - exerciseInfo.secondNumber;
       } else {
         throw new Error('Unsupported operator found');
       }
     } else {
-      this.firstNumber = randomIntFromRange(1, 9) * 10;
-      this.secondNumber = randomIntFromRange(1, 9);
-      if (this.operator === '+') {
-        answer = this.firstNumber + this.secondNumber;
-      } else if (this.operator === '-') {
-        answer = this.firstNumber - this.secondNumber;
+      exerciseInfo.firstNumber = randomIntFromRange(1, 9) * 10;
+      exerciseInfo.secondNumber = randomIntFromRange(1, 9);
+      if (operator === 'plus') {
+        answer = exerciseInfo.firstNumber + exerciseInfo.secondNumber;
+      } else if (operator === 'minus') {
+        answer = exerciseInfo.firstNumber - exerciseInfo.secondNumber;
       } else {
-        throw new Error('Unsupported operator found');
+        throw new UnexpectedValueError(operator);
       }
     }
+    exerciseInfo.operator = operator;
+
+    const possibleColors: Color[] = [...setOf20Colors];
+    const colorCorrect = randomFromSetAndSplice(possibleColors);
+
+    itemInfo.push({
+      color: colorCorrect,
+      disabled: false,
+      nmbr: answer,
+      correct: true,
+    });
 
     let fullyRandomAnswer = randomIntFromRange(1, 99);
     while (fullyRandomAnswer === answer)
@@ -209,44 +219,41 @@ export class AdditionSubstractionWholeDecadeGameApp extends TimeLimitedGame2 {
       sameSinglesNumber,
     ];
 
-    this.answers = {
-      correct: answer,
-      incorrect: [
-        randomFromSetAndSplice(possibleAnswers),
-        randomFromSetAndSplice(possibleAnswers),
-        randomFromSetAndSplice(possibleAnswers),
-      ],
+    for (let i = 0; i < nmbrItems - 1; i++) {
+      itemInfo.push({
+        color: randomFromSetAndSplice(possibleColors),
+        correct: false,
+        disabled: false,
+        nmbr: randomFromSetAndSplice(possibleAnswers),
+      });
+    }
+
+    shuffleArray(itemInfo);
+
+    return {
+      exerciseInfo,
+      itemInfo,
     };
-    this.ascendingBalloons.restartAscension();
-    this.gameElementsDisabled = false;
   }
 
   executeGameOverActions(): void {
-    this.gameElementsDisabled = true;
     this.gameLogger.logGameOver();
   }
 
-  /** Render the game content */
-  renderGameContent(): HTMLTemplateResult {
-    return html`
-      <ascending-balloons
-        id="ascendingBalloons"
-        style="position: absolute; top: 0; left: 0; height: 100%; width:100%;"
-        @correct-balloon-clicked=${() => this.handleCorrectAnswer()}
-        @wrong-balloon-clicked=${() => this.handleWrongAnswer()}
-        @ascension-complete=${() => this.handleAscensionComplete()}
-        .answers=${this.answers}
-        ?disabled=${this.gameElementsDisabled}
-        imageType="star"
-      ></ascending-balloons>
-      <div
-        class="exercise"
-        style="display: ${this.gameElementsDisabled
-          ? 'none'
-          : 'block'}; position: absolute; top: 20%; width: 100%; text-align: center;"
-      >
-        ${this.firstNumber} ${this.operator} ${this.secondNumber} = ?
-      </div>
-    `;
+  protected renderExercise(exerciseInfo: ExerciseInfo): HTMLTemplateResult {
+    return html`<svg viewBox="-100 -25 200 50">
+      <text x="0" y="0">
+        ${exerciseInfo.firstNumber} ${operatorToSymbol(exerciseInfo.operator)}
+        ${exerciseInfo.secondNumber} =
+      </text>
+    </svg>`;
+  }
+
+  renderItem(itemInfo: ItemInfo): HTMLTemplateResult {
+    return html`<numbered-star
+      .nmbrToShow=${itemInfo.nmbr}
+      .color=${itemInfo.color}
+      ?disabled=${itemInfo.disabled}
+    ></numbered-star>`;
   }
 }
