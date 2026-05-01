@@ -6,25 +6,25 @@ import { classMap } from 'lit/directives/class-map.js';
 
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
-import { TimeLimitedGame2 } from './TimeLimitedGame2';
-import { GameLogger } from './GameLogger';
-import { randomFromSet } from './Randomizer';
+import { TimeLimitedGame2 } from '../TimeLimitedGame2';
+import { GameLogger } from '../GameLogger';
+import { randomFromSet } from '../Randomizer';
 
-import './RealHeight';
-import './DraggableElement';
-import './DropTargetEgg';
-import './DropTargetTrashcan';
-import './DynamicGrid';
+import '../RealHeight';
+import '../DraggableElement';
+import '../DropTargetEgg';
+import '../DropTargetTrashcan';
+import '../DynamicGrid';
 import type {
   DraggableElement,
   DropTargetElementInterface,
   DropTarget,
-} from './DraggableElement';
-import { getColorInfo } from './Colors';
+} from '../DraggableElement';
+import { getColorInfo } from '../Colors';
 // import type { DropTargetEgg } from './DropTargetEgg';
 
-const eggUrl = new URL('../images/egg.png', import.meta.url);
-const eggCartonUrl = new URL('../images/eggCarton.png', import.meta.url);
+const eggUrl = new URL('../../images/egg.png', import.meta.url);
+const eggCartonUrl = new URL('../../images/eggCarton.png', import.meta.url);
 
 @customElement('eggcarton-counting-app')
 export class EggCountingApp extends TimeLimitedGame2 {
