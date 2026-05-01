@@ -16,8 +16,14 @@ export class AdditionSubstractionWholeDecadeGameIcon extends LitElement {
   @property({ type: String })
   accessor variant = '';
 
-  static baseImage = 'Mompitz Elli star-transparent.png';
-  static maskImage = 'Mompitz Elli star-mask.png';
+  static baseImage = new URL(
+    '../../images/Mompitz Elli star-transparent.png',
+    import.meta.url,
+  );
+  static maskImage = new URL(
+    '../../images/Mompitz Elli star-mask.png',
+    import.meta.url,
+  );
 
   static aspectRatio = 213 / 181;
 
@@ -132,7 +138,7 @@ export class AdditionSubstractionWholeDecadeGameIcon extends LitElement {
       <defs>
         <mask id="starMask">
           <image
-            href="../images/${AdditionSubstractionWholeDecadeGameIcon.maskImage}"
+            href=${AdditionSubstractionWholeDecadeGameIcon.maskImage.href}
             x="0"
             y="0"
             width="213"
@@ -175,7 +181,7 @@ export class AdditionSubstractionWholeDecadeGameIcon extends LitElement {
   private renderBaseImage(): SVGTemplateResult {
     return svg`
       <image
-        href="../images/${AdditionSubstractionWholeDecadeGameIcon.baseImage}"
+        href=${AdditionSubstractionWholeDecadeGameIcon.baseImage.href}
         x="0"
         y="0"
         width="213"

@@ -649,7 +649,47 @@ render(): HTMLTemplateResult {
 }
 ```
 
-### Issue 6: Not Moving Main App and Link Files to New Directory
+### Issue 6: Using String Paths for Images (Rollup Build Error)
+
+**Problem:** Using hardcoded string paths for images in SVG elements causes Rollup build failures because the paths cannot be resolved during the build process.
+
+**Solution:** Always use `new URL()` with `import.meta.url` for image references, then use the `.href` property in SVG elements.
+
+**Example:**
+
+```typescript
+// WRONG - hardcoded strings fail in Rollup build
+static baseImage = 'Mompitz Elli star-transparent.png';
+static maskImage = 'Mompitz Elli star-mask.png';
+
+// In SVG:
+href="../images/${AdditionSubstractionWholeDecadeGameIcon.maskImage}"
+
+// CORRECT - proper URL objects that work with Rollup
+static baseImage = new URL('../../images/Mompitz Elli star-transparent.png', import.meta.url);
+static maskImage = new URL('../../images/Mompitz Elli star-mask.png', import.meta.url);
+
+// In SVG:
+href=${AdditionSubstractionWholeDecadeGameIcon.maskImage.href}
+```
+
+**Important notes:**
+
+- Use `../../images/` for games in `src/<GameName>/` directories (two levels up to reach images)
+- Use `../images/` for components directly in `src/` (one level up)
+- Always reference the `.href` property when using the URL in SVG `href` attributes
+- Follow the same pattern used in `src/TimeCodes.ts` for `hourGlassIcons`
+
+**Reference example from TimeCodes.ts:**
+```typescript
+export const hourGlassIcons: Record<TimeCode, URL> = {
+  a: new URL('../images/hourglass_1min.png', import.meta.url),
+  b: new URL('../images/hourglass_3min.png', import.meta.url),
+  c: new URL('../images/hourglass_5min.png', import.meta.url),
+};
+```
+
+### Issue 7: Not Moving Main App and Link Files to New Directory
 
 **Problem:** When migrating an existing game, the main `<GameName>App.ts` and `<GameName>AppLink.ts` files are left in the `src/` directory instead of being moved to the new `src/<GameName>/` directory.
 
@@ -729,7 +769,7 @@ throw new UnexpectedValueError(value);
 - [ ] Create `src/<GameName>/` directory
 - [ ] Create `<GameName>Variants.ts` (export `gameVariants`)
 - [ ] Create `<GameName>Variants.test.ts`
-- [ ] Create `<GameName>Icon.ts`
+- [ ] Create `<GameName>Icon.ts` with proper URL handling for images
 - [ ] Create `<GameName>HourglassGameIcon.ts`
 - [ ] Create `<GameName>IndexAppV2.ts`
 - [ ] Create `<GameName>App.ts` with dual URL parsing
@@ -741,6 +781,7 @@ throw new UnexpectedValueError(value);
 - [ ] Test variant-based URLs
 - [ ] Test explicit parameter URLs
 - [ ] Run test suite
+- [ ] Verify image URLs use `new URL()` pattern (not hardcoded strings)
 
 ## Migration Instructions for Existing Games
 
