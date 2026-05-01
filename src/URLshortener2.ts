@@ -14,6 +14,7 @@ const defaultUrl = new URL('./index.html', baseUrl);
 
 const baseURLs: Partial<Record<string, URL>> = {
   A: new URL('./PlusMinBinnenTiental.html', baseUrl),
+  B: new URL('./PlusMinHeleTientallen.html', baseUrl),
   C: new URL('./TafeltjesOefenenSpel.html', baseUrl),
   D: new URL('./TafeltjesOefenenSpel.html', baseUrl),
   I: new URL('./BreukenPaartjesSpel.html', baseUrl),

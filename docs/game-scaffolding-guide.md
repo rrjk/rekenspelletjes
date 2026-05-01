@@ -210,6 +210,38 @@ export class <GameName>Icon extends LitElement {
 
 **CSS Grid sizing:** Always add `min-width: 0` and `min-height: 0` to grid items to prevent content from forcing expansion.
 
+**Render function splitting:** When the render function becomes large, split it into smaller, focused helper methods. Each helper should render a specific part of the component (e.g., SVG definitions, gradients, specific visual elements). The main render method should orchestrate these helpers. This improves readability and maintainability.
+
+**Example of split render:**
+
+```typescript
+private renderDefs(color: Color): SVGTemplateResult {
+  return svg`<defs>...</defs>`;
+}
+
+private renderStarBody(color: Color): SVGTemplateResult {
+  return svg`<rect ... />`;
+}
+
+private renderStrings(strings: string[]): SVGTemplateResult {
+  return svg`<text>...</text>`;
+}
+
+render(): HTMLTemplateResult {
+  const strings = this.getStrings();
+  const color = this.getColor();
+  return html`
+    <svg viewBox="0 0 213 181">
+      ${this.renderDefs(color)}
+      <g mask="url(#starMask)">
+        ${this.renderStarBody(color)}
+        ${this.renderStrings(strings)}
+      </g>
+    </svg>
+  `;
+}
+```
+
 ### Step 4: Create `<GameName>HourglassGameIcon.ts`
 
 Wraps the game icon in an hourglass button. Copy this template exactly - only change the custom element name and imports.

@@ -21,6 +21,7 @@ import {
 import { GameLogger } from '../GameLogger';
 import { operatorToSymbol, AdditionOperator } from '../Operator';
 import { UnexpectedValueError } from '../UnexpectedValueError';
+import { getAdditionSubstractionWholeDecadeGameVariant } from './AdditionSubstractionWholeDecadeGameVariants';
 
 interface ItemInfo extends ItemInfoInterface {
   nmbr: number;
@@ -40,6 +41,7 @@ export class AdditionSubstractionWholeDecadeGameApp extends AscendingItemsGameAp
 > {
   private operators: AdditionOperator[] = [];
   private decadeFirst = false;
+  private description = '';
 
   private gameLogger = new GameLogger('B', '');
 
@@ -52,9 +54,20 @@ export class AdditionSubstractionWholeDecadeGameApp extends AscendingItemsGameAp
     this.parseUrl();
   }
 
-  private parseUrl(): void {
-    const urlParams = new URLSearchParams(window.location.search);
+  private parseUrlWithVariant(urlParams: URLSearchParams): void {
+    const variant = urlParams.get('variant');
+    if (variant === null) throw Error('Internal SW Error: no variant in URL');
+    const extendedVariantInfo =
+      getAdditionSubstractionWholeDecadeGameVariant(variant);
 
+    this.operators = extendedVariantInfo.operators;
+    this.decadeFirst = extendedVariantInfo.decadeFirst;
+    this.description = extendedVariantInfo.description;
+    this.gameLogger.setMainCode(extendedVariantInfo.mainCode);
+    this.gameLogger.setSubCode(variant);
+  }
+
+  private parseUrlWithoutVariant(urlParams: URLSearchParams): void {
     const operatorsFromUrl = urlParams.getAll('operator');
     operatorsFromUrl.forEach(operator => {
       if (
@@ -73,6 +86,19 @@ export class AdditionSubstractionWholeDecadeGameApp extends AscendingItemsGameAp
     if (urlParams.has('decadeFirst')) this.decadeFirst = true;
     else this.decadeFirst = false;
 
+    // Construct variant string to get description
+    const decadeLetter = this.decadeFirst ? 'b' : 'a';
+    let operatorLetter = 'a';
+    if (this.operators.length === 2) {
+      operatorLetter = 'c';
+    } else if (this.operators[0] === 'minus') {
+      operatorLetter = 'b';
+    }
+    const variant = `${decadeLetter}${operatorLetter}`;
+
+    const variantInfo = getAdditionSubstractionWholeDecadeGameVariant(variant);
+    this.description = variantInfo.description;
+
     if (!this.decadeFirst) {
       if (this.operators.length === 2) {
         this.gameLogger.setSubCode('c');
@@ -90,6 +116,12 @@ export class AdditionSubstractionWholeDecadeGameApp extends AscendingItemsGameAp
         this.gameLogger.setSubCode('e');
       }
     }
+  }
+
+  private parseUrl(): void {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('variant')) this.parseUrlWithVariant(urlParams);
+    else this.parseUrlWithoutVariant(urlParams);
   }
 
   /** Get all static styles */
@@ -113,33 +145,7 @@ export class AdditionSubstractionWholeDecadeGameApp extends AscendingItemsGameAp
   }
 
   get welcomeMessage(): HTMLTemplateResult {
-    const exerciseExamples: string[] = [];
-    let exerciseExamplesAsScentence = '';
-
-    if (!this.decadeFirst) {
-      if (this.operators.find(value => value === 'plus')) {
-        exerciseExamples.push('33+20');
-      }
-      if (this.operators.find(value => value === 'minus')) {
-        exerciseExamples.push(`56-30`);
-      }
-    } else if (this.decadeFirst) {
-      if (this.operators.find(value => value === 'plus')) {
-        exerciseExamples.push('50+8');
-      }
-      if (this.operators.find(value => value === 'minus')) {
-        exerciseExamples.push(`70-5`);
-      }
-    }
-
-    if (exerciseExamples.length <= 0 || exerciseExamples.length > 2)
-      throw new Error('Internal error');
-    else if (exerciseExamples.length === 1)
-      exerciseExamplesAsScentence = `${exerciseExamples[0]}.`;
-    else if (exerciseExamples.length === 2)
-      exerciseExamplesAsScentence = `${exerciseExamples[0]} en ${exerciseExamples[1]}.`;
-
-    return html`<p>Sommen als ${exerciseExamplesAsScentence}</p>
+    return html`<p>${this.description}</p>
       <p>Klik op de ster met het juiste antwoord.</p> `;
   }
 

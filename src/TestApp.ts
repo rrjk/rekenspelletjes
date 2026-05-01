@@ -4,7 +4,6 @@ import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 import { customElement } from 'lit/decorators.js';
 
 import './NumberedStar';
-import './MompitzStar';
 
 @customElement('test-app')
 export class TestApp extends LitElement {
@@ -28,11 +27,6 @@ export class TestApp extends LitElement {
           height: 100px;
           width: 120px;
         }
-
-        mompitz-star {
-          height: 100px;
-          width: auto;
-        }
       `,
     ];
   }
@@ -40,19 +34,11 @@ export class TestApp extends LitElement {
   protected renderTest(): HTMLTemplateResult {
     return html`
       <div class="star-container">
-        <!-- Mompitz star tests -->
-        <mompitz-star stringsToShow='["M"]' color="blue"></mompitz-star>
-        <mompitz-star stringsToShow='["7"]' color="red"></mompitz-star>
-        <mompitz-star
-          stringsToShow='["34+40", ""]'
-          fontSizeFactor="0.45"
-          color="green"
-        ></mompitz-star>
-        <mompitz-star
-          stringsToShow='["34+40","58-30"]'
-          fontSizeFactor="0.45"
-          color="purple"
-        ></mompitz-star>
+        <!-- Numbered star tests -->
+        <numbered-star nmbrToShow="1" color="blue"></numbered-star>
+        <numbered-star nmbrToShow="7" color="red"></numbered-star>
+        <numbered-star nmbrToShow="42" color="green"></numbered-star>
+        <numbered-star nmbrToShow="99" color="purple"></numbered-star>
       </div>
     `;
   }
