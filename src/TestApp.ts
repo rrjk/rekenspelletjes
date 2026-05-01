@@ -4,6 +4,7 @@ import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 import { customElement } from 'lit/decorators.js';
 
 import './NumberedStar';
+import './MompitzStar';
 
 @customElement('test-app')
 export class TestApp extends LitElement {
@@ -27,6 +28,11 @@ export class TestApp extends LitElement {
           height: 100px;
           width: 120px;
         }
+
+        mompitz-star {
+          height: 100px;
+          width: auto;
+        }
       `,
     ];
   }
@@ -34,20 +40,19 @@ export class TestApp extends LitElement {
   protected renderTest(): HTMLTemplateResult {
     return html`
       <div class="star-container">
-        <numbered-star nmbrToShow="1" color="yellow"></numbered-star>
-        <numbered-star nmbrToShow="5" color="red"></numbered-star>
-        <numbered-star nmbrToShow="12" color="blue"></numbered-star>
-        <numbered-star nmbrToShow="99" color="green"></numbered-star>
-        <numbered-star nmbrToShow="100" color="purple"></numbered-star>
-        <numbered-star stringsToShow='["A"]' color="orange"></numbered-star>
-        <numbered-star
-          stringsToShow='["AB","C"]'
-          fontSizeFactor="0.5"
-          color="pink"
-        ></numbered-star>
-        <numbered-star nmbrToShow="7" color="yellow" disabled></numbered-star>
-        <numbered-star nmbrToShow="3" color="cyan"></numbered-star>
-        <numbered-star nmbrToShow="42" color="magenta"></numbered-star>
+        <!-- Mompitz star tests -->
+        <mompitz-star stringsToShow='["M"]' color="blue"></mompitz-star>
+        <mompitz-star stringsToShow='["7"]' color="red"></mompitz-star>
+        <mompitz-star
+          stringsToShow='["34+40", ""]'
+          fontSizeFactor="0.45"
+          color="green"
+        ></mompitz-star>
+        <mompitz-star
+          stringsToShow='["34+40","58-30"]'
+          fontSizeFactor="0.45"
+          color="purple"
+        ></mompitz-star>
       </div>
     `;
   }
