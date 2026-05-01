@@ -212,6 +212,32 @@ export class <GameName>Icon extends LitElement {
 
 **Render function splitting:** When the render function becomes large, split it into smaller, focused helper methods. Each helper should render a specific part of the component (e.g., SVG definitions, gradients, specific visual elements). The main render method should orchestrate these helpers. This improves readability and maintainability.
 
+### Border Considerations
+
+If your icon needs a border around it (like the EggCountingGameIcon example), you must set `box-sizing: border-box` on the container with the border. Without this, the border adds to the element's size and the icon becomes too large.
+
+```css
+.iconContainer {
+  aspect-ratio: ${<GameName>Icon.aspectRatio};
+  min-width: 0;
+  min-height: 0;
+  border: 2px solid black;
+  border-radius: 25%;
+  /* CRITICAL: Include this when using borders */
+  box-sizing: border-box;
+  display: grid;
+  justify-items: center;
+  align-items: center;
+}
+```
+
+**Why `box-sizing: border-box` is required:**
+
+- Default `content-box` sizing adds border/padding to the specified dimensions
+- `border-box` includes border/padding within the specified dimensions
+- Without it, a 100px × 100px container with 2px border becomes 104px × 104px
+- This breaks the container query calculations and aspect ratio maintenance
+
 **Example of split render:**
 
 ```typescript
