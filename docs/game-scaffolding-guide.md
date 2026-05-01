@@ -73,6 +73,8 @@ export interface <GameName>ExtendedVariantInfo extends <GameName>VariantInfo {
   mainCode: string;
   description: string;
   // Add derived properties: colorSet?, image?, tables?
+  // IMPORTANT: If icon component needs example sums or other derived data,
+  // include them here (e.g., exampleSums: { text1: string; text2: string })
 }
 
 function determineMainCode(variantInfo: <GameName>VariantInfo): string {
@@ -91,7 +93,8 @@ export function get<GameName>Variant(variant: string): <GameName>ExtendedVariant
     ...variantInfo,
     mainCode: determineMainCode(variantInfo),
     description: createDescription(variantInfo),
-    // Add other derived properties
+    // Add other derived properties here (e.g., exampleSums, colorSet, image)
+    // IMPORTANT: If icon component needs this data, it MUST be in extended variant info
   };
 }
 ```
@@ -206,6 +209,64 @@ export class <GameName>Icon extends LitElement {
 ```
 
 **CSS Grid sizing:** Always add `min-width: 0` and `min-height: 0` to grid items to prevent content from forcing expansion.
+
+**Render function splitting:** When the render function becomes large, split it into smaller, focused helper methods. Each helper should render a specific part of the component (e.g., SVG definitions, gradients, specific visual elements). The main render method should orchestrate these helpers. This improves readability and maintainability.
+
+### Border Considerations
+
+If your icon needs a border around it (like the EggCountingGameIcon example), you must set `box-sizing: border-box` on the container with the border. Without this, the border adds to the element's size and the icon becomes too large.
+
+```css
+.iconContainer {
+  aspect-ratio: ${<GameName>Icon.aspectRatio};
+  min-width: 0;
+  min-height: 0;
+  border: 2px solid black;
+  border-radius: 25%;
+  /* CRITICAL: Include this when using borders */
+  box-sizing: border-box;
+  display: grid;
+  justify-items: center;
+  align-items: center;
+}
+```
+
+**Why `box-sizing: border-box` is required:**
+
+- Default `content-box` sizing adds border/padding to the specified dimensions
+- `border-box` includes border/padding within the specified dimensions
+- Without it, a 100px × 100px container with 2px border becomes 104px × 104px
+- This breaks the container query calculations and aspect ratio maintenance
+
+**Example of split render:**
+
+```typescript
+private renderDefs(color: Color): SVGTemplateResult {
+  return svg`<defs>...</defs>`;
+}
+
+private renderStarBody(color: Color): SVGTemplateResult {
+  return svg`<rect ... />`;
+}
+
+private renderStrings(strings: string[]): SVGTemplateResult {
+  return svg`<text>...</text>`;
+}
+
+render(): HTMLTemplateResult {
+  const strings = this.getStrings();
+  const color = this.getColor();
+  return html`
+    <svg viewBox="0 0 213 181">
+      ${this.renderDefs(color)}
+      <g mask="url(#starMask)">
+        ${this.renderStarBody(color)}
+        ${this.renderStrings(strings)}
+      </g>
+    </svg>
+  `;
+}
+```
 
 ### Step 4: Create `<GameName>HourglassGameIcon.ts`
 
@@ -545,6 +606,109 @@ render(): HTMLTemplateResult {
 const durations = ['b', 'c']; // 3 minutes and 5 minutes, not 'a' and 'b'
 ```
 
+### Issue 5: Icon Component Using Helper Functions Directly
+
+**Problem:** Icon component directly calling helper functions (like `getExampleSums`) instead of using data from the extended variant info. This breaks the intended architecture where the variant getter should provide all needed data.
+
+**Solution:** If the icon component needs derived data (example sums, calculated values, etc.), include it in the `ExtendedVariantInfo` interface and compute it in the `get<GameName>Variant` function. The icon component should only use data from `variantInfo`.
+
+**Example:**
+
+```typescript
+// WRONG - icon component calls helper directly
+import { getExampleSums } from './<GameName>Variants';
+
+render(): HTMLTemplateResult {
+  const variantInfo = get<GameName>Variant(this.variant);
+  const { text1, text2 } = getExampleSums(variantInfo); // BAD!
+  // ...
+}
+
+// CORRECT - data is in extended variant info
+export interface <GameName>ExtendedVariantInfo extends <GameName>VariantInfo {
+  mainCode: string;
+  description: string;
+  exampleSums: { text1: string; text2: string }; // Include here
+}
+
+export function get<GameName>Variant(variant: string): <GameName>ExtendedVariantInfo {
+  const variantInfo = <gameName>Variants[variant] || defaultVariant;
+  return {
+    ...variantInfo,
+    mainCode: determineMainCode(variantInfo),
+    description: createDescription(variantInfo),
+    exampleSums: getExampleSums(variantInfo), // Compute here
+  };
+}
+
+// Icon component uses data from variantInfo
+render(): HTMLTemplateResult {
+  const variantInfo = get<GameName>Variant(this.variant);
+  const { text1, text2 } = variantInfo.exampleSums; // GOOD!
+  // ...
+}
+```
+
+### Issue 6: Using String Paths for Images (Rollup Build Error)
+
+**Problem:** Using hardcoded string paths for images in SVG elements causes Rollup build failures because the paths cannot be resolved during the build process.
+
+**Solution:** Always use `new URL()` with `import.meta.url` for image references, then use the `.href` property in SVG elements.
+
+**Example:**
+
+```typescript
+// WRONG - hardcoded strings fail in Rollup build
+static baseImage = 'Mompitz Elli star-transparent.png';
+static maskImage = 'Mompitz Elli star-mask.png';
+
+// In SVG:
+href="../images/${AdditionSubstractionWholeDecadeGameIcon.maskImage}"
+
+// CORRECT - proper URL objects that work with Rollup
+static baseImage = new URL('../../images/Mompitz Elli star-transparent.png', import.meta.url);
+static maskImage = new URL('../../images/Mompitz Elli star-mask.png', import.meta.url);
+
+// In SVG:
+href=${AdditionSubstractionWholeDecadeGameIcon.maskImage.href}
+```
+
+**Important notes:**
+
+- Use `../../images/` for games in `src/<GameName>/` directories (two levels up to reach images)
+- Use `../images/` for components directly in `src/` (one level up)
+- Always reference the `.href` property when using the URL in SVG `href` attributes
+- Follow the same pattern used in `src/TimeCodes.ts` for `hourGlassIcons`
+
+**Reference example from TimeCodes.ts:**
+```typescript
+export const hourGlassIcons: Record<TimeCode, URL> = {
+  a: new URL('../images/hourglass_1min.png', import.meta.url),
+  b: new URL('../images/hourglass_3min.png', import.meta.url),
+  c: new URL('../images/hourglass_5min.png', import.meta.url),
+};
+```
+
+### Issue 7: Not Moving Main App and Link Files to New Directory
+
+**Problem:** When migrating an existing game, the main `<GameName>App.ts` and `<GameName>AppLink.ts` files are left in the `src/` directory instead of being moved to the new `src/<GameName>/` directory.
+
+**Solution:** Always move both the main App file and the Link file to the new game directory during migration. Update all import references in other files (e.g., `URLshortener.ts`, HTML files) to point to the new location.
+
+**Example:**
+
+```typescript
+// Move these files:
+src/<GameName>App.ts → src/<GameName>/<GameName>App.ts
+src/<GameName>AppLink.ts → src/<GameName>/<GameName>AppLink.ts
+
+// Update imports in URLshortener.ts:
+import { gameLink } from './<GameName>/<GameName>AppLink';
+
+// Update script references in HTML files:
+<script type="module" src="../src/<GameName>/<GameName>App.ts"></script>
+```
+
 ## Common Patterns
 
 **Import statement rules:**
@@ -605,7 +769,7 @@ throw new UnexpectedValueError(value);
 - [ ] Create `src/<GameName>/` directory
 - [ ] Create `<GameName>Variants.ts` (export `gameVariants`)
 - [ ] Create `<GameName>Variants.test.ts`
-- [ ] Create `<GameName>Icon.ts`
+- [ ] Create `<GameName>Icon.ts` with proper URL handling for images
 - [ ] Create `<GameName>HourglassGameIcon.ts`
 - [ ] Create `<GameName>IndexAppV2.ts`
 - [ ] Create `<GameName>App.ts` with dual URL parsing
@@ -617,6 +781,7 @@ throw new UnexpectedValueError(value);
 - [ ] Test variant-based URLs
 - [ ] Test explicit parameter URLs
 - [ ] Run test suite
+- [ ] Verify image URLs use `new URL()` pattern (not hardcoded strings)
 
 ## Migration Instructions for Existing Games
 

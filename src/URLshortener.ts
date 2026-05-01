@@ -1,5 +1,5 @@
-import { plusMinHeleTientallenLink } from './AdditionSubstractionWholeDecadeAppLink';
-import { plusMinBinnenTientalLink } from './AdditionSubstractionWithinDecadeAppLink';
+import { plusMinHeleTientallenLink } from './AdditionSubstractionWholeDecadeGame/AdditionSubstractionWholeDecadeGameAppLink';
+import { plusMinBinnenTientalLink } from './AdditionSubstractionWithinDecadeGame/AdditionSubstractionWithinDecadeGameAppLink';
 import {
   aanklikkenInTafelVolgordeLink,
   aanklikkenInVolgordeLink,
@@ -7,7 +7,7 @@ import {
 import { klikFotoOpGetallenlijnLink } from './ClickTheRightPhotoOnNumberLineAppLink';
 import { klokPaartjesLink } from './ClockPairingAppLink';
 import { somPaartjesLink } from './CombineToSolveSumAppLink';
-import { eierdoosTellenLink } from './EggCountingAppLink';
+import { eierdoosTellenLink } from './EggCounting/EggCountingAppLink';
 import { springOpGetallenlijnLink } from './JumpOnNumberLineAppLink';
 import { getallenlijnBoogjesSpelLink } from './NumberlineArchesGame/NumberlineArchesGameAppLink';
 import { groepjesVanHerkennenLink } from './RecognizeGroupsAppLink';

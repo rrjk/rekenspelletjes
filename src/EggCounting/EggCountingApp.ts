@@ -6,25 +6,26 @@ import { classMap } from 'lit/directives/class-map.js';
 
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
-import { TimeLimitedGame2 } from './TimeLimitedGame2';
-import { GameLogger } from './GameLogger';
-import { randomFromSet } from './Randomizer';
+import { TimeLimitedGame2 } from '../TimeLimitedGame2';
+import { GameLogger } from '../GameLogger';
+import { randomFromSet } from '../Randomizer';
+import { getEggCountingGameVariant } from './EggCountingGameVariants';
 
-import './RealHeight';
-import './DraggableElement';
-import './DropTargetEgg';
-import './DropTargetTrashcan';
-import './DynamicGrid';
+import '../RealHeight';
+import '../DraggableElement';
+import '../DropTargetEgg';
+import '../DropTargetTrashcan';
+import '../DynamicGrid';
 import type {
   DraggableElement,
   DropTargetElementInterface,
   DropTarget,
-} from './DraggableElement';
-import { getColorInfo } from './Colors';
+} from '../DraggableElement';
+import { getColorInfo } from '../Colors';
 // import type { DropTargetEgg } from './DropTargetEgg';
 
-const eggUrl = new URL('../images/egg.png', import.meta.url);
-const eggCartonUrl = new URL('../images/eggCarton.png', import.meta.url);
+const eggUrl = new URL('../../images/egg.png', import.meta.url);
+const eggCartonUrl = new URL('../../images/eggCarton.png', import.meta.url);
 
 @customElement('eggcarton-counting-app')
 export class EggCountingApp extends TimeLimitedGame2 {
@@ -108,7 +109,7 @@ export class EggCountingApp extends TimeLimitedGame2 {
 
   constructor() {
     super();
-    for (let i = 1; i < 100; i++) this.eligibleNumbersToSplit.push(i);
+    this.parseUrl();
   }
 
   /** Start a new game.
@@ -166,6 +167,30 @@ export class EggCountingApp extends TimeLimitedGame2 {
   resetWrongHighlights(): void {
     this.eggCartonTargetAreaHighlightWrong = false;
     this.eggTargetAreaHighlightWrong = false;
+  }
+
+  private parseUrlWithVariant(urlParams: URLSearchParams): void {
+    const variant = urlParams.get('variant');
+    if (variant === null) throw Error('Internal SW Error: no variant in URL');
+    const extendedVariantInfo = getEggCountingGameVariant(variant);
+
+    this.eligibleNumbersToSplit = [];
+    for (let i = 1; i <= extendedVariantInfo.maxNumber; i++) {
+      this.eligibleNumbersToSplit.push(i);
+    }
+    this.gameLogger.setMainCode(extendedVariantInfo.mainCode);
+    this.gameLogger.setSubCode(variant);
+  }
+
+  private parseUrlWithoutVariant(): void {
+    this.eligibleNumbersToSplit = [];
+    for (let i = 1; i < 100; i++) this.eligibleNumbersToSplit.push(i);
+  }
+
+  private parseUrl(): void {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('variant')) this.parseUrlWithVariant(urlParams);
+    else this.parseUrlWithoutVariant();
   }
 
   static get styles(): CSSResultArray {

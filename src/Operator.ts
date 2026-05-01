@@ -4,13 +4,13 @@ export const multiplicationOperators = ['times', 'divide'] as const;
 export type MultiplicationOperator = (typeof multiplicationOperators)[number];
 
 export const additionOperators = ['plus', 'minus'] as const;
-export type additionOperator = (typeof additionOperators)[number];
+export type AdditionOperator = (typeof additionOperators)[number];
 
 export const operators = [
   ...multiplicationOperators,
   ...additionOperators,
 ] as const;
-export type Operator = additionOperator | MultiplicationOperator;
+export type Operator = AdditionOperator | MultiplicationOperator;
 
 /**
  * Convert a string into an Operator.
