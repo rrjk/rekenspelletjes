@@ -749,6 +749,43 @@ operatorToDutch('plus') → 'plus'
 operatorToSymbol('times') → '×'
 ```
 
+**Component reuse principle:**
+
+```typescript
+// WRONG - recreating existing functionality
+render(): HTMLTemplateResult {
+  return html`
+    <svg>
+      <!-- Complex SVG recreation of die face -->
+    </svg>
+  `;
+}
+
+// CORRECT - using existing custom elements
+render(): HTMLTemplateResult {
+  return html`
+    <die-face
+      .dieFaceColor=${variantInfo.iconColor}
+      .numberDots=${variantInfo.numberDots}
+    ></die-face>
+  `;
+}
+```
+
+**Type safety and lint management:**
+
+```typescript
+// WRONG - unused parameter causes lint error
+private parseUrlWithoutVariant(urlParams: URLSearchParams): void {
+  // urlParams not used
+}
+
+// CORRECT - fix unused parameter
+private parseUrlWithoutVariant(): void {
+  // No unused parameter
+}
+```
+
 **Time code handling:**
 
 ```typescript
