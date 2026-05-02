@@ -2,16 +2,16 @@ import { html, css, nothing } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
-import { TimeLimitedGame2 } from './TimeLimitedGame2';
+import { TimeLimitedGame2 } from '../TimeLimitedGame2';
 
-import './RealHeight';
-import { GameLogger } from './GameLogger';
-import type { PossibleNumberDots } from './HandImage';
-import './HandImage';
-import { randomFromSetAndSplice } from './Randomizer';
+import '../RealHeight';
+import { GameLogger } from '../GameLogger';
+import type { PossibleNumberDots } from '../HandImage';
+import '../HandImage';
+import { randomFromSetAndSplice } from '../Randomizer';
 
-import type { Digit, DigitKeyboard } from './DigitKeyboard';
-import './DigitKeyboard';
+import type { Digit, DigitKeyboard } from '../DigitKeyboard';
+import '../DigitKeyboard';
 
 type HandIds = 0 | 1;
 

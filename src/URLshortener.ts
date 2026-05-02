@@ -15,7 +15,7 @@ import { sorterenLink } from './SortingGameAppLink';
 import { splitsenLink } from './SplitAppLink';
 import { sommenMetSplitsenLink } from './SumsWithSplitAppLink';
 import { splitsenOpWaardeLink } from './TensSplitAppLink';
-import { welkeHandHeeftMeerStippenLink } from './WhichIsBiggerAppLink';
+import { welkeHandHeeftMeerStippenLink } from './WhichIsBiggerGame/WhichIsBiggerAppLink';
 import { breukenPaartjesLink } from './FractionsPairMatchingGame/FractionsPairMatchingGameAppLink';
 import { hexagonnenSpelLink } from './SquaresBalloonGameLink';
 import { multiplicationTablesGameLinkV2 } from './MultiplicationTablesBalloonGame/MultiplicationTablesBalloonGameLinkV2';
