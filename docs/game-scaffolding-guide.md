@@ -26,6 +26,12 @@ This guide explains the pattern for creating game families with variant-based co
 - Use variant-based for new games and index pages
 - Keep explicit parameter parsing for backward compatibility with existing URLs
 
+**SubCode convention:**
+
+- In the variant design pattern, the subCode is always equal to the variant code
+- When using variant-based URLs, set `gameLogger.setSubCode(variant)` where variant is the variant code (e.g., 'aa', 'ab', 'ac')
+- When using explicit parameter URLs (legacy), determine subCode based on the parsed parameters for backward compatibility
+
 ## AI Scaffolding Instructions
 
 **Post-generation step:** Always run `npm run format:prettier` after generating code.
@@ -833,7 +839,7 @@ Identify:
 - Current mainCode logic
 - Game-specific state
 
-**Important:** Ask the user which main game code (e.g., 'A', 'B', 'O') should be used. This must match `GameCodes.ts`. Ask if additional main codes are needed (most games only need one).
+**Important:** Ask the user which main game code (e.g., 'A', 'B', 'O') should be used. This must match `GameCodes.ts`. Ask if additional main codes are needed (most games only need one). No questions are needed if the main code is already provided in the prompt.
 
 ### Step 2: Create Variants File
 
