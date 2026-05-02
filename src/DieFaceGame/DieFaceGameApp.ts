@@ -4,15 +4,15 @@ import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
 import { create } from 'mutative';
 
-import { TimeLimitedGame2 } from './TimeLimitedGame2';
-import { GameLogger } from './GameLogger';
+import { TimeLimitedGame2 } from '../TimeLimitedGame2';
+import { GameLogger } from '../GameLogger';
 
-import { randomFromSet } from './Randomizer';
+import { randomFromSet } from '../Randomizer';
 
-import type { Digit } from './DigitKeyboard';
-import './DigitKeyboard';
-import { possibleNumberDots, PossibleNumberDots } from './DieFace';
-import { setOf20Colors, type Color } from './Colors';
+import type { Digit } from '../DigitKeyboard';
+import '../DigitKeyboard';
+import { possibleNumberDots, PossibleNumberDots } from '../DieFace';
+import { setOf20Colors, type Color } from '../Colors';
 
 const allDigitsEnabled = [
   false,

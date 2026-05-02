@@ -20,7 +20,7 @@ import { breukenPaartjesLink } from './FractionsPairMatchingGame/FractionsPairMa
 import { hexagonnenSpelLink } from './SquaresBalloonGameLink';
 import { multiplicationTablesGameLinkV2 } from './MultiplicationTablesBalloonGame/MultiplicationTablesBalloonGameLinkV2';
 import { divisionWithSplitAppLink } from './DivisionWithSplitAppLink';
-import { dieFaceGameAppLink } from './DieFaceGameAppLink';
+import { dieFaceGameAppLink } from './DieFaceGame/DieFaceGameAppLink';
 import { howManyFingersGameAppLink } from './HowManyFingersGame/HowManyFingersGameAppLink';
 import { mixedSumsGameLink } from './MixedSumsGame/MixedSumsGameAppLink';
 

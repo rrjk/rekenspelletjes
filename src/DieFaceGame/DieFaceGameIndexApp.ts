@@ -4,10 +4,10 @@ import { customElement } from 'lit/decorators.js';
 
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
-import { type Color } from './Colors';
+import { type Color } from '../Colors';
 
-import './IconHourglassButton';
-import './DieFace';
+import '../IconHourglassButton';
+import '../DieFace';
 
 interface RowInfoType {
   description: string;
