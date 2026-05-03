@@ -2,22 +2,22 @@ import { html, css } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
-import { TimeLimitedGame2 } from './TimeLimitedGame2';
+import { TimeLimitedGame2 } from '../TimeLimitedGame2';
 
-import type { DropTargetBox } from './DropTargetBox';
-import './DropTargetBox';
+import type { DropTargetBox } from '../DropTargetBox';
+import '../DropTargetBox';
 
-import { randomIntFromRange } from './Randomizer';
-import './AscendingBalloons';
-import { GameLogger } from './GameLogger';
+import { randomIntFromRange } from '../Randomizer';
+import '../AscendingBalloons';
+import { GameLogger } from '../GameLogger';
 
-import type { DraggableElement, DropEvent } from './DraggableElement';
-import './DraggableElement';
+import type { DraggableElement, DropEvent } from '../DraggableElement';
+import '../DraggableElement';
 
-import './MompitzNumber';
+import '../MompitzNumber';
 
-import './RealHeight';
-import { BoxColor } from './SortingGameAppLink';
+import '../RealHeight';
+import { BoxColor, getSortingGameVariant } from './SortingGameVariants';
 
 type BoxSize = 'Smallest' | 'Small' | 'Big' | 'Biggest';
 
@@ -73,15 +73,45 @@ export class SortingGameApp extends TimeLimitedGame2 {
   constructor() {
     super();
     this.welcomeDialogImageUrl = new URL(
-      '../images/Mompitz7.png',
+      '../../images/Mompitz7.png',
       import.meta.url,
     );
     this.parseUrl();
   }
 
-  protected parseUrl(): void {
-    const urlParams = new URLSearchParams(window.location.search);
+  private parseUrlWithVariant(urlParams: URLSearchParams): void {
+    const variant = urlParams.get('variant');
+    if (variant === null) throw Error('Internal SW Error: no variant in URL');
+    const variantInfo = getSortingGameVariant(variant);
 
+    // Set up numbers and boxes based on variant
+    for (let i = 0; i < variantInfo.numberBoxes; i++) {
+      this.numbers.push({ id: `number${i}`, visible: false, value: i });
+
+      this.boxes.push({
+        id: `box${i}`,
+        numberVisible: false,
+        intendedValue: i,
+        size:
+          SortingGameApp.boxSizes.get(variantInfo.numberBoxes)?.[i] ??
+          'Smallest',
+      });
+    }
+
+    // Set game configuration from variant
+    this.minimumValue = variantInfo.minimumValue;
+    this.maximumValue = variantInfo.maximumValue;
+    this.divider = variantInfo.divider;
+    this.boxColor = variantInfo.boxColor;
+
+    // Update game logger
+    this.gameLogger.setMainCode(variantInfo.mainCode);
+    this.gameLogger.setSubCode(variant);
+
+    this.determineMaxDigits();
+  }
+
+  private parseUrlWithoutVariant(urlParams: URLSearchParams): void {
     let numberBoxes = 4;
     if (urlParams.has('numberBoxes')) {
       numberBoxes = parseInt(urlParams.get('numberBoxes') || '', 10);
@@ -141,6 +171,25 @@ export class SortingGameApp extends TimeLimitedGame2 {
         this.gameLogger.setMainCode('S');
       }
     }
+  }
+
+  private determineMaxDigits(): void {
+    if (this.maximumValue < 10) this.maxNumberDigits = 1;
+    else if (this.maximumValue === 10) this.maxNumberDigits = 1.5;
+    else if (this.maximumValue < 100) this.maxNumberDigits = 2;
+    else if (this.maximumValue === 100) this.maxNumberDigits = 2.5;
+    else if (this.maximumValue < 1000) this.maxNumberDigits = 3;
+    else if (this.maximumValue === 1000) this.maxNumberDigits = 3.5;
+    else if (this.maximumValue < 10000) this.maxNumberDigits = 4;
+    else if (this.maximumValue === 10000) this.maxNumberDigits = 4.5;
+
+    if (this.divider !== 1) this.maxNumberDigits += 1;
+  }
+
+  protected parseUrl(): void {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('variant')) this.parseUrlWithVariant(urlParams);
+    else this.parseUrlWithoutVariant(urlParams);
   }
 
   /** Get all static styles */

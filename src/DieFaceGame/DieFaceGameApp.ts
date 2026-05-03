@@ -4,15 +4,16 @@ import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
 import { create } from 'mutative';
 
-import { TimeLimitedGame2 } from './TimeLimitedGame2';
-import { GameLogger } from './GameLogger';
+import { TimeLimitedGame2 } from '../TimeLimitedGame2';
+import { GameLogger } from '../GameLogger';
 
-import { randomFromSet } from './Randomizer';
+import { randomFromSet } from '../Randomizer';
 
-import type { Digit } from './DigitKeyboard';
-import './DigitKeyboard';
-import { possibleNumberDots, PossibleNumberDots } from './DieFace';
-import { setOf20Colors, type Color } from './Colors';
+import type { Digit } from '../DigitKeyboard';
+import '../DigitKeyboard';
+import { possibleNumberDots, PossibleNumberDots } from '../DieFace';
+import { setOf20Colors, type Color } from '../Colors';
+import { getDieFaceGameVariant } from './DieFaceGameVariants';
 
 const allDigitsEnabled = [
   false,
@@ -42,6 +43,32 @@ export class DieFaceGameApp extends TimeLimitedGame2 {
   private accessor gameDisabled = true;
 
   private gameLogger = new GameLogger('AA', 'a');
+
+  constructor() {
+    super();
+    this.parseUrl();
+  }
+
+  private parseUrlWithVariant(urlParams: URLSearchParams): void {
+    const variant = urlParams.get('variant');
+    if (variant === null) throw Error('Internal SW Error: no variant in URL');
+    const extendedVariantInfo = getDieFaceGameVariant(variant);
+
+    this.gameLogger.setMainCode(extendedVariantInfo.mainCode);
+    this.gameLogger.setSubCode(variant);
+  }
+
+  private parseUrlWithoutVariant(): void {
+    // Keep existing behavior for backward compatibility
+    this.gameLogger.setMainCode('AA');
+    this.gameLogger.setSubCode('a');
+  }
+
+  private parseUrl(): void {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('variant')) this.parseUrlWithVariant(urlParams);
+    else this.parseUrlWithoutVariant();
+  }
 
   static get styles(): CSSResultArray {
     return [

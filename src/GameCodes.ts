@@ -33,7 +33,7 @@ export const gameCodes: GameInfoType[] = [
     gameCode: 'N',
     name: 'Verliefde harten: Combineer door te slepen en los de som op',
   },
-  { gameCode: 'O', name: 'Welke hand heeft meer stippen' },
+  { gameCode: 'O', name: 'Stippen tellen' },
   {
     gameCode: 'P',
     name: 'Ballenknallen: Ballen aanklikken in volgorde van een tafel',

@@ -2,21 +2,23 @@ import { html, css, nothing } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
-import { TimeLimitedGame2 } from './TimeLimitedGame2';
+import { TimeLimitedGame2 } from '../TimeLimitedGame2';
 
-import './RealHeight';
-import { GameLogger } from './GameLogger';
-import type { PossibleNumberDots } from './HandImage';
-import './HandImage';
-import { randomFromSetAndSplice } from './Randomizer';
+import '../RealHeight';
+import { GameLogger } from '../GameLogger';
+import type { PossibleNumberDots } from '../HandImage';
+import '../HandImage';
+import { randomFromSetAndSplice } from '../Randomizer';
 
-import type { Digit, DigitKeyboard } from './DigitKeyboard';
-import './DigitKeyboard';
+import type { Digit, DigitKeyboard } from '../DigitKeyboard';
+import '../DigitKeyboard';
+
+import { getDotCountingGameVariant } from './DotCountingGameVariants';
 
 type HandIds = 0 | 1;
 
-@customElement('which-is-bigger-app')
-export class WhichIsBiggerApp extends TimeLimitedGame2 {
+@customElement('dot-counting-game-app')
+export class DotCountingGameApp extends TimeLimitedGame2 {
   @state()
   private accessor numberDotsHands: PossibleNumberDots[] = [0, 0];
   @state()
@@ -33,15 +35,29 @@ export class WhichIsBiggerApp extends TimeLimitedGame2 {
   private maxDifference = 9;
   private wrongHandSelected = false;
 
-  private gameLogger = new GameLogger('O', 'a');
+  private gameLogger = new GameLogger('O', 'aa');
 
   constructor() {
     super();
     this.parseUrl();
   }
 
-  parseUrl() {
-    const urlParams = new URLSearchParams(window.location.search);
+  private parseUrlWithVariant(urlParams: URLSearchParams): void {
+    const variant = urlParams.get('variant');
+    if (variant === null) throw Error('Internal SW Error: no variant in URL');
+    const extendedVariantInfo = getDotCountingGameVariant(variant);
+
+    this.countOnly = extendedVariantInfo.countOnly;
+    this.includeDifference = extendedVariantInfo.includeDifference;
+    this.maxDifference = extendedVariantInfo.maxDifference;
+    this.gameLogger.setMainCode(extendedVariantInfo.mainCode);
+    this.gameLogger.setSubCode(variant);
+  }
+
+  private parseUrlWithoutVariant(urlParams: URLSearchParams): void {
+    this.countOnly = false;
+    this.includeDifference = true;
+    this.maxDifference = 9;
 
     if (urlParams.has('countOnly')) {
       const countOnly = urlParams.get('countOnly');
@@ -69,9 +85,16 @@ export class WhichIsBiggerApp extends TimeLimitedGame2 {
       else this.includeDifference = true;
     }
 
+    // Determine subCode based on mode for backward compatibility
     if (this.countOnly) this.gameLogger.setSubCode('a');
     else if (!this.includeDifference) this.gameLogger.setSubCode('b');
     else this.gameLogger.setSubCode('c');
+  }
+
+  private parseUrl(): void {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('variant')) this.parseUrlWithVariant(urlParams);
+    else this.parseUrlWithoutVariant(urlParams);
   }
 
   static get styles(): CSSResultArray {
@@ -160,7 +183,7 @@ export class WhichIsBiggerApp extends TimeLimitedGame2 {
       this.handDisabled = [false, false];
     }
 
-    if (this.includeDifference) {
+    if (this.includeDifference || this.countOnly) {
       this.getElement<DigitKeyboard>('digit-keyboard').enableAllDigits();
       if (this.countOnly) this.keyboardDisabled = false;
       else this.keyboardDisabled = true;
@@ -219,7 +242,16 @@ export class WhichIsBiggerApp extends TimeLimitedGame2 {
   }
 
   handleDigit(digit: Digit) {
-    if (Math.abs(this.numberDotsHands[0] - this.numberDotsHands[1]) === digit) {
+    let expectedDigit: number;
+    if (this.countOnly) {
+      expectedDigit = this.numberDotsHands[0];
+    } else {
+      expectedDigit = Math.abs(
+        this.numberDotsHands[0] - this.numberDotsHands[1],
+      );
+    }
+
+    if (expectedDigit === digit) {
       this.numberOk += 1;
       this.newRound();
     } else {
@@ -230,14 +262,15 @@ export class WhichIsBiggerApp extends TimeLimitedGame2 {
 
   renderGameContent(): HTMLTemplateResult {
     let keyboard: HTMLTemplateResult | typeof nothing = nothing;
-    if (this.includeDifference) {
-      keyboard = html`
-      <div class="bar">
-        <digit-keyboard showTen ?disabled=${
-          this.keyboardDisabled
-        } @digit-entered=${(evt: CustomEvent<Digit>) =>
-          this.handleDigit(evt.detail)}>
-        </digit-keyboad>
+    if (this.includeDifference || this.countOnly) {
+      keyboard = html` <div class="bar">
+        <digit-keyboard
+          showTen
+          ?disabled=${this.keyboardDisabled}
+          @digit-entered=${(evt: CustomEvent<Digit>) =>
+            this.handleDigit(evt.detail)}
+        >
+        </digit-keyboard>
       </div>`;
     }
 

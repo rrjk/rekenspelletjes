@@ -14,14 +14,18 @@ const defaultUrl = new URL('./index.html', baseUrl);
 
 const baseURLs: Partial<Record<string, URL>> = {
   A: new URL('./PlusMinBinnenTiental.html', baseUrl),
+  AA: new URL('./DobbelsteenSpel.html', baseUrl),
   B: new URL('./PlusMinHeleTientallen.html', baseUrl),
   C: new URL('./TafeltjesOefenenSpel.html', baseUrl),
   D: new URL('./TafeltjesOefenenSpel.html', baseUrl),
+  E: new URL('./Sorteren.html', baseUrl),
   I: new URL('./BreukenPaartjesSpel.html', baseUrl),
   J: new URL('./EierdoosTellen.html', baseUrl),
   K: new URL('./TafeltjesOefenenSpel.html', baseUrl),
   M: new URL('./TafeltjesOefenenSpel.html', baseUrl),
+  O: new URL('./StippenTellen.html', baseUrl),
   R: new URL('./SplitsenV2.html', baseUrl),
+  S: new URL('./Sorteren.html', baseUrl),
   X: new URL('./GetallenlijnBoogjesSpel.html', baseUrl),
   AB: new URL('./HoeveelVingersSpel.html', baseUrl),
   AC: new URL('./GemengdeSommen.html', baseUrl),

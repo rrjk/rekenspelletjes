@@ -1,4 +1,5 @@
-export type BoxColor = 'red' | 'blue' | 'purple';
+import { BoxColor } from './SortingGameVariants';
+
 /** Create link for sorting game.
  * @param numberBoxes - Number of boxes to show
  * @param minumumValue - Lowest value to show (integer)

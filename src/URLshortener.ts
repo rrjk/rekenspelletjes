@@ -11,16 +11,16 @@ import { eierdoosTellenLink } from './EggCounting/EggCountingAppLink';
 import { springOpGetallenlijnLink } from './JumpOnNumberLineAppLink';
 import { getallenlijnBoogjesSpelLink } from './NumberlineArchesGame/NumberlineArchesGameAppLink';
 import { groepjesVanHerkennenLink } from './RecognizeGroupsAppLink';
-import { sorterenLink } from './SortingGameAppLink';
+import { sorterenLink } from './SortingGame/SortingGameAppLink';
 import { splitsenLink } from './SplitAppLink';
 import { sommenMetSplitsenLink } from './SumsWithSplitAppLink';
 import { splitsenOpWaardeLink } from './TensSplitAppLink';
-import { welkeHandHeeftMeerStippenLink } from './WhichIsBiggerAppLink';
+import { stippenTellenLink } from './DotCountingGame/DotCountingGameAppLink';
 import { breukenPaartjesLink } from './FractionsPairMatchingGame/FractionsPairMatchingGameAppLink';
 import { hexagonnenSpelLink } from './SquaresBalloonGameLink';
 import { multiplicationTablesGameLinkV2 } from './MultiplicationTablesBalloonGame/MultiplicationTablesBalloonGameLinkV2';
 import { divisionWithSplitAppLink } from './DivisionWithSplitAppLink';
-import { dieFaceGameAppLink } from './DieFaceGameAppLink';
+import { dieFaceGameAppLink } from './DieFaceGame/DieFaceGameAppLink';
 import { howManyFingersGameAppLink } from './HowManyFingersGame/HowManyFingersGameAppLink';
 import { mixedSumsGameLink } from './MixedSumsGame/MixedSumsGameAppLink';
 
@@ -48,13 +48,13 @@ const urls: (() => string)[] = [
   // a - indexSommenTot20Splitsen first two items
   () => sommenMetSplitsenLink('split1Till20', ['plus'], 60),
   () => sommenMetSplitsenLink('split1Till20', ['plus'], 180),
-  // c - indexWelkeHandHeeftMeerStippen
-  () => welkeHandHeeftMeerStippenLink(true, false, 60),
-  () => welkeHandHeeftMeerStippenLink(true, false, 180),
-  () => welkeHandHeeftMeerStippenLink(false, false, 180),
-  () => welkeHandHeeftMeerStippenLink(false, false, 180),
-  () => welkeHandHeeftMeerStippenLink(false, true, 180),
-  () => welkeHandHeeftMeerStippenLink(false, true, 180),
+  // c - indexStippenTellen
+  () => stippenTellenLink(true, false, 60),
+  () => stippenTellenLink(true, false, 180),
+  () => stippenTellenLink(false, false, 180),
+  () => stippenTellenLink(false, false, 180),
+  () => stippenTellenLink(false, true, 180),
+  () => stippenTellenLink(false, true, 180),
   // i - indexSorteren.html 1
   () => sorterenLink(2, 1, 10, 1, 'red', 60),
   () => sorterenLink(2, 1, 10, 1, 'red', 180),
