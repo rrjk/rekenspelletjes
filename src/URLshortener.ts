@@ -11,7 +11,7 @@ import { eierdoosTellenLink } from './EggCounting/EggCountingAppLink';
 import { springOpGetallenlijnLink } from './JumpOnNumberLineAppLink';
 import { getallenlijnBoogjesSpelLink } from './NumberlineArchesGame/NumberlineArchesGameAppLink';
 import { groepjesVanHerkennenLink } from './RecognizeGroupsAppLink';
-import { sorterenLink } from './SortingGameAppLink';
+import { sorterenLink } from './SortingGame/SortingGameAppLink';
 import { splitsenLink } from './SplitAppLink';
 import { sommenMetSplitsenLink } from './SumsWithSplitAppLink';
 import { splitsenOpWaardeLink } from './TensSplitAppLink';

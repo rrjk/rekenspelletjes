@@ -5,75 +5,13 @@
     <meta name="viewport" content="width=device-width" />
     <title>Zet de kommagetallen in de juiste volgorde</title>
   </head>
-  <style>
-    html {
-      font-size: x-large;
-    }
-    .buttonTable {
-      position: relative;
-      display: flex;
-      gap: 10px 10px;
-      flex-wrap: wrap;
-      width: 410px;
-    }
-  </style>
   <body>
-    <script type="module" src="../src/IconHourglassButton.ts"></script>
-
-    <h2>Zet de kommagetallen in de juiste volgorde</h2>
-    <h3>Speciaal voor juf Thara</h3>
-    <div class="buttonTable">
-      <icon-hourglass-button
-        title="Kommagetallen met 1 cijfer achter de komma"
-        time="1min"
-        shortCode="lr"
-      >
-        <img src="../images/4BoxesTill10Div10.png" width="85px" />
-      </icon-hourglass-button>
-
-      <icon-hourglass-button
-        title="Kommagetallen met 1 cijfer achter de komma"
-        time="3min"
-        shortCode="ls"
-      >
-        <img src="../images/4BoxesTill10Div10.png" width="85px" />
-      </icon-hourglass-button>
-
-      <icon-hourglass-button
-        title="Kommagetallen met 2 cijfers achter de komma"
-        time="1min"
-        shortCode="lt"
-      >
-        <img src="../images/4BoxesTill100Div100.png" width="85px" />
-      </icon-hourglass-button>
-
-      <icon-hourglass-button
-        title="Kommagetallen met 2 cijfers achter de komma"
-        time="3min"
-        shortCode="lu"
-      >
-        <img src="../images/4BoxesTill100Div100.png" width="85px" />
-      </icon-hourglass-button>
-
-      <icon-hourglass-button
-        title="Kommagetallen met 3 cijfers achter de komma"
-        time="1min"
-        shortCode="lv"
-      >
-        <img src="../images/4BoxesTill1000Div1000.png" width="85px" />
-      </icon-hourglass-button>
-
-      <icon-hourglass-button
-        title="Kommagetallen met 3 cijfers achter de komma"
-        time="3min"
-        shortCode="lw"
-      >
-        <img src="../images/4BoxesTill1000Div1000.png" width="85px" />
-      </icon-hourglass-button>
-    </div>
-
-    <p>
-      <a href="index.html">Terug naar het hoofdmenu</a>
-    </p>
+    <sorting-game-index-app-v2
+      indexPage="decimalNumbers"
+    ></sorting-game-index-app-v2>
+    <script
+      type="module"
+      src="../src/SortingGame/SortingGameIndexAppV2.ts"
+    ></script>
   </body>
 </html>

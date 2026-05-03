@@ -5,58 +5,13 @@
     <meta name="viewport" content="width=device-width" />
     <title>Zet de getallen in de juiste volgorde (tot de 10000)</title>
   </head>
-  <style>
-    html {
-      font-size: x-large;
-    }
-    .buttonTable {
-      position: relative;
-      display: flex;
-      gap: 10px 10px;
-      flex-wrap: wrap;
-      width: 410px;
-    }
-  </style>
   <body>
-    <script type="module" src="../src/IconHourglassButton.ts"></script>
-
-    <h2>Zet getallen tot 1000 of 10000 in de goede volgorde</h2>
-    <div class="buttonTable">
-      <icon-hourglass-button
-        title="Zet vier getallen tot 1000 in de juiste volgorde"
-        time="1min"
-        shortCode="jb"
-      >
-        <img src="../images/4BoxesTill999.png" width="85px" />
-      </icon-hourglass-button>
-
-      <icon-hourglass-button
-        title="Zet vier getallen tot 10000 in de juiste volgorde"
-        time="3min"
-        shortCode="jc"
-      >
-        <img src="../images/4BoxesTill999.png" width="85px" />
-      </icon-hourglass-button>
-
-      <icon-hourglass-button
-        title="Zet vier getallen tot 10000 in de juiste volgorde"
-        time="1min"
-        shortCode="jd"
-      >
-        <img src="../images/4BoxesTill9999.png" width="85px" />
-      </icon-hourglass-button>
-
-      <icon-hourglass-button
-        title="Zet vier getallen tot 10000 in de juiste volgorde"
-        time="3min"
-        shortCode="je"
-      >
-        <img src="../images/4BoxesTill9999.png" width="85px" />
-      </icon-hourglass-button>
-    </div>
-
-    <p>
-      <a href="index.html">Terug naar het hoofdmenu</a>
-    </p>
+    <sorting-game-index-app-v2
+      indexPage="largeNumbers"
+    ></sorting-game-index-app-v2>
+    <script
+      type="module"
+      src="../src/SortingGame/SortingGameIndexAppV2.ts"
+    ></script>
   </body>
 </html>

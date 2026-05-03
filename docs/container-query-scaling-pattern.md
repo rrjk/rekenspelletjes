@@ -1,6 +1,7 @@
 # Container Query Scaling Pattern
 
 This pattern ensures custom elements scale properly when users set:
+
 - Both width and height
 - Only width
 - Only height
@@ -10,6 +11,7 @@ The element maintains its aspect ratio and fits within the specified dimensions.
 ## Use Case
 
 When creating custom elements with fixed aspect ratios (like stars, balloons, icons) that need to:
+
 - Scale responsively based on user-provided dimensions
 - Maintain correct aspect ratio
 - Work correctly when only width OR height is set
@@ -172,7 +174,7 @@ export class YourElement extends LitElement {
 ```
 
 - Element uses aspect-ratio to calculate width automatically
-- Width = 200 * 1.176 ≈ 235px
+- Width = 200 \* 1.176 ≈ 235px
 - Container queries work the same as above
 
 ## Multiple Aspect Ratios
@@ -233,8 +235,10 @@ export class YourElement extends LitElement {
         }
       </style>
 
-      <svg viewBox="0 0 160 ${this.variant === 'short' ? 220 : 280}" 
-           class="${this.variant}">
+      <svg
+        viewBox="0 0 160 ${this.variant === 'short' ? 220 : 280}"
+        class="${this.variant}"
+      >
         <!-- SVG content -->
       </svg>
     `;
@@ -245,6 +249,7 @@ export class YourElement extends LitElement {
 ## Browser Support
 
 Container queries are supported in:
+
 - Chrome 105+
 - Edge 105+
 - Safari 16+
@@ -286,9 +291,37 @@ Always use `width / height` (not `height / width`) to match CSS `aspect-ratio` b
 
 Don't set explicit width/height on the SVG - let container queries handle it.
 
+### 5. Adding superfluous nested containers
+
+**CRITICAL**: Do not add unnecessary nested divs between `:host` and your content.
+
+**❌ WRONG (causes overflow and scaling issues):**
+
+```html
+:host └── .iconContainer (90% width/height) └── .iconContent (100% of container)
+└── svg/img
+```
+
+**✅ CORRECT (follows the pattern exactly):**
+
+```html
+:host └── svg/img (direct child)
+```
+
+**Why nested containers cause problems:**
+
+- Container query units (`100cqw`, `100cqh`) refer to the `:host` dimensions
+- Nested containers create dimensional mismatches (e.g., 90% sizing)
+- This causes content to overflow its immediate container
+- Complex nesting adds unnecessary CSS rules and complexity
+- Grid centering on `:host` is sufficient - no intermediate containers needed
+
+**Rule of thumb:** If you find yourself adding wrapper divs for "styling" or "layout", you're probably doing it wrong. The `:host` element should handle all layout and sizing directly.
+
 ## When to Use This Pattern
 
 Use this pattern when:
+
 - Your element has a fixed aspect ratio
 - You need responsive scaling
 - Users might set width, height, or both
