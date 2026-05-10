@@ -3,7 +3,7 @@ import { plusMinBinnenTientalLink } from './AdditionSubstractionWithinDecadeGame
 import {
   aanklikkenInTafelVolgordeLink,
   aanklikkenInVolgordeLink,
-} from './ClickInOrderAppLink';
+} from './ClickInOrderGame/ClickInOrderAppLink';
 import { klikFotoOpGetallenlijnLink } from './ClickTheRightPhotoOnNumberLineAppLink';
 import { klokPaartjesLink } from './ClockPairingAppLink';
 import { somPaartjesLink } from './CombineToSolveSumAppLink';

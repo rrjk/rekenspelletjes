@@ -5,12 +5,12 @@ import { html, css } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
-import { TimeCountingGame } from './TimeCountingGame';
-import './BallFieldEntry';
+import { TimeCountingGame } from '../TimeCountingGame';
+import '../BallFieldEntry';
 
-import { randomFromSet, randomIntFromRange } from './Randomizer';
-import { GameLogger } from './GameLogger';
-import { BallFieldEntry } from './BallenVeldInvoer';
+import { randomFromSet, randomIntFromRange } from '../Randomizer';
+import { GameLogger } from '../GameLogger';
+import { BallFieldEntry } from '../BallenVeldInvoer';
 
 interface Sum {
   multiplier: number;
