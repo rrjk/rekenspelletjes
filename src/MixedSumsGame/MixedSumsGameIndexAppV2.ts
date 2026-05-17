@@ -38,11 +38,11 @@ const sections: IndexPageType = {
   mixedSums: [
     {
       title: 'Gemengde sommen met puzzel',
-      rows: ['aa', 'ab', 'ac', 'ad', 'ae', 'af', 'ag', 'ah'],
+      rows: ['aa', 'ab', 'ac', 'ai', 'aj', 'ad', 'ae', 'af', 'ag', 'ah'],
     },
     {
       title: 'Gemengde sommen zonder puzzel',
-      rows: ['ba', 'bb', 'bc', 'bd', 'be', 'bf', 'bg', 'bh'],
+      rows: ['ba', 'bb', 'bc', 'bi', 'bj', 'bd', 'be', 'bf', 'bg', 'bh'],
     },
   ],
 };
