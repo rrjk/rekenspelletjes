@@ -53,7 +53,9 @@ test('getClickInOrderGameVariant for aa', () => {
   expect(extendedVariant.description).toBe(
     'Oplopende getallenrij van 1 t/m 10.',
   );
-  expect(extendedVariant.iconText).toBe('1');
+  expect(extendedVariant.iconText).toBe('1 2 ... 10');
+  expect(extendedVariant.iconShowDie).toBe(false);
+  expect(extendedVariant.iconSmallFont).toBe(false);
 });
 
 test('getClickInOrderGameVariant for ba', () => {
@@ -69,7 +71,9 @@ test('getClickInOrderGameVariant for ba', () => {
   expect(extendedVariant.description).toBe(
     'Oplopende getallenrij van 20 getallen, startend bij een willekeurig getal.',
   );
-  expect(extendedVariant.iconText).toBe('Random');
+  expect(extendedVariant.iconText).toBe('');
+  expect(extendedVariant.iconShowDie).toBe(true);
+  expect(extendedVariant.iconSmallFont).toBe(false);
 });
 
 test('getClickInOrderGameVariant for ah (descending)', () => {
@@ -85,7 +89,8 @@ test('getClickInOrderGameVariant for ah (descending)', () => {
   expect(extendedVariant.description).toBe(
     'Aflopende getallenrij van 20 t/m 1.',
   );
-  expect(extendedVariant.iconText).toBe('20');
+  expect(extendedVariant.iconText).toBe('20 19 ... 1');
+  expect(extendedVariant.iconShowDie).toBe(false);
 });
 
 test('getClickInOrderGameVariant for bb (even numbers)', () => {
@@ -101,7 +106,8 @@ test('getClickInOrderGameVariant for bb (even numbers)', () => {
   expect(extendedVariant.description).toBe(
     'Oplopende getallenrij van alle even getallen van 2 t/m 20.',
   );
-  expect(extendedVariant.iconText).toBe('2');
+  expect(extendedVariant.iconText).toBe('Even');
+  expect(extendedVariant.iconShowDie).toBe(false);
 });
 
 test('getClickInOrderGameVariant for bc (odd numbers)', () => {
@@ -117,7 +123,8 @@ test('getClickInOrderGameVariant for bc (odd numbers)', () => {
   expect(extendedVariant.description).toBe(
     'Oplopende getallenrij van alle oneven getallen van 1 t/m 19.',
   );
-  expect(extendedVariant.iconText).toBe('1');
+  expect(extendedVariant.iconText).toBe('Oneven');
+  expect(extendedVariant.iconShowDie).toBe(false);
 });
 
 test('getClickInOrderGameVariant for ca', () => {
@@ -171,7 +178,16 @@ test('getClickInOrderGameVariant for df (multiple tables)', () => {
   expect(extendedVariant.description).toBe(
     'Kies het juiste getal bij de keersommen van de tafels van 2, 3, 4, 5 en 10.',
   );
-  expect(extendedVariant.iconText).toBe('×2');
+  expect(extendedVariant.iconText).toBe('×2,3,4,5,10');
+  expect(extendedVariant.iconSmallFont).toBe(true);
+});
+
+test('getClickInOrderGameVariant for dk (all tables)', () => {
+  const extendedVariant = getClickInOrderGameVariant('dk');
+  expect(extendedVariant.gameType).toBe('multiplicationWithSum');
+  expect(extendedVariant.mainCode).toBe('Q');
+  expect(extendedVariant.iconText).toBe('alle tafels');
+  expect(extendedVariant.iconSmallFont).toBe(true);
 });
 
 test('getClickInOrderGameVariant for unknown variant returns default', () => {
@@ -193,4 +209,6 @@ test('ClickInOrderGameExtendedVariantInfo type validation', () => {
   expect(typeof variant.mainCode).toBe('string');
   expect(typeof variant.description).toBe('string');
   expect(typeof variant.iconText).toBe('string');
+  expect(typeof variant.iconShowDie).toBe('boolean');
+  expect(typeof variant.iconSmallFont).toBe('boolean');
 });

@@ -1,3 +1,7 @@
+// Export types for external use
+import { UnexpectedValueError } from '../UnexpectedValueError';
+import { joinWithEn } from '../Utils';
+
 interface NumberSequenceConfig {
   start: number | 'random';
   nmbrBalls: number;
@@ -26,6 +30,15 @@ export type ClickInOrderGameVariantInfo =
       gameType: 'multiplicationWithSum';
       multiplicationConfig: MultiplicationConfig;
     };
+
+export type ClickInOrderGameExtendedVariantInfo =
+  ClickInOrderGameVariantInfo & {
+    mainCode: string;
+    description: string;
+    iconText: string;
+    iconShowDie: boolean;
+    iconSmallFont: boolean;
+  };
 
 // Basic Number Sequences (aa-ah) - Main Code H
 export const clickInOrderGameVariants: Record<
@@ -320,17 +333,6 @@ export const clickInOrderGameVariants: Record<
   },
 };
 
-// Export types for external use
-import { UnexpectedValueError } from '../UnexpectedValueError';
-import { joinWithEn } from '../Utils';
-
-export type ClickInOrderGameExtendedVariantInfo =
-  ClickInOrderGameVariantInfo & {
-    mainCode: string;
-    description: string;
-    iconText: string;
-  };
-
 function determineMainCode(variantInfo: ClickInOrderGameVariantInfo): string {
   switch (variantInfo.gameType) {
     case 'numberSequence':
@@ -416,9 +418,25 @@ function createIconText(variantInfo: ClickInOrderGameVariantInfo): string {
     case 'numberSequence': {
       const config = variantInfo.numberSequenceConfig;
       if (config.start === 'random') {
-        return 'Random';
+        return '';
       }
-      return `${config.start}`;
+      switch (config.numberType) {
+        case 'even':
+          return 'Even';
+        case 'odd':
+          return 'Oneven';
+        case 'all': {
+          const step = 1;
+          const directionMultiplier = config.direction === 'ascending' ? 1 : -1;
+          const start = config.start;
+          const second = start + step * directionMultiplier;
+          const last =
+            start + (config.nmbrBalls - 1) * step * directionMultiplier;
+          return `${start} ${second} ... ${last}`;
+        }
+        default:
+          throw new UnexpectedValueError(config.numberType);
+      }
     }
     case 'multiplicationTable': {
       const config = variantInfo.multiplicationConfig;
@@ -426,11 +444,32 @@ function createIconText(variantInfo: ClickInOrderGameVariantInfo): string {
     }
     case 'multiplicationWithSum': {
       const config = variantInfo.multiplicationConfig;
-      return `×${config.tableOfMultiplication[0]}`;
+      const tables = config.tableOfMultiplication;
+      if (
+        tables.length === 10 &&
+        tables.every((table, index) => table === index + 1)
+      ) {
+        return 'alle tafels';
+      }
+      if (tables.length === 1) {
+        return `×${tables[0]}`;
+      }
+      return `×${tables.join(',')}`;
     }
     default:
       throw new UnexpectedValueError(variantInfo);
   }
+}
+
+function createIconShowDie(variantInfo: ClickInOrderGameVariantInfo): boolean {
+  return (
+    variantInfo.gameType === 'numberSequence' &&
+    variantInfo.numberSequenceConfig.start === 'random'
+  );
+}
+
+function createIconSmallFont(iconText: string): boolean {
+  return iconText === 'alle tafels' || iconText.includes(',');
 }
 
 export function getClickInOrderGameVariant(
@@ -438,10 +477,13 @@ export function getClickInOrderGameVariant(
 ): ClickInOrderGameExtendedVariantInfo {
   const variantInfo =
     clickInOrderGameVariants[variant] || clickInOrderGameVariants.aa;
+  const iconText = createIconText(variantInfo);
   return {
     ...variantInfo,
     mainCode: determineMainCode(variantInfo),
     description: createDescription(variantInfo),
-    iconText: createIconText(variantInfo),
+    iconText,
+    iconShowDie: createIconShowDie(variantInfo),
+    iconSmallFont: createIconSmallFont(iconText),
   };
 }

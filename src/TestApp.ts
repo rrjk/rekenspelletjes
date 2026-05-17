@@ -6,6 +6,7 @@ import { customElement } from 'lit/decorators.js';
 import './NumberedStar';
 import './IconHourglassButtonV2';
 import './MixedSumsGame/MixedSumsGameIcon';
+import './ClickInOrderGame/ClickInOrderGameIcon';
 
 @customElement('test-app')
 export class TestApp extends LitElement {
@@ -66,8 +67,29 @@ export class TestApp extends LitElement {
           height: 100%;
           width: 100%;
         }
+
+        click-in-order-game-icon {
+          width: 200px;
+        }
+
+        click-in-order-game-icon.inContainer {
+          height: 100%;
+          width: 100%;
+        }
       `,
     ];
+  }
+
+  private renderClickInOrderIconSample(
+    variant: string,
+    label: string,
+  ): HTMLTemplateResult {
+    return html`
+      <div class="icon-hourglass-test-item">
+        <p>${label}</p>
+        <click-in-order-game-icon variant=${variant}></click-in-order-game-icon>
+      </div>
+    `;
   }
 
   protected renderTest(): HTMLTemplateResult {
@@ -90,7 +112,7 @@ export class TestApp extends LitElement {
               variant="aa"
               description="Timed example (1 minuut)"
             >
-              <mixed-sums-game-icon variant="aa"></mixed-sums-game-icon>
+              <mixed-sums-game-icon variant="ba"></mixed-sums-game-icon>
             </icon-hourglass-button-v2>
           </div>
           <div class="icon-hourglass-test-item">
@@ -100,9 +122,24 @@ export class TestApp extends LitElement {
               variant="aa"
               description="Untimed example (no hourglass)"
             >
-              <mixed-sums-game-icon variant="aa"></mixed-sums-game-icon>
+              <click-in-order-game-icon
+                class="inContainer"
+                variant="da"
+              ></click-in-order-game-icon>
             </icon-hourglass-button-v2>
           </div>
+        </div>
+      </section>
+
+      <section class="icon-hourglass-test-section">
+        <h2>click-in-order-game-icon</h2>
+        <div class="icon-hourglass-test-container">
+          ${this.renderClickInOrderIconSample('aa', 'aa — number sequence')}
+          ${this.renderClickInOrderIconSample('ba', 'ba — die (random)')}
+          ${this.renderClickInOrderIconSample('ca', 'ca — 3 balls')}
+          ${this.renderClickInOrderIconSample('da', 'da — 2 balls ×2')}
+          ${this.renderClickInOrderIconSample('df', 'df — small font')}
+          ${this.renderClickInOrderIconSample('dk', 'dk — alle tafels')}
         </div>
       </section>
     `;
