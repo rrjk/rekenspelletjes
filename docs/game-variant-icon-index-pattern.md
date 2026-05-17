@@ -92,16 +92,47 @@ This pattern separates data from rendering and keeps shared metadata logic in on
 
 ### Purpose
 
-`*HourglassGameIcon.ts` wraps a game icon in an hourglass button card.
+`*HourglassGameIcon.ts` wraps a game icon in an hourglass button card using `icon-hourglass-button-v2`.
 
 ### Pattern
 
-- Accepts `timeCode` and `variant` properties.
+- Accepts `variant` and optionally `timeCode` properties.
 - Reads variant metadata and passes:
   - `mainCode`
   - `variant`
   - `description`
 - Renders the specific game icon as a slot child.
+
+### `icon-hourglass-button-v2` and optional time
+
+The shared button element treats `timeCode` as **optional**:
+
+| `timeCode` | Hourglass | Game icon width | Short URL |
+|------------|-----------|-----------------|-----------|
+| Set (`a`, `b`, or `c`) | Shown | Narrow (56% of button) | `../t?{mainCode}-{variant}-{timeCode}` |
+| Omitted | Hidden | Wide (89% of button) | `../t?{mainCode}-{variant}` |
+
+When `timeCode` is omitted, `URLshortener2` resolves the link with `?variant=…` only (no `time` query parameter). The outer button keeps aspect ratio **1.8 : 1** in both modes.
+
+Timed game wrappers (e.g. `MixedSumsHourglassGameIcon`) keep using `stringToTimeCode` with default `'a'` and always bind `.timeCode`. Untimed wrappers must **not** bind `timeCode` when absent, or the hourglass will appear.
+
+### Timed vs untimed index rows
+
+| Game type | Index row pattern | `timeCode` on button |
+|-----------|-------------------|----------------------|
+| Timed (e.g. MixedSums) | Two buttons per variant (`durations[0]`, `durations[1]`) | Always set |
+| Untimed (e.g. ClickInOrder) | One button per variant | Omit attribute |
+
+Example untimed index row:
+
+```typescript
+renderRow(variant: string): HTMLTemplateResult {
+  return html`
+    <click-in-order-hourglass-game-icon variant=${variant}>
+    </click-in-order-hourglass-game-icon>
+  `;
+}
+```
 
 ### Example
 
@@ -109,6 +140,8 @@ This pattern separates data from rendering and keeps shared metadata logic in on
 - `MixedSumsHourglassGameIcon.ts`
 
 This wrapper reuses the same button chrome while keeping game-specific visuals modular.
+
+**Manual inspection:** open `Rekenspelletjes/TestApp.html` for side-by-side timed and untimed `icon-hourglass-button-v2` examples.
 
 ## 4. Main App component with dual URL parsing
 
@@ -170,10 +203,12 @@ This ensures a variant only needs to be defined once and all UI layers stay cons
    - render the icon based on metadata fields
 3. Create `src/<NewGame>HourglassGameIcon.ts`
    - wrap the game icon in `icon-hourglass-button-v2`
-   - forward `timeCode`, `mainCode`, `variant`, and `description`
+   - forward `mainCode`, `variant`, and `description`
+   - forward `timeCode` only for timed games (omit binding for untimed games)
 4. Create `src/<NewGame>IndexAppV2.ts`
    - define section groups and variant rows
-   - render rows with `*HourglassGameIcon`
+   - timed games: render two `*HourglassGameIcon` per row with different `timeCode` values
+   - untimed games: render one `*HourglassGameIcon` per row without `timeCode`
    - optionally add `indexPage`/`game` converters for multiple pages
 5. Create `src/<NewGame>Variants.test.ts`
    - test that `gameVariants` has all expected keys
@@ -210,10 +245,25 @@ import { Operator, operatorToDutch, operatorToSymbol } from '../Operator';
 ### Time code handling
 
 ```typescript
-import { type TimeCode, stringToTimeCode } from '../TimeCodes';
-// Use as property converter:
+import {
+  type TimeCode,
+  stringToTimeCode,
+  optionalStringToTimeCode,
+  timeCodeToAttribute,
+} from '../TimeCodes';
+
+// Timed wrappers / index buttons with duration choice (missing attribute defaults to 'a'):
 @property({ converter: stringToTimeCode })
 accessor timeCode: TimeCode = 'a';
+
+// icon-hourglass-button-v2 itself (missing attribute = no time / no hourglass):
+@property({
+  converter: {
+    fromAttribute: optionalStringToTimeCode,
+    toAttribute: timeCodeToAttribute,
+  },
+})
+accessor timeCode: TimeCode | undefined = undefined;
 ```
 
 ### Error handling
@@ -238,6 +288,7 @@ import { joinWithEn } from '../Utils';
 - [ ] Create `<GameName>Variants.test.ts` with test suite
 - [ ] Create `<GameName>GameIcon.ts` with icon rendering
 - [ ] Create `<GameName>HourglassGameIcon.ts` with hourglass wrapper
+- [ ] Decide timed vs untimed; index renders one or two buttons per variant accordingly
 - [ ] Create `<GameName>App.ts` with dual URL parsing
 - [ ] Create `<GameName>IndexAppV2.ts` with index page
 - [ ] Update main `index.html` with script reference

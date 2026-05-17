@@ -1,4 +1,4 @@
-import { LitElement, html, css, unsafeCSS } from 'lit';
+import { LitElement, html, css, unsafeCSS, nothing } from 'lit';
 import type { HTMLTemplateResult, CSSResultGroup } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
@@ -17,13 +17,23 @@ import {
   autoUpdate,
 } from '@floating-ui/dom';
 
-import { type TimeCode, hourGlassIcons, stringToTimeCode } from './TimeCodes';
+import {
+  type TimeCode,
+  hourGlassIcons,
+  optionalStringToTimeCode,
+  timeCodeToAttribute,
+} from './TimeCodes';
 
 @customElement('icon-hourglass-button-v2')
 export class IconHourglassButton extends LitElement {
-  /** What time to use for the hourglass */
-  @property({ converter: stringToTimeCode })
-  accessor timeCode: TimeCode = 'a';
+  /** What time to use for the hourglass; omit attribute for untimed games */
+  @property({
+    converter: {
+      fromAttribute: optionalStringToTimeCode,
+      toAttribute: timeCodeToAttribute,
+    },
+  })
+  accessor timeCode: TimeCode | undefined = undefined;
 
   /** Which mainCode to link to  */
   @property()
@@ -48,6 +58,17 @@ export class IconHourglassButton extends LitElement {
     /*nothing*/
   };
 
+  get hasTimeCode(): boolean {
+    return this.timeCode !== undefined;
+  }
+
+  private get gameUrl(): string {
+    const key = this.hasTimeCode
+      ? `${this.mainCode}-${this.variant}-${this.timeCode}`
+      : `${this.mainCode}-${this.variant}`;
+    return `../t?${key}`;
+  }
+
   static get styles(): CSSResultGroup {
     return css`
       :host {
@@ -71,11 +92,21 @@ export class IconHourglassButton extends LitElement {
         justify-items: center;
         align-items: center;
         grid-template-rows: 81% 19%;
+        box-sizing: border-box;
+      }
+
+      div#gameButton.with-time {
         grid-template-columns: 56% 33% 11%;
         grid-template-areas:
           'gameIcon hourGlassIcon blank'
           'gameIcon hourGlassIcon informationIcon';
-        box-sizing: border-box;
+      }
+
+      div#gameButton.no-time {
+        grid-template-columns: 89% 11%;
+        grid-template-areas:
+          'gameIcon blank'
+          'gameIcon informationIcon';
       }
 
       @container (aspect-ratio < 1.8) {
@@ -197,7 +228,9 @@ export class IconHourglassButton extends LitElement {
     }
   }
 
-  render(): HTMLTemplateResult {
+  private renderHourGlassIcon(): HTMLTemplateResult | typeof nothing {
+    if (!this.hasTimeCode) return nothing;
+
     const hourGlassClasses = {
       timeCodeA:
         this.timeCode === 'a' ||
@@ -205,6 +238,14 @@ export class IconHourglassButton extends LitElement {
       timeCodeB: this.timeCode === 'b',
       timeCodeC: this.timeCode === 'c',
     };
+
+    return html`<div
+      id="hourGlassIcon"
+      class=${classMap(hourGlassClasses)}
+    ></div>`;
+  }
+
+  render(): HTMLTemplateResult {
     /* The iButton reference is used to keep track of the information button event. Once the source property of
      * the ToggleEvent gets widescale support, we no longer need this reference and the button can
      * be obtained from the event.
@@ -212,11 +253,17 @@ export class IconHourglassButton extends LitElement {
      */
 
     return html`
-      <div id="gameButton">
+      <div
+        id="gameButton"
+        class=${classMap({
+          'with-time': this.hasTimeCode,
+          'no-time': !this.hasTimeCode,
+        })}
+      >
         <div id="gameIcon">
           <slot></slot>
         </div>
-        <div id="hourGlassIcon" class=${classMap(hourGlassClasses)}></div>
+        ${this.renderHourGlassIcon()}
         <button
           id="infoButton"
           popovertarget="description"
@@ -235,10 +282,7 @@ export class IconHourglassButton extends LitElement {
           </svg>
         </button>
       </div>
-      <a
-        href="../t?${this.mainCode}-${this.variant}-${this.timeCode}"
-        class="stretched-link"
-      ></a>
+      <a href=${this.gameUrl} class="stretched-link"></a>
       <dialog
         id="description"
         popover
