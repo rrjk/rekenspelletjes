@@ -79,6 +79,20 @@ export const mixedSumsGameVariants: Record<string, VariantInfo> = {
     maxTable: 20,
     operators: ['plus', 'minus', 'times', 'divide'],
   },
+  ai: {
+    icon: 'puzzlePiece',
+    iconColor: 'pink',
+    maxAnswer: 100,
+    maxTable: 10,
+    operators: ['times'],
+  },
+  aj: {
+    icon: 'puzzlePiece',
+    iconColor: 'apricot',
+    maxAnswer: 1000,
+    maxTable: 10,
+    operators: ['divide'],
+  },
   ba: {
     icon: 'rectangle',
     iconColor: 'lavender',
@@ -134,6 +148,20 @@ export const mixedSumsGameVariants: Record<string, VariantInfo> = {
     maxAnswer: 1000,
     maxTable: 20,
     operators: ['plus', 'minus', 'times', 'divide'],
+  },
+  bi: {
+    icon: 'rectangle',
+    iconColor: 'pink',
+    maxAnswer: 100,
+    maxTable: 10,
+    operators: ['times'],
+  },
+  bj: {
+    icon: 'rectangle',
+    iconColor: 'apricot',
+    maxAnswer: 1000,
+    maxTable: 10,
+    operators: ['divide'],
   },
 };
 
