@@ -6,7 +6,7 @@ import { customElement } from 'lit/decorators.js';
 import './NumberedStar';
 import './IconHourglassButtonV2';
 import './MixedSumsGame/MixedSumsGameIcon';
-import './ClickInOrderGame/ClickInOrderGameIcon';
+import './ClickInOrderGame/ClickInOrderHourglassGameIcon';
 
 @customElement('test-app')
 export class TestApp extends LitElement {
@@ -68,13 +68,8 @@ export class TestApp extends LitElement {
           width: 100%;
         }
 
-        click-in-order-game-icon {
+        click-in-order-hourglass-game-icon {
           width: 200px;
-        }
-
-        click-in-order-game-icon.inContainer {
-          height: 100%;
-          width: 100%;
         }
       `,
     ];
@@ -87,7 +82,9 @@ export class TestApp extends LitElement {
     return html`
       <div class="icon-hourglass-test-item">
         <p>${label}</p>
-        <click-in-order-game-icon variant=${variant}></click-in-order-game-icon>
+        <click-in-order-hourglass-game-icon
+          variant=${variant}
+        ></click-in-order-hourglass-game-icon>
       </div>
     `;
   }
@@ -117,22 +114,15 @@ export class TestApp extends LitElement {
           </div>
           <div class="icon-hourglass-test-item">
             <p>Without timeCode</p>
-            <icon-hourglass-button-v2
-              mainCode="H"
+            <click-in-order-hourglass-game-icon
               variant="aa"
-              description="Untimed example (no hourglass)"
-            >
-              <click-in-order-game-icon
-                class="inContainer"
-                variant="da"
-              ></click-in-order-game-icon>
-            </icon-hourglass-button-v2>
+            ></click-in-order-hourglass-game-icon>
           </div>
         </div>
       </section>
 
       <section class="icon-hourglass-test-section">
-        <h2>click-in-order-game-icon</h2>
+        <h2>click-in-order-hourglass-game-icon</h2>
         <div class="icon-hourglass-test-container">
           ${this.renderClickInOrderIconSample('aa', 'aa — number sequence')}
           ${this.renderClickInOrderIconSample('ba', 'ba — die (random)')}
