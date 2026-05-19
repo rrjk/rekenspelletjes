@@ -1,122 +1,21 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="nl">
-  <style>
-    html {
-      font-size: x-large;
-    }
-    .buttonTable {
-      position: relative;
-      display: flex;
-      gap: 10px 10px;
-      flex-wrap: wrap;
-      width: 150px;
-    }
-
-    ballgame-icon {
-      display: block;
-      width: 125px;
-    }
-  </style>
   <head>
-    <script type="module" src="../src/BallGameIcon.ts"></script>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
     <title>Ballen knallen met keersom</title>
   </head>
   <body>
     <h1>Ballen knallen met keersom</h1>
-    <div class="buttonTable">
-      <a href="../s?hu"
-        ><ballgame-icon
-          colorPermutation="1"
-          alt="Tafel van 2"
-          text="×2"
-          twoBalls
-        ></ballgame-icon
-      ></a>
-      <a href="../s?hv"
-        ><ballgame-icon
-          colorPermutation="6"
-          alt="Tafel van 5"
-          text="×5"
-          twoBalls
-        ></ballgame-icon
-      ></a>
-      <a href="../s?hw"
-        ><ballgame-icon
-          colorPermutation="13"
-          alt="Tafel van 10"
-          text="×10"
-          twoBalls
-        ></ballgame-icon
-      ></a>
-      <a href="../s?hx"
-        ><ballgame-icon
-          colorPermutation="20"
-          alt="Tafel van 10"
-          text="×3"
-          twoBalls
-        ></ballgame-icon
-      ></a>
-      <a href="../s?hy"
-        ><ballgame-icon
-          colorPermutation="3"
-          alt="Tafel van 4"
-          text="×4"
-          twoBalls
-        ></ballgame-icon
-      ></a>
-      <a href="../s?hz"
-        ><ballgame-icon
-          colorPermutation="11"
-          alt="Tafel van 2, 3, 4, 5 en 10"
-          text="×2,3,4,5,10"
-          twoBalls
-          smallFont
-        ></ballgame-icon
-      ></a>
-      <a href="../s?ia"
-        ><ballgame-icon
-          colorPermutation="13"
-          alt="Tafel van 6"
-          text="×6"
-          twoBalls
-        ></ballgame-icon
-      ></a>
-      <a href="../s?ib"
-        ><ballgame-icon
-          colorPermutation="20"
-          alt="Tafel van 7"
-          text="×7"
-          twoBalls
-        ></ballgame-icon
-      ></a>
-      <a href="../s?ic"
-        ><ballgame-icon
-          colorPermutation="5"
-          alt="Tafel van 8"
-          text="×8"
-          twoBalls
-        ></ballgame-icon
-      ></a>
-      <a href="../s?id"
-        ><ballgame-icon
-          colorPermutation="19"
-          alt="Tafel van 9"
-          text="×9"
-          twoBalls
-        ></ballgame-icon
-      ></a>
-      <a href="../s?ie"
-        ><ballgame-icon
-          colorPermutation="14"
-          alt="Tafels van 1 tot en met 10"
-          text="alle tafels"
-          twoBalls
-          smallFont
-        ></ballgame-icon
-      ></a>
-    </div>
-    <a href="index.html">Terug naar het hoofdmenu</a>
+    <click-in-order-game-index-app-v2
+      indexPage="ballenKnallenMetSom"
+    ></click-in-order-game-index-app-v2>
+    <script
+      type="module"
+      src="../src/ClickInOrderGame/ClickInOrderGameIndexAppV2.ts"
+    ></script>
   </body>
 </html>
