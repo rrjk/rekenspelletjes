@@ -1,9 +1,12 @@
-import { LitElement, html, css, svg } from 'lit';
 import {
   HTMLTemplateResult,
   CSSResultArray,
   SVGTemplateResult,
   nothing,
+  LitElement,
+  html,
+  css,
+  svg,
 } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
