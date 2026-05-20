@@ -24,8 +24,8 @@ import {
   timeCodeToAttribute,
 } from './TimeCodes';
 
-@customElement('icon-hourglass-button-v2')
-export class IconHourglassButton extends LitElement {
+@customElement('icon-hourglass-button-v3')
+export class IconHourglassButtonV3 extends LitElement {
   /** What time to use for the hourglass; omit attribute for untimed games */
   @property({
     converter: {
@@ -36,16 +36,20 @@ export class IconHourglassButton extends LitElement {
   accessor timeCode: TimeCode | undefined = undefined;
 
   /** Which mainCode to link to  */
-  @property()
-  accessor mainCode = 'a';
+  get mainCode(): string {
+    return 'a';
+  }
 
   /** Which variant to link to  */
   @property()
   accessor variant = 'a';
 
   /** Description to show */
-  @property()
-  accessor description = '';
+  get description(): string {
+    return '';
+  }
+
+  static aspectRatio = 1.8;
 
   /* The iButton reference is used to keep track of the information button event. Once the source property of
    * the ToggleEvent gets widescale support, we no longer need this reference and the button can
@@ -72,7 +76,7 @@ export class IconHourglassButton extends LitElement {
   static get styles(): CSSResultGroup {
     return css`
       :host {
-        aspect-ratio: 1.8 /1;
+        aspect-ratio: ${this.aspectRatio} / 1;
         container-type: size;
         display: grid;
         justify-items: center;
@@ -85,13 +89,14 @@ export class IconHourglassButton extends LitElement {
       }
 
       div#gameButton {
-        aspect-ratio: 1.8 / 1;
+        aspect-ratio: ${this.aspectRatio} / 1;
         display: grid;
         background-color: lightgrey;
         border: 1px solid black;
         justify-items: center;
         align-items: center;
-        grid-template-rows: 81% 19%;
+        grid-template-rows: ${100 - 10.5 * this.aspectRatio}% ${10.5 *
+          this.aspectRatio}%;
         box-sizing: border-box;
       }
 
@@ -109,14 +114,14 @@ export class IconHourglassButton extends LitElement {
           'gameIcon informationIcon';
       }
 
-      @container (aspect-ratio < 1.8) {
+      @container (aspect-ratio < ${this.aspectRatio}) {
         div#gameButton {
           width: 100cqw;
           border-radius: 8cqw;
         }
       }
 
-      @container (aspect-ratio >= 1.8) {
+      @container (aspect-ratio >= ${this.aspectRatio}) {
         div#gameButton {
           height: 100cqh;
           border-radius: 8cqh;
@@ -245,6 +250,10 @@ export class IconHourglassButton extends LitElement {
     ></div>`;
   }
 
+  protected renderGameIcon(): HTMLTemplateResult {
+    return html` <slot></slot> `;
+  }
+
   render(): HTMLTemplateResult {
     /* The iButton reference is used to keep track of the information button event. Once the source property of
      * the ToggleEvent gets widescale support, we no longer need this reference and the button can
@@ -260,9 +269,7 @@ export class IconHourglassButton extends LitElement {
           'no-time': !this.hasTimeCode,
         })}
       >
-        <div id="gameIcon">
-          <slot></slot>
-        </div>
+        <div id="gameIcon">${this.renderGameIcon()}</div>
         ${this.renderHourGlassIcon()}
         <button
           id="infoButton"

@@ -25,3 +25,18 @@ export function stringToTimeCode(attributeValue: string | null): TimeCode {
   if (attributeValue && isTimeCode(attributeValue)) return attributeValue;
   else return 'a';
 }
+
+/** Convert attribute to time code when present; absent or invalid means no time. */
+export function optionalStringToTimeCode(
+  attributeValue: string | null,
+): TimeCode | undefined {
+  if (attributeValue === null) return undefined;
+  return isTimeCode(attributeValue) ? attributeValue : undefined;
+}
+
+/** Convert time code to attribute value; undefined omits the attribute. */
+export function timeCodeToAttribute(
+  value: TimeCode | undefined,
+): string | null {
+  return value === undefined ? null : value;
+}

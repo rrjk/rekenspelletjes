@@ -5,12 +5,28 @@ import { html, css } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
-import { TimeCountingGame } from './TimeCountingGame';
-import './BallFieldEntry';
+import { TimeCountingGame } from '../TimeCountingGame';
+import '../BallFieldEntry';
 
-import { randomFromSet, randomIntFromRange } from './Randomizer';
-import { GameLogger } from './GameLogger';
-import { BallFieldEntry } from './BallenVeldInvoer';
+import { randomFromSet, randomIntFromRange } from '../Randomizer';
+import { GameLogger } from '../GameLogger';
+import { BallFieldEntry } from '../BallenVeldInvoer';
+import { UnexpectedValueError } from '../UnexpectedValueError';
+
+import {
+  getClickInOrderGameVariant,
+  type ClickInOrderGameVariantInfo,
+} from './ClickInOrderGameVariants';
+
+type NumberSequenceConfig = Extract<
+  ClickInOrderGameVariantInfo,
+  { gameType: 'numberSequence' }
+>['numberSequenceConfig'];
+
+type MultiplicationConfig = Extract<
+  ClickInOrderGameVariantInfo,
+  { gameType: 'multiplicationTable' }
+>['multiplicationConfig'];
 
 interface Sum {
   multiplier: number;
@@ -22,7 +38,8 @@ interface AnswerAndSums {
   sums: Sum[];
 }
 
-/** Click in order application
+/** Click in order game
+ * @url-parameter variant - variant code (e.g. aa, bb, ca)
  * @url-parameter nmbrBalls: int - number of balls to show
  * @url-parameter start:int - first number to show, balls will be selected increasing by 1 from the first number, except when also descending is specified.
  * @url-parameter descending - use descending numbers when start is specified
@@ -32,8 +49,8 @@ interface AnswerAndSums {
  * @url-parameter even: Only show even numbers. If Start is not an even number, this first higher even number is selected.
  * @url-parameter odd: Only show odd numbers. If Start is not an odd number, this first higher odd number is selected.
  */
-@customElement('click-in-order-app')
-export class ClickInOrderApp extends TimeCountingGame {
+@customElement('click-in-order-game-app')
+export class ClickInOrderGameApp extends TimeCountingGame {
   @state()
   accessor labelsInOrder: string[] = [];
   @state()
@@ -70,6 +87,106 @@ export class ClickInOrderApp extends TimeCountingGame {
 
   private parseUrl(): void {
     const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('variant')) this.parseUrlWithVariant(urlParams);
+    else this.parseUrlWithoutVariant(urlParams);
+  }
+
+  private parseUrlWithVariant(urlParams: URLSearchParams): void {
+    const variant = urlParams.get('variant');
+    if (variant === null)
+      throw new Error('Internal SW Error: no variant in URL');
+    const extendedVariantInfo = getClickInOrderGameVariant(variant);
+
+    this.welcomeMessageString = extendedVariantInfo.description;
+    this.gameLogger.setMainCode(extendedVariantInfo.mainCode);
+    this.gameLogger.setSubCode(variant);
+    this.labelsInOrder = [];
+
+    switch (extendedVariantInfo.gameType) {
+      case 'numberSequence':
+        this.showSum = false;
+        this.buildLabelsFromNumberSequence(
+          extendedVariantInfo.numberSequenceConfig,
+        );
+        break;
+      case 'multiplicationTable':
+        this.applyMultiplicationTableConfig(
+          extendedVariantInfo.multiplicationConfig,
+        );
+        break;
+      case 'multiplicationWithSum':
+        this.applyMultiplicationWithSumConfig(
+          extendedVariantInfo.multiplicationConfig,
+        );
+        break;
+      default:
+        throw new UnexpectedValueError(extendedVariantInfo);
+    }
+  }
+
+  private buildLabelsFromNumberSequence(config: NumberSequenceConfig): void {
+    this.nmbrBalls = config.nmbrBalls;
+    this.labelsInOrder = [];
+
+    let startAsInt: number;
+    if (config.start === 'random') {
+      startAsInt = randomIntFromRange(20, 80);
+    } else {
+      startAsInt = config.start;
+    }
+
+    let stepSize = 1;
+    switch (config.numberType) {
+      case 'all':
+        stepSize = 1;
+        break;
+      case 'even':
+        stepSize = 2;
+        if (startAsInt % 2 === 1) startAsInt += 1;
+        break;
+      case 'odd':
+        stepSize = 2;
+        if (startAsInt % 2 === 0) startAsInt += 1;
+        break;
+      default:
+        throw new UnexpectedValueError(config.numberType);
+    }
+
+    if (config.direction === 'descending') {
+      for (
+        let i = startAsInt;
+        i > startAsInt - config.nmbrBalls * stepSize;
+        i -= stepSize
+      ) {
+        this.labelsInOrder.push(`${i}`);
+      }
+    } else {
+      for (
+        let i = startAsInt;
+        i < startAsInt + config.nmbrBalls * stepSize;
+        i += stepSize
+      ) {
+        this.labelsInOrder.push(`${i}`);
+      }
+    }
+  }
+
+  private applyMultiplicationTableConfig(config: MultiplicationConfig): void {
+    this.tables = [...config.tableOfMultiplication];
+    this.nmbrBalls = config.nmbrBalls;
+    this.showSum = false;
+    for (let i = 1; i <= config.nmbrBalls; i++) {
+      this.labelsInOrder.push(`${i * this.tables[0]}`);
+    }
+  }
+
+  private applyMultiplicationWithSumConfig(config: MultiplicationConfig): void {
+    this.tables = [...config.tableOfMultiplication];
+    this.nmbrBalls = config.nmbrBalls;
+    this.showSum = true;
+  }
+
+  private parseUrlWithoutVariant(urlParams: URLSearchParams): void {
     this.labelsInOrder = [];
 
     this.nmbrBalls = parseInt(urlParams.get('nmbrBalls') || '', 10);

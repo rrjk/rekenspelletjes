@@ -49,6 +49,12 @@
       width: 66px;
     }
 
+    sorting-game-icon,
+    click-in-order-game-icon {
+      height: 95px;
+      width: 125px;
+    }
+
     div.fractionPairGamesbutton {
       width: 100px;
       height: 100px;
@@ -92,6 +98,10 @@
     <script type="module" src="../src/DieFaceGame/DieFaceGameIcon.ts"></script>
     <script type="module" src="../src/HandFace.ts"></script>
     <script type="module" src="../src/NumberedBalloon.ts"></script>
+    <script
+      type="module"
+      src="../src/ClickInOrderGame/ClickInOrderGameIcon.ts"
+    ></script>
     <script
       type="module"
       src="../src/MixedSumsGame/MixedSumsGameIcon.ts"
@@ -140,17 +150,16 @@
         title="Zet de getallen in de juiste volgorde"
         href="indexSorteren.html"
       >
-        <sorting-game-icon
-          variant="aa"
-          isGeneric
-          style="height: 95px"
-        ></sorting-game-icon>
+        <sorting-game-icon variant="aa" isGeneric></sorting-game-icon>
       </icon-label-button>
       <icon-label-button
         title="Getallenrijen"
         href="indexAanklikkenInVolgorde.html"
       >
-        <img src="../images/GetallenRijen.png" height="95px" alt="" />
+        <click-in-order-game-icon
+          variant="aa"
+          isGeneric
+        ></click-in-order-game-icon>
       </icon-label-button>
       <icon-label-button
         title="Splitsen van getallen"
@@ -291,11 +300,10 @@
         title="Ballenknallen: wegklikken met sprongen"
         href="indexBallenKnallen.html"
       >
-        <img
-          src="../images/Ballenknallen95.png"
-          height="95px"
-          alt="Ballenknallen"
-        />
+        <click-in-order-game-icon
+          variant="ca"
+          isGeneric
+        ></click-in-order-game-icon>
       </icon-label-button>
       <icon-label-button
         title="Groepjes van herkennen"
@@ -312,11 +320,10 @@
         title="Ballenknallen met keersom"
         href="indexBallenKnallenMetSom.html"
       >
-        <img
-          src="../images/BallenknallenMetSom95.png"
-          height="95px"
-          alt="Ballenknallen met som"
-        />
+        <click-in-order-game-icon
+          variant="da"
+          isGeneric
+        ></click-in-order-game-icon>
       </icon-label-button>
       <icon-label-button
         title="Ballonnenspel: oefen de tafeltjes"

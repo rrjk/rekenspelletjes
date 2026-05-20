@@ -1,95 +1,21 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="nl">
-  <style>
-    html {
-      font-size: x-large;
-    }
-    .buttonTable {
-      position: relative;
-      display: flex;
-      gap: 10px 10px;
-      flex-wrap: wrap;
-      width: 150px;
-    }
-
-    ballgame-icon {
-      display: block;
-      width: 125px;
-    }
-  </style>
   <head>
-    <script type="module" src="../src/BallGameIcon.ts"></script>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
     <title>Wegklikken met sprongen: Ballen knallen</title>
   </head>
   <body>
     <h1>Wegklikken met sprongen: Ballen knallen</h1>
-    <div class="buttonTable">
-      <a href="../s?hc"
-        ><ballgame-icon
-          colorPermutation="1"
-          alt="Sprongen van 10"
-          text="10"
-        ></ballgame-icon
-      ></a>
-      <a href="../s?hd"
-        ><ballgame-icon
-          colorPermutation="6"
-          alt="Sprongen van 2"
-          text="2"
-        ></ballgame-icon
-      ></a>
-      <a href="../s?he"
-        ><ballgame-icon
-          colorPermutation="13"
-          alt="Sprongen van 5"
-          text="5"
-        ></ballgame-icon
-      ></a>
-      <a href="../s?hf"
-        ><ballgame-icon
-          colorPermutation="20"
-          alt="Sprongen van 3"
-          text="3"
-        ></ballgame-icon
-      ></a>
-      <a href="../s?hg"
-        ><ballgame-icon
-          colorPermutation="3"
-          alt="Sprongen van 4"
-          text="4"
-        ></ballgame-icon
-      ></a>
-      <a href="../s?hh"
-        ><ballgame-icon
-          colorPermutation="11"
-          alt="Sprongen van 6"
-          text="6"
-        ></ballgame-icon
-      ></a>
-      <a href="../s?hi"
-        ><ballgame-icon
-          colorPermutation="13"
-          alt="Sprongen van 7"
-          text="7"
-        ></ballgame-icon
-      ></a>
-      <a href="../s?hj"
-        ><ballgame-icon
-          colorPermutation="20"
-          alt="Sprongen van 8"
-          text="8"
-        ></ballgame-icon
-      ></a>
-      <a href="../s?hk"
-        ><ballgame-icon
-          colorPermutation="5"
-          alt="Sprongen van 9"
-          text="9"
-        ></ballgame-icon
-      ></a>
-    </div>
-    <a href="index.html">Terug naar het hoofdmenu</a>
+    <click-in-order-game-index-app-v2
+      indexPage="ballenKnallen"
+    ></click-in-order-game-index-app-v2>
+    <script
+      type="module"
+      src="../src/ClickInOrderGame/ClickInOrderGameIndexAppV2.ts"
+    ></script>
   </body>
 </html>
