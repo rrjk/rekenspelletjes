@@ -276,59 +276,66 @@ render(): HTMLTemplateResult {
 
 ### Step 4: Create `<GameName>HourglassGameIcon.ts`
 
-Wraps the game icon in an hourglass button. Copy this template exactly - only change the custom element name and imports.
+Use the `IconHourglassButtonV3` base class and inherit from it. Override `mainCode`, `description`, and `renderGameIcon()` so the hourglass button renders the game icon without embedding the button markup directly.
 
 ```typescript
-import { LitElement, html, css } from 'lit';
+import { html, css } from 'lit';
 import type { CSSResultGroup, HTMLTemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
-import { type TimeCode, stringToTimeCode } from '../TimeCodes';
 import { get<GameName>Variant } from './<GameName>Variants';
-import '../IconHourglassButtonV2';
+import { IconHourglassButtonV3 } from '../IconHourglassButtonV3';
 import './<GameName>Icon';
 
 @customElement('<game-name>-hourglass-game-icon')
-export class <GameName>HourglassGameIcon extends LitElement {
-  @property({ converter: stringToTimeCode })
+export class <GameName>HourglassGameIcon extends IconHourglassButtonV3 {
+@property({ converter: stringToTimeCode })
   accessor timeCode: TimeCode = 'a';
-
-  @property({ type: String })
+    @property({ type: String })
   accessor variant = '';
 
   static get styles(): CSSResultGroup {
-    return css`
-      :host {
-        display: grid;
-        justify-items: center;
-        align-items: center;
-        aspect-ratio: 1.8 / 1;
-        container-type: size;
-        position: relative;
-      }
+    return [
+      super.styles,
+      css`
+        :host {
+          display: grid;
+          justify-items: center;
+          align-items: center;
+          aspect-ratio: 1.8 / 1;
+          container-type: size;
+          position: relative;
+        }
 
-      @container (aspect-ratio > 1.8) {
-        icon-hourglass-button-v2 { height: 100cqh; }
-      }
+        @container (aspect-ratio > 1.8) {
+          <game-name>-icon { height: 100cqh; }
+        }
 
-      @container (aspect-ratio <= 1.8) {
-        icon-hourglass-button-v2 { width: 100cqw; }
-      }
+        @container (aspect-ratio <= 1.8) {
+          <game-name>-icon { width: 100cqw; }
+        }
 
-      <game-name>-icon { height: 100%; width: 100%; }
-    `;
+        <game-name>-icon { height: 100%; width: 100%; }
+      `,
+    ];
   }
 
-  render(): HTMLTemplateResult {
-    const variantInfo = get<GameName>Variant(this.variant);
-    return html` <icon-hourglass-button-v2
-      .timeCode=${this.timeCode}
-      .mainCode=${variantInfo.mainCode}
-      .variant=${this.variant}
-      .description=${variantInfo.description}
-    >
-      <game-name>-icon .variant=${this.variant}></game-name>-icon>
-    </icon-hourglass-button-v2>`;
+  override get mainCode(): string {
+    return get<GameName>Variant(this.variant).mainCode;
+  }
+
+  override get timeCode(): string {
+    return this.timeCode;
+  }
+
+  override get description(): string {
+    return get<GameName>Variant(this.variant).description;
+  }
+
+  renderGameIcon(): HTMLTemplateResult {
+    return html`
+      <<game-name>-icon .variant=${this.variant}></<game-name>-icon>
+    `;
   }
 }
 ```
