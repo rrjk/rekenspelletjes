@@ -1,8 +1,9 @@
 import { LitElement, html, css, svg } from 'lit';
-import type {
+import {
   HTMLTemplateResult,
   CSSResultArray,
   SVGTemplateResult,
+  nothing,
 } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
@@ -59,6 +60,8 @@ const ballColorPermutations = [
 export class ClickInOrderGameIcon extends LitElement {
   @property({ type: String })
   accessor variant = '';
+  @property({ type: Boolean })
+  accessor isGeneric = false;
 
   static aspectRatio = 250 / 90;
 
@@ -97,6 +100,12 @@ export class ClickInOrderGameIcon extends LitElement {
     if (variantInfo.iconShowDie) {
       return svg`<image x="90" y="10" height="70" href="${dieImageUrl}"></image>`;
     }
+    let text: string;
+    if (this.isGeneric) {
+      text = '1 2 3 ...';
+    } else {
+      text = variantInfo.iconText;
+    }
     return svg`
       <text
         font-size="45px"
@@ -106,7 +115,7 @@ export class ClickInOrderGameIcon extends LitElement {
         dominant-baseline="central"
         text-anchor="middle"
       >
-        ${variantInfo.iconText}
+        ${text}
       </text>
     `;
   }
@@ -166,7 +175,24 @@ export class ClickInOrderGameIcon extends LitElement {
 
   private renderBallLabel(
     variantInfo: ClickInOrderGameExtendedVariantInfo,
-  ): SVGTemplateResult {
+  ): SVGTemplateResult | typeof nothing {
+    if (this.isGeneric && variantInfo.gameType === 'multiplicationTable') {
+      return nothing;
+    } else if (
+      this.isGeneric &&
+      variantInfo.gameType === 'multiplicationWithSum'
+    ) {
+      return svg`
+      <text
+        font-size="57"
+        x="50%"
+        y="50%"
+        dominant-baseline="central"
+        text-anchor="middle"
+      >
+        ×
+      </text>`;
+    }
     const fontSize = variantInfo.iconSmallFont ? 40 : 57;
     return svg`
       <text
@@ -184,7 +210,7 @@ export class ClickInOrderGameIcon extends LitElement {
   render(): HTMLTemplateResult {
     const variantInfo = getClickInOrderGameVariant(this.variant);
 
-    const content: SVGTemplateResult[] = [];
+    const content: (SVGTemplateResult | typeof nothing)[] = [];
     content.push(this.renderBackground());
 
     switch (variantInfo.gameType) {
