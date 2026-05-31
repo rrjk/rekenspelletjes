@@ -2,21 +2,16 @@ import { html, css, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
-import './ClickInOrderHourglassGameIcon';
+import './CombineToSolveSumGameHourglassGameIcon';
 
-type IndexPage =
-  | 'aanklikkenInVolgorde'
-  | 'ballenKnallen'
-  | 'ballenKnallenMetSom';
+type IndexPage = 'defaultPage';
 
 export function convertIndexPage(value: string | null): IndexPage {
   switch (value) {
-    case 'aanklikkenInVolgorde':
-    case 'ballenKnallen':
-    case 'ballenKnallenMetSom':
+    case 'defaultPage':
       return value;
     default:
-      return 'aanklikkenInVolgorde';
+      return 'defaultPage';
   }
 }
 
@@ -26,36 +21,22 @@ interface SectionInfoType {
 }
 
 interface IndexPageType {
-  aanklikkenInVolgorde: SectionInfoType[];
-  ballenKnallen: SectionInfoType[];
-  ballenKnallenMetSom: SectionInfoType[];
+  defaultPage: SectionInfoType[];
 }
 
 const sections: IndexPageType = {
-  aanklikkenInVolgorde: [
+  defaultPage: [
     {
       title: '',
-      rows: ['aa', 'ab', 'ac', 'ad', 'ae', 'af', 'ag', 'ah', 'ba', 'bb', 'bc'],
-    },
-  ],
-  ballenKnallen: [
-    {
-      title: '',
-      rows: ['ca', 'cb', 'cc', 'cd', 'ce', 'cf', 'cg', 'ch', 'ci'],
-    },
-  ],
-  ballenKnallenMetSom: [
-    {
-      title: '',
-      rows: ['da', 'db', 'dc', 'dd', 'de', 'df', 'dg', 'dh', 'di', 'dj', 'dk'],
+      rows: ['aa'],
     },
   ],
 };
 
-@customElement('click-in-order-game-index-app-v2')
-export class ClickInOrderGameIndexApp extends LitElement {
+@customElement('combine-to-solve-sum-game-index-app-v2')
+export class CombineToSolveSumGameIndexApp extends LitElement {
   @property({ converter: convertIndexPage })
-  accessor indexPage: IndexPage = 'aanklikkenInVolgorde';
+  accessor indexPage: IndexPage = 'defaultPage';
 
   static get styles(): CSSResultArray {
     return [
@@ -63,15 +44,18 @@ export class ClickInOrderGameIndexApp extends LitElement {
         :host {
           font-size: x-large;
         }
+
         .buttonTable {
           position: relative;
           display: flex;
           row-gap: 10px;
           flex-wrap: wrap;
-          justify-content: space-around;
+          justify-content: center;
           width: min(200px, 50vw);
+          gap: 10px;
         }
-        click-in-order-hourglass-game-icon {
+
+        combine-to-solve-sum-game-hourglass-game-icon {
           width: 94%;
         }
       `,
@@ -80,9 +64,9 @@ export class ClickInOrderGameIndexApp extends LitElement {
 
   renderRow(variant: string): HTMLTemplateResult {
     return html`
-      <click-in-order-hourglass-game-icon
+      <combine-to-solve-sum-game-hourglass-game-icon
         variant=${variant}
-      ></click-in-order-hourglass-game-icon>
+      ></combine-to-solve-sum-game-hourglass-game-icon>
     `;
   }
 
@@ -97,9 +81,7 @@ export class ClickInOrderGameIndexApp extends LitElement {
       `);
     }
     renderItems.push(
-      html` <p>
-        <a href="index.html">Terug naar het hoofdmenu</a>
-      </p>`,
+      html` <p><a href="index.html">Terug naar het hoofdmenu</a></p>`,
     );
     return renderItems;
   }

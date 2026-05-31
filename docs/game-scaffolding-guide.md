@@ -9,7 +9,7 @@ This guide explains the pattern for creating game families with variant-based co
 - `<GameName>Variants.ts` - Variant metadata (export `gameVariants` for testing)
 - `<GameName>Variants.test.ts` - Variant tests
 - `<GameName>Icon.ts` - Visual icon rendering
-- `<GameName>HourglassGameIcon.ts` - Hourglass button wrapper
+- `<GameName>HourglassGameIcon.ts` - Hourglass/no-time button wrapper (optional for non-time-limited games)
 - `<GameName>IndexAppV2.ts` - Index page component
 - `<GameName>App.ts` - Main game with dual URL parsing (variant + explicit)
 
@@ -25,6 +25,12 @@ This guide explains the pattern for creating game families with variant-based co
 
 - Use variant-based for new games and index pages
 - Keep explicit parameter parsing for backward compatibility with existing URLs
+
+**Time-based vs non-time-based games:**
+
+- Time-based games use `timeCode` and hourglass buttons for duration choices.
+- Non-time-based games can omit `timeCode` and use `IconHourglassButtonV3` as a plain variant button,
+- Example: `ClickInOrderGame` is a variant-based game that does not require per-variant time codes. Its wrapper can omit `timeCode`, and its index app shows one button per variant.
 
 **SubCode convention:**
 
@@ -276,7 +282,7 @@ render(): HTMLTemplateResult {
 
 ### Step 4: Create `<GameName>HourglassGameIcon.ts`
 
-Use the `IconHourglassButtonV3` base class and inherit from it. Override `mainCode`, `description`, and `renderGameIcon()` so the hourglass button renders the game icon without embedding the button markup directly.
+Use the `IconHourglassButtonV3` base class and inherit from it. Override `mainCode`, `description`, and `renderGameIcon()` so the hourglass button renders the game icon without embedding the button markup directly. If the game is not time-based, omit the `timeCode` attribute and `IconHourglassButtonV3` will render as a plain button without an hourglass icon.
 
 ```typescript
 import { html, css } from 'lit';
@@ -401,6 +407,13 @@ export class <GameName>IndexApp extends LitElement {
     `;
   }
 
+  // For non-time-based games, render the wrapper without a timeCode attribute:
+  // renderRow(variant: string): HTMLTemplateResult {
+  //   return html`<game-name-hourglass-game-icon variant=${variant}></game-name-hourglass-game-icon>`;
+  // }
+
+
+
   render(): HTMLTemplateResult[] {
     const renderItems: HTMLTemplateResult[] = [];
     for (const section of sections[this.indexPage]) {
@@ -420,6 +433,7 @@ export class <GameName>IndexApp extends LitElement {
 ### Step 6: Create `<GameName>App.ts` with URL Parsing
 
 Main game component with dual URL parsing (variant-based and explicit parameters).
+For time-based games extend `TimeLimitedGame2`; for untimed games use `GameSkeleton`, `AscendingItemsGameApp`, or another non-time base class as appropriate.
 
 ```typescript
 import { html, css } from 'lit';
