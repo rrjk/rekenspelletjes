@@ -6,7 +6,7 @@ import {
 } from './ClickInOrderGame/ClickInOrderAppLink';
 import { klikFotoOpGetallenlijnLink } from './ClickTheRightPhotoOnNumberLineAppLink';
 import { klokPaartjesLink } from './ClockPairingAppLink';
-import { somPaartjesLink } from './CombineToSolveSumAppLink';
+import { combineToSolveSumGameLink } from './CombineToSolveSumGame/CombineToSolveSumGameAppLink';
 import { eierdoosTellenLink } from './EggCounting/EggCountingAppLink';
 import { springOpGetallenlijnLink } from './JumpOnNumberLineAppLink';
 import { getallenlijnBoogjesSpelLink } from './NumberlineArchesGame/NumberlineArchesGameAppLink';
@@ -118,7 +118,7 @@ const urls: (() => string)[] = [
   () => splitsenLink([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 60),
   () => splitsenLink([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 180),
   // cl - indexVerliefdeharten.html
-  () => somPaartjesLink(),
+  () => combineToSolveSumGameLink(),
   // cm - indexBinnenTiental.html - Sommen tot 10
   () => plusMinBinnenTientalLink([0], ['plus'], 60),
   () => plusMinBinnenTientalLink([0], ['plus'], 180),

@@ -4,21 +4,25 @@ import { html } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
-import { TimeCountingGame } from './TimeCountingGame';
-import './DynamicGrid';
-import './DraggableTargetHeart';
+import { TimeCountingGame } from '../TimeCountingGame';
+import '../DynamicGrid';
+import '../DraggableTargetHeart';
 
 import {
   randomFromSetAndSplice,
   randomIntFromRange,
   shuffleArray,
-} from './Randomizer';
+} from '../Randomizer';
 
-import { GameLogger } from './GameLogger';
+import { GameLogger } from '../GameLogger';
 
-import './RealHeight';
-import type { DraggableTargetHeart } from './DraggableTargetHeart';
-import type { DropEvent } from './DraggableElement';
+import '../RealHeight';
+import type { DraggableTargetHeart } from '../DraggableTargetHeart';
+import type { DropEvent } from '../DraggableElement';
+import {
+  getCombineToSolveSumGameVariant,
+  type CombineToSolveSumGameVariantInfo,
+} from './CombineToSolveSumGameVariants';
 
 /* Type for cell information */
 type CellType = {
@@ -28,8 +32,8 @@ type CellType = {
   top: number; // Top position within the cell as percentage (0-40%)
 };
 
-@customElement('combine-to-solve-sum-app')
-export class CombineToSolveSumApp extends TimeCountingGame {
+@customElement('combine-to-solve-sum-game-app')
+export class CombineToSolveSumGameApp extends TimeCountingGame {
   private gameLogger = new GameLogger('N', '');
 
   private initialNumberOfPairs = 10;
@@ -57,9 +61,22 @@ export class CombineToSolveSumApp extends TimeCountingGame {
 
   private parseUrl(): void {
     const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('variant')) this.parseUrlWithVariant(urlParams);
+    else this.parseUrlWithoutVariant(urlParams);
+  }
 
-    // Get sum from the url. If no sum is present in the url, use 10.
+  private parseUrlWithVariant(urlParams: URLSearchParams): void {
+    const variant = urlParams.get('variant');
+    if (variant === null)
+      throw new Error('Internal SW Error: no variant in URL');
 
+    const variantInfo = getCombineToSolveSumGameVariant(variant);
+    this.applyVariantInfo(variantInfo);
+    this.gameLogger.setMainCode(variantInfo.mainCode);
+    this.gameLogger.setSubCode(variant);
+  }
+
+  private parseUrlWithoutVariant(urlParams: URLSearchParams): void {
     this.sum = parseInt(urlParams.get('sum') || '10', 10);
     if (Number.isNaN(this.sum)) this.sum = 10;
 
@@ -73,8 +90,20 @@ export class CombineToSolveSumApp extends TimeCountingGame {
       urlParams.get('maxNumberOfPairs') || '20',
       10,
     );
-    if (Number.isNaN(this.maxNumberOfPairs)) this.initialNumberOfPairs = 10;
+    if (Number.isNaN(this.maxNumberOfPairs)) this.maxNumberOfPairs = 20;
 
+    if (this.maxNumberOfPairs < this.initialNumberOfPairs)
+      this.maxNumberOfPairs = this.initialNumberOfPairs + 2;
+
+    this.gameLogger.setMainCode('N');
+  }
+
+  private applyVariantInfo(
+    variantInfo: CombineToSolveSumGameVariantInfo,
+  ): void {
+    this.sum = variantInfo.sum;
+    this.initialNumberOfPairs = variantInfo.initialNumberOfPairs;
+    this.maxNumberOfPairs = variantInfo.maxNumberOfPairs;
     if (this.maxNumberOfPairs < this.initialNumberOfPairs)
       this.maxNumberOfPairs = this.initialNumberOfPairs + 2;
   }
@@ -289,14 +318,13 @@ export class CombineToSolveSumApp extends TimeCountingGame {
     }
 
     return html`
-        <dynamic-grid
-          contentAspectRatio="1"
-          padding="0"
-          style="width: 100%; height: 100%; top: 0;"
-        >
-          ${cellElements}
-        </dynamic-grid>
-      </button>
+      <dynamic-grid
+        contentAspectRatio="1"
+        padding="0"
+        style="width: 100%; height: 100%; top: 0;"
+      >
+        ${cellElements}
+      </dynamic-grid>
     `;
   }
 }

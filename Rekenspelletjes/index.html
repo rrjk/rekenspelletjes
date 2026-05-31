@@ -50,7 +50,8 @@
     }
 
     sorting-game-icon,
-    click-in-order-game-icon {
+    click-in-order-game-icon,
+    combine-to-solve-sum-game-icon {
       height: 95px;
       width: 125px;
     }
@@ -98,6 +99,10 @@
     <script type="module" src="../src/DieFaceGame/DieFaceGameIcon.ts"></script>
     <script type="module" src="../src/HandFace.ts"></script>
     <script type="module" src="../src/NumberedBalloon.ts"></script>
+    <script
+      type="module"
+      src="../src/CombineToSolveSumGame/CombineToSolveSumGameIcon.ts"
+    ></script>
     <script
       type="module"
       src="../src/ClickInOrderGame/ClickInOrderGameIcon.ts"
@@ -176,10 +181,10 @@
         title="Verliefde harten"
         href="indexVerliefdeharten.html"
       >
-        <div class="heartDiv">
-          <heart-image value="2"></heart-image>
-          <heart-image value="8"></heart-image>
-        </div>
+        <combine-to-solve-sum-game-icon
+          variant="aa"
+          isGeneric
+        ></combine-to-solve-sum-game-icon>
       </icon-label-button>
 
       <icon-label-button
