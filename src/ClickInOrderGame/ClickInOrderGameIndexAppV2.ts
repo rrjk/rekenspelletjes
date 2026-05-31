@@ -72,7 +72,7 @@ export class ClickInOrderGameIndexApp extends LitElement {
           width: min(200px, 50vw);
         }
         click-in-order-hourglass-game-icon {
-          width: 100%;
+          width: 94%;
         }
       `,
     ];
