@@ -9,6 +9,7 @@ import {
   unsafeCSS,
 } from 'lit';
 import { customElement } from 'lit/decorators.js';
+import { getColorInfo } from '../Colors';
 
 interface ButtonInfo {
   id: string;
@@ -268,7 +269,7 @@ export class MathWallIndexApp extends LitElement {
       css`
         :host {
           display: block;
-          height: 90vh;
+          height: 100vh;
         }
 
         a.stretched-link {
@@ -280,24 +281,23 @@ export class MathWallIndexApp extends LitElement {
 
         div#wall {
           height: 80%;
-          background-color: #00f000;
           display: grid;
           grid-template-columns: 100%;
-          grid-template-rows: repeat(5, 16%);
+          grid-template-rows: repeat(5, 18.8%);
           grid-template-areas:
             'phase5'
             'phase4'
             'phase3'
             'phase2'
             'phase1';
-          gap: 3%;
+          gap: 1.5%;
         }
 
         div#phase2 {
           grid-area: phase2;
           display: grid;
           grid-template-columns: repeat(16, 1fr);
-          grid-template-rows: repeat(3, 30%);
+          grid-template-rows: repeat(3, 32.6%);
           align-items: center;
           justify-items: center;
           gap: 1%;
@@ -307,7 +307,7 @@ export class MathWallIndexApp extends LitElement {
           grid-area: phase1;
           display: grid;
           grid-template-columns: repeat(14, 1fr);
-          grid-template-rows: repeat(3, 30%);
+          grid-template-rows: repeat(3, 32.6%);
           align-items: center;
           justify-items: center;
           gap: 1%;
@@ -318,10 +318,15 @@ export class MathWallIndexApp extends LitElement {
           display: flex;
           justify-content: center;
           align-items: center;
-          background-color: #f00000;
+          background-color: ${unsafeCSS(
+            getColorInfo('lavender').mainColorCode,
+          )};
+          border: 3px solid
+            ${unsafeCSS(getColorInfo('lavender').accentColorCode)};
           border-radius: 10px;
           height: 100%;
           width: 100%;
+          box-sizing: border-box;
         }
       `,
       MathWallIndexApp.phase1Buttons.map(
