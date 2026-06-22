@@ -129,6 +129,7 @@ export class IconHourglassButtonV3 extends LitElement {
       }
 
       button#infoButton {
+        display: block;
         aspect-ratio: 1;
         width: 80%;
         grid-area: informationIcon;
