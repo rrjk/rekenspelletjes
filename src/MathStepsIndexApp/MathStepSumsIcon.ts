@@ -1,15 +1,9 @@
+import '../IconInfoButton';
 import { LitElement, html, css } from 'lit';
 import type { HTMLTemplateResult, CSSResultGroup } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
 import { operatorToSymbol } from '../Operator';
-
-/* The following import are only used to store the iButton reference. Once the source property of
- * the ToggleEvent gets widescale support, these imports can be removed and the button can
- * be obtained from the event.
- * See https://caniuse.com/mdn-api_toggleevent_source for more details on the support of the source property.
- */
-import { createRef, Ref, ref } from 'lit/directives/ref.js';
 
 type MathStep =
   | 'PlusMinusTill10'
@@ -23,13 +17,6 @@ type MathStep =
 @customElement('math-step-sums-icon')
 export class MathStepSumsIcon extends LitElement {
   static aspectRatio = 212 / 12;
-
-  /* The iButton reference is used to keep track of the information button event. Once the source property of
-   * the ToggleEvent gets widescale support, we no longer need this reference and the button can
-   * be obtained from the event.
-   * See https://caniuse.com/mdn-api_toggleevent_source for more details on the support of the source property.
-   */
-  iButton: Ref<HTMLButtonElement> = createRef();
 
   @property()
   accessor mathStep: MathStep = 'PlusMinusTill10';
@@ -85,51 +72,21 @@ export class MathStepSumsIcon extends LitElement {
           dominant-baseline: auto;
         }
 
-        button#infoButton {
-          min-width: 0;
-          min-height: 0;
-          aspect-ratio: 1;
+        icon-info-button {
           width: 80%;
           grid-area: info;
-          border: none;
-          margin: 0;
-          padding: 0;
-          background-color: transparent;
           z-index: 2;
-        }
-
-        svg#infoIcon {
-          display: block;
-          width: 100%;
-          height: 100%;
-          font-size: 70px;
-          dominant-baseline: middle;
-          text-anchor: middle;
-          font-family: 'Georgia';
-          fill: grey;
+          stroke: white;
+          fill: white;
         }
       `,
     ];
   }
 
   renderInfo(): HTMLTemplateResult {
-    return html` <button
-      id="infoButton"
-      popovertarget="description"
-      ${ref(this.iButton)}
-    >
-      <svg id="infoIcon" viewBox="-50 -50 100 100">
-        <circle
-          cx="0"
-          cy="0"
-          r="45"
-          fill="none"
-          stroke="grey"
-          stroke-width="5px"
-        />
-        <text x="0" y="7">i</text>
-      </svg>
-    </button>`;
+    return html`<icon-info-button
+      description="Nog te maken uit de soort"
+    ></icon-info-button>`;
   }
 
   renderTitle(): HTMLTemplateResult {
