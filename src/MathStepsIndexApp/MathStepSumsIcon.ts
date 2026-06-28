@@ -5,58 +5,79 @@ import { customElement, property } from 'lit/decorators.js';
 
 import { operatorToSymbol } from '../Operator';
 
-type MathStep =
-  | 'PlusMinusTill10'
-  | 'PlusMinusTill20'
-  | 'PlusMinusTill100'
-  | 'MultiplicationTill10'
-  | 'MultiplicationDivisionTill10'
-  | 'Alltill100'
-  | 'Alltill1000';
+export const mathSteps = [
+  'PlusMinusTill10',
+  'PlusMinusTill20',
+  'PlusMinusTill100',
+  'MultiplicationTill10',
+  'MultiplicationDivisionTill10',
+  'Alltill100',
+  'Alltill1000',
+] as const;
+
+export type MathStep = (typeof mathSteps)[number];
+
+type TitleDescription = {
+  title: string;
+  description: string;
+};
+
+const mathStepTitles: Record<MathStep, TitleDescription> = {
+  PlusMinusTill10: {
+    title: `${operatorToSymbol('plus')} ${operatorToSymbol('minus')} tot 10`,
+    description: 'Plus- en minsommen tot en met 10',
+  },
+  PlusMinusTill20: {
+    title: `${operatorToSymbol('plus')} ${operatorToSymbol('minus')} tot 20`,
+    description: 'Plus- en minsommen tot en met 20',
+  },
+  PlusMinusTill100: {
+    title: `${operatorToSymbol('plus')} ${operatorToSymbol('minus')} tot 100`,
+    description: 'Plus- en minsommen tot en met 100',
+  },
+  MultiplicationTill10: {
+    title: `${operatorToSymbol('times')} tot 10`,
+    description: 'Keersommen met de tafeltjes tot en met 10',
+  },
+  MultiplicationDivisionTill10: {
+    title: `${operatorToSymbol('times')} ${operatorToSymbol('divide')} tot 10`,
+    description: 'Keer- en deelsommen met de tafeltjes tot en met 10',
+  },
+  Alltill100: {
+    title: `${operatorToSymbol('plus')} ${operatorToSymbol('minus')} ${operatorToSymbol('times')} ${operatorToSymbol('divide')} tot 100`,
+    description: 'Alle sommen door elkaar met antwoorden tot en met 100',
+  },
+  Alltill1000: {
+    title: `${operatorToSymbol('plus')} ${operatorToSymbol('minus')} ${operatorToSymbol('times')} ${operatorToSymbol('divide')} tot 1000`,
+    description: 'Alle sommen door elkaar met antwoorden tot en met 1000',
+  },
+};
 
 @customElement('math-step-sums-icon')
 export class MathStepSumsIcon extends LitElement {
-  static aspectRatio = 212 / 12;
-
   @property()
-  accessor mathStep: MathStep = 'PlusMinusTill10';
+  accessor mathStep: MathStep = 'PlusMinusTill20';
+
   static get styles(): CSSResultGroup {
     return [
       css`
         :host {
-          display: block;
+          display: inline-block;
           position: relative;
           container-type: size;
-          background-color: violet;
         }
 
         div.card {
-          aspect-ratio: ${this.aspectRatio};
-          min-width: 0;
-          min-height: 0;
+          width: 100cqw;
+          height: 100cqh;
           display: grid;
-          grid-template-columns: ${(20 / 21) * 100}% ${(1 / 20) * 100}%;
+          grid-template-columns: 50cqh 1fr 100cqh;
           grid-template-rows: 100%;
-          grid-template-areas: 'title info';
-          justify-items: center;
+          grid-template-areas: 'blank title info';
+          justify-items: left;
           align-items: center;
           box-sizing: border-box;
           background-color: blue;
-        }
-
-        @container (aspect-ratio > ${this.aspectRatio}) {
-          div.card {
-            height: 100cqh;
-            border: ${(1 / 12) * 100}cqh solid black;
-            border-radius: ${(3 / 12) * 100}cqh;
-          }
-        }
-        @container (aspect-ratio <= ${this.aspectRatio}) {
-          div.card {
-            width: 100cqw;
-            border: ${(1 / 212) * 100}cqw solid black;
-            border-radius: ${(3 / 212) * 100}cqw;
-          }
         }
 
         svg#title {
@@ -72,6 +93,16 @@ export class MathStepSumsIcon extends LitElement {
           dominant-baseline: auto;
         }
 
+        span#title {
+          grid-area: title;
+          font-size: 80cqh;
+          -webkit-text-stroke: black 10cqh;
+          color: white;
+          font-family: 'Arial';
+          font-weight: 700;
+          paint-order: stroke fill;
+        }
+
         icon-info-button {
           width: 80%;
           grid-area: info;
@@ -85,18 +116,22 @@ export class MathStepSumsIcon extends LitElement {
 
   renderInfo(): HTMLTemplateResult {
     return html`<icon-info-button
-      description="Nog te maken uit de soort"
+      description=${mathStepTitles[this.mathStep].description}
     ></icon-info-button>`;
   }
 
-  renderTitle(): HTMLTemplateResult {
+  renderTitleAsSVG(): HTMLTemplateResult {
     return html`
       <svg id="title" viewBox="0 0 200 10">
         <text x="2" y="8" font-size="8px">
-          ${operatorToSymbol('plus')} ${operatorToSymbol('minus')} tot 10
+          ${mathStepTitles[this.mathStep].title}
         </text>
       </svg>
     `;
+  }
+
+  renderTitle(): HTMLTemplateResult {
+    return html`<span id="title">${mathStepTitles[this.mathStep].title}</span>`;
   }
 
   render(): HTMLTemplateResult {

@@ -113,14 +113,7 @@ export class IconInfoButton extends LitElement {
     return html`
       <button id="infoButton" popovertarget="description" ${ref(this.iButton)}>
         <svg viewBox="-50 -50 100 100">
-          <circle
-            cx="0"
-            cy="0"
-            r="45"
-            fill="none"
-            stroke="black"
-            stroke-width="5px"
-          />
+          <circle cx="0" cy="0" r="45" fill="none" stroke-width="5px" />
           <text x="0" y="7">i</text>
         </svg>
       </button>

@@ -8,6 +8,8 @@ import {
 } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { getColorInfo } from '../Colors';
+import { type MathStep } from './MathStepSumsIcon';
+import './MathStepSumsIcon';
 
 interface SumTypeInfo {
   id: string;
@@ -15,15 +17,13 @@ interface SumTypeInfo {
 }
 
 interface SumTypeGroupInfo {
-  id: string;
-  content: HTMLTemplateResult;
+  id: MathStep;
   sumTypes: SumTypeInfo[];
 }
 
 const sumTypeGroups: SumTypeGroupInfo[] = [
   {
-    id: 'phase1',
-    content: html`Sommen tot 10`,
+    id: 'PlusMinusTill10',
     sumTypes: [
       {
         id: 'num10',
@@ -52,8 +52,7 @@ const sumTypeGroups: SumTypeGroupInfo[] = [
     ],
   },
   {
-    id: 'phase2',
-    content: html`Sommen tot 20`,
+    id: 'PlusMinusTill20',
     sumTypes: [
       {
         id: 'num20',
@@ -116,6 +115,13 @@ export class MathStepsIndexApp extends LitElement {
           font-color: white;
         }
 
+        math-step-sums-icon {
+          display: inline-block;
+          vertical-align: middle;
+          width: 90%;
+          height: 40px;
+        }
+
         details {
           margin-bottom: 1em;
           background-color: lightblue;
@@ -149,10 +155,12 @@ export class MathStepsIndexApp extends LitElement {
         </li>
       `;
     });
-
+    //<math-step-sums-icon math-step=${group.id}></math-step-sums-icon>
     return html`
       <details name="menu">
-        <summary>${group.content}</summary>
+        <summary>
+          <math-step-sums-icon mathStep=${group.id}></math-step-sums-icon>
+        </summary>
         <ul>
           ${sumTypesHTML}
         </ul>
