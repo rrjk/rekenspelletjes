@@ -36,9 +36,9 @@ const sumTypeGroups: SumTypeGroupInfo[] = [
         title: 'Getalbegrip tot 10',
       },
       {
-        id: 's5p2',
-        description: `Sommen als 5 + 2`,
-        title: '5 + 2',
+        id: 's3p4',
+        description: `Plussommen tot en met 10`,
+        title: '3 + 4',
       },
       {
         id: 'split',
@@ -47,17 +47,17 @@ const sumTypeGroups: SumTypeGroupInfo[] = [
       },
       {
         id: 's7m2',
-        description: `Sommen als 7 - 2`,
+        description: `Minsommen tot en met 10`,
         title: '7 - 2',
       },
       {
         id: 's10m2',
-        description: `Sommen als 10 - 2`,
+        description: `Minsommen met de eerste term 10`,
         title: '10 - 2',
       },
       {
         id: 's6pi10',
-        description: `Sommen als 6 + .. = 10`,
+        description: `Sommen met aanvullen tot 10 `,
         title: '6 + .. = 10',
       },
     ],
@@ -74,32 +74,32 @@ const sumTypeGroups: SumTypeGroupInfo[] = [
       },
       {
         id: 's10p4',
-        description: `Sommen als 10 + 4`,
+        description: `Plussommem met 10 als eerste term en een getal met één cijfer als tweede term`,
         title: '10 + 4',
       },
       {
         id: 's15p2',
-        description: `Sommen als 15 + 2`,
+        description: `Plussommen tussen de 10 en de 20`,
         title: '15 + 2',
       },
       {
         id: 's17m2',
-        description: `Sommen als 17 - 2`,
+        description: `Minsommen tussen de 10 en de 20`,
         title: '17 - 2',
       },
       {
         id: 's6p8',
-        description: `Sommen als 6 + 8`,
+        description: `Plussommen tussen de 1 en en 20, waarbij er over het tiental heen gesprongen wordt`,
         title: '6 + 8',
       },
       {
         id: 's16mi10',
-        description: `Sommen als 16 - ... = 10`,
+        description: `Minsommen tot en met 20, waarbij het antwoord 10 is en de tweede term ingevuld moet worden.`,
         title: '16 - ... = 10',
       },
       {
         id: 's16m8',
-        description: `Sommen als 16 - 8`,
+        description: `Minsommen tussen de 1 en en 20, waarbij er over het tiental heen gesprongen wordt`,
         title: '16 - 8',
       },
     ],
@@ -194,7 +194,7 @@ export class MathStepsIndexApp extends LitElement {
       <li>
         <math-step-sums-icon
           link=${new URL(
-            `../../Rekenspelletjes/${sumType.id}.html`,
+            `../../Rekenspelletjes/${sumType.id}Index.html`,
             import.meta.url,
           )}
           description=${sumType.description}
