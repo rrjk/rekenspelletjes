@@ -8,79 +8,99 @@ import {
 } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { getColorInfo } from '../Colors';
-import { type MathStep } from './MathStepSumsIcon';
 import './MathStepSumsIcon';
+import { operatorToSymbol } from '../Operator';
 
 interface SumTypeInfo {
   id: string;
-  content: HTMLTemplateResult;
+  description: string;
+  title: string;
 }
 
 interface SumTypeGroupInfo {
-  id: MathStep;
+  id: string;
+  description: string;
+  title: string;
   sumTypes: SumTypeInfo[];
 }
 
 const sumTypeGroups: SumTypeGroupInfo[] = [
   {
     id: 'PlusMinusTill10',
+    description: 'Plus- en minsommen tot en met 10',
+    title: `${operatorToSymbol('plus')} ${operatorToSymbol('minus')} tot 10`,
     sumTypes: [
       {
         id: 'num10',
-        content: html`Getalbegrip tot 10`,
+        description: 'Getalbegrip tot 10',
+        title: 'Getalbegrip tot 10',
       },
       {
         id: 's5p2',
-        content: html`Sommen als 5 + 2`,
+        description: `Sommen als 5 + 2`,
+        title: '5 + 2',
       },
       {
         id: 'split',
-        content: html`Splitsen`,
+        description: `Splitsen van de getallen tot en met 10`,
+        title: 'Splitsen',
       },
       {
         id: 's7m2',
-        content: html`Sommen als 7 - 2`,
+        description: `Sommen als 7 - 2`,
+        title: '7 - 2',
       },
       {
         id: 's10m2',
-        content: html`Sommen als 10 - 2`,
+        description: `Sommen als 10 - 2`,
+        title: '10 - 2',
       },
       {
         id: 's6pi10',
-        content: html`Sommen als 6 + .. = 10`,
+        description: `Sommen als 6 + .. = 10`,
+        title: '6 + .. = 10',
       },
     ],
   },
   {
     id: 'PlusMinusTill20',
+    description: 'Plus- en minsommen tot en met 20',
+    title: `${operatorToSymbol('plus')} ${operatorToSymbol('minus')} tot 20`,
     sumTypes: [
       {
         id: 'num20',
-        content: html`Getalbegrip tot 20`,
+        description: `Getalbegrip tot 20`,
+        title: 'Getal begrip tot 20',
       },
       {
         id: 's10p4',
-        content: html`Sommen als 10 + 4`,
+        description: `Sommen als 10 + 4`,
+        title: '10 + 4',
       },
       {
         id: 's15p2',
-        content: html`Sommen als 15 + 2`,
+        description: `Sommen als 15 + 2`,
+        title: '15 + 2',
       },
       {
         id: 's17m2',
-        content: html`Sommen als 17 - 2`,
+        description: `Sommen als 17 - 2`,
+        title: '17 - 2',
       },
       {
         id: 's6p8',
-        content: html`Sommen als 6 + 8`,
+        description: `Sommen als 6 + 8`,
+        title: '6 + 8',
       },
       {
         id: 's16mi10',
-        content: html`Sommen als 16 - ... = 10`,
+        description: `Sommen als 16 - ... = 10`,
+        title: '16 - ... = 10',
       },
       {
         id: 's16m8',
-        content: html`Sommen als 16 - 8`,
+        description: `Sommen als 16 - 8`,
+        title: '16 - 8',
       },
     ],
   },
@@ -88,6 +108,7 @@ const sumTypeGroups: SumTypeGroupInfo[] = [
 
 @customElement('math-steps-index-app')
 export class MathStepsIndexApp extends LitElement {
+  static mathStepsSumsIconHeight = 30;
   static get styles(): CSSResultArray {
     return [
       css`
@@ -104,39 +125,62 @@ export class MathStepsIndexApp extends LitElement {
         }
 
         summary {
-          font-size: 1.5em;
+          display: flex;
+          align-items: center;
+          gap: 0.5em;
+          list-style: none;
+          cursor: pointer;
+          font-size: calc(0.7 * ${unsafeCSS(this.mathStepsSumsIconHeight)}px);
           font-weight: bold;
           cursor: pointer;
-          background-color: blue;
-          border: 3px solid darkblue;
+          background-color: ${unsafeCSS(
+            getColorInfo('summaryBar').mainColorCode,
+          )};
+          border: 3px solid
+            ${unsafeCSS(getColorInfo('summaryBar').accentColorCode)};
           border-radius: 10px;
-          padding: 0.5em;
+          padding: 5px;
           color: white;
           font-color: white;
+        }
+
+        summary::-webkit-details-marker {
+          display: none;
+        }
+
+        .arrow {
+          transition: transform 0.2s;
+        }
+
+        details[open] summary .arrow {
+          transform: rotate(90deg);
         }
 
         math-step-sums-icon {
           display: inline-block;
           vertical-align: middle;
-          width: 90%;
-          height: 40px;
+          width: 100%;
+          height: ${unsafeCSS(this.mathStepsSumsIconHeight)}px;
         }
 
         details {
           margin-bottom: 1em;
-          background-color: lightblue;
-          border: 3px solid blue;
+          background-color: ${unsafeCSS(
+            getColorInfo('menuBackground').mainColorCode,
+          )};
+          border: 3px solid
+            ${unsafeCSS(getColorInfo('menuBackground').accentColorCode)};
           border-radius: 10px;
-          padding: 0.5em;
+          padding: 5px;
         }
 
         li {
           margin: 0.5em 0;
           background-color: ${unsafeCSS(
-            getColorInfo('lavender').mainColorCode,
+            getColorInfo('detailsBar').mainColorCode,
           )};
           border: 3px solid
-            ${unsafeCSS(getColorInfo('lavender').accentColorCode)};
+            ${unsafeCSS(getColorInfo('detailsBar').accentColorCode)};
           border-radius: 10px;
           padding: 0.5em;
           list-style: none;
@@ -145,21 +189,33 @@ export class MathStepsIndexApp extends LitElement {
     ];
   }
 
+  renderSumType(sumType: SumTypeInfo): HTMLTemplateResult {
+    return html`
+      <li>
+        <math-step-sums-icon
+          link=${new URL(
+            `../../Rekenspelletjes/${sumType.id}.html`,
+            import.meta.url,
+          )}
+          description=${sumType.description}
+          title=${sumType.title}
+        ></math-step-sums-icon>
+      </li>
+    `;
+  }
+
   renderSumTypeGroup(group: SumTypeGroupInfo): HTMLTemplateResult {
     const sumTypesHTML: HTMLTemplateResult[] = group.sumTypes.map(sumType => {
-      return html`
-        <li>
-          <a href="../rekenspelletjes/${sumType.id}-index.html"
-            >${sumType.content}</a
-          >
-        </li>
-      `;
+      return this.renderSumType(sumType);
     });
-    //<math-step-sums-icon math-step=${group.id}></math-step-sums-icon>
     return html`
       <details name="menu">
         <summary>
-          <math-step-sums-icon mathStep=${group.id}></math-step-sums-icon>
+          <span class="arrow">▶</span>
+          <math-step-sums-icon
+            description=${group.description}
+            title=${group.title}
+          ></math-step-sums-icon>
         </summary>
         <ul>
           ${sumTypesHTML}

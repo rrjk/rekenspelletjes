@@ -7,6 +7,12 @@
 
 import { saturate } from 'color2k';
 
+export const summaryMenuColors = [
+  'menuBackground',
+  'summaryBar',
+  'detailsBar',
+] as const;
+
 export const neonFusionColors = [
   'malachite',
   'amberFlame',
@@ -52,12 +58,14 @@ export type NeonFusionColor = (typeof neonFusionColors)[number];
 export type SetOf20Color = (typeof setOf20Colors)[number];
 export type LegacyBalloonColors = (typeof legacyBalloonColors)[number];
 export type BlackWhiteColors = (typeof blackWhiteColors)[number];
+export type SummaryMenuColor = (typeof summaryMenuColors)[number];
 
 export type Color =
   | NeonFusionColor
   | SetOf20Color
   | LegacyBalloonColors
-  | BlackWhiteColors;
+  | BlackWhiteColors
+  | SummaryMenuColor;
 
 export type ColorInfo = {
   colorName: Color;
@@ -256,6 +264,24 @@ export const colorArray: ColorInfo[] = [
     fontColor: 'white',
     mainColorCode: '#89fc00',
     accentColorCode: saturate('#89fc00', 0.2),
+  },
+  {
+    colorName: 'menuBackground',
+    fontColor: 'black',
+    mainColorCode: '#e6f2ff',
+    accentColorCode: '#e6f2ff', //saturate('#e6f2ff', 0.4),
+  },
+  {
+    colorName: 'summaryBar',
+    fontColor: 'white',
+    mainColorCode: '#1e3a8a',
+    accentColorCode: 'black', //saturate('#1e3a8a', 0.4),
+  },
+  {
+    colorName: 'detailsBar',
+    fontColor: 'black',
+    mainColorCode: '#3b82f6',
+    accentColorCode: 'black', //saturate('#3b82f6', 0.4),
   },
 ];
 
