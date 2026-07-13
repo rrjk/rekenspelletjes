@@ -36,7 +36,7 @@ const sumTypeGroups: SumTypeGroupInfo[] = [
         title: 'Getalbegrip tot 10',
       },
       {
-        id: 's3p4',
+        id: '3p4',
         description: `Plussommen tot en met 10`,
         title: '3 + 4',
       },
@@ -46,9 +46,9 @@ const sumTypeGroups: SumTypeGroupInfo[] = [
         title: 'Splitsen',
       },
       {
-        id: 's7m2',
+        id: '7m5',
         description: `Minsommen tot en met 10`,
-        title: '7 - 2',
+        title: `7 ${operatorToSymbol('minus')} 5`,
       },
       {
         id: 's10m2',
@@ -193,7 +193,7 @@ export class MathStepsIndexApp extends LitElement {
     return html`
       <li>
         <math-step-sums-icon
-          link="../../Rekenspelletjes/${sumType.id}Index.html"
+          link="../../Rekenspelletjes/SumTypeIndex-${sumType.id}.html"
           description=${sumType.description}
           title=${sumType.title}
         ></math-step-sums-icon>
@@ -225,6 +225,6 @@ export class MathStepsIndexApp extends LitElement {
     const sumTypeGroupsHTML: HTMLTemplateResult[] = sumTypeGroups.map(group =>
       this.renderSumTypeGroup(group),
     );
-    return sumTypeGroupsHTML;
+    return [html`<h1>Rekenstappen</h1>`, ...sumTypeGroupsHTML];
   }
 }

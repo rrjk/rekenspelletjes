@@ -18,8 +18,8 @@ const game = [
 
 export type Game = (typeof game)[number];
 
-@customElement('s3p4-index-app')
-export class AdditionSubstractionWithinDecadeGameIndexApp extends SumTypeIndexApp<Game> {
+@customElement('sumtype-index-app-3p4')
+export class SumTypeIndexApp3p4 extends SumTypeIndexApp<Game> {
   get pageTitle(): string {
     return `Sommen als 3 ${operatorToSymbol('plus')} 4`;
   }
