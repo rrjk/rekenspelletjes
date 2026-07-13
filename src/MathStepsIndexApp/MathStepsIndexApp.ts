@@ -193,10 +193,7 @@ export class MathStepsIndexApp extends LitElement {
     return html`
       <li>
         <math-step-sums-icon
-          link=${new URL(
-            `../../Rekenspelletjes/${sumType.id}Index.html`,
-            import.meta.url,
-          )}
+          link="../../Rekenspelletjes/${sumType.id}Index.html"
           description=${sumType.description}
           title=${sumType.title}
         ></math-step-sums-icon>
