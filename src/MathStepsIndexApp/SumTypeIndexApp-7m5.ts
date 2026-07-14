@@ -38,13 +38,18 @@ export class SumTypeIndexApp7m5 extends SumTypeIndexApp<Game> {
           ],
         },
         {
-          title: 'Automatiseren',
+          title: 'Antwoord aanklikken',
           rows: [
             {
               game: 'addition-substraction-within-decade',
               variant: 'ab',
               timeCodes: ['a', 'b'],
             },
+          ],
+        },
+        {
+          title: 'Antwoord typen',
+          rows: [
             {
               game: 'mixed-sums',
               variant: 'bl',
