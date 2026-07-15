@@ -109,6 +109,7 @@ export class IconHourglassButtonV3 extends LitElement {
         z-index: 2;
         grid-area: informationIcon;
         width: 80%;
+        stroke: black;
       }
 
       #hourGlassIcon {
