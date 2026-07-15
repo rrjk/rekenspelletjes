@@ -102,15 +102,16 @@ This pattern separates data from rendering and keeps shared metadata logic in on
   - `variant`
   - `description`
 - Renders the specific game icon as a slot child.
+- Exports a render helper named `render<SpecificGameName>HourglassGameIcon` that is typed as `RenderGameIconFunction` and follows the signature `(variant, classes, timeCode?)` while creating the custom element with the same variant and time code bindings.
 
 ### `icon-hourglass-button-v2` and optional time
 
 The shared button element treats `timeCode` as **optional**:
 
-| `timeCode` | Hourglass | Game icon width | Short URL |
-|------------|-----------|-----------------|-----------|
-| Set (`a`, `b`, or `c`) | Shown | Narrow (56% of button) | `../t?{mainCode}-{variant}-{timeCode}` |
-| Omitted | Hidden | Wide (89% of button) | `../t?{mainCode}-{variant}` |
+| `timeCode`             | Hourglass | Game icon width        | Short URL                              |
+| ---------------------- | --------- | ---------------------- | -------------------------------------- |
+| Set (`a`, `b`, or `c`) | Shown     | Narrow (56% of button) | `../t?{mainCode}-{variant}-{timeCode}` |
+| Omitted                | Hidden    | Wide (89% of button)   | `../t?{mainCode}-{variant}`            |
 
 When `timeCode` is omitted, `URLshortener2` resolves the link with `?variant=…` only (no `time` query parameter). The outer button keeps aspect ratio **1.8 : 1** in both modes.
 
@@ -118,10 +119,10 @@ Timed game wrappers (e.g. `MixedSumsHourglassGameIcon`) keep using `stringToTime
 
 ### Timed vs untimed index rows
 
-| Game type | Index row pattern | `timeCode` on button |
-|-----------|-------------------|----------------------|
-| Timed (e.g. MixedSums) | Two buttons per variant (`durations[0]`, `durations[1]`) | Always set |
-| Untimed (e.g. ClickInOrder) | One button per variant | Omit attribute |
+| Game type                   | Index row pattern                                        | `timeCode` on button |
+| --------------------------- | -------------------------------------------------------- | -------------------- |
+| Timed (e.g. MixedSums)      | Two buttons per variant (`durations[0]`, `durations[1]`) | Always set           |
+| Untimed (e.g. ClickInOrder) | One button per variant                                   | Omit attribute       |
 
 Example untimed index row:
 
@@ -140,6 +141,24 @@ renderRow(variant: string): HTMLTemplateResult {
 - `MixedSumsHourglassGameIcon.ts`
 
 This wrapper reuses the same button chrome while keeping game-specific visuals modular.
+
+A typical helper looks like this:
+
+```typescript
+import type { RenderGameIconFunction } from '../RenderGameIconFunction';
+
+export const renderMyGameHourglassGameIcon: RenderGameIconFunction = (
+  variant,
+  classes,
+  timeCode,
+) => {
+  return html`<my-game-hourglass-game-icon
+    class=${classMap(classes)}
+    .variant=${variant}
+    .timeCode=${timeCode}
+  ></my-game-hourglass-game-icon>`;
+};
+```
 
 **Manual inspection:** open `Rekenspelletjes/TestApp.html` for side-by-side timed and untimed `icon-hourglass-button-v2` examples.
 

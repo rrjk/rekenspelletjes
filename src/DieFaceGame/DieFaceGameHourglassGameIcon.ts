@@ -1,11 +1,25 @@
 import { LitElement, html, css } from 'lit';
 import type { CSSResultGroup, HTMLTemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
 
 import { type TimeCode, stringToTimeCode } from '../TimeCodes';
 import { getDieFaceGameVariant } from './DieFaceGameVariants';
 import '../IconHourglassButtonV2';
 import './DieFaceGameIcon';
+import { RenderGameIconFunction } from '../RenderGameIconFunction';
+
+export const renderDieFaceGameHourglassGameIcon: RenderGameIconFunction = (
+  variant,
+  classes,
+  timeCode,
+) => {
+  return html`<die-face-game-hourglass-game-icon
+    class=${classMap(classes)}
+    .variant=${variant}
+    .timeCode=${timeCode}
+  ></die-face-game-hourglass-game-icon>`;
+};
 
 @customElement('die-face-game-hourglass-game-icon')
 export class DieFaceGameHourglassGameIcon extends LitElement {

@@ -1,30 +1,22 @@
 import { LitElement, html, css } from 'lit';
 import type { CSSResultGroup, HTMLTemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { type ClassInfo, classMap } from 'lit/directives/class-map.js';
+import { classMap } from 'lit/directives/class-map.js';
 
 import { type TimeCode, stringToTimeCode } from '../TimeCodes';
 import { getNumberlineArchesGameVariant } from './NumberlineArchesGameVariants';
 import '../IconHourglassButtonV2';
 import './NumberlineArchesGameIcon';
+import { RenderGameIconFunction } from '../RenderGameIconFunction';
 
-/** Helper function to render the numberline arches game hourglass game icon
- * @param timeCode The time code to use for the icon
- * @param variant The variant of the game to use for the icon
- * @param classes Optional classes to add to the icon
- * @returns The HTML template result for the icon
- */
-export function renderNumberlineArchesGameHourglassGameIcon(
-  timeCode: TimeCode,
-  variant: string,
-  classes: ClassInfo = {},
-): HTMLTemplateResult {
-  return html`<numberline-arches-game-hourglass-game-icon
-    class=${classMap(classes)}
-    .variant=${variant}
-    .timeCode=${timeCode}
-  ></numberline-arches-game-hourglass-game-icon>`;
-}
+export const renderNumberlineArchesGameHourglassGameIcon: RenderGameIconFunction =
+  (variant, classes, timeCode) => {
+    return html`<numberline-arches-game-hourglass-game-icon
+      class=${classMap(classes)}
+      .variant=${variant}
+      .timeCode=${timeCode}
+    ></numberline-arches-game-hourglass-game-icon>`;
+  };
 
 @customElement('numberline-arches-game-hourglass-game-icon')
 export class NumberlineArchesGameHourglassGameIcon extends LitElement {

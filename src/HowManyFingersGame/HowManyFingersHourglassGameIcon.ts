@@ -1,12 +1,23 @@
 import { LitElement, html, css } from 'lit';
 import type { HTMLTemplateResult, CSSResultGroup } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
 
 import { type TimeCode, stringToTimeCode } from '../TimeCodes';
 import { getHowManyFingersGameVariant } from './HowManyFingersGameVariants';
 
 import '../IconHourglassButtonV2';
 import './HowManyFingersGameIcon';
+import { RenderGameIconFunction } from '../RenderGameIconFunction';
+
+export const renderHowManyFingersGameHourglassGameIcon: RenderGameIconFunction =
+  (variant, classes, timeCode) => {
+    return html`<how-many-fingers-hourglass-game-icon
+      class=${classMap(classes)}
+      .variant=${variant}
+      .timeCode=${timeCode}
+    ></how-many-fingers-hourglass-game-icon>`;
+  };
 
 @customElement('how-many-fingers-hourglass-game-icon')
 export class HowManyFingersHourglassGameIcon extends LitElement {

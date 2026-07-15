@@ -1,11 +1,25 @@
 import { html, css } from 'lit';
 import type { CSSResultGroup, HTMLTemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
 
 import { getClickInOrderGameVariant } from './ClickInOrderGameVariants';
 
 import './ClickInOrderGameIcon';
 import { IconHourglassButtonV3 } from '../IconHourglassButtonV3';
+import { RenderGameIconFunction } from '../RenderGameIconFunction';
+
+export const renderClickInOrderGameHourglassGameIcon: RenderGameIconFunction = (
+  variant,
+  classes,
+  timeCode,
+) => {
+  return html`<click-in-order-hourglass-game-icon
+    class=${classMap(classes)}
+    .variant=${variant}
+    .timeCode=${timeCode}
+  ></click-in-order-hourglass-game-icon>`;
+};
 
 @customElement('click-in-order-hourglass-game-icon')
 export class ClickInOrderHourglassGameIcon extends IconHourglassButtonV3 {

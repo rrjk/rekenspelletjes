@@ -9,7 +9,7 @@ This guide explains the pattern for creating game families with variant-based co
 - `<GameName>Variants.ts` - Variant metadata (export `gameVariants` for testing)
 - `<GameName>Variants.test.ts` - Variant tests
 - `<GameName>Icon.ts` - Visual icon rendering
-- `<GameName>HourglassGameIcon.ts` - Hourglass/no-time button wrapper (optional for non-time-limited games)
+- `<GameName>HourglassGameIcon.ts` - Hourglass/no-time button wrapper (optional for non-time-limited games) and exported `render<GameName>HourglassGameIcon` helper typed as `RenderGameIconFunction`
 - `<GameName>IndexAppV2.ts` - Index page component
 - `<GameName>App.ts` - Main game with dual URL parsing (variant + explicit)
 
@@ -284,14 +284,50 @@ render(): HTMLTemplateResult {
 
 Use the `IconHourglassButtonV3` base class and inherit from it. Override `mainCode`, `description`, and `renderGameIcon()` so the hourglass button renders the game icon without embedding the button markup directly. If the game is not time-based, omit the `timeCode` attribute and `IconHourglassButtonV3` will render as a plain button without an hourglass icon.
 
+Every hourglass wrapper should also export a small render helper with the same convention used in the repository:
+
+```typescript
+import type { RenderGameIconFunction } from '../RenderGameIconFunction';
+
+export const render<GameName>HourglassGameIcon: RenderGameIconFunction = (
+  variant,
+  classes,
+  timeCode,
+) => {
+  return html`<game-name-hourglass-game-icon
+    class=${classMap(classes)}
+    .variant=${variant}
+    .timeCode=${timeCode}
+  ></game-name-hourglass-game-icon>`;
+};
+```
+
+This helper should live alongside the custom element class and make it easy to render the same wrapper from index apps or other composition layers.
+
 ```typescript
 import { html, css } from 'lit';
 import type { CSSResultGroup, HTMLTemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { type ClassInfo, classMap } from 'lit/directives/class-map.js';
 
+import { type TimeCode } from '../TimeCodes';
+import type { RenderGameIconFunction } from '../RenderGameIconFunction';
 import { get<GameName>Variant } from './<GameName>Variants';
 import { IconHourglassButtonV3 } from '../IconHourglassButtonV3';
 import './<GameName>Icon';
+
+/** Helper function to render the <game-name> hourglass game icon */
+export const render<GameName>HourglassGameIcon: RenderGameIconFunction = (
+  variant,
+  classes,
+  timeCode,
+) => {
+  return html`<game-name-hourglass-game-icon
+    class=${classMap(classes)}
+    .variant=${variant}
+    .timeCode=${timeCode}
+  ></game-name-hourglass-game-icon>`;
+};
 
 @customElement('<game-name>-hourglass-game-icon')
 export class <GameName>HourglassGameIcon extends IconHourglassButtonV3 {
@@ -834,7 +870,7 @@ throw new UnexpectedValueError(value);
 - [ ] Create `<GameName>Variants.ts` (export `gameVariants`)
 - [ ] Create `<GameName>Variants.test.ts`
 - [ ] Create `<GameName>Icon.ts` with proper URL handling for images
-- [ ] Create `<GameName>HourglassGameIcon.ts`
+- [ ] Create `<GameName>HourglassGameIcon.ts` with an exported `render<GameName>HourglassGameIcon` helper typed as `RenderGameIconFunction`
 - [ ] Create `<GameName>IndexAppV2.ts`
 - [ ] Create `<GameName>App.ts` with dual URL parsing
 - [ ] Update main `index.html`
