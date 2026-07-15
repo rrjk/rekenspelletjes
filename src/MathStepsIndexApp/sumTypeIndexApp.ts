@@ -90,32 +90,36 @@ export abstract class SumTypeIndexApp<Game extends string> extends LitElement {
   renderGameIcon(
     game: Game,
     variant: string,
-    timeCode: TimeCode,
     position: 'left' | 'right' | 'center' = 'center',
+    timeCode?: TimeCode,
   ): HTMLTemplateResult {
     const classes: ClassInfo = {
       leftGameIcon: position === 'left',
       rightGameIcon: position === 'right',
       centeredGameIcon: position === 'center',
     };
-    return this.iconFunctions[game](timeCode, variant, classes);
+    return this.iconFunctions[game](variant, classes, timeCode);
   }
 
   renderRow(row: RowType<Game>): HTMLTemplateResult {
     if (row.timeCodes.length === 2) {
       return html`
-        ${this.renderGameIcon(row.game, row.variant, row.timeCodes[0], 'left')}
-        ${this.renderGameIcon(row.game, row.variant, row.timeCodes[1], 'right')}
+        ${this.renderGameIcon(row.game, row.variant, 'left', row.timeCodes[0])}
+        ${this.renderGameIcon(row.game, row.variant, 'right', row.timeCodes[1])}
       `;
     }
     if (row.timeCodes.length === 1) {
       return html`${this.renderGameIcon(
         row.game,
         row.variant,
-        row.timeCodes[0],
         'center',
+        row.timeCodes[0],
       )}`;
     }
+    if (row.timeCodes.length === 0) {
+      return html`${this.renderGameIcon(row.game, row.variant, 'center')}`;
+    }
+
     throw new Error(
       'Unsupported number of timeCodes in row: ' + row.timeCodes.length,
     );
