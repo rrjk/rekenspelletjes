@@ -4,7 +4,7 @@ import {
   aanklikkenInTafelVolgordeLink,
   aanklikkenInVolgordeLink,
 } from './ClickInOrderGame/ClickInOrderAppLink';
-import { klikFotoOpGetallenlijnLink } from './ClickTheRightPhotoOnNumberLineAppLink';
+import { klikFotoOpGetallenlijnLink } from './ClickTheRightPhotoOnNumberLineGame/ClickTheRightPhotoOnNumberLineAppLink';
 import { klokPaartjesLink } from './ClockPairingAppLink';
 import { combineToSolveSumGameLink } from './CombineToSolveSumGame/CombineToSolveSumGameAppLink';
 import { eierdoosTellenLink } from './EggCounting/EggCountingAppLink';
