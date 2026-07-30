@@ -58,7 +58,7 @@ export abstract class SumTypeIndexApp<Game extends string> extends LitElement {
           display: grid;
           row-gap: 10px;
           column-gap: 10px;
-          grid-template-columns: repeat(2, minmax(200px, 1fr));
+          grid-template-columns: repeat(2, 1fr);
           justify-content: space-around;
           justify-items: center;
           width: min(400px, 90vw);
