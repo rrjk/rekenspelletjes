@@ -31,6 +31,8 @@ export class HangingPhotoIconWithTextOverlay extends LitElement {
   @state()
   accessor framedPhoto = new FramedPhotoSVG();
 
+  static aspectRatio = 110 / 70;
+
   constructor() {
     super();
     this.framedPhoto.photoId = this.photoId;
@@ -43,6 +45,13 @@ export class HangingPhotoIconWithTextOverlay extends LitElement {
     return css`
       .digits {
         font: 10px sans-serif;
+        fill: var(--line-color);
+      }
+      .numberline,
+      .tickMark10,
+      .tickMark5,
+      .tickMark1 {
+        stroke: var(--line-color);
       }
     `;
   }
@@ -56,17 +65,17 @@ export class HangingPhotoIconWithTextOverlay extends LitElement {
 
   render10TickMark(pos: number): SVGTemplateResult {
     return svg`
-      <line x1="${pos}" x2="${pos}" y1="1" y2="11" width="3" stroke="blue"/>
+      <line class='tickMark10' x1="${pos}" x2="${pos}" y1="1" y2="11" />
     `;
   }
   render5TickMark(pos: number): SVGTemplateResult {
     return svg`
-      <line x1="${pos}" x2="${pos}" y1="3" y2="9" width="2" stroke="blue"/>
+      <line class='tickMark5' x1="${pos}" x2="${pos}" y1="3" y2="9"  />
     `;
   }
   render1TickMark(pos: number): SVGTemplateResult {
     return svg`
-      <line x1="${pos}" x2="${pos}" y1="4" y2="8" width="1" stroke="blue"/>
+      <line class='tickMark1' x1="${pos}" x2="${pos}" y1="4" y2="8"  />
     `;
   }
 
@@ -106,7 +115,7 @@ export class HangingPhotoIconWithTextOverlay extends LitElement {
 
   renderMiddleDigit(): SVGTemplateResult {
     let middleDigitSvg = svg``;
-    if (this.showNumberMiddle) {
+    if (this.showNumberMiddle && this.numberRight - this.numberLeft > 10) {
       middleDigitSvg = svg`
         <text
           x="50"
@@ -126,13 +135,13 @@ export class HangingPhotoIconWithTextOverlay extends LitElement {
     let numberline = svg``;
     if (this.brokenLine)
       numberline = svg`
-        <line x1="1" x2="12" y1="6" y2="6" stroke="blue" width="3" />
-        <line x1="18" x2="22" y1="6" y2="6" stroke="blue" width="3" />
-        <line x1="28" x2="32" y1="6" y2="6" stroke="blue" width="3" />
-        <line x1="38" x2="99" y1="6" y2="6" stroke="blue" width="3" />
+        <line class="numberline" x1="1" x2="12" y1="6" y2="6"  />
+        <line class="numberline" x1="18" x2="22" y1="6" y2="6" />
+        <line class="numberline" x1="28" x2="32" y1="6" y2="6" />
+        <line class="numberline" x1="38" x2="99" y1="6" y2="6" />
       `;
     else
-      numberline = svg`<line x1="1" x2="99" y1="6" y2="6" stroke="blue" width="3" />`;
+      numberline = svg`<line class="numberline" x1="1" x2="99" y1="6" y2="6" />`;
     return numberline;
   }
 
@@ -140,11 +149,13 @@ export class HangingPhotoIconWithTextOverlay extends LitElement {
     let tickMarks10Positions: number[] = [];
     let tickMarks5Positions: number[] = [];
     let tickMarks1Positions: number[] = [];
+    const numberLineLength = this.numberRight - this.numberLeft;
 
     if (
-      this.smallestTickmark === 'tickMark1' ||
-      this.smallestTickmark === 'tickMark5' ||
-      this.smallestTickmark === 'tickMark10'
+      numberLineLength > 10 &&
+      (this.smallestTickmark === 'tickMark1' ||
+        this.smallestTickmark === 'tickMark5' ||
+        this.smallestTickmark === 'tickMark10')
     )
       tickMarks10Positions = [1, 50, 99];
     else tickMarks10Positions = [1, 99];
@@ -153,36 +164,47 @@ export class HangingPhotoIconWithTextOverlay extends LitElement {
       this.smallestTickmark === 'tickMark1' ||
       this.smallestTickmark === 'tickMark5'
     ) {
-      tickMarks5Positions = [75];
-      if (!this.brokenLine) tickMarks5Positions.push(25);
+      if (numberLineLength > 10) {
+        tickMarks5Positions = [75];
+        if (!this.brokenLine) tickMarks5Positions.push(25);
+      } else {
+        tickMarks5Positions = [50];
+      }
     }
 
     if (this.smallestTickmark === 'tickMark1') {
-      tickMarks1Positions = [5, 10, 40, 45, 55, 60, 65, 70, 80, 85, 90, 95];
-      if (!this.brokenLine)
-        tickMarks1Positions = tickMarks1Positions.concat([15, 20, 30, 35]);
+      if (numberLineLength > 10) {
+        tickMarks1Positions = [5, 10, 40, 45, 55, 60, 65, 70, 80, 85, 90, 95];
+        if (!this.brokenLine)
+          tickMarks1Positions = tickMarks1Positions.concat([15, 20, 30, 35]);
+      } else {
+        tickMarks1Positions = [10, 20, 30, 40, 60, 70, 80, 90];
+      }
     }
 
     return html`
-      <div style="width: 110px; height: 70px; position; absolute;">
-        <svg viewBox="-7 -7 124 84">
-          <rect
-            x="-7"
-            y="-7"
-            rx="15"
-            width="120"
-            height="80"
-            fill=${getColorInfo(this.background).mainColorCode}
-          />
-          ${this.renderNumberLine()}
-          ${tickMarks10Positions.map(pos => this.render10TickMark(pos))}
-          ${tickMarks5Positions.map(pos => this.render5TickMark(pos))}
-          ${tickMarks1Positions.map(pos => this.render1TickMark(pos))}
-          ${this.renderLeftDigit()} ${this.renderMiddleDigit()}
-          ${this.renderRightDigit()} ${this.renderConnectingLine()}
-          ${this.framedPhoto.render()}
-        </svg>
-      </div>
+      <style>
+        :host {
+          --line-color: ${getColorInfo(this.background).fontColor};
+        }
+      </style>
+      <svg viewBox="-7 -7 124 84">
+        <rect
+          x="-7"
+          y="-7"
+          rx="15"
+          width="120"
+          height="80"
+          fill=${getColorInfo(this.background).mainColorCode}
+        />
+        ${this.renderNumberLine()}
+        ${tickMarks10Positions.map(pos => this.render10TickMark(pos))}
+        ${tickMarks5Positions.map(pos => this.render5TickMark(pos))}
+        ${tickMarks1Positions.map(pos => this.render1TickMark(pos))}
+        ${this.renderLeftDigit()} ${this.renderMiddleDigit()}
+        ${this.renderRightDigit()} ${this.renderConnectingLine()}
+        ${this.framedPhoto.render()}
+      </svg>
     `;
   }
 }

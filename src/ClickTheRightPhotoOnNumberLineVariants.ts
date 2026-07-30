@@ -115,7 +115,7 @@ export const clickTheRightPhotoOnNumberLineVariants: Record<
     showAll10Numbers: true,
   },
   cc: {
-    iconColor: 'pink',
+    iconColor: 'magenta',
     minimum: 0,
     maximum: 50,
     show10TickMarks: true,
