@@ -7,7 +7,7 @@ import {
   type ClickTheRightPhotoOnNumberLineExtendedVariantInfo,
 } from './ClickTheRightPhotoOnNumberLineVariants';
 
-import { HangingPhotoIconWithTextOverlay } from './HangingPhotoIconWithTextOverlay';
+import { HangingPhotoIconWithTextOverlay } from '../HangingPhotoIconWithTextOverlay';
 
 @customElement('click-the-right-photo-on-number-line-game-icon')
 export class ClickTheRightPhotoOnNumberLineGameIcon extends LitElement {

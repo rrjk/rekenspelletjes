@@ -4,20 +4,20 @@
 import { HTMLTemplateResult, html } from 'lit';
 import { state } from 'lit/decorators.js';
 
-import { TimeLimitedGame2 } from './TimeLimitedGame2';
-import './NumberLineHangingPhotos';
+import { TimeLimitedGame2 } from '../TimeLimitedGame2';
+import '../NumberLineHangingPhotos';
 
-import { randomIntFromRange } from './Randomizer';
+import { randomIntFromRange } from '../Randomizer';
 
-import { GameLogger } from './GameLogger';
+import { GameLogger } from '../GameLogger';
 import {
   getClickTheRightPhotoOnNumberLineVariant,
   type ClickTheRightPhotoOnNumberLineExtendedVariantInfo,
 } from './ClickTheRightPhotoOnNumberLineVariants';
 
-import './MessageDialogV2';
-import './GameOverDialogV2';
-import { DescribeNumberLineParameters } from './NumberLineParameters';
+import '../MessageDialogV2';
+import '../GameOverDialogV2';
+import { DescribeNumberLineParameters } from '../NumberLineParameters';
 
 class ClickTheRightPhotoOnNumberLineApp extends TimeLimitedGame2 {
   @state()

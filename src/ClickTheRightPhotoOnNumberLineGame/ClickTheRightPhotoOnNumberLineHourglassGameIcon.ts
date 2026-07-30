@@ -6,8 +6,8 @@ import { classMap } from 'lit/directives/class-map.js';
 import { getClickTheRightPhotoOnNumberLineVariant } from './ClickTheRightPhotoOnNumberLineVariants';
 
 import './ClickTheRightPhotoOnNumberLineGameIcon';
-import { IconHourglassButtonV3 } from './IconHourglassButtonV3';
-import { RenderGameIconFunction } from './RenderGameIconFunction';
+import { IconHourglassButtonV3 } from '../IconHourglassButtonV3';
+import { RenderGameIconFunction } from '../RenderGameIconFunction';
 
 export const renderClickTheRightPhotoOnNumberLineHourglassGameIcon: RenderGameIconFunction =
   (variant, classes, timeCode) => {
