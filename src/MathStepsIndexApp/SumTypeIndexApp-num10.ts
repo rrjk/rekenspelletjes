@@ -8,6 +8,7 @@ import { renderHowManyFingersGameHourglassGameIcon } from '../HowManyFingersGame
 import { renderDotCountingGameHourglassGameIcon } from '../DotCountingGame/DotCountingGameHourglassGameIcon';
 import { renderSortingGameHourglassGameIcon } from '../SortingGame/SortingGameHourglassGameIcon';
 import { renderClickInOrderGameHourglassGameIcon } from '../ClickInOrderGame/ClickInOrderHourglassGameIcon';
+import { renderClickTheRightPhotoOnNumberLineHourglassGameIcon } from '../ClickTheRightPhotoOnNumberLineGame/ClickTheRightPhotoOnNumberLineHourglassGameIcon';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const game = [
@@ -16,6 +17,7 @@ const game = [
   'dot-counting-game',
   'sorting-game',
   'click-in-order-game',
+  'click-the-right-photo-on-number-line-game',
 ] as const;
 
 export type Game = (typeof game)[number];
@@ -73,6 +75,16 @@ export class SumTypeIndexApp7m5 extends SumTypeIndexApp<Game> {
               timeCodes: ['a', 'b'],
             },
             {
+              game: 'click-the-right-photo-on-number-line-game',
+              variant: 'ea',
+              timeCodes: ['a', 'b'],
+            },
+            {
+              game: 'click-the-right-photo-on-number-line-game',
+              variant: 'eb',
+              timeCodes: ['a', 'b'],
+            },
+            {
               game: 'click-in-order-game',
               variant: 'aa',
               timeCodes: [],
@@ -89,5 +101,7 @@ export class SumTypeIndexApp7m5 extends SumTypeIndexApp<Game> {
     'dot-counting-game': renderDotCountingGameHourglassGameIcon,
     'sorting-game': renderSortingGameHourglassGameIcon,
     'click-in-order-game': renderClickInOrderGameHourglassGameIcon,
+    'click-the-right-photo-on-number-line-game':
+      renderClickTheRightPhotoOnNumberLineHourglassGameIcon,
   };
 }
