@@ -4,43 +4,43 @@ import { createRef, ref, Ref } from 'lit/directives/ref.js';
 
 import type { CSSResultGroup, HTMLTemplateResult } from 'lit';
 
-import { NumberLine } from './NumberLine';
+import { NumberLine } from '../NumberLine';
 
-import './ProgressBar';
-import type { ProgressBar } from './ProgressBar';
+import '../ProgressBar';
+import type { ProgressBar } from '../ProgressBar';
 
-import { randomIntFromRange } from './Randomizer';
+import { randomIntFromRange } from '../Randomizer';
 
-import './ScoreBox';
-import type { ScoreBox } from './ScoreBox';
+import '../ScoreBox';
+import type { ScoreBox } from '../ScoreBox';
 
-import './MessageDialogV2';
-import type { MessageDialogV2 } from './MessageDialogV2';
+import '../MessageDialogV2';
+import type { MessageDialogV2 } from '../MessageDialogV2';
 
-import './GameOverDialogV2';
+import '../GameOverDialogV2';
 import type {
   GameOverDialogV2,
   GameOverDialogCloseEvent,
-} from './GameOverDialogV2';
+} from '../GameOverDialogV2';
 
-import './Platform';
-import type { Platform } from './Platform';
+import '../Platform';
+import type { Platform } from '../Platform';
 
-import { ChildNotFoundError } from './ChildNotFoundError';
+import { ChildNotFoundError } from '../ChildNotFoundError';
 
 import {
   ParseNumberLineParameters,
   DescribeNumberLineParameters,
-} from './NumberLineParameters';
-import type { NumberLineParameters } from './NumberLineParameters';
+} from '../NumberLineParameters';
+import type { NumberLineParameters } from '../NumberLineParameters';
 
-import { ParseGametimeFromUrl } from './GametimeParameters';
-import { GameLogger } from './GameLogger';
+import { ParseGametimeFromUrl } from '../GametimeParameters';
+import { GameLogger } from '../GameLogger';
 
 @customElement('jump-on-numberline-app')
 export class JumpOnNumberLineApp extends LitElement {
   static janImage = new URL(
-    '../images/Mompitz Jan_Ballon.png',
+    '../../images/Mompitz Jan_Ballon.png',
     import.meta.url,
   );
 
