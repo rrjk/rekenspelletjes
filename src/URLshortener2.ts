@@ -29,6 +29,7 @@ const baseURLs: Partial<Record<string, URL>> = {
   AB: new URL('./HoeveelVingersSpel.html', baseUrl),
   AC: new URL('./GemengdeSommen.html', baseUrl),
   AD: new URL('./GemengdeSommen.html', baseUrl),
+  T: new URL('./KlikFotoOpGetallenlijn.html', baseUrl),
 };
 
 let newUrl = defaultUrl;
