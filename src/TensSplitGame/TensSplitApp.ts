@@ -10,6 +10,7 @@ import './TensSplitWidget';
 import type { Digit } from '../DigitKeyboard';
 import '../DigitKeyboard';
 import { randomFromSet } from '../Randomizer';
+import { getTensSplitGameVariant } from './TensSplitGameVariants';
 
 const allEnabledDigits = [
   false,
@@ -38,9 +39,48 @@ export class TensSplitApp extends TimeLimitedGame2 {
 
   constructor() {
     super();
-    for (let tens = 1; tens < 10; tens++)
-      for (let units = 1; units < 10; units++)
+    this.parseUrl();
+  }
+
+  private setEligibleNumbers(
+    minTens: number,
+    maxTens: number,
+    minUnits: number,
+    maxUnits: number,
+  ): void {
+    this.eligibleNumbersToSplit = [];
+    for (let tens = minTens; tens <= maxTens; tens++)
+      for (let units = minUnits; units <= maxUnits; units++)
         this.eligibleNumbersToSplit.push(tens * 10 + units);
+  }
+
+  private parseUrlWithVariant(urlParams: URLSearchParams): void {
+    const variant = urlParams.get('variant');
+    if (variant === null) throw Error('Internal SW Error: no variant in URL');
+    const extendedVariantInfo = getTensSplitGameVariant(variant);
+
+    this.setEligibleNumbers(
+      extendedVariantInfo.minTens,
+      extendedVariantInfo.maxTens,
+      extendedVariantInfo.minUnits,
+      extendedVariantInfo.maxUnits,
+    );
+
+    this.gameLogger.setMainCode(extendedVariantInfo.mainCode);
+    this.gameLogger.setSubCode(variant);
+  }
+
+  private parseUrlWithoutVariant(): void {
+    // Keep existing behavior for backward compatibility.
+    this.setEligibleNumbers(1, 9, 1, 9);
+    this.gameLogger.setMainCode('W');
+    this.gameLogger.setSubCode('a');
+  }
+
+  private parseUrl(): void {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('variant')) this.parseUrlWithVariant(urlParams);
+    else this.parseUrlWithoutVariant();
   }
 
   /** Start a new game.
