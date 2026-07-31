@@ -16,8 +16,9 @@ import '../DigitFillin';
 import '../RealHeight';
 import type { GameRangeType, ShowSplitsType } from './SumsWithSplitAppLink';
 import { getTextWidth } from '../StringHelperFunctions';
-
-type OperatorType = '+' | '-';
+import { getSumsWithSplitGameVariant } from './SumsWithSplitGameVariants';
+import type { AdditionOperator } from '../Operator';
+import { operatorToSymbol } from '../Operator';
 
 @customElement('sums-with-split-app')
 export class SumsWithDoubleSplitApp extends TimeLimitedGame2 {
@@ -50,9 +51,9 @@ export class SumsWithDoubleSplitApp extends TimeLimitedGame2 {
   @state()
   private accessor right2Split = 0;
   @state()
-  private accessor operators: OperatorType[] = [];
+  private accessor operators: AdditionOperator[] = [];
   @state()
-  private accessor selectedOperator: OperatorType = '+';
+  private accessor selectedOperator: AdditionOperator = 'plus';
   @state()
   private accessor game: GameRangeType = 'split1Till20';
   @state()
@@ -71,101 +72,114 @@ export class SumsWithDoubleSplitApp extends TimeLimitedGame2 {
 
   private parseUrl(): void {
     const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('variant')) this.parseUrlWithVariant(urlParams);
+    else this.parseUrlWithoutVariant(urlParams);
+  }
+
+  private parseUrlWithVariant(urlParams: URLSearchParams): void {
+    const variant = urlParams.get('variant');
+    if (variant === null) {
+      throw new Error(
+        'Internal SW Error, parseUrlWithVariant called while there is no variant in the URL',
+      );
+    }
+
+    const variantInfo = getSumsWithSplitGameVariant(variant);
+
+    this.game = variantInfo.game;
+    this.operators = [...variantInfo.operators];
+    this.showSplits = variantInfo.showSplits;
+    this.usedFillIns = this.getUsedFillIns(this.game, this.showSplits);
+
+    this.gameLogger.setMainCode(variantInfo.mainCode);
+    this.gameLogger.setSubCode(variant);
+  }
+
+  private determineLegacySubCode(): string {
+    if (this.game === 'split1Till20') {
+      if (this.operators.length === 1 && this.operators[0] === 'plus')
+        return 'a';
+      if (this.operators.length === 1 && this.operators[0] === 'minus')
+        return 'b';
+      return 'c';
+    }
+
+    if (this.game === 'split1Till100') {
+      if (this.operators.length === 1 && this.operators[0] === 'plus')
+        return 'd';
+      if (this.operators.length === 1 && this.operators[0] === 'minus')
+        return 'e';
+      return 'f';
+    }
+
+    if (this.operators.length === 1 && this.operators[0] === 'plus') return 'a';
+    if (this.operators.length === 1 && this.operators[0] === 'minus')
+      return 'b';
+    return 'c';
+  }
+
+  private getUsedFillIns(
+    game: GameRangeType,
+    showSplits: ShowSplitsType,
+  ): string[] {
+    if (showSplits === 'hideSplits') return ['result'];
+
+    if (game === 'split2Till100') {
+      return [
+        'split1Left',
+        'split1Right',
+        'split2Left',
+        'split2Right',
+        'result',
+      ];
+    }
+
+    return ['split1Left', 'split1Right', 'result'];
+  }
+
+  private parseUrlWithoutVariant(urlParams: URLSearchParams): void {
     this.operators = [];
     if (
       urlParams.has('plus') &&
       (urlParams.get('plus') === 'true' || urlParams.get('plus') === '')
     )
-      this.operators.push('+');
+      this.operators.push('plus');
     if (
       urlParams.has('minus') &&
       (urlParams.get('minus') === 'true' || urlParams.get('minus') === '')
     )
-      this.operators.push('-');
-    if (this.operators.length === 0) this.operators.push('+');
+      this.operators.push('minus');
+    if (this.operators.length === 0) this.operators.push('plus');
 
     if (urlParams.has('game')) {
       const game = urlParams.get('game');
       if (game === 'split1Till20') {
         this.game = 'split1Till20';
-        this.usedFillIns = ['split1Left', 'split1Right', 'result'];
       } else if (game === 'split1Till100') {
         this.game = 'split1Till100';
-        this.usedFillIns = ['split1Left', 'split1Right', 'result'];
       } else if (game === 'split2Till100') {
         this.game = 'split2Till100';
-        this.usedFillIns = [
-          'split1Left',
-          'split1Right',
-          'split2Left',
-          'split2Right',
-          'result',
-        ];
-        this.gameLogger.setSubCode('c');
       } else {
         // No game type was provided, we fall back to the default
         this.game = 'split1Till20';
-        this.usedFillIns = ['split1Left', 'split1Right', 'result'];
       }
     } else {
       // No game type was provided, we fall back to the default
       this.game = 'split1Till20';
-      this.usedFillIns = ['split1Left', 'split1Right', 'result'];
     }
 
-    if (
-      this.game === 'split1Till20' &&
-      this.operators.length === 1 &&
-      this.operators[0] === '+'
-    )
-      this.gameLogger.setSubCode('a');
-    else if (
-      this.game === 'split1Till20' &&
-      this.operators.length === 1 &&
-      this.operators[0] === '-'
-    )
-      this.gameLogger.setSubCode('b');
-    else if (this.game === 'split1Till20' && this.operators.length === 2)
-      this.gameLogger.setSubCode('c');
-    else if (
-      this.game === 'split1Till100' &&
-      this.operators.length === 1 &&
-      this.operators[0] === '+'
-    )
-      this.gameLogger.setSubCode('d');
-    else if (
-      this.game === 'split1Till100' &&
-      this.operators.length === 1 &&
-      this.operators[0] === '-'
-    )
-      this.gameLogger.setSubCode('e');
-    else if (this.game === 'split1Till100' && this.operators.length === 2)
-      this.gameLogger.setSubCode('f');
-    else if (
-      this.game === 'split2Till100' &&
-      this.operators.length === 1 &&
-      this.operators[0] === '+'
-    ) {
-      this.gameLogger.setMainCode('V');
-      this.gameLogger.setSubCode('a');
-    } else if (
-      this.game === 'split2Till100' &&
-      this.operators.length === 1 &&
-      this.operators[0] === '-'
-    ) {
-      this.gameLogger.setMainCode('V');
-      this.gameLogger.setSubCode('b');
-    } else if (this.game === 'split2Till100' && this.operators.length === 2) {
-      this.gameLogger.setMainCode('V');
-      this.gameLogger.setSubCode('c');
-    }
-
+    this.showSplits = 'showSplits';
     if (urlParams.has('splits')) {
       const splits = urlParams.get('splits');
       if (splits === 'showSplits' || splits === 'hideSplits')
         this.showSplits = splits;
-      if (this.showSplits === 'hideSplits') this.usedFillIns = ['result'];
     }
+
+    this.usedFillIns = this.getUsedFillIns(this.game, this.showSplits);
+
+    const legacyMainCode = this.game === 'split2Till100' ? 'V' : 'G';
+    this.gameLogger.setMainCode(legacyMainCode);
+    this.gameLogger.setSubCode(this.determineLegacySubCode());
   }
 
   override async getUpdateComplete(): Promise<boolean> {
@@ -193,18 +207,18 @@ export class SumsWithDoubleSplitApp extends TimeLimitedGame2 {
     const possibleSums = [];
 
     if (this.game === 'split1Till20') {
-      if (this.operators.includes('+')) possibleSums.push('6+8');
-      if (this.operators.includes('-')) possibleSums.push('12-3');
+      if (this.operators.includes('plus')) possibleSums.push('6+8');
+      if (this.operators.includes('minus')) possibleSums.push('12-3');
     }
 
     if (this.game === 'split1Till100') {
-      if (this.operators.includes('+')) possibleSums.push('36+8');
-      if (this.operators.includes('-')) possibleSums.push('53-7');
+      if (this.operators.includes('plus')) possibleSums.push('36+8');
+      if (this.operators.includes('minus')) possibleSums.push('53-7');
     }
 
     if (this.game === 'split2Till100') {
-      if (this.operators.includes('+')) possibleSums.push('47+38');
-      if (this.operators.includes('-')) possibleSums.push('65-49');
+      if (this.operators.includes('plus')) possibleSums.push('47+38');
+      if (this.operators.includes('minus')) possibleSums.push('65-49');
     }
 
     let ret: string;
@@ -242,7 +256,7 @@ export class SumsWithDoubleSplitApp extends TimeLimitedGame2 {
     this.selectedOperator = randomFromSet(this.operators);
 
     if (this.game === 'split1Till20' || this.game === 'split1Till100') {
-      if (this.selectedOperator === '+') {
+      if (this.selectedOperator === 'plus') {
         const leftOperandUnits = randomIntFromRange(2, 9);
         const leftOperandTens =
           this.game === 'split1Till20' ? 0 : randomIntFromRange(0, 8);
@@ -254,7 +268,7 @@ export class SumsWithDoubleSplitApp extends TimeLimitedGame2 {
         this.right1Split = this.rightOperand - this.left1Split;
       }
 
-      if (this.selectedOperator === '-') {
+      if (this.selectedOperator === 'minus') {
         const leftOperandUnits = randomIntFromRange(1, 8);
         const leftOperandTens =
           this.game === 'split1Till20' ? 1 : randomIntFromRange(1, 9);
@@ -268,7 +282,7 @@ export class SumsWithDoubleSplitApp extends TimeLimitedGame2 {
     }
 
     if (this.game === 'split2Till100') {
-      if (this.selectedOperator === '+') {
+      if (this.selectedOperator === 'plus') {
         const leftOperandUnits = randomIntFromRange(2, 9);
         const leftOperandTens = randomIntFromRange(0, 7);
         this.leftOperand = 10 * leftOperandTens + leftOperandUnits;
@@ -286,7 +300,7 @@ export class SumsWithDoubleSplitApp extends TimeLimitedGame2 {
         this.right2Split = this.right1Split - this.left2Split;
       }
 
-      if (this.selectedOperator === '-') {
+      if (this.selectedOperator === 'minus') {
         const leftOperandUnits = randomIntFromRange(1, 8);
         const leftOperandTens = randomIntFromRange(2, 9);
         this.leftOperand = 10 * leftOperandTens + leftOperandUnits;
@@ -560,7 +574,8 @@ export class SumsWithDoubleSplitApp extends TimeLimitedGame2 {
       <div class="row" id="sum-row">
         <div class="excersize">
           <span class="leftOperand">${this.leftOperand}</span
-          ><span class="operator">${this.selectedOperator}</span
+          ><span class="operator"
+            >${operatorToSymbol(this.selectedOperator)}</span
           ><span class="rightOperand1Digit">${this.rightOperand}</span
           ><span class="operator">=</span
           ><digit-fillin

@@ -1,4 +1,4 @@
-type Operator = 'plus' | 'minus'; // Type for Operator as text (used in link creation)
+import type { AdditionOperator } from '../Operator';
 
 export type GameRangeType = 'split1Till20' | 'split1Till100' | 'split2Till100';
 
@@ -11,7 +11,7 @@ export type ShowSplitsType = 'showSplits' | 'hideSplits';
 
 export function sommenMetSplitsenLink(
   game: GameRangeType,
-  operators: Operator[],
+  operators: AdditionOperator[],
   time: number,
   splits?: ShowSplitsType,
 ) {
