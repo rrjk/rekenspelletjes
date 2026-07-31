@@ -1,55 +1,29 @@
-import { LitElement, html, css } from 'lit';
+import { html, css } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
-import { createRef, ref, Ref } from 'lit/directives/ref.js';
 
-import type { CSSResultGroup, HTMLTemplateResult } from 'lit';
+import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
 import { NumberLine } from '../NumberLine';
 
-import '../ProgressBar';
-import type { ProgressBar } from '../ProgressBar';
+import { TimeLimitedGame2 } from '../TimeLimitedGame2';
 
 import { randomIntFromRange } from '../Randomizer';
-
-import '../ScoreBox';
-import type { ScoreBox } from '../ScoreBox';
-
-import '../MessageDialogV2';
-import type { MessageDialogV2 } from '../MessageDialogV2';
-
-import '../GameOverDialogV2';
-import type {
-  GameOverDialogV2,
-  GameOverDialogCloseEvent,
-} from '../GameOverDialogV2';
 
 import '../Platform';
 import type { Platform } from '../Platform';
 
-import { ChildNotFoundError } from '../ChildNotFoundError';
-
-import {
-  ParseNumberLineParameters,
-  DescribeNumberLineParameters,
-} from '../NumberLineParameters';
+import { DescribeNumberLineParameters } from '../NumberLineParameters';
 import type { NumberLineParameters } from '../NumberLineParameters';
 
-import { ParseGametimeFromUrl } from '../GametimeParameters';
 import { GameLogger } from '../GameLogger';
+import { getJumpOnNumberLineVariant } from './JumpOnNumberLineVariants';
 
 @customElement('jump-on-numberline-app')
-export class JumpOnNumberLineApp extends LitElement {
+export class JumpOnNumberLineApp extends TimeLimitedGame2 {
   static janImage = new URL(
     '../../images/Mompitz Jan_Ballon.png',
     import.meta.url,
   );
-
-  /** Number correct answers */
-  @state()
-  private accessor numberOk = 0;
-  /** Number incorrect answers */
-  @state()
-  private accessor numberNok = 0;
 
   /** Number to set by student */
   @state()
@@ -82,13 +56,6 @@ export class JumpOnNumberLineApp extends LitElement {
   /** Is dragging the platform disabled/ */
   @state()
   private accessor dragDisabled = false;
-
-  /** Gametime in number of seconds */
-  @state()
-  private accessor gameTime: number;
-
-  welcomeDialogRef: Ref<MessageDialogV2> = createRef();
-  gameOverDialogRef: Ref<GameOverDialogV2> = createRef();
 
   /** Width of the number line in vw units */
   private static readonly numberLineWidth = 94;
@@ -124,194 +91,187 @@ export class JumpOnNumberLineApp extends LitElement {
   /** Constructor, parse URL parameters */
   constructor() {
     super();
-    this.numberLineProperties = ParseNumberLineParameters();
-    this.gameTime = ParseGametimeFromUrl(60);
+    const variantInfo = getJumpOnNumberLineVariant('aa');
+    this.numberLineProperties = {
+      minimum: variantInfo.minimum,
+      maximum: variantInfo.maximum,
+      show10TickMarks: variantInfo.show10TickMarks,
+      show5TickMarks: variantInfo.show5TickMarks,
+      show1TickMarks: variantInfo.show1TickMarks,
+      showAll10Numbers: variantInfo.showAll10Numbers,
+    };
+    this.parseUrl();
   }
 
   /** Get all static styles */
-  static get styles(): CSSResultGroup {
-    return css`
-      :host {
-        --numberLineWidth: ${JumpOnNumberLineApp.numberLineWidth}vw;
-        --numberLineTop: ${JumpOnNumberLineApp.numberLineTop}vh;
-        --numberLineLeft: ${JumpOnNumberLineApp.numberLineLeft}vw;
+  static get styles(): CSSResultArray {
+    return [
+      ...super.styles,
+      css`
+        :host {
+          --numberLineWidth: ${JumpOnNumberLineApp.numberLineWidth}vw;
+          --numberLineTop: ${JumpOnNumberLineApp.numberLineTop}vh;
+          --numberLineLeft: ${JumpOnNumberLineApp.numberLineLeft}vw;
 
-        --checkButtonTop: ${JumpOnNumberLineApp.checkButtonTop}vh;
-        --checkButtonLeft: ${JumpOnNumberLineApp.checkButtonLeft}vw;
-        --checkButtonWidth: ${JumpOnNumberLineApp.checkButtonWidth}vw;
-        --checkButtonHeight: ${JumpOnNumberLineApp.checkButtonHeight}vw;
+          --checkButtonTop: ${JumpOnNumberLineApp.checkButtonTop}vh;
+          --checkButtonLeft: ${JumpOnNumberLineApp.checkButtonLeft}vw;
+          --checkButtonWidth: ${JumpOnNumberLineApp.checkButtonWidth}vw;
+          --checkButtonHeight: ${JumpOnNumberLineApp.checkButtonHeight}vw;
 
-        --platformWidthFraction: ${JumpOnNumberLineApp.platformWidthFraction};
+          --platformWidthFraction: ${JumpOnNumberLineApp.platformWidthFraction};
 
-        --janWidthFraction: ${JumpOnNumberLineApp.janWidthFraction};
-        --janLeftOfFootFraction: ${JumpOnNumberLineApp.janLeftOfFootFraction};
-        --janMiddleOfFootFraction: ${JumpOnNumberLineApp.janMiddleOfFootFraction};
-        --janFootFraction: ${JumpOnNumberLineApp.janFootFraction};
+          --janWidthFraction: ${JumpOnNumberLineApp.janWidthFraction};
+          --janLeftOfFootFraction: ${JumpOnNumberLineApp.janLeftOfFootFraction};
+          --janMiddleOfFootFraction: ${JumpOnNumberLineApp.janMiddleOfFootFraction};
+          --janFootFraction: ${JumpOnNumberLineApp.janFootFraction};
 
-        --janAspectRatio: ${JumpOnNumberLineApp.janAspectRatio};
+          --janAspectRatio: ${JumpOnNumberLineApp.janAspectRatio};
 
-        --janWidth: calc(var(--janWidthFraction) * var(--numberLineWidth));
-        --janMiddleOfFootWidth: calc(
-          var(--janMiddleOfFootFraction) * var(--janWidth)
-        );
-        --janHeight: calc(var(--janWidth) * var(--janAspectRatio));
+          --janWidth: calc(var(--janWidthFraction) * var(--numberLineWidth));
+          --janMiddleOfFootWidth: calc(
+            var(--janMiddleOfFootFraction) * var(--janWidth)
+          );
+          --janHeight: calc(var(--janWidth) * var(--janAspectRatio));
 
-        /* desiredPosition is set in javaScript based on where number to set */
-        --janLeft: calc(var(--desiredPosition) - var(--janMiddleOfFootWidth));
+          /* desiredPosition is set in javaScript based on where number to set */
+          --janLeft: calc(var(--desiredPosition) - var(--janMiddleOfFootWidth));
 
-        --platformTop: calc(
-          var(--numberLineTop) - 0.5 * ${NumberLine.heightWidthAspectRatio} *
-            var(--numberLineWidth)
-        );
-        --platformWidth: calc(
-          var(--platformWidthFraction) * var(--numberLineWidth)
-        );
-        --platformLeft: calc(
-          var(--numberLineLeft) + ${NumberLine.widthFractionMinimum} *
-            var(--numberLineWidth) - 0.5 * var(--platformWidth)
-        );
-        --platformHeight: calc(
-          ${NumberLine.heightWidthAspectRatio} * var(--numberLineWidth)
-        );
-      }
-
-      #numberLine {
-        position: absolute;
-        left: var(--numberLineLeft);
-        top: var(--numberLineTop);
-        width: var(--numberLineWidth);
-      }
-
-      #numberLinePlatform {
-        position: absolute;
-        top: var(--platformTop);
-        left: var(--platformLeft);
-        width: var(--platformWidth);
-        height: var(--platformHeight);
-        display: block;
-        border: none;
-        padding: 0;
-      }
-
-      #jan {
-        position: absolute;
-        width: var(--janWidth);
-        top: 0;
-        left: var(--janLeft);
-      }
-
-      #spring {
-        position: absolute;
-        top: var(--checkButtonTop);
-        left: var(--checkButtonLeft);
-        width: var(--checkButtonWidth);
-        height: var(--checkButtonHeight);
-        font-size: 2vw;
-        background-color: #0f0;
-      }
-
-      .moveDownAlmostCorrectRightSide {
-        animation: MoveDownAlmostCorrectRightSide linear 3s forwards;
-      }
-
-      @keyframes MoveDownAlmostCorrectRightSide {
-        0% {
-          transform: translate(0px, 0px);
-        }
-        55% {
-          transform: translate(
-            0px,
-            calc(var(--platformTop) - 0.7 * var(--janHeight))
+          --platformTop: calc(
+            var(--numberLineTop) - 0.5 * ${NumberLine.heightWidthAspectRatio} *
+              var(--numberLineWidth)
+          );
+          --platformWidth: calc(
+            var(--platformWidthFraction) * var(--numberLineWidth)
+          );
+          --platformLeft: calc(
+            var(--numberLineLeft) + ${NumberLine.widthFractionMinimum} *
+              var(--numberLineWidth) - 0.5 * var(--platformWidth)
+          );
+          --platformHeight: calc(
+            ${NumberLine.heightWidthAspectRatio} * var(--numberLineWidth)
           );
         }
-        65% {
-          transform: translate(calc(0.7 * var(--janWidth)), var(--platformTop));
-        }
-        100% {
-          transform: translate(calc(0.5 * var(--janWidth)), 99vh);
-        }
-      }
 
-      .moveDownAlmostCorrectLeftSide {
-        animation: MoveDownAlmostCorrectLeftSide linear 3s forwards;
-      }
+        #numberLine {
+          position: absolute;
+          left: var(--numberLineLeft);
+          top: var(--numberLineTop);
+          width: var(--numberLineWidth);
+        }
 
-      @keyframes MoveDownAlmostCorrectLeftSide {
-        0% {
-          transform: translate(0px, 0px);
+        #numberLinePlatform {
+          position: absolute;
+          top: var(--platformTop);
+          left: var(--platformLeft);
+          width: var(--platformWidth);
+          height: var(--platformHeight);
+          display: block;
+          border: none;
+          padding: 0;
         }
-        55% {
-          transform: translate(
-            0px,
-            calc(var(--platformTop) - 0.75 * var(--janHeight))
-          );
-        }
-        65% {
-          transform: translate(
-            calc(-0.6 * var(--janWidth)),
-            var(--platformTop)
-          );
-        }
-        100% {
-          transform: translate(calc(0.5 * var(--janWidth)), 99vh);
-        }
-      }
 
-      .moveDownCorrect {
-        animation: MoveDownCorrect linear 1.4s forwards;
-      }
-
-      @keyframes MoveDownCorrect {
-        from {
-          transform: translate(0, 0);
+        #jan {
+          position: absolute;
+          width: var(--janWidth);
+          top: 0;
+          left: var(--janLeft);
         }
-        to {
-          transform: translate(0, calc(var(--platformTop) - var(--janHeight)));
-        }
-      }
 
-      .moveDownInCorrect {
-        animation: MoveDownInCorrect linear 3s forwards;
-      }
-
-      @keyframes MoveDownInCorrect {
-        from {
-          transform: translate(0px, 0px);
+        #spring {
+          position: absolute;
+          top: var(--checkButtonTop);
+          left: var(--checkButtonLeft);
+          width: var(--checkButtonWidth);
+          height: var(--checkButtonHeight);
+          font-size: 2vw;
+          background-color: #0f0;
         }
-        to {
-          transform: translate(0px, 99vh);
-        }
-      }
-    `;
-  }
 
-  /** Helper function to easily query for an element.
-   *  @param query Querystring for the element.
-   *  @template T The type of the element.
-   *  @throws ChildNotFoundError in case the element can't be found.
-   *
-   */
-  private getElement<T>(query: string): T {
-    const ret = this.renderRoot.querySelector(query) as T | null;
-    if (ret === null) {
-      throw new ChildNotFoundError(query, 'FindOnNumberApp');
-    }
-    return ret;
+        .moveDownAlmostCorrectRightSide {
+          animation: MoveDownAlmostCorrectRightSide linear 3s forwards;
+        }
+
+        @keyframes MoveDownAlmostCorrectRightSide {
+          0% {
+            transform: translate(0px, 0px);
+          }
+          55% {
+            transform: translate(
+              0px,
+              calc(var(--platformTop) - 0.7 * var(--janHeight))
+            );
+          }
+          65% {
+            transform: translate(
+              calc(0.7 * var(--janWidth)),
+              var(--platformTop)
+            );
+          }
+          100% {
+            transform: translate(calc(0.5 * var(--janWidth)), 99vh);
+          }
+        }
+
+        .moveDownAlmostCorrectLeftSide {
+          animation: MoveDownAlmostCorrectLeftSide linear 3s forwards;
+        }
+
+        @keyframes MoveDownAlmostCorrectLeftSide {
+          0% {
+            transform: translate(0px, 0px);
+          }
+          55% {
+            transform: translate(
+              0px,
+              calc(var(--platformTop) - 0.75 * var(--janHeight))
+            );
+          }
+          65% {
+            transform: translate(
+              calc(-0.6 * var(--janWidth)),
+              var(--platformTop)
+            );
+          }
+          100% {
+            transform: translate(calc(0.5 * var(--janWidth)), 99vh);
+          }
+        }
+
+        .moveDownCorrect {
+          animation: MoveDownCorrect linear 1.4s forwards;
+        }
+
+        @keyframes MoveDownCorrect {
+          from {
+            transform: translate(0, 0);
+          }
+          to {
+            transform: translate(
+              0,
+              calc(var(--platformTop) - var(--janHeight))
+            );
+          }
+        }
+
+        .moveDownInCorrect {
+          animation: MoveDownInCorrect linear 3s forwards;
+        }
+
+        @keyframes MoveDownInCorrect {
+          from {
+            transform: translate(0px, 0px);
+          }
+          to {
+            transform: translate(0px, 99vh);
+          }
+        }
+      `,
+    ];
   }
 
   /** Get Jan */
   private get jan(): HTMLImageElement {
     return this.getElement<HTMLImageElement>('#jan');
-  }
-
-  /** Get the progress bar. */
-  private get progressBar(): ProgressBar {
-    return this.getElement<ProgressBar>('#progressBar');
-  }
-
-  /** Get the scorebox */
-  private get scoreBox(): ScoreBox {
-    return this.getElement<ScoreBox>('#scoreBox');
   }
 
   /** Get the numberline */
@@ -324,31 +284,102 @@ export class JumpOnNumberLineApp extends LitElement {
     return this.getElement<Platform>('#numberLinePlatform');
   }
 
-  /** Handle the time up, when the game is over. */
-  handleTimeUp(): void {
-    this.gameLogger.logGameOver();
-    this.showNumber = false;
-    if (this.gameOverDialogRef.value) this.gameOverDialogRef.value.showModal();
-    else
+  private parseUrl(): void {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('variant')) this.parseUrlWithVariant(urlParams);
+    else this.parseUrlWithoutVariant(urlParams);
+  }
+
+  private parseUrlWithVariant(urlParams: URLSearchParams): void {
+    const variant = urlParams.get('variant');
+    if (variant === null) {
       throw new Error(
-        `Game over dialog has not been rendered during game over`,
+        'Internal SW Error, parseUrlWithVariant called while there is no variant in the URL',
       );
+    }
+
+    const variantInfo = getJumpOnNumberLineVariant(variant);
+    this.numberLineProperties = {
+      minimum: variantInfo.minimum,
+      maximum: variantInfo.maximum,
+      show10TickMarks: variantInfo.show10TickMarks,
+      show5TickMarks: variantInfo.show5TickMarks,
+      show1TickMarks: variantInfo.show1TickMarks,
+      showAll10Numbers: variantInfo.showAll10Numbers,
+    };
+
+    this.gameLogger.setMainCode(variantInfo.mainCode);
+    this.gameLogger.setSubCode(variant);
   }
 
-  handleGameOverDialogClose(evt: GameOverDialogCloseEvent) {
-    if (evt.action === 'NewGame') window.location.href = 'index.html';
-    else if (evt.action === 'PlayAgain') this.startNewGame();
-    else throw new Error(`Game over dialog exited with an unknown action`);
+  private parseUrlWithoutVariant(urlParams: URLSearchParams): void {
+    let minimum = 0;
+    let maximum = 100;
+    let show10TickMarks = true;
+    let show5TickMarks = false;
+    let show1TickMarks = false;
+    let showAll10Numbers = false;
+
+    const minimumAsString =
+      urlParams.get('minimum') ?? urlParams.get('minumum');
+    if (minimumAsString !== null) {
+      const minimumCandidate = parseInt(minimumAsString, 10);
+      if (!Number.isNaN(minimumCandidate) && minimumCandidate % 10 === 0) {
+        minimum = minimumCandidate;
+      }
+    }
+
+    const maximumAsString = urlParams.get('maximum');
+    if (maximumAsString !== null) {
+      const maximumCandidate = parseInt(maximumAsString, 10);
+      if (!Number.isNaN(maximumCandidate) && maximumCandidate % 10 === 0) {
+        maximum = maximumCandidate;
+      }
+    }
+
+    if (urlParams.has('show10TickMarks')) {
+      show10TickMarks = true;
+    } else if (urlParams.has('hide10TickMarks')) {
+      show10TickMarks = false;
+    }
+
+    if (urlParams.has('show5TickMarks')) {
+      show5TickMarks = true;
+    } else if (urlParams.has('hide5TickMarks')) {
+      show5TickMarks = false;
+    }
+
+    if (urlParams.has('show1TickMarks')) {
+      show1TickMarks = true;
+    } else if (urlParams.has('hide1TickMarks')) {
+      show1TickMarks = false;
+    }
+
+    if (urlParams.has('showAll10Numbers')) {
+      showAll10Numbers = true;
+    } else if (urlParams.has('hideAll10Numbers')) {
+      showAll10Numbers = false;
+    }
+
+    this.numberLineProperties = {
+      minimum,
+      maximum,
+      show10TickMarks,
+      show5TickMarks,
+      show1TickMarks,
+      showAll10Numbers,
+    };
+
+    this.gameLogger.setMainCode('U');
+    this.gameLogger.setSubCode('a');
   }
 
-  /** Start a new game, resets the timer and the number of correct and incorrect answer. */
-  startNewGame(): void {
-    this.progressBar.restart();
+  override startNewGame(): void {
+    super.startNewGame();
     this.showNumber = true;
     this.hideJan = true;
+    this.dragDisabled = false;
     this.janAnimation = 'none';
-    this.numberNok = 0;
-    this.numberOk = 0;
     this.newRound();
   }
 
@@ -362,6 +393,7 @@ export class JumpOnNumberLineApp extends LitElement {
 
   /** Ceck the answer the student has selected and make Jan jump. */
   checkAnswer(): void {
+    if (this.dialogVisible) return;
     if (this.hideJan === false)
       // If Jan is visible, a check is already going on
       return;
@@ -396,6 +428,12 @@ export class JumpOnNumberLineApp extends LitElement {
         if (this.janAnimation === 'moveDownCorrect') this.numberOk += 1;
         else this.numberNok += 1;
         setTimeout(() => {
+          if (this.dialogVisible) {
+            this.hideJan = true;
+            this.janAnimation = 'none';
+            return;
+          }
+
           this.hideJan = true;
           this.dragDisabled = false;
           this.janAnimation = 'none';
@@ -425,31 +463,43 @@ export class JumpOnNumberLineApp extends LitElement {
     return ret;
   }
 
-  handleCloseWelcomeDialog() {
-    this.startNewGame();
+  override executeGameOverActions(): void {
+    this.showNumber = false;
+    this.dragDisabled = true;
+    this.gameLogger.logGameOver();
   }
 
-  /** Render the application */
-  render(): HTMLTemplateResult {
+  get welcomeMessage(): HTMLTemplateResult {
+    return html`
+      <p>
+        Zet het platform op de juiste plek op de getallenlijn, zodat Jan erop
+        kan springen.
+      </p>
+      <p>Dit spel kun je op de telefoon het beste horizontaal spelen.</p>
+    `;
+  }
+
+  get welcomeDialogTitle(): string {
+    return 'Spring op de getallenlijn';
+  }
+
+  override get gameOverIntroductionText(): HTMLTemplateResult {
+    return html`
+      <p>Je hebt het <i>Spring op de getallenlijn</i> spel gespeeld</p>
+      <p>
+        De getallenlijn liep van
+        ${DescribeNumberLineParameters(this.numberLineProperties)}
+      </p>
+    `;
+  }
+
+  renderGameContent(): HTMLTemplateResult {
     return html`
       <style>
         :host {
           --desiredPosition: ${this.desiredPosition}vw;
         }
       </style>
-
-      <progress-bar
-        style="--progress-bar-gametime: ${this.gameTime}s;"
-        id="progressBar"
-        @timeUp=${() => this.handleTimeUp()}
-      ></progress-bar>
-      <score-box
-        id="scoreBox"
-        numberOk=${this.numberOk}
-        numberNok=${this.numberNok}
-        style="width: 12vmin;--scoreBoxWidth: 12vmin; position: absolute; top: calc(1em + 22px); right: 1em;"
-      >
-      </score-box>
 
       <number-line
         id="numberLine"
@@ -479,37 +529,6 @@ export class JumpOnNumberLineApp extends LitElement {
         class=${this.renderJanClass()}
       />
       <button id="spring" @click=${() => this.checkAnswer()}>Spring</button>
-
-      <message-dialog-v2
-        initialOpen
-        id="welcomeDialog"
-        .title=${'Spring op de getallenlijn'}
-        .buttonText=${'Start'}
-        @close=${() => this.handleCloseWelcomeDialog()}
-        ${ref(this.welcomeDialogRef)}
-      >
-        <p>
-          Zet het platform op de juiste plek op de getallenlijn, zodat Jan erop
-          kan springen.
-        </p>
-        <p>Dit spel kun je op de telefoon het beste horizontaal spelen.</p>
-      </message-dialog-v2>
-
-      <game-over-dialog-v2
-        ${ref(this.gameOverDialogRef)}
-        id="gameOverDialog"
-        @close=${(evt: GameOverDialogCloseEvent) =>
-          this.handleGameOverDialogClose(evt)}
-        .numberOk=${this.numberOk}
-        .numberNok=${this.numberNok}
-        .gameTime=${this.gameTime}
-      >
-        <p>Je hebt het <i>Spring op de getallenlijn</i> spel gespeeld</p>
-        <p>
-          De getallenlijn liep van
-          ${DescribeNumberLineParameters(this.numberLineProperties)}
-        </p>
-      </game-over-dialog-v2>
     `;
   }
 }

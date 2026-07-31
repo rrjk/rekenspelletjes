@@ -8,7 +8,7 @@ import { klikFotoOpGetallenlijnLink } from './ClickTheRightPhotoOnNumberLineGame
 import { klokPaartjesLink } from './ClockPairingAppLink';
 import { combineToSolveSumGameLink } from './CombineToSolveSumGame/CombineToSolveSumGameAppLink';
 import { eierdoosTellenLink } from './EggCounting/EggCountingAppLink';
-import { springOpGetallenlijnLink } from './JumpOnNumberLineAppLink';
+import { springOpGetallenlijnLink } from './JumpOnNumberLineGame/JumpOnNumberLineAppLink';
 import { getallenlijnBoogjesSpelLink } from './NumberlineArchesGame/NumberlineArchesGameAppLink';
 import { groepjesVanHerkennenLink } from './RecognizeGroupsAppLink';
 import { sorterenLink } from './SortingGame/SortingGameAppLink';
