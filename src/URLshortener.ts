@@ -13,7 +13,7 @@ import { getallenlijnBoogjesSpelLink } from './NumberlineArchesGame/NumberlineAr
 import { groepjesVanHerkennenLink } from './RecognizeGroupsAppLink';
 import { sorterenLink } from './SortingGame/SortingGameAppLink';
 import { splitsenLink } from './SplitAppLink';
-import { sommenMetSplitsenLink } from './SumsWithSplitAppLink';
+import { sommenMetSplitsenLink } from './SumsWithSplitGame/SumsWithSplitAppLink';
 import { splitsenOpWaardeLink } from './TensSplitAppLink';
 import { stippenTellenLink } from './DotCountingGame/DotCountingGameAppLink';
 import { breukenPaartjesLink } from './FractionsPairMatchingGame/FractionsPairMatchingGameAppLink';

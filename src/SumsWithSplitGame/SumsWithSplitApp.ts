@@ -2,20 +2,20 @@ import { html, css, nothing } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
-import { TimeLimitedGame2 } from './TimeLimitedGame2';
+import { TimeLimitedGame2 } from '../TimeLimitedGame2';
 
-import { randomFromSet, randomIntFromRange } from './Randomizer';
-import { GameLogger } from './GameLogger';
+import { randomFromSet, randomIntFromRange } from '../Randomizer';
+import { GameLogger } from '../GameLogger';
 
-import type { Digit, DigitKeyboard } from './DigitKeyboard';
-import './DigitKeyboard';
+import type { Digit, DigitKeyboard } from '../DigitKeyboard';
+import '../DigitKeyboard';
 
-import type { DigitFillin } from './DigitFillin';
-import './DigitFillin';
+import type { DigitFillin } from '../DigitFillin';
+import '../DigitFillin';
 
-import './RealHeight';
+import '../RealHeight';
 import type { GameRangeType, ShowSplitsType } from './SumsWithSplitAppLink';
-import { getTextWidth } from './StringHelperFunctions';
+import { getTextWidth } from '../StringHelperFunctions';
 
 type OperatorType = '+' | '-';
 
