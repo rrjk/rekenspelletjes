@@ -19,7 +19,7 @@ import { stippenTellenLink } from './DotCountingGame/DotCountingGameAppLink';
 import { breukenPaartjesLink } from './FractionsPairMatchingGame/FractionsPairMatchingGameAppLink';
 import { hexagonnenSpelLink } from './SquaresBalloonGameLink';
 import { multiplicationTablesGameLinkV2 } from './MultiplicationTablesBalloonGame/MultiplicationTablesBalloonGameLinkV2';
-import { divisionWithSplitAppLink } from './DivisionWithSplitAppLink';
+import { divisionWithSplitAppLink } from './DivideWithSplitGame/DivisionWithSplitAppLink';
 import { dieFaceGameAppLink } from './DieFaceGame/DieFaceGameAppLink';
 import { howManyFingersGameAppLink } from './HowManyFingersGame/HowManyFingersGameAppLink';
 import { mixedSumsGameLink } from './MixedSumsGame/MixedSumsGameAppLink';

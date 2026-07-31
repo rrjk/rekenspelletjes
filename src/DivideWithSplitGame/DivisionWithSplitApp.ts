@@ -7,20 +7,20 @@ import { range } from 'lit/directives/range.js';
 
 import { create } from 'mutative';
 
-import { TimeLimitedGame2 } from './TimeLimitedGame2';
-import { GameLogger } from './GameLogger';
+import { TimeLimitedGame2 } from '../TimeLimitedGame2';
+import { GameLogger } from '../GameLogger';
 
-import type { Digit } from './DigitKeyboard';
-import './DigitKeyboard';
-import { randomFromSet } from './Randomizer';
+import type { Digit } from '../DigitKeyboard';
+import '../DigitKeyboard';
+import { randomFromSet } from '../Randomizer';
 
-import { splitInDigits } from './NumberHelperFunctions';
+import { splitInDigits } from '../NumberHelperFunctions';
 import {
   fillInFields,
   FillInFields,
   initFillInInfo,
   initFixedNumberInfo,
-} from './DivideWithSplitWidget';
+} from '../DivideWithSplitGame/DivideWithSplitWidget';
 
 const allEnabledDigits = [
   false,
