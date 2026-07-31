@@ -1,13 +1,12 @@
-import { Color } from '../Colors';
+import type { Color } from '../Colors';
+import {
+  DescribeNumberLineParameters,
+  type NumberLineParameters,
+} from '../NumberLineParameters';
 
 interface ClickTheRightPhotoOnNumberLineVariantInfo {
   iconColor: Color;
-  minimum: number;
-  maximum: number;
-  show10TickMarks: boolean;
-  show5TickMarks: boolean;
-  show1TickMarks: boolean;
-  showAll10Numbers: boolean;
+  numberLineParameters: NumberLineParameters;
 }
 
 export interface ClickTheRightPhotoOnNumberLineExtendedVariantInfo
@@ -20,12 +19,14 @@ export interface ClickTheRightPhotoOnNumberLineExtendedVariantInfo
 
 const defaultVariant: ClickTheRightPhotoOnNumberLineVariantInfo = {
   iconColor: 'maroon',
-  minimum: 0,
-  maximum: 20,
-  show10TickMarks: true,
-  show5TickMarks: true,
-  show1TickMarks: true,
-  showAll10Numbers: true,
+  numberLineParameters: {
+    minimum: 0,
+    maximum: 20,
+    show10TickMarks: true,
+    show5TickMarks: true,
+    show1TickMarks: true,
+    showAll10Numbers: true,
+  },
 };
 
 export const clickTheRightPhotoOnNumberLineVariants: Record<
@@ -35,165 +36,201 @@ export const clickTheRightPhotoOnNumberLineVariants: Record<
   aa: defaultVariant,
   ab: {
     iconColor: 'brown',
-    minimum: 0,
-    maximum: 20,
-    show10TickMarks: true,
-    show5TickMarks: true,
-    show1TickMarks: false,
-    showAll10Numbers: true,
+    numberLineParameters: {
+      minimum: 0,
+      maximum: 20,
+      show10TickMarks: true,
+      show5TickMarks: true,
+      show1TickMarks: false,
+      showAll10Numbers: true,
+    },
   },
   ac: {
     iconColor: 'olive',
-    minimum: 0,
-    maximum: 20,
-    show10TickMarks: true,
-    show5TickMarks: false,
-    show1TickMarks: false,
-    showAll10Numbers: true,
+    numberLineParameters: {
+      minimum: 0,
+      maximum: 20,
+      show10TickMarks: true,
+      show5TickMarks: false,
+      show1TickMarks: false,
+      showAll10Numbers: true,
+    },
   },
   ad: {
     iconColor: 'teal',
-    minimum: 0,
-    maximum: 20,
-    show10TickMarks: true,
-    show5TickMarks: false,
-    show1TickMarks: false,
-    showAll10Numbers: false,
+    numberLineParameters: {
+      minimum: 0,
+      maximum: 20,
+      show10TickMarks: true,
+      show5TickMarks: false,
+      show1TickMarks: false,
+      showAll10Numbers: false,
+    },
   },
   ba: {
     iconColor: 'lavender',
-    minimum: 0,
-    maximum: 30,
-    show10TickMarks: true,
-    show5TickMarks: true,
-    show1TickMarks: true,
-    showAll10Numbers: true,
+    numberLineParameters: {
+      minimum: 0,
+      maximum: 30,
+      show10TickMarks: true,
+      show5TickMarks: true,
+      show1TickMarks: true,
+      showAll10Numbers: true,
+    },
   },
   bb: {
     iconColor: 'beige',
-    minimum: 0,
-    maximum: 30,
-    show10TickMarks: true,
-    show5TickMarks: true,
-    show1TickMarks: false,
-    showAll10Numbers: true,
+    numberLineParameters: {
+      minimum: 0,
+      maximum: 30,
+      show10TickMarks: true,
+      show5TickMarks: true,
+      show1TickMarks: false,
+      showAll10Numbers: true,
+    },
   },
   bc: {
     iconColor: 'apricot',
-    minimum: 0,
-    maximum: 30,
-    show10TickMarks: true,
-    show5TickMarks: false,
-    show1TickMarks: false,
-    showAll10Numbers: true,
+    numberLineParameters: {
+      minimum: 0,
+      maximum: 30,
+      show10TickMarks: true,
+      show5TickMarks: false,
+      show1TickMarks: false,
+      showAll10Numbers: true,
+    },
   },
   bd: {
     iconColor: 'yellow',
-    minimum: 0,
-    maximum: 30,
-    show10TickMarks: true,
-    show5TickMarks: false,
-    show1TickMarks: false,
-    showAll10Numbers: false,
+    numberLineParameters: {
+      minimum: 0,
+      maximum: 30,
+      show10TickMarks: true,
+      show5TickMarks: false,
+      show1TickMarks: false,
+      showAll10Numbers: false,
+    },
   },
   ca: {
     iconColor: 'orange',
-    minimum: 0,
-    maximum: 50,
-    show10TickMarks: true,
-    show5TickMarks: true,
-    show1TickMarks: true,
-    showAll10Numbers: true,
+    numberLineParameters: {
+      minimum: 0,
+      maximum: 50,
+      show10TickMarks: true,
+      show5TickMarks: true,
+      show1TickMarks: true,
+      showAll10Numbers: true,
+    },
   },
   cb: {
     iconColor: 'red',
-    minimum: 0,
-    maximum: 50,
-    show10TickMarks: true,
-    show5TickMarks: true,
-    show1TickMarks: false,
-    showAll10Numbers: true,
+    numberLineParameters: {
+      minimum: 0,
+      maximum: 50,
+      show10TickMarks: true,
+      show5TickMarks: true,
+      show1TickMarks: false,
+      showAll10Numbers: true,
+    },
   },
   cc: {
     iconColor: 'magenta',
-    minimum: 0,
-    maximum: 50,
-    show10TickMarks: true,
-    show5TickMarks: false,
-    show1TickMarks: false,
-    showAll10Numbers: true,
+    numberLineParameters: {
+      minimum: 0,
+      maximum: 50,
+      show10TickMarks: true,
+      show5TickMarks: false,
+      show1TickMarks: false,
+      showAll10Numbers: true,
+    },
   },
   cd: {
     iconColor: 'pink',
-    minimum: 0,
-    maximum: 50,
-    show10TickMarks: true,
-    show5TickMarks: false,
-    show1TickMarks: false,
-    showAll10Numbers: false,
+    numberLineParameters: {
+      minimum: 0,
+      maximum: 50,
+      show10TickMarks: true,
+      show5TickMarks: false,
+      show1TickMarks: false,
+      showAll10Numbers: false,
+    },
   },
   da: {
     iconColor: 'green',
-    minimum: 0,
-    maximum: 100,
-    show10TickMarks: true,
-    show5TickMarks: true,
-    show1TickMarks: true,
-    showAll10Numbers: true,
+    numberLineParameters: {
+      minimum: 0,
+      maximum: 100,
+      show10TickMarks: true,
+      show5TickMarks: true,
+      show1TickMarks: true,
+      showAll10Numbers: true,
+    },
   },
   db: {
     iconColor: 'lime',
-    minimum: 0,
-    maximum: 100,
-    show10TickMarks: true,
-    show5TickMarks: true,
-    show1TickMarks: false,
-    showAll10Numbers: true,
+    numberLineParameters: {
+      minimum: 0,
+      maximum: 100,
+      show10TickMarks: true,
+      show5TickMarks: true,
+      show1TickMarks: false,
+      showAll10Numbers: true,
+    },
   },
   dc: {
     iconColor: 'mint',
-    minimum: 0,
-    maximum: 100,
-    show10TickMarks: true,
-    show5TickMarks: false,
-    show1TickMarks: false,
-    showAll10Numbers: true,
+    numberLineParameters: {
+      minimum: 0,
+      maximum: 100,
+      show10TickMarks: true,
+      show5TickMarks: false,
+      show1TickMarks: false,
+      showAll10Numbers: true,
+    },
   },
   dd: {
     iconColor: 'cyan',
-    minimum: 0,
-    maximum: 100,
-    show10TickMarks: true,
-    show5TickMarks: false,
-    show1TickMarks: false,
-    showAll10Numbers: false,
+    numberLineParameters: {
+      minimum: 0,
+      maximum: 100,
+      show10TickMarks: true,
+      show5TickMarks: false,
+      show1TickMarks: false,
+      showAll10Numbers: false,
+    },
   },
   ea: {
     iconColor: 'navy',
-    minimum: 0,
-    maximum: 10,
-    show10TickMarks: true,
-    show5TickMarks: true,
-    show1TickMarks: true,
-    showAll10Numbers: true,
+    numberLineParameters: {
+      minimum: 0,
+      maximum: 10,
+      show10TickMarks: true,
+      show5TickMarks: true,
+      show1TickMarks: true,
+      showAll10Numbers: true,
+    },
   },
   eb: {
     iconColor: 'blue',
-    minimum: 0,
-    maximum: 10,
-    show10TickMarks: true,
-    show5TickMarks: true,
-    show1TickMarks: false,
-    showAll10Numbers: true,
+    numberLineParameters: {
+      minimum: 0,
+      maximum: 10,
+      show10TickMarks: true,
+      show5TickMarks: true,
+      show1TickMarks: false,
+      showAll10Numbers: true,
+    },
   },
   ec: {
     iconColor: 'purple',
-    minimum: 0,
-    maximum: 10,
-    show10TickMarks: true,
-    show5TickMarks: false,
-    show1TickMarks: false,
-    showAll10Numbers: true,
+    numberLineParameters: {
+      minimum: 0,
+      maximum: 10,
+      show10TickMarks: true,
+      show5TickMarks: false,
+      show1TickMarks: false,
+      showAll10Numbers: true,
+    },
   },
 };
 
@@ -201,23 +238,11 @@ function determineMainCode(): string {
   return 'T';
 }
 
-function createDescription(
-  info: ClickTheRightPhotoOnNumberLineVariantInfo,
-): string {
-  const rangeText = `van ${info.minimum} tot en met ${info.maximum}`;
-  if (info.show1TickMarks) {
-    return `Klik de juiste foto op de getallenlijn ${rangeText} met alle tientallen, vijf- en eenstreepjes.`;
-  }
-  if (info.show5TickMarks) {
-    return `Klik de juiste foto op de getallenlijn ${rangeText} met alle tientallen en vijfstreepjes.`;
-  }
-  if (info.showAll10Numbers) {
-    return `Klik de juiste foto op de getallenlijn ${rangeText} met alle tientallen.`;
-  }
-  return `Klik de juiste foto op de getallenlijn ${rangeText} met alleen streepjes op de tientallen.`;
+function createDescription(info: NumberLineParameters): string {
+  return `Kies de juiste foto op de getallenlijn ${DescribeNumberLineParameters(info, 'present')}`;
 }
 
-function getPhotoId(info: ClickTheRightPhotoOnNumberLineVariantInfo): string {
+function getPhotoId(info: NumberLineParameters): string {
   if (info.minimum === 0 && info.maximum === 10) {
     return 'Manfred';
   }
@@ -233,7 +258,7 @@ function getPhotoId(info: ClickTheRightPhotoOnNumberLineVariantInfo): string {
   return 'Disabled';
 }
 
-function getMid(info: ClickTheRightPhotoOnNumberLineVariantInfo): number {
+function getMid(info: NumberLineParameters): number {
   return info.maximum - 10;
 }
 
@@ -243,8 +268,9 @@ export function getClickTheRightPhotoOnNumberLineVariant(
   const variantInfo =
     clickTheRightPhotoOnNumberLineVariants[variant] || defaultVariant;
   const mainCode = determineMainCode();
-  const description = createDescription(variantInfo);
-  const photoId = getPhotoId(variantInfo);
-  const mid = getMid(variantInfo);
+  const numberLineParameters = variantInfo.numberLineParameters;
+  const description = createDescription(numberLineParameters);
+  const photoId = getPhotoId(numberLineParameters);
+  const mid = getMid(numberLineParameters);
   return { ...variantInfo, mainCode, description, photoId, mid };
 }

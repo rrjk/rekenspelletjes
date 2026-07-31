@@ -169,14 +169,16 @@ export class ClickTheRightPhotoOnNumberLineGameIcon extends LitElement {
   renderPhotoIcon(
     variantInfo: ClickTheRightPhotoOnNumberLineExtendedVariantInfo,
   ): HTMLTemplateResult {
+    const { numberLineParameters } = variantInfo;
     this.framedPhoto.photoId = variantInfo.photoId as PhotoId;
-    const smallestTickmark: TickMarkType = variantInfo.show1TickMarks
+    const smallestTickmark: TickMarkType = numberLineParameters.show1TickMarks
       ? 'tickMark1'
-      : variantInfo.show5TickMarks
+      : numberLineParameters.show5TickMarks
         ? 'tickMark5'
         : 'tickMark10';
-    const brokenLine = variantInfo.maximum > 20;
-    const numberLineLength = variantInfo.maximum - variantInfo.minimum;
+    const brokenLine = numberLineParameters.maximum > 20;
+    const numberLineLength =
+      numberLineParameters.maximum - numberLineParameters.minimum;
 
     let tickMarks10Positions: number[] = [];
     let tickMarks5Positions: number[] = [];
@@ -231,14 +233,14 @@ export class ClickTheRightPhotoOnNumberLineGameIcon extends LitElement {
         ${tickMarks10Positions.map(pos => this.render10TickMark(pos))}
         ${tickMarks5Positions.map(pos => this.render5TickMark(pos))}
         ${tickMarks1Positions.map(pos => this.render1TickMark(pos))}
-        ${this.renderLeftDigit(variantInfo.minimum)}
+        ${this.renderLeftDigit(numberLineParameters.minimum)}
         ${this.renderMiddleDigit(
-          variantInfo.minimum,
-          variantInfo.maximum,
+          numberLineParameters.minimum,
+          numberLineParameters.maximum,
           variantInfo.mid,
-          variantInfo.showAll10Numbers,
+          numberLineParameters.showAll10Numbers,
         )}
-        ${this.renderRightDigit(variantInfo.maximum)}
+        ${this.renderRightDigit(numberLineParameters.maximum)}
         ${this.renderConnectingLine(this.framedPhoto.photoInfo.color)}
         ${this.framedPhoto.render()}
       </svg>

@@ -17,29 +17,24 @@ import {
 
 import '../MessageDialogV2';
 import '../GameOverDialogV2';
-import { DescribeNumberLineParameters } from '../NumberLineParameters';
+import {
+  DescribeNumberLineParameters,
+  type NumberLineParameters,
+} from '../NumberLineParameters';
 
 class ClickTheRightPhotoOnNumberLineApp extends TimeLimitedGame2 {
   @state()
   accessor numberToClick = 8;
 
   @state()
-  accessor minimum = 0;
-
-  @state()
-  accessor maximum = 100;
-
-  @state()
-  accessor show10TickMarks = false;
-
-  @state()
-  accessor show5TickMarks = false;
-
-  @state()
-  accessor show1TickMarks = false;
-
-  @state()
-  accessor showAll10Numbers = false;
+  accessor numberLineParameters: NumberLineParameters = {
+    minimum: 0,
+    maximum: 100,
+    show10TickMarks: false,
+    show5TickMarks: false,
+    show1TickMarks: false,
+    showAll10Numbers: false,
+  };
 
   @state()
   accessor positions: number[] = [];
@@ -69,56 +64,68 @@ class ClickTheRightPhotoOnNumberLineApp extends TimeLimitedGame2 {
 
     const extendedVariantInfo: ClickTheRightPhotoOnNumberLineExtendedVariantInfo =
       getClickTheRightPhotoOnNumberLineVariant(variant);
-
-    this.minimum = extendedVariantInfo.minimum;
-    this.maximum = extendedVariantInfo.maximum;
-    this.show10TickMarks = extendedVariantInfo.show10TickMarks;
-    this.show5TickMarks = extendedVariantInfo.show5TickMarks;
-    this.show1TickMarks = extendedVariantInfo.show1TickMarks;
-    this.showAll10Numbers = extendedVariantInfo.showAll10Numbers;
+    this.numberLineParameters = extendedVariantInfo.numberLineParameters;
+    this.numberToClick = extendedVariantInfo.mid;
 
     this.gameLogger.setMainCode(extendedVariantInfo.mainCode);
     this.gameLogger.setSubCode(variant);
   }
 
   private parseUrlWithoutVariant(urlParams: URLSearchParams): void {
+    let minimum = 0;
+    let maximum = 100;
+    let show10TickMarks = false;
+    let show5TickMarks = false;
+    let show1TickMarks = false;
+    let showAll10Numbers = false;
+
     const minimumAsString = urlParams.get('minimum');
     if (minimumAsString !== null) {
-      const minimum = parseInt(minimumAsString, 10);
-      if (!Number.isNaN(minimum) && minimum % 10 === 0) {
-        this.minimum = minimum;
+      const parsedMinimum = parseInt(minimumAsString, 10);
+      if (!Number.isNaN(parsedMinimum) && parsedMinimum % 10 === 0) {
+        minimum = parsedMinimum;
       }
     }
 
     const maximumAsString = urlParams.get('maximum');
     if (maximumAsString !== null) {
-      const maximum = parseInt(maximumAsString, 10);
-      if (!Number.isNaN(maximum) && maximum % 10 === 0) {
-        this.maximum = maximum;
+      const parsedMaximum = parseInt(maximumAsString, 10);
+      if (!Number.isNaN(parsedMaximum) && parsedMaximum % 10 === 0) {
+        maximum = parsedMaximum;
       }
     }
-    this.numberToClick = Math.floor((this.maximum + this.minimum) / 2);
+
+    this.numberToClick = Math.floor((maximum + minimum) / 2);
 
     if (urlParams.has('show10TickMarks')) {
-      this.show10TickMarks = true;
+      show10TickMarks = true;
     } else if (urlParams.has('hide10TickMarks')) {
-      this.show10TickMarks = false;
+      show10TickMarks = false;
     }
     if (urlParams.has('show5TickMarks')) {
-      this.show5TickMarks = true;
+      show5TickMarks = true;
     } else if (urlParams.has('hide5TickMarks')) {
-      this.show5TickMarks = false;
+      show5TickMarks = false;
     }
     if (urlParams.has('show1TickMarks')) {
-      this.show1TickMarks = true;
+      show1TickMarks = true;
     } else if (urlParams.has('hide1TickMarks')) {
-      this.show1TickMarks = false;
+      show1TickMarks = false;
     }
     if (urlParams.has('showAll10Numbers')) {
-      this.showAll10Numbers = true;
+      showAll10Numbers = true;
     } else if (urlParams.has('hideAll10Numbers')) {
-      this.showAll10Numbers = false;
+      showAll10Numbers = false;
     }
+
+    this.numberLineParameters = {
+      minimum,
+      maximum,
+      show10TickMarks,
+      show5TickMarks,
+      show1TickMarks,
+      showAll10Numbers,
+    };
 
     this.gameLogger.setMainCode('T');
     this.gameLogger.setSubCode('a');
@@ -143,10 +150,16 @@ class ClickTheRightPhotoOnNumberLineApp extends TimeLimitedGame2 {
 
   newRound(): void {
     this.disabledPositions = [];
-    this.numberToClick = randomIntFromRange(this.minimum, this.maximum);
+    this.numberToClick = randomIntFromRange(
+      this.numberLineParameters.minimum,
+      this.numberLineParameters.maximum,
+    );
     this.positions = [this.numberToClick];
     while (this.positions.length < 4) {
-      const position = randomIntFromRange(this.minimum, this.maximum);
+      const position = randomIntFromRange(
+        this.numberLineParameters.minimum,
+        this.numberLineParameters.maximum,
+      );
       if (!this.positions.some(element => element === position))
         this.positions.push(position);
     }
@@ -160,6 +173,10 @@ class ClickTheRightPhotoOnNumberLineApp extends TimeLimitedGame2 {
     return html`
       <p>Kies de juiste foto op de getallenlijn.</p>
       <p>Dit spel kun je op de telefoon het beste horizontaal spelen.</p>
+      <p>
+        We spelen op een getallenlijn van
+        ${DescribeNumberLineParameters(this.numberLineParameters, 'present')}
+      </p>
     `;
   }
 
@@ -172,17 +189,7 @@ class ClickTheRightPhotoOnNumberLineApp extends TimeLimitedGame2 {
       <p>Je hebt het <i>Kies de juiste foto</i> spel gespeeld</p>
       <p>
         De getallenlijn liep van
-        ${DescribeNumberLineParameters(
-          {
-            minimum: this.minimum,
-            maximum: this.maximum,
-            show10TickMarks: this.show10TickMarks,
-            show1TickMarks: this.show1TickMarks,
-            show5TickMarks: this.show5TickMarks,
-            showAll10Numbers: this.showAll10Numbers,
-          },
-          'past',
-        )}
+        ${DescribeNumberLineParameters(this.numberLineParameters, 'past')}
       </p>
     `;
   }
@@ -194,12 +201,12 @@ class ClickTheRightPhotoOnNumberLineApp extends TimeLimitedGame2 {
       </div>
       <number-line-hanging-photos
         id="numberLine"
-        ?show10TickMarks=${this.show10TickMarks}
-        ?show5TickMarks=${this.show5TickMarks}
-        ?show1TickMarks=${this.show1TickMarks}
-        ?showAll10Numbers=${this.showAll10Numbers}
-        minimum=${this.minimum}
-        maximum=${this.maximum}
+        ?show10TickMarks=${this.numberLineParameters.show10TickMarks}
+        ?show5TickMarks=${this.numberLineParameters.show5TickMarks}
+        ?show1TickMarks=${this.numberLineParameters.show1TickMarks}
+        ?showAll10Numbers=${this.numberLineParameters.showAll10Numbers}
+        minimum=${this.numberLineParameters.minimum}
+        maximum=${this.numberLineParameters.maximum}
         width="95vw"
         .photoPositions=${this.positions}
         .disabledPositions=${this.disabledPositions}
