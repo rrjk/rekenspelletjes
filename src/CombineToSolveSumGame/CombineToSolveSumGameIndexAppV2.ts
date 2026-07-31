@@ -1,11 +1,17 @@
-import { html, css, LitElement } from 'lit';
+import { css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import type { CSSResultArray, HTMLTemplateResult } from 'lit';
+import type { CSSResultArray } from 'lit';
 
-import './CombineToSolveSumGameHourglassGameIcon';
+import {
+  VariantIndexAppBase,
+  type VariantSections,
+} from '../IndexAppV2/VariantIndexAppBase';
+import { renderCombineToSolveSumGameHourglassGameIcon } from './CombineToSolveSumGameHourglassGameIcon';
 
+/** Supported logical page keys for this variant index app. */
 type IndexPage = 'defaultPage';
 
+/** Converts a raw attribute value to a valid index page key. */
 export function convertIndexPage(value: string | null): IndexPage {
   switch (value) {
     case 'defaultPage':
@@ -33,56 +39,40 @@ const sections: IndexPageType = {
   ],
 };
 
+/**
+ * Variant index app for Combine To Solve Sum Game.
+ *
+ * This class supplies page selection, section data, and the icon renderer.
+ * Rendering and layout are inherited from `VariantIndexAppBase`.
+ */
 @customElement('combine-to-solve-sum-game-index-app-v2')
-export class CombineToSolveSumGameIndexApp extends LitElement {
+export class CombineToSolveSumGameIndexApp extends VariantIndexAppBase<IndexPage> {
   @property({ converter: convertIndexPage })
   accessor indexPage: IndexPage = 'defaultPage';
 
+  protected get selectedPage(): IndexPage {
+    return this.indexPage;
+  }
+
+  protected get sectionsByPage(): VariantSections<IndexPage> {
+    return sections;
+  }
+
+  protected get iconRenderer() {
+    return renderCombineToSolveSumGameHourglassGameIcon;
+  }
+
   static get styles(): CSSResultArray {
     return [
+      super.styles,
       css`
         :host {
-          font-size: x-large;
-        }
-
-        .buttonTable {
-          position: relative;
-          display: flex;
-          row-gap: 10px;
-          flex-wrap: wrap;
-          justify-content: center;
-          width: min(200px, 50vw);
-          gap: 10px;
         }
 
         combine-to-solve-sum-game-hourglass-game-icon {
-          width: 94%;
+          min-width: 0;
         }
       `,
     ];
-  }
-
-  renderRow(variant: string): HTMLTemplateResult {
-    return html`
-      <combine-to-solve-sum-game-hourglass-game-icon
-        variant=${variant}
-      ></combine-to-solve-sum-game-hourglass-game-icon>
-    `;
-  }
-
-  render(): HTMLTemplateResult[] {
-    const renderItems: HTMLTemplateResult[] = [];
-    for (const section of sections[this.indexPage]) {
-      renderItems.push(html`
-        ${section.title !== '' ? html`<h2>${section.title}</h2>` : ''}
-        <div class="buttonTable">
-          ${section.rows.map(row => this.renderRow(row))}
-        </div>
-      `);
-    }
-    renderItems.push(
-      html` <p><a href="index.html">Terug naar het hoofdmenu</a></p>`,
-    );
-    return renderItems;
   }
 }

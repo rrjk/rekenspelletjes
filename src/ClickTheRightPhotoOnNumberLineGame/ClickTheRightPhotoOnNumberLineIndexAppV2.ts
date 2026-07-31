@@ -1,11 +1,18 @@
-import { html, css, LitElement } from 'lit';
+import { css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import type { CSSResultArray, HTMLTemplateResult } from 'lit';
+import type { CSSResultArray } from 'lit';
+import type { TimeCode } from '../TimeCodes';
 
-import './ClickTheRightPhotoOnNumberLineHourglassGameIcon';
+import {
+  VariantIndexAppBase,
+  type VariantSections,
+} from '../IndexAppV2/VariantIndexAppBase';
+import { renderClickTheRightPhotoOnNumberLineHourglassGameIcon } from './ClickTheRightPhotoOnNumberLineHourglassGameIcon';
 
+/** Supported logical page keys for this variant index app. */
 type IndexPage = 'defaultPage';
 
+/** Converts a raw attribute value to a valid index page key. */
 function convertIndexPage(value: string | null): IndexPage {
   switch (value) {
     case 'defaultPage':
@@ -49,61 +56,44 @@ const sections: IndexPageType = {
   ],
 };
 
-const durations = ['a', 'b'];
+/** Time codes shown for each variant as a left/right icon pair. */
+const durations: TimeCode[] = ['a', 'b'];
 
+/**
+ * Variant index app for Click The Right Photo On Number Line.
+ *
+ * This class supplies page selection, section data, and the icon renderer.
+ * Rendering and layout are inherited from `VariantIndexAppBase`.
+ */
 @customElement('click-the-right-photo-on-number-line-index-app-v2')
-export class ClickTheRightPhotoOnNumberLineIndexAppV2 extends LitElement {
+export class ClickTheRightPhotoOnNumberLineIndexAppV2 extends VariantIndexAppBase<IndexPage> {
   @property({ converter: convertIndexPage })
   accessor indexPage: IndexPage = 'defaultPage';
 
+  protected get selectedPage(): IndexPage {
+    return this.indexPage;
+  }
+
+  protected get sectionsByPage(): VariantSections<IndexPage> {
+    return sections;
+  }
+
+  protected override get timeCodes(): TimeCode[] {
+    return durations;
+  }
+
+  protected get iconRenderer() {
+    return renderClickTheRightPhotoOnNumberLineHourglassGameIcon;
+  }
+
   static get styles(): CSSResultArray {
     return [
+      super.styles,
       css`
-        :host {
-          font-size: x-large;
-        }
-
-        .buttonTable {
-          position: relative;
-          display: flex;
-          gap: 10px 10px;
-          flex-wrap: wrap;
-          width: min(400px, 92vw);
-        }
-
         click-the-right-photo-on-number-line-hourglass-game-icon {
-          width: 47%;
+          min-width: 0;
         }
       `,
     ];
-  }
-
-  renderRow(variant: string): HTMLTemplateResult {
-    return html`
-      <click-the-right-photo-on-number-line-hourglass-game-icon
-        variant=${variant}
-        timeCode=${durations[0]}
-      ></click-the-right-photo-on-number-line-hourglass-game-icon>
-      <click-the-right-photo-on-number-line-hourglass-game-icon
-        variant=${variant}
-        timeCode=${durations[1]}
-      ></click-the-right-photo-on-number-line-hourglass-game-icon>
-    `;
-  }
-
-  render(): HTMLTemplateResult[] {
-    const renderItems: HTMLTemplateResult[] = [];
-    for (const section of sections[this.indexPage]) {
-      renderItems.push(html`
-        <h2>${section.title}</h2>
-        <div class="buttonTable">
-          ${section.rows.map(row => this.renderRow(row))}
-        </div>
-      `);
-    }
-    renderItems.push(
-      html`<p><a href="index.html">Terug naar het hoofdmenu</a></p>`,
-    );
-    return renderItems;
   }
 }

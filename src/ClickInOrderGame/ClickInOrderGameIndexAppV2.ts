@@ -1,14 +1,20 @@
-import { html, css, LitElement } from 'lit';
+import { css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import type { CSSResultArray, HTMLTemplateResult } from 'lit';
+import type { CSSResultArray } from 'lit';
 
-import './ClickInOrderHourglassGameIcon';
+import {
+  VariantIndexAppBase,
+  type VariantSections,
+} from '../IndexAppV2/VariantIndexAppBase';
+import { renderClickInOrderGameHourglassGameIcon } from './ClickInOrderHourglassGameIcon';
 
+/** Supported logical page keys for this variant index app. */
 type IndexPage =
   | 'aanklikkenInVolgorde'
   | 'ballenKnallen'
   | 'ballenKnallenMetSom';
 
+/** Converts a raw attribute value to a valid index page key. */
 export function convertIndexPage(value: string | null): IndexPage {
   switch (value) {
     case 'aanklikkenInVolgorde':
@@ -52,55 +58,37 @@ const sections: IndexPageType = {
   ],
 };
 
+/**
+ * Variant index app for Click In Order and related balloon variants.
+ *
+ * This class supplies page selection, section data, and the icon renderer.
+ * Rendering and layout are inherited from `VariantIndexAppBase`.
+ */
 @customElement('click-in-order-game-index-app-v2')
-export class ClickInOrderGameIndexApp extends LitElement {
+export class ClickInOrderGameIndexApp extends VariantIndexAppBase<IndexPage> {
   @property({ converter: convertIndexPage })
   accessor indexPage: IndexPage = 'aanklikkenInVolgorde';
 
+  protected get selectedPage(): IndexPage {
+    return this.indexPage;
+  }
+
+  protected get sectionsByPage(): VariantSections<IndexPage> {
+    return sections;
+  }
+
+  protected get iconRenderer() {
+    return renderClickInOrderGameHourglassGameIcon;
+  }
+
   static get styles(): CSSResultArray {
     return [
+      super.styles,
       css`
-        :host {
-          font-size: x-large;
-        }
-        .buttonTable {
-          position: relative;
-          display: flex;
-          row-gap: 10px;
-          flex-wrap: wrap;
-          justify-content: space-around;
-          width: min(200px, 50vw);
-        }
         click-in-order-hourglass-game-icon {
-          width: 94%;
+          min-width: 0;
         }
       `,
     ];
-  }
-
-  renderRow(variant: string): HTMLTemplateResult {
-    return html`
-      <click-in-order-hourglass-game-icon
-        variant=${variant}
-      ></click-in-order-hourglass-game-icon>
-    `;
-  }
-
-  render(): HTMLTemplateResult[] {
-    const renderItems: HTMLTemplateResult[] = [];
-    for (const section of sections[this.indexPage]) {
-      renderItems.push(html`
-        ${section.title !== '' ? html`<h2>${section.title}</h2>` : ''}
-        <div class="buttonTable">
-          ${section.rows.map(row => this.renderRow(row))}
-        </div>
-      `);
-    }
-    renderItems.push(
-      html` <p>
-        <a href="index.html">Terug naar het hoofdmenu</a>
-      </p>`,
-    );
-    return renderItems;
   }
 }

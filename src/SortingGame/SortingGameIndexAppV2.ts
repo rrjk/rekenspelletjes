@@ -1,11 +1,18 @@
-import { html, css, LitElement } from 'lit';
+import { css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import type { CSSResultArray, HTMLTemplateResult } from 'lit';
+import type { CSSResultArray } from 'lit';
+import type { TimeCode } from '../TimeCodes';
 
-import './SortingGameHourglassGameIcon';
+import {
+  VariantIndexAppBase,
+  type VariantSections,
+} from '../IndexAppV2/VariantIndexAppBase';
+import { renderSortingGameHourglassGameIcon } from './SortingGameHourglassGameIcon';
 
+/** Supported logical page keys for this variant index app. */
 type IndexPage = 'basicSorting' | 'largeNumbers' | 'decimalNumbers';
 
+/** Converts a raw attribute value to a valid index page key. */
 export function convertIndexPage(value: string | null): IndexPage {
   switch (value) {
     case 'basicSorting':
@@ -62,68 +69,44 @@ const sections: IndexPageType = {
   ],
 };
 
-const durations = ['a', 'b'];
+/** Time codes shown for each variant as a left/right icon pair. */
+const durations: TimeCode[] = ['a', 'b'];
 
+/**
+ * Variant index app for Sorting Game.
+ *
+ * This class supplies page selection, section data, and the icon renderer.
+ * Rendering and layout are inherited from `VariantIndexAppBase`.
+ */
 @customElement('sorting-game-index-app-v2')
-export class SortingGameIndexApp extends LitElement {
+export class SortingGameIndexApp extends VariantIndexAppBase<IndexPage> {
   @property({ converter: convertIndexPage })
   accessor indexPage: IndexPage = 'basicSorting';
 
+  protected get selectedPage(): IndexPage {
+    return this.indexPage;
+  }
+
+  protected get sectionsByPage(): VariantSections<IndexPage> {
+    return sections;
+  }
+
+  protected override get timeCodes(): TimeCode[] {
+    return durations;
+  }
+
+  protected get iconRenderer() {
+    return renderSortingGameHourglassGameIcon;
+  }
+
   static get styles(): CSSResultArray {
     return [
+      super.styles,
       css`
-        :host {
-          font-size: x-large;
-        }
-        .buttonTable {
-          position: relative;
-          display: flex;
-          row-gap: 10px;
-          flex-wrap: wrap;
-          justify-content: space-around;
-          width: min(400px, 90vw);
-        }
         sorting-game-hourglass-game-icon {
-          width: 47%;
-        }
-        h3 {
-          color: #666;
-          font-style: italic;
-          text-align: center;
-          margin: 10px 0;
+          min-width: 0;
         }
       `,
     ];
-  }
-
-  renderRow(variant: string): HTMLTemplateResult {
-    return html`
-      <sorting-game-hourglass-game-icon
-        variant=${variant}
-        timeCode=${durations[0]}
-      ></sorting-game-hourglass-game-icon>
-      <sorting-game-hourglass-game-icon
-        variant=${variant}
-        timeCode=${durations[1]}
-      ></sorting-game-hourglass-game-icon>
-    `;
-  }
-
-  render(): HTMLTemplateResult[] {
-    const renderItems: HTMLTemplateResult[] = [];
-
-    for (const section of sections[this.indexPage]) {
-      renderItems.push(html`
-        <h2>${section.title}</h2>
-        <div class="buttonTable">
-          ${section.rows.map(row => this.renderRow(row))}
-        </div>
-      `);
-    }
-
-    renderItems.push(
-      html` <p><a href="index.html">Terug naar het hoofdmenu</a></p>`,
-    );
-    return renderItems;
   }
 }
