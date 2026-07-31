@@ -13,6 +13,10 @@ This guide explains the pattern for creating game families with variant-based co
 - `<GameName>IndexAppV2.ts` - Index page component
 - `<GameName>App.ts` - Main game with dual URL parsing (variant + explicit)
 
+**Shared file used by all IndexAppV2 pages:**
+
+- `src/IndexAppV2/VariantIndexAppBase.ts` - Reusable base class for section layout, row rendering (timed or untimed), and back-link output.
+
 **Variant naming:** `aa`, `ab`, `ac` (section 1), `ba`, `bb`, `bc` (section 2), etc.
 **Game naming:** Always include "Game" suffix (e.g., `MyNewGame`, not `MyNew`).
 
@@ -387,11 +391,16 @@ export class <GameName>HourglassGameIcon extends IconHourglassButtonV3 {
 Creates the index page showing all variant buttons.
 
 ```typescript
-import { html, css, LitElement } from 'lit';
+import { css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import type { CSSResultArray, HTMLTemplateResult } from 'lit';
+import type { CSSResultArray } from 'lit';
+import type { TimeCode } from '../TimeCodes';
 
-import './<GameName>HourglassGameIcon';
+import {
+  VariantIndexAppBase,
+  type VariantSections,
+} from '../IndexAppV2/VariantIndexAppBase';
+import { render<GameName>HourglassGameIcon } from './<GameName>HourglassGameIcon';
 
 type IndexPage = 'defaultPage';
 
@@ -402,69 +411,50 @@ export function convertIndexPage(value: string | null): IndexPage {
   }
 }
 
-interface SectionInfoType { title: string; rows: string[]; }
-interface IndexPageType { defaultPage: SectionInfoType[]; }
-
-const sections: IndexPageType = {
+const sections: VariantSections<IndexPage> = {
   defaultPage: [
     { title: 'Section Title', rows: ['aa', 'ab', 'ac', 'ad'] },
     { title: 'Another Section', rows: ['ba', 'bb', 'bc', 'bd'] },
   ],
 };
 
-const durations = ['a', 'b'];
+const durations: TimeCode[] = ['a', 'b'];
 
 @customElement('<game-name>-game-index-app-v2')
-export class <GameName>IndexApp extends LitElement {
+export class <GameName>IndexApp extends VariantIndexAppBase<IndexPage> {
   @property({ converter: convertIndexPage })
   accessor indexPage: IndexPage = 'defaultPage';
 
+  protected get selectedPage(): IndexPage {
+    return this.indexPage;
+  }
+
+  protected get sectionsByPage(): VariantSections<IndexPage> {
+    return sections;
+  }
+
+  protected override get timeCodes(): TimeCode[] {
+    return durations;
+  }
+
+  protected get iconRenderer() {
+    return render<GameName>HourglassGameIcon;
+  }
+
   static get styles(): CSSResultArray {
     return [
+      super.styles,
       css`
-        :host { font-size: x-large; }
-        .buttonTable {
-          position: relative;
-          display: flex;
-          row-gap: 10px;
-          flex-wrap: wrap;
-          justify-content: space-around;
-          width: min(400px, 90vw);
+        <game-name>-hourglass-game-icon {
+          min-width: 0;
         }
-        <game-name>-hourglass-game-icon { width: 47%; }
       `,
     ];
   }
-
-  renderRow(variant: string): HTMLTemplateResult {
-    return html`
-      <<game-name>-hourglass-game-icon variant=${variant} timeCode=${durations[0]}></<game-name>-hourglass-game-icon>
-      <<game-name>-hourglass-game-icon variant=${variant} timeCode=${durations[1]}></<game-name>-hourglass-game-icon>
-    `;
-  }
-
-  // For non-time-based games, render the wrapper without a timeCode attribute:
-  // renderRow(variant: string): HTMLTemplateResult {
-  //   return html`<game-name-hourglass-game-icon variant=${variant}></game-name-hourglass-game-icon>`;
-  // }
-
-
-
-  render(): HTMLTemplateResult[] {
-    const renderItems: HTMLTemplateResult[] = [];
-    for (const section of sections[this.indexPage]) {
-      renderItems.push(html`
-        <h2>${section.title}</h2>
-        <div class="buttonTable">
-          ${section.rows.map(row => this.renderRow(row))}
-        </div>
-      `);
-    }
-    renderItems.push(html` <p><a href="index.html">Terug naar het hoofdmenu</a></p>`);
-    return renderItems;
-  }
 }
 ```
+
+For untimed games, omit the `timeCodes` override and the base class will render one centered icon per variant row.
 
 ### Step 6: Create `<GameName>App.ts` with URL Parsing
 
@@ -669,6 +659,19 @@ render(): HTMLTemplateResult {
 const durations = ['b', 'c']; // 3 minutes and 5 minutes, not 'a' and 'b'
 ```
 
+### Issue 4.5: Duplicating Index Rendering Logic
+
+**Problem:** Re-implementing `renderRow`, section loops, and back-link markup in each `IndexAppV2` class creates avoidable duplication.
+
+**Solution:** Extend `VariantIndexAppBase` and only provide:
+
+- `selectedPage`
+- `sectionsByPage`
+- optional `timeCodes`
+- `iconRenderer`
+
+Keep custom CSS minimal and always include `super.styles`.
+
 ### Issue 5: Icon Component Using Helper Functions Directly
 
 **Problem:** Icon component directly calling helper functions (like `getExampleSums`) instead of using data from the extended variant info. This breaks the intended architecture where the variant getter should provide all needed data.
@@ -871,7 +874,7 @@ throw new UnexpectedValueError(value);
 - [ ] Create `<GameName>Variants.test.ts`
 - [ ] Create `<GameName>Icon.ts` with proper URL handling for images
 - [ ] Create `<GameName>HourglassGameIcon.ts` with an exported `render<GameName>HourglassGameIcon` helper typed as `RenderGameIconFunction`
-- [ ] Create `<GameName>IndexAppV2.ts`
+- [ ] Create `<GameName>IndexAppV2.ts` extending `VariantIndexAppBase`
 - [ ] Create `<GameName>App.ts` with dual URL parsing
 - [ ] Update main `index.html`
 - [ ] Create game-specific HTML page
@@ -936,7 +939,7 @@ Follow Steps 3-5 from the scaffolding instructions to create:
 
 - `<GameName>Icon.ts`
 - `<GameName>HourglassGameIcon.ts`
-- `<GameName>IndexAppV2.ts`
+- `<GameName>IndexAppV2.ts` (extends `VariantIndexAppBase`)
 
 ### Step 7: Update HTML Files
 
@@ -969,6 +972,7 @@ Replace `<MainCode>` with the game's main code (e.g., 'I', 'A', 'B') and `<GameP
 - [ ] Rename existing parsing to `parseUrlWithoutVariant`
 - [ ] Update main `parseUrl` dispatch logic
 - [ ] Create icon, hourglass wrapper, and index app
+- [ ] Ensure `<GameName>IndexAppV2.ts` extends `VariantIndexAppBase` and does not duplicate common render logic
 - [ ] Update HTML files
 - [ ] Test both URL modes
 - [ ] Verify URLshortener2.ts has main code mapping

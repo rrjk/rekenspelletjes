@@ -14,13 +14,14 @@ It is intended to help scaffold new games with the same structure for:
 
 ## Pattern Overview
 
-Each game family is organized into five layers:
+Each game family is organized into six layers:
 
 1. **Variant definitions** — centralized data describing game variants.
 2. **Icon component** — renders a visual icon based on variant metadata.
 3. **Hourglass wrapper component** — places the icon inside a reusable hourglass button type.
-4. **Main App component** — handles URL parsing and game configuration.
-5. **Index app component** — builds the game selection page from titled variant rows.
+4. **Shared index base** — `VariantIndexAppBase` provides common section layout, row rendering, and back link.
+5. **Main App component** — handles URL parsing and game configuration.
+6. **Index app component** — extends the shared base with game-specific page/section config.
 
 This pattern separates data from rendering and keeps shared metadata logic in one place.
 
@@ -190,10 +191,13 @@ export const renderMyGameHourglassGameIcon: RenderGameIconFunction = (
 
 ### Pattern
 
-- Define `sections` grouped by concept or difficulty.
-- Each section contains a `title` and `rows` of variant codes.
-- Render rows as two related hourglass buttons with different `timeCode` values.
-- Use a generic `@property` converter to map URL or attribute strings into a page type.
+- Extend `VariantIndexAppBase<PageKey>` from `src/IndexAppV2/VariantIndexAppBase.ts`.
+- Define `sections` as `VariantSections<PageKey>` grouped by concept or difficulty.
+- Implement `selectedPage` and `sectionsByPage` getters.
+- Provide `iconRenderer` via `render<GameName>HourglassGameIcon` helper.
+- Optional: override `timeCodes` for timed games (2 values for left/right pair, 1 for centered timed button).
+- Untimed games leave `timeCodes` at the base default (`[]`) for one centered button per variant.
+- Keep local CSS lean and include `super.styles`.
 
 ### Example
 
@@ -204,11 +208,12 @@ export const renderMyGameHourglassGameIcon: RenderGameIconFunction = (
 
 ## How the pieces fit together
 
-1. `IndexAppV2` chooses variant codes and renders `*HourglassGameIcon` rows.
-2. `*HourglassGameIcon` loads variant metadata and passes it to the hourglass button.
-3. `*GameIcon` renders the visual icon from the same metadata.
-4. `*GameApp` parses URLs and uses variant metadata to configure the game.
-5. `get*Variant` is the single source of truth for variant properties.
+1. `IndexAppV2` provides selected page + sections to `VariantIndexAppBase`.
+2. `VariantIndexAppBase` renders row layout and invokes the game-specific `iconRenderer`.
+3. `*HourglassGameIcon` loads variant metadata and passes it to the hourglass button.
+4. `*GameIcon` renders the visual icon from the same metadata.
+5. `*GameApp` parses URLs and uses variant metadata to configure the game.
+6. `get*Variant` is the single source of truth for variant properties.
 
 This ensures a variant only needs to be defined once and all UI layers stay consistent.
 
@@ -225,10 +230,12 @@ This ensures a variant only needs to be defined once and all UI layers stay cons
    - forward `mainCode`, `variant`, and `description`
    - forward `timeCode` only for timed games (omit binding for untimed games)
 4. Create `src/<NewGame>IndexAppV2.ts`
-   - define section groups and variant rows
-   - timed games: render two `*HourglassGameIcon` per row with different `timeCode` values
-   - untimed games: render one `*HourglassGameIcon` per row without `timeCode`
-   - optionally add `indexPage`/`game` converters for multiple pages
+  - extend `VariantIndexAppBase`
+  - define section groups and variant rows via `VariantSections<PageKey>`
+  - implement `selectedPage`, `sectionsByPage`, and `iconRenderer`
+  - timed games: override `timeCodes` with two entries for left/right row buttons
+  - untimed games: do not override `timeCodes` (base default renders single centered buttons)
+  - optionally add `indexPage` or `game` converters for multiple pages
 5. Create `src/<NewGame>Variants.test.ts`
    - test that `gameVariants` has all expected keys
    - test representative variants for each code path
@@ -309,7 +316,7 @@ import { joinWithEn } from '../Utils';
 - [ ] Create `<GameName>HourglassGameIcon.ts` with hourglass wrapper
 - [ ] Decide timed vs untimed; index renders one or two buttons per variant accordingly
 - [ ] Create `<GameName>App.ts` with dual URL parsing
-- [ ] Create `<GameName>IndexAppV2.ts` with index page
+- [ ] Create `<GameName>IndexAppV2.ts` extending `VariantIndexAppBase`
 - [ ] Update main `index.html` with script reference
 - [ ] Create game-specific HTML page
 - [ ] Create index page HTML
