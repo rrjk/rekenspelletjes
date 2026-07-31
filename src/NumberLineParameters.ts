@@ -1,3 +1,5 @@
+import { UnexpectedValueError } from './UnexpectedValueError';
+
 export interface NumberLineParameters {
   /** Minimum value for the numberline, always a multiple of 10 */
   readonly minimum: number;
@@ -13,8 +15,11 @@ export interface NumberLineParameters {
   readonly showAll10Numbers: boolean;
 }
 
+export type VerbTense = 'present' | 'past';
+
 export function DescribeNumberLineParameters(
   parameters: NumberLineParameters,
+  verbTense: VerbTense,
 ): string {
   const numberLineBoundaries = `${parameters.minimum} tot ${parameters.maximum}`;
 
@@ -42,7 +47,21 @@ export function DescribeNumberLineParameters(
   if (parameters.showAll10Numbers) numbersShown = 'alle tientallen';
   else numbersShown = 'het eerste en laatste getal van de getallenlijn';
 
-  return `${numberLineBoundaries} waarbij ${tickMarks} ${tickMarks !== '' ? 'en' : ''} ${numbersShown} zichtbaar waren.`;
+  let verb = '';
+  switch (verbTense) {
+    case 'present':
+      verb = 'zijn';
+      break;
+    case 'past':
+      verb = 'waren';
+      break;
+    default:
+      throw new UnexpectedValueError(verbTense);
+  }
+  if (verbTense === 'present') verb = 'zijn';
+  else if (verbTense === 'past') verb = 'waren';
+
+  return `${numberLineBoundaries} waarbij ${tickMarks} ${tickMarks !== '' ? 'en' : ''} ${numbersShown} zichtbaar ${verb}.`;
 }
 
 export function ParseNumberLineParameters(): NumberLineParameters {

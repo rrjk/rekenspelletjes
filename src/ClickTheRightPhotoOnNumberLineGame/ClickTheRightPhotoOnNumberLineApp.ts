@@ -172,14 +172,17 @@ class ClickTheRightPhotoOnNumberLineApp extends TimeLimitedGame2 {
       <p>Je hebt het <i>Kies de juiste foto</i> spel gespeeld</p>
       <p>
         De getallenlijn liep van
-        ${DescribeNumberLineParameters({
-          minimum: this.minimum,
-          maximum: this.maximum,
-          show10TickMarks: this.show10TickMarks,
-          show1TickMarks: this.show1TickMarks,
-          show5TickMarks: this.show5TickMarks,
-          showAll10Numbers: this.showAll10Numbers,
-        })}
+        ${DescribeNumberLineParameters(
+          {
+            minimum: this.minimum,
+            maximum: this.maximum,
+            show10TickMarks: this.show10TickMarks,
+            show1TickMarks: this.show1TickMarks,
+            show5TickMarks: this.show5TickMarks,
+            showAll10Numbers: this.showAll10Numbers,
+          },
+          'past',
+        )}
       </p>
     `;
   }

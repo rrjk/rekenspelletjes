@@ -13,13 +13,13 @@ type SmallestTickmark = 'noTickMark' | 'tickMark1' | 'tickMark5' | 'tickMark10';
 function determineSmallestTickmark(
   variantInfo: JumpOnNumberLineExtendedVariantInfo,
 ): SmallestTickmark {
-  if (variantInfo.show1TickMarks) {
+  if (variantInfo.numberLineParameters.show1TickMarks) {
     return 'tickMark1';
   }
-  if (variantInfo.show5TickMarks) {
+  if (variantInfo.numberLineParameters.show5TickMarks) {
     return 'tickMark5';
   }
-  if (variantInfo.show10TickMarks) {
+  if (variantInfo.numberLineParameters.show10TickMarks) {
     return 'tickMark10';
   }
   return 'noTickMark';
@@ -28,7 +28,7 @@ function determineSmallestTickmark(
 function determineNumberlineMinMaxText(
   variantInfo: JumpOnNumberLineExtendedVariantInfo,
 ): string {
-  return `${variantInfo.minimum}-${variantInfo.maximum}`;
+  return `${variantInfo.numberLineParameters.minimum}-${variantInfo.numberLineParameters.maximum}`;
 }
 
 @customElement('jump-on-numberline-game-icon')

@@ -92,14 +92,7 @@ export class JumpOnNumberLineApp extends TimeLimitedGame2 {
   constructor() {
     super();
     const variantInfo = getJumpOnNumberLineVariant('aa');
-    this.numberLineProperties = {
-      minimum: variantInfo.minimum,
-      maximum: variantInfo.maximum,
-      show10TickMarks: variantInfo.show10TickMarks,
-      show5TickMarks: variantInfo.show5TickMarks,
-      show1TickMarks: variantInfo.show1TickMarks,
-      showAll10Numbers: variantInfo.showAll10Numbers,
-    };
+    this.numberLineProperties = variantInfo.numberLineParameters;
     this.parseUrl();
   }
 
@@ -299,14 +292,7 @@ export class JumpOnNumberLineApp extends TimeLimitedGame2 {
     }
 
     const variantInfo = getJumpOnNumberLineVariant(variant);
-    this.numberLineProperties = {
-      minimum: variantInfo.minimum,
-      maximum: variantInfo.maximum,
-      show10TickMarks: variantInfo.show10TickMarks,
-      show5TickMarks: variantInfo.show5TickMarks,
-      show1TickMarks: variantInfo.show1TickMarks,
-      showAll10Numbers: variantInfo.showAll10Numbers,
-    };
+    this.numberLineProperties = variantInfo.numberLineParameters;
 
     this.gameLogger.setMainCode(variantInfo.mainCode);
     this.gameLogger.setSubCode(variant);
@@ -475,6 +461,10 @@ export class JumpOnNumberLineApp extends TimeLimitedGame2 {
         Zet het platform op de juiste plek op de getallenlijn, zodat Jan erop
         kan springen.
       </p>
+      <p>
+        We spelen op een getallenlijn van
+        ${DescribeNumberLineParameters(this.numberLineProperties, 'present')}
+      </p>
       <p>Dit spel kun je op de telefoon het beste horizontaal spelen.</p>
     `;
   }
@@ -488,7 +478,7 @@ export class JumpOnNumberLineApp extends TimeLimitedGame2 {
       <p>Je hebt het <i>Spring op de getallenlijn</i> spel gespeeld</p>
       <p>
         De getallenlijn liep van
-        ${DescribeNumberLineParameters(this.numberLineProperties)}
+        ${DescribeNumberLineParameters(this.numberLineProperties, 'past')}
       </p>
     `;
   }
