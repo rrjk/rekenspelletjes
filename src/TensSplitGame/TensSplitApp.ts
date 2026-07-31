@@ -3,13 +3,13 @@ import { html, css } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
-import { TimeLimitedGame2 } from './TimeLimitedGame2';
-import { GameLogger } from './GameLogger';
+import { TimeLimitedGame2 } from '../TimeLimitedGame2';
+import { GameLogger } from '../GameLogger';
 
 import './TensSplitWidget';
-import type { Digit } from './DigitKeyboard';
-import './DigitKeyboard';
-import { randomFromSet } from './Randomizer';
+import type { Digit } from '../DigitKeyboard';
+import '../DigitKeyboard';
+import { randomFromSet } from '../Randomizer';
 
 const allEnabledDigits = [
   false,

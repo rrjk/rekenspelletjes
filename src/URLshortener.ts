@@ -14,7 +14,7 @@ import { groepjesVanHerkennenLink } from './RecognizeGroupsAppLink';
 import { sorterenLink } from './SortingGame/SortingGameAppLink';
 import { splitsenLink } from './SplitAppLink';
 import { sommenMetSplitsenLink } from './SumsWithSplitGame/SumsWithSplitAppLink';
-import { splitsenOpWaardeLink } from './TensSplitAppLink';
+import { splitsenOpWaardeLink } from './TensSplitGame/TensSplitAppLink';
 import { stippenTellenLink } from './DotCountingGame/DotCountingGameAppLink';
 import { breukenPaartjesLink } from './FractionsPairMatchingGame/FractionsPairMatchingGameAppLink';
 import { hexagonnenSpelLink } from './SquaresBalloonGameLink';
