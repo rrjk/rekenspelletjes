@@ -30,6 +30,7 @@ const baseURLs: Partial<Record<string, URL>> = {
   V: new URL('./SommenMetSplitsen.html', baseUrl),
   W: new URL('./SplitsenOpWaarde.html', baseUrl),
   X: new URL('./GetallenlijnBoogjesSpel.html', baseUrl),
+  Z: new URL('./DelenMetSplitsen.html', baseUrl),
   AB: new URL('./HoeveelVingersSpel.html', baseUrl),
   AC: new URL('./GemengdeSommen.html', baseUrl),
   AD: new URL('./GemengdeSommen.html', baseUrl),

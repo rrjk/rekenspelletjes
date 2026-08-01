@@ -16,6 +16,10 @@ import { randomFromSet } from '../Randomizer';
 
 import { splitInDigits } from '../NumberHelperFunctions';
 import {
+  getDivisionWithSplitGameVariant,
+  type Decade,
+} from './DivisionWithSplitGameVariants';
+import {
   fillInFields,
   FillInFields,
   initFillInInfo,
@@ -77,10 +81,28 @@ export class DivisionWithSplitApp extends TimeLimitedGame2 {
     this.eligibleDivisors = [...range(2, 9)];
   }
 
-  private parseUrl(): void {
-    const urlParams = new URLSearchParams(window.location.search);
+  private setEligibleAnswers(decadesToUse: Decade[]): void {
+    this.eligibleAnswers = [];
+    for (const decade of decadesToUse) {
+      for (let i = 1; i < 10; i++) this.eligibleAnswers.push(decade + i);
+    }
+  }
 
-    // Get allowed decade
+  private parseUrlWithVariant(urlParams: URLSearchParams): void {
+    const variant = urlParams.get('variant');
+    if (variant === null) throw Error('Internal SW Error: no variant in URL');
+
+    const variantInfo = getDivisionWithSplitGameVariant(variant);
+    this.setEligibleAnswers(variantInfo.decades);
+    this.showSubAnswers = variantInfo.showSubAnswers;
+    this.showHelp = variantInfo.showHelp;
+    this.gameLogger.setMainCode(variantInfo.mainCode);
+    this.gameLogger.setSubCode(variant);
+  }
+
+  private parseUrlWithoutVariant(urlParams: URLSearchParams): void {
+    this.gameLogger.setMainCode('Z');
+
     const decadesToUse: number[] = [];
     const decadesFromUrl = urlParams.getAll('decade');
 
@@ -97,9 +119,7 @@ export class DivisionWithSplitApp extends TimeLimitedGame2 {
     }
 
     if (decadesToUse.length === 0) decadesToUse.push(10);
-    for (const decade of decadesToUse) {
-      for (let i = 1; i < 10; i++) this.eligibleAnswers.push(decade + i);
-    }
+    this.setEligibleAnswers(decadesToUse as Decade[]);
 
     // Determine whether subanswers should be shown
     if (urlParams.has('hideSubAnswers')) this.showSubAnswers = false;
@@ -108,6 +128,12 @@ export class DivisionWithSplitApp extends TimeLimitedGame2 {
     // Determine whether help texts should be shown
     if (urlParams.has('hideHelpText')) this.showHelp = false;
     else this.showHelp = true;
+  }
+
+  private parseUrl(): void {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('variant')) this.parseUrlWithVariant(urlParams);
+    else this.parseUrlWithoutVariant(urlParams);
   }
 
   /** Start a new game.
