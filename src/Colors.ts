@@ -11,6 +11,7 @@ export const summaryMenuColors = [
   'menuBackground',
   'summaryBar',
   'detailsBar',
+  'inactiveDetailsBar',
 ] as const;
 
 export const neonFusionColors = [
@@ -269,19 +270,25 @@ export const colorArray: ColorInfo[] = [
     colorName: 'menuBackground',
     fontColor: 'black',
     mainColorCode: '#e6f2ff',
-    accentColorCode: '#e6f2ff', //saturate('#e6f2ff', 0.4),
+    accentColorCode: '#e6f2ff',
   },
   {
     colorName: 'summaryBar',
     fontColor: 'white',
     mainColorCode: '#1e3a8a',
-    accentColorCode: 'black', //saturate('#1e3a8a', 0.4),
+    accentColorCode: 'black',
   },
   {
     colorName: 'detailsBar',
     fontColor: 'black',
     mainColorCode: '#3b82f6',
-    accentColorCode: 'black', //saturate('#3b82f6', 0.4),
+    accentColorCode: 'black',
+  },
+  {
+    colorName: 'inactiveDetailsBar',
+    fontColor: 'darkgrey',
+    mainColorCode: 'lightgrey',
+    accentColorCode: 'darkgrey',
   },
 ];
 

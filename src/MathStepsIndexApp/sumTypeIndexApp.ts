@@ -138,7 +138,7 @@ export abstract class SumTypeIndexApp<Game extends string> extends LitElement {
     }
     renderItems.push(
       html` <p>
-        <a href="index.html">Terug naar het hoofdmenu</a>
+        <a href="RekenStappenOverzicht.html">Terug naar het hoofdmenu</a>
       </p>`,
     );
     return renderItems;

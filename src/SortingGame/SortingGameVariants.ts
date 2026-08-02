@@ -148,6 +148,28 @@ export const sortingGameVariants: Record<string, SortingGameVariantInfo> = {
     divider: 1000,
     boxColor: 'purple',
   },
+  // Section A: Numbers 1-10 (red boxes)
+  ga: {
+    numberBoxes: 2,
+    minimumValue: 1,
+    maximumValue: 20,
+    divider: 1,
+    boxColor: 'red',
+  },
+  gb: {
+    numberBoxes: 3,
+    minimumValue: 1,
+    maximumValue: 20,
+    divider: 1,
+    boxColor: 'red',
+  },
+  gc: {
+    numberBoxes: 4,
+    minimumValue: 1,
+    maximumValue: 20,
+    divider: 1,
+    boxColor: 'red',
+  },
 };
 
 export interface SortingGameExtendedVariantInfo extends SortingGameVariantInfo {

@@ -15,6 +15,7 @@ interface SumTypeInfo {
   id: string;
   description: string;
   title: string;
+  gamesAvailable: boolean;
 }
 
 interface SumTypeGroupInfo {
@@ -34,31 +35,37 @@ const sumTypeGroups: SumTypeGroupInfo[] = [
         id: 'num10',
         description: 'Getalbegrip tot 10',
         title: 'Getalbegrip tot 10',
+        gamesAvailable: true,
       },
       {
         id: '3p4',
         description: `Plussommen tot en met 10`,
         title: '3 + 4',
+        gamesAvailable: true,
       },
       {
         id: 'split',
         description: `Splitsen van de getallen tot en met 10`,
         title: 'Splitsen',
+        gamesAvailable: true,
       },
       {
         id: '7m5',
         description: `Minsommen tot en met 10`,
         title: `7 ${operatorToSymbol('minus')} 5`,
+        gamesAvailable: true,
       },
       {
-        id: 's10m2',
+        id: '10m2',
         description: `Minsommen met de eerste term 10`,
-        title: '10 - 2',
+        title: `10 ${operatorToSymbol('minus')} 2`,
+        gamesAvailable: false,
       },
       {
-        id: 's6pi10',
+        id: '6pi10',
         description: `Sommen met aanvullen tot 10 `,
         title: '6 + .. = 10',
+        gamesAvailable: false,
       },
     ],
   },
@@ -71,36 +78,43 @@ const sumTypeGroups: SumTypeGroupInfo[] = [
         id: 'num20',
         description: `Getalbegrip tot 20`,
         title: 'Getal begrip tot 20',
+        gamesAvailable: true,
       },
       {
-        id: 's10p4',
+        id: '10p4',
         description: `Plussommem met 10 als eerste term en een getal met één cijfer als tweede term`,
         title: '10 + 4',
+        gamesAvailable: false,
       },
       {
-        id: 's15p2',
+        id: '13p4',
         description: `Plussommen tussen de 10 en de 20`,
-        title: '15 + 2',
+        title: '13 + 4',
+        gamesAvailable: true,
       },
       {
-        id: 's17m2',
+        id: '17m5',
         description: `Minsommen tussen de 10 en de 20`,
-        title: '17 - 2',
+        title: `17 ${operatorToSymbol('minus')} 5`,
+        gamesAvailable: true,
       },
       {
-        id: 's6p8',
+        id: '6p8',
         description: `Plussommen tussen de 1 en en 20, waarbij er over het tiental heen gesprongen wordt`,
         title: '6 + 8',
+        gamesAvailable: false,
       },
       {
-        id: 's16mi10',
+        id: '16mi10',
         description: `Minsommen tot en met 20, waarbij het antwoord 10 is en de tweede term ingevuld moet worden.`,
-        title: '16 - ... = 10',
+        title: `16 ${operatorToSymbol('minus')} ... = 10`,
+        gamesAvailable: false,
       },
       {
-        id: 's16m8',
+        id: '16m8',
         description: `Minsommen tussen de 1 en en 20, waarbij er over het tiental heen gesprongen wordt`,
-        title: '16 - 8',
+        title: `16 ${operatorToSymbol('minus')} 8`,
+        gamesAvailable: false,
       },
     ],
   },
@@ -165,40 +179,63 @@ export class MathStepsIndexApp extends LitElement {
 
         details {
           margin-bottom: 1em;
+          border-radius: 10px;
+          padding: 5px;
           background-color: ${unsafeCSS(
             getColorInfo('menuBackground').mainColorCode,
           )};
           border: 3px solid
             ${unsafeCSS(getColorInfo('menuBackground').accentColorCode)};
-          border-radius: 10px;
-          padding: 5px;
         }
 
         li {
           margin: 0.5em 0;
+          border-radius: 10px;
+          padding: 0.5em;
+          list-style: none;
+        }
+
+        li.active {
           background-color: ${unsafeCSS(
             getColorInfo('detailsBar').mainColorCode,
           )};
           border: 3px solid
             ${unsafeCSS(getColorInfo('detailsBar').accentColorCode)};
-          border-radius: 10px;
-          padding: 0.5em;
-          list-style: none;
+        }
+
+        li.inactive {
+          background-color: ${unsafeCSS(
+            getColorInfo('inactiveDetailsBar').mainColorCode,
+          )};
+          border: 3px solid
+            ${unsafeCSS(getColorInfo('inactiveDetailsBar').accentColorCode)};
         }
       `,
     ];
   }
 
   renderSumType(sumType: SumTypeInfo): HTMLTemplateResult {
-    return html`
-      <li>
-        <math-step-sums-icon
-          link="../../Rekenspelletjes/SumTypeIndex-${sumType.id}.html"
-          description=${sumType.description}
-          title=${sumType.title}
-        ></math-step-sums-icon>
-      </li>
-    `;
+    if (sumType.gamesAvailable) {
+      return html`
+        <li class="active">
+          <math-step-sums-icon
+            link="../../Rekenspelletjes/SumTypeIndex-${sumType.id}.html"
+            description=${sumType.description}
+            title=${sumType.title}
+          ></math-step-sums-icon>
+        </li>
+      `;
+    } else {
+      return html`
+        <li class="inactive">
+          <math-step-sums-icon
+            link=""
+            description="${sumType.description} (Wordt nog ontwikkeld)"
+            title=${sumType.title}
+          ></math-step-sums-icon>
+        </li>
+      `;
+    }
   }
 
   renderSumTypeGroup(group: SumTypeGroupInfo): HTMLTemplateResult {

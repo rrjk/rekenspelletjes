@@ -22,10 +22,10 @@ const game = [
 
 export type Game = (typeof game)[number];
 
-@customElement('sumtype-index-app-num10')
-export class SumTypeIndexAppNum10 extends SumTypeIndexApp<Game> {
+@customElement('sumtype-index-app-num20')
+export class SumTypeIndexAppNum20 extends SumTypeIndexApp<Game> {
   get pageTitle(): string {
-    return `Getalbegrip tot 10`;
+    return `Getalbegrip tot 20`;
   }
 
   get sections(): IndexPageType<Game> {
@@ -35,58 +35,48 @@ export class SumTypeIndexAppNum10 extends SumTypeIndexApp<Game> {
           title: 'Begrip',
           rows: [
             {
-              game: 'die-face-game',
-              variant: 'aa',
-              timeCodes: ['a', 'b'],
-            },
-            {
-              game: 'how-many-fingers-game',
-              variant: 'aa',
-              timeCodes: ['a', 'b'],
-            },
-            {
-              game: 'how-many-fingers-game',
-              variant: 'ab',
-              timeCodes: ['a', 'b'],
-            },
-            {
-              game: 'dot-counting-game',
-              variant: 'ab',
-              timeCodes: ['a', 'b'],
-            },
-            {
-              game: 'dot-counting-game',
-              variant: 'aa',
+              game: 'sorting-game',
+              variant: 'ga',
               timeCodes: ['a', 'b'],
             },
             {
               game: 'sorting-game',
+              variant: 'gb',
+              timeCodes: ['a', 'b'],
+            },
+            {
+              game: 'sorting-game',
+              variant: 'gc',
+              timeCodes: ['a', 'b'],
+            },
+            {
+              game: 'click-the-right-photo-on-number-line-game',
               variant: 'aa',
               timeCodes: ['a', 'b'],
             },
             {
-              game: 'sorting-game',
+              game: 'click-the-right-photo-on-number-line-game',
               variant: 'ab',
               timeCodes: ['a', 'b'],
             },
             {
-              game: 'sorting-game',
+              game: 'click-the-right-photo-on-number-line-game',
               variant: 'ac',
               timeCodes: ['a', 'b'],
             },
             {
               game: 'click-the-right-photo-on-number-line-game',
-              variant: 'ea',
-              timeCodes: ['a', 'b'],
-            },
-            {
-              game: 'click-the-right-photo-on-number-line-game',
-              variant: 'eb',
+              variant: 'ad',
               timeCodes: ['a', 'b'],
             },
             {
               game: 'click-in-order-game',
-              variant: 'aa',
+              variant: 'ab',
+              timeCodes: [],
+            },
+            {
+              game: 'click-in-order-game',
+              variant: 'ac',
               timeCodes: [],
             },
           ],
