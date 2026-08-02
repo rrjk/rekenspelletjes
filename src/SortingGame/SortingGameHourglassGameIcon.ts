@@ -1,11 +1,25 @@
 import { LitElement, html, css } from 'lit';
 import type { CSSResultGroup, HTMLTemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
 
 import { type TimeCode, stringToTimeCode } from '../TimeCodes';
 import { getSortingGameVariant } from './SortingGameVariants';
 import '../IconHourglassButtonV2';
 import './SortingGameIcon';
+import { RenderGameIconFunction } from '../RenderGameIconFunction';
+
+export const renderSortingGameHourglassGameIcon: RenderGameIconFunction = (
+  variant,
+  classes,
+  timeCode,
+) => {
+  return html`<sorting-game-hourglass-game-icon
+    class=${classMap(classes)}
+    .variant=${variant}
+    .timeCode=${timeCode}
+  ></sorting-game-hourglass-game-icon>`;
+};
 
 @customElement('sorting-game-hourglass-game-icon')
 export class SortingGameHourglassGameIcon extends LitElement {

@@ -1,11 +1,22 @@
 import { LitElement, html, css } from 'lit';
 import type { CSSResultGroup, HTMLTemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
 
 import { type TimeCode, stringToTimeCode } from '../TimeCodes';
 import { getFractionsPairMatchingGameVariant } from './FractionsPairMatchingGameVariants';
 import '../IconHourglassButtonV2';
 import './FractionsPairMatchingGameIcon';
+import { RenderGameIconFunction } from '../RenderGameIconFunction';
+
+export const renderFractionsPairMatchingGameHourglassGameIcon: RenderGameIconFunction =
+  (variant, classes, timeCode) => {
+    return html`<fractions-pair-matching-game-hourglass-game-icon
+      class=${classMap(classes)}
+      .variant=${variant}
+      .timeCode=${timeCode}
+    ></fractions-pair-matching-game-hourglass-game-icon>`;
+  };
 
 @customElement('fractions-pair-matching-game-hourglass-game-icon')
 export class FractionsPairMatchingGameHourglassGameIcon extends LitElement {

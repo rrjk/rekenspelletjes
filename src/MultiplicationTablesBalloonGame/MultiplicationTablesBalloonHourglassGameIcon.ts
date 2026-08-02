@@ -1,12 +1,23 @@
 import { LitElement, html, css } from 'lit';
 import type { HTMLTemplateResult, CSSResultGroup } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
 
 import { type TimeCode, stringToTimeCode } from '../TimeCodes';
 import { getGameVariant } from './MultiplicationTablesBalloonGameVariants';
 
 import '../IconHourglassButtonV2';
 import './MultiplicationTablesBalloonGameIcon';
+import { RenderGameIconFunction } from '../RenderGameIconFunction';
+
+export const renderMultiplicationTablesBalloonHourglassGameIcon: RenderGameIconFunction =
+  (variant, classes, timeCode) => {
+    return html`<multiplication-tables-balloon-hourglass-game-icon
+      class=${classMap(classes)}
+      .variant=${variant}
+      .timeCode=${timeCode}
+    ></multiplication-tables-balloon-hourglass-game-icon>`;
+  };
 
 @customElement('multiplication-tables-balloon-hourglass-game-icon')
 export class MultiplicationTablesBalloonHourglassGameIcon extends LitElement {

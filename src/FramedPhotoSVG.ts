@@ -35,6 +35,12 @@ const photos: Record<string, PhotoMetaData> = {
     height: 579,
     color: '#9c6ccf',
   },
+  Manfred: {
+    url: new URL('../images/Mompitz Manfred.png', import.meta.url),
+    width: 424,
+    height: 471,
+    color: '#197d87',
+  },
   Disabled: {
     url: new URL('../images/cross-out-black-500.png', import.meta.url),
     width: 500,

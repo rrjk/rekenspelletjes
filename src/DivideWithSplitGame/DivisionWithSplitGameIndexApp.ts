@@ -4,9 +4,9 @@ import { customElement } from 'lit/decorators.js';
 
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
-import { Color, getColorInfo } from './Colors';
+import { Color, getColorInfo } from '../Colors';
 
-import './IconHourglassButton';
+import '../IconHourglassButton';
 import './DivideWithSplitWidget';
 import type { FillInInfo, FixedNumberInfo } from './DivideWithSplitWidget';
 

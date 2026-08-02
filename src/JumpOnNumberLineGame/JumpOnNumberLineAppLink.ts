@@ -23,12 +23,12 @@ type NumberLineBoundaries =
  */
 
 export function springOpGetallenlijnLink(
-  minumum: NumberLineBoundaries,
+  minimum: NumberLineBoundaries,
   maximum: NumberLineBoundaries,
   helpers: Helpers[],
   time: number,
 ) {
-  let params = `time=${time}&minumum=${minumum}&maximum=${maximum}`;
+  let params = `time=${time}&minimum=${minimum}&maximum=${maximum}`;
   for (const h of helpers) params += `&${h}`;
   return `../Rekenspelletjes/SpringOpGetallenlijn.html?${params}`;
 }

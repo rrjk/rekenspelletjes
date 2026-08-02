@@ -1,12 +1,26 @@
 import { LitElement, html, css } from 'lit';
 import type { HTMLTemplateResult, CSSResultGroup } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
 
 import { type TimeCode, stringToTimeCode } from '../TimeCodes';
 import { getMixedSumsGameVariant } from './MixedSumsGameVariants';
 
 import '../IconHourglassButtonV2';
 import './MixedSumsGameIcon';
+import { RenderGameIconFunction } from '../RenderGameIconFunction';
+
+export const renderMixedSumsGameHourglassGameIcon: RenderGameIconFunction = (
+  variant,
+  classes,
+  timeCode,
+) => {
+  return html`<mixed-sums-hourglass-game-icon
+    class=${classMap(classes)}
+    .variant=${variant}
+    .timeCode=${timeCode}
+  ></mixed-sums-hourglass-game-icon>`;
+};
 
 @customElement('mixed-sums-hourglass-game-icon')
 export class MixedSumsHourglassGameIcon extends LitElement {

@@ -1,20 +1,23 @@
-import { html, css, LitElement } from 'lit';
+import { css } from 'lit';
 
 import { customElement, property } from 'lit/decorators.js';
 
-import type { CSSResultArray, HTMLTemplateResult } from 'lit';
+import type { CSSResultArray } from 'lit';
+import type { TimeCode } from '../TimeCodes';
 
-import './MixedSumsHourglassGameIcon';
+import {
+  VariantIndexAppBase,
+  type VariantSections,
+} from '../IndexAppV2/VariantIndexAppBase';
+import { renderMixedSumsGameHourglassGameIcon } from './MixedSumsHourglassGameIcon';
 
-type IndexPage = 'mixedSums'; // Having this allows in the future to add other index pages as well;
+/** Supported logical page keys for this variant index app. */
+type IndexPage = 'mixedSums';
 
 /**
- * Convert a string into an Game.
- * In case an illegal string is provided, which does not resolve to a game
- * withPuzzle is returned.
+ * Converts a raw attribute value to a valid index page key.
  *
- * @param value string to convert
- * @returns string converted to an Operator
+ * Invalid values fall back to the default Mixed Sums page.
  */
 export function convertGame(value: string | null): IndexPage {
   switch (value) {
@@ -47,62 +50,44 @@ const sections: IndexPageType = {
   ],
 };
 
-const durations = ['a', 'b'];
+/** Time codes shown for each variant as a left/right icon pair. */
+const durations: TimeCode[] = ['a', 'b'];
 
+/**
+ * Variant index app for Mixed Sums.
+ *
+ * This class supplies page selection, section data, and the icon renderer.
+ * Rendering and layout are inherited from `VariantIndexAppBase`.
+ */
 @customElement('mixed-sums-game-index-app-v2')
-export class MixedSumsGameIndexApp extends LitElement {
+export class MixedSumsGameIndexApp extends VariantIndexAppBase<IndexPage> {
   @property({ converter: convertGame })
   accessor indexPage: IndexPage = 'mixedSums';
 
+  protected get selectedPage(): IndexPage {
+    return this.indexPage;
+  }
+
+  protected get sectionsByPage(): VariantSections<IndexPage> {
+    return sections;
+  }
+
+  protected override get timeCodes(): TimeCode[] {
+    return durations;
+  }
+
+  protected get iconRenderer() {
+    return renderMixedSumsGameHourglassGameIcon;
+  }
+
   static get styles(): CSSResultArray {
     return [
+      super.styles,
       css`
-        :host {
-          font-size: x-large;
-        }
-        .buttonTable {
-          position: relative;
-          display: flex;
-          row-gap: 10px;
-          flex-wrap: wrap;
-          justify-content: space-around;
-          width: min(400px, 90vw);
-        }
         mixed-sums-hourglass-game-icon {
-          width: 47%;
+          min-width: 0;
         }
       `,
     ];
-  }
-
-  renderRow(variant: string): HTMLTemplateResult {
-    return html`
-      <mixed-sums-hourglass-game-icon
-        variant=${variant}
-        timeCode=${durations[0]}
-      ></mixed-sums-hourglass-game-icon>
-      <mixed-sums-hourglass-game-icon
-        variant=${variant}
-        timeCode=${durations[1]}
-      ></mixed-sums-hourglass-game-icon>
-    `;
-  }
-
-  render(): HTMLTemplateResult[] {
-    const renderItems: HTMLTemplateResult[] = [];
-    for (const section of sections[this.indexPage]) {
-      renderItems.push(html`
-        <h2>${section.title}</h2>
-        <div class="buttonTable">
-          ${section.rows.map(row => this.renderRow(row))}
-        </div>
-      `);
-    }
-    renderItems.push(
-      html` <p>
-        <a href="index.html">Terug naar het hoofdmenu</a>
-      </p>`,
-    );
-    return renderItems;
   }
 }

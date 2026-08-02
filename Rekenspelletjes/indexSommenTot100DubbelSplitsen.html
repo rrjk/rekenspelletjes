@@ -1,113 +1,17 @@
-<!DOCTYPE html>
-<html lang="nl">    
-    <style>
-        html {
-            font-size: xx-large;
-        }
-        .buttonTable{
-            position: relative;
-            display: flex;
-            gap: 10px 10px;
-            flex-wrap: wrap;
-            width: 450px;
-        }
-
-        img{
-            margin-right: 5px;
-        }
-
-    </style>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width">
-        <title>Sommen tot de 100 met twee keer splitsen</title>
-    </head>
-    <body>
-        <script type="module" src="../src/IconHourglassButton.ts"></script>  
-        <h2>Sommen met twee keer splitsen</h2>
-        <h3>Sommen tot de 100</h3>
-        <div class="buttonTable">
-            <icon-hourglass-button 
-                time="3min"
-                title="Sommen zoals 47+38, met splitsen"
-                shortCode="gw">
-                <img src="../images/Als47+38.svg"  alt="Als 47+38" height=90px></img>
-            </icon-hourglass-button>
-            <icon-hourglass-button 
-                time="5min"
-                title="Sommen zoals 47+38, met splitsen"
-                shortCode="gx">
-                <img src="../images/Als47+38.svg"  alt="Als 47+38" height=90px></img>
-            </icon-hourglass-button>
-
-            <icon-hourglass-button 
-                time="3min"
-                title="Sommen zoals 65-49, met splitsen"
-                shortCode="gy">
-                <img src="../images/Als65-49.svg"  alt="Als 65-49" height=90px></img>
-            </icon-hourglass-button>
-            <icon-hourglass-button 
-                time="5min"
-                title="Sommen zoals 65-49, met splitsen"
-                shortCode="gz">
-                <img src="../images/Als65-49.svg"  alt="Als 65-49" height=90px></img>
-            </icon-hourglass-button>
-
-            <icon-hourglass-button 
-                time="3min"
-                title="Sommen zoals 47+38 en 65-49, met splitsen"
-                shortCode="ha">
-                <img src="../images/Als47+38_65-49.svg"  alt="Als 47+38 en 65-49" height=90px></img>
-            </icon-hourglass-button>
-            <icon-hourglass-button 
-                time="5min"
-                title="Sommen zoals 47+38 en 65-49, met splitsen"
-                shortCode="hb">
-                <img src="../images/Als47+38_65-49.svg"  alt="Als 47+38 en 65-49" height=90px></img>
-            </icon-hourglass-button>
-        </div>
-        <h3>Sommen tot de 100 met splitsen uit het hoofd</h3>
-        <div class="buttonTable">
-            <icon-hourglass-button 
-                time="1min"
-                title="Sommen zoals 47+38, uit het hoofd splitsen"
-                shortCode="ol">
-                <img src="../images/Als47+38_nosplit.svg"  alt="Als 47+38" height=90px></img>
-            </icon-hourglass-button>
-            <icon-hourglass-button 
-                time="3min"
-                title="Sommen zoals 47+38, uit het hoofd splitsen"
-                shortCode="om">
-                <img src="../images/Als47+38_nosplit.svg"  alt="Als 47+38" height=90px></img>
-            </icon-hourglass-button>
-            <icon-hourglass-button 
-                time="1min"
-                title="Sommen zoals 65-49, uit het hoofd splitsen"
-                shortCode="on">
-                <img src="../images/Als65-49_nosplit.svg"  alt="Als 65-49" height=90px></img>
-            </icon-hourglass-button>
-            <icon-hourglass-button 
-                time="3min"
-                title="Sommen zoals 65-49, met uit het hoofd splitsen"
-                shortCode="oo">
-                <img src="../images/Als65-49_nosplit.svg"  alt="Als 65-49" height=90px></img>
-            </icon-hourglass-button>
-            <icon-hourglass-button 
-                time="1min"
-                title="Sommen zoals 47+38 en 65-49, uit het hoofd splitsen"
-                shortCode="op">
-                <img src="../images/Als47+38_65-49_nosplit.svg"  alt="Als 47+38 en 65-49" height=90px></img>
-            </icon-hourglass-button>
-            <icon-hourglass-button 
-                time="3min"
-                title="Sommen zoals 47+38 en 65-49, met uit het hoofd splitsen"
-                shortCode="oq">
-                <img src="../images/Als47+38_65-49_nosplit.svg"  alt="Als 47+38 en 65-49" height=90px></img>
-            </icon-hourglass-button>
-
-        </div>
-        <p>
-            <a href="index.html">Terug naar het hoofdmenu</a>
-        </p>
-    </body>
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Sommen tot de 100 met twee keer splitsen</title>
+  </head>
+  <body>
+    <sums-with-split-game-index-app-v2
+      indexPage="tot100Dubbel"
+    ></sums-with-split-game-index-app-v2>
+    <script
+      type="module"
+      src="../src/SumsWithSplitGame/SumsWithSplitGameIndexAppV2.ts"
+    ></script>
+  </body>
 </html>

@@ -132,6 +132,7 @@ export class IconHourglassButton extends LitElement {
         padding: 0;
         background-color: transparent;
         z-index: 2;
+        stroke: black;
       }
 
       svg {

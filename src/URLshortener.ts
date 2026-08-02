@@ -4,22 +4,22 @@ import {
   aanklikkenInTafelVolgordeLink,
   aanklikkenInVolgordeLink,
 } from './ClickInOrderGame/ClickInOrderAppLink';
-import { klikFotoOpGetallenlijnLink } from './ClickTheRightPhotoOnNumberLineAppLink';
+import { klikFotoOpGetallenlijnLink } from './ClickTheRightPhotoOnNumberLineGame/ClickTheRightPhotoOnNumberLineAppLink';
 import { klokPaartjesLink } from './ClockPairingAppLink';
 import { combineToSolveSumGameLink } from './CombineToSolveSumGame/CombineToSolveSumGameAppLink';
 import { eierdoosTellenLink } from './EggCounting/EggCountingAppLink';
-import { springOpGetallenlijnLink } from './JumpOnNumberLineAppLink';
+import { springOpGetallenlijnLink } from './JumpOnNumberLineGame/JumpOnNumberLineAppLink';
 import { getallenlijnBoogjesSpelLink } from './NumberlineArchesGame/NumberlineArchesGameAppLink';
 import { groepjesVanHerkennenLink } from './RecognizeGroupsAppLink';
 import { sorterenLink } from './SortingGame/SortingGameAppLink';
 import { splitsenLink } from './SplitAppLink';
-import { sommenMetSplitsenLink } from './SumsWithSplitAppLink';
-import { splitsenOpWaardeLink } from './TensSplitAppLink';
+import { sommenMetSplitsenLink } from './SumsWithSplitGame/SumsWithSplitAppLink';
+import { splitsenOpWaardeLink } from './TensSplitGame/TensSplitAppLink';
 import { stippenTellenLink } from './DotCountingGame/DotCountingGameAppLink';
 import { breukenPaartjesLink } from './FractionsPairMatchingGame/FractionsPairMatchingGameAppLink';
 import { hexagonnenSpelLink } from './SquaresBalloonGameLink';
 import { multiplicationTablesGameLinkV2 } from './MultiplicationTablesBalloonGame/MultiplicationTablesBalloonGameLinkV2';
-import { divisionWithSplitAppLink } from './DivisionWithSplitAppLink';
+import { divisionWithSplitAppLink } from './DivideWithSplitGame/DivisionWithSplitAppLink';
 import { dieFaceGameAppLink } from './DieFaceGame/DieFaceGameAppLink';
 import { howManyFingersGameAppLink } from './HowManyFingersGame/HowManyFingersGameAppLink';
 import { mixedSumsGameLink } from './MixedSumsGame/MixedSumsGameAppLink';

@@ -1,4 +1,4 @@
-type Decade = 10 | 20 | 30 | 40 | 50 | 60 | 70 | 80 | 90;
+import type { Decade } from './DivisionWithSplitGameVariants';
 
 /** Create link for division with splitgame
  * @param decades: Decades to allow as first sub answer

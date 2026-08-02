@@ -105,6 +105,13 @@ export class SortingGameIcon extends LitElement {
           return new URL('../../images/3BoxesTill10.png', import.meta.url).href;
         if (numberBoxes === 4)
           return new URL('../../images/4BoxesTill10.png', import.meta.url).href;
+      } else if (maximumValue <= 20) {
+        if (numberBoxes === 2)
+          return new URL('../../images/2BoxesTill20.png', import.meta.url).href;
+        if (numberBoxes === 3)
+          return new URL('../../images/3BoxesTill20.png', import.meta.url).href;
+        if (numberBoxes === 4)
+          return new URL('../../images/4BoxesTill20.png', import.meta.url).href;
       } else if (maximumValue <= 30) {
         if (numberBoxes === 2)
           return new URL('../../images/2BoxesTill30.png', import.meta.url).href;

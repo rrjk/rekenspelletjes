@@ -14,6 +14,7 @@ const baseURLs: Partial<Record<string, URL>> = {
   C: new URL('./TafeltjesOefenenSpel.html', baseUrl),
   D: new URL('./TafeltjesOefenenSpel.html', baseUrl),
   E: new URL('./Sorteren.html', baseUrl),
+  G: new URL('./SommenMetSplitsen.html', baseUrl),
   H: new URL('./AanklikkenInVolgorde.html', baseUrl),
   I: new URL('./BreukenPaartjesSpel.html', baseUrl),
   J: new URL('./EierdoosTellen.html', baseUrl),
@@ -25,10 +26,15 @@ const baseURLs: Partial<Record<string, URL>> = {
   Q: new URL('./AanklikkenInVolgorde.html', baseUrl),
   R: new URL('./SplitsenV2.html', baseUrl),
   S: new URL('./Sorteren.html', baseUrl),
+  U: new URL('./SpringOpGetallenlijn.html', baseUrl),
+  V: new URL('./SommenMetSplitsen.html', baseUrl),
+  W: new URL('./SplitsenOpWaarde.html', baseUrl),
   X: new URL('./GetallenlijnBoogjesSpel.html', baseUrl),
+  Z: new URL('./DelenMetSplitsen.html', baseUrl),
   AB: new URL('./HoeveelVingersSpel.html', baseUrl),
   AC: new URL('./GemengdeSommen.html', baseUrl),
   AD: new URL('./GemengdeSommen.html', baseUrl),
+  T: new URL('./KlikFotoOpGetallenlijn.html', baseUrl),
 };
 
 let newUrl = defaultUrl;

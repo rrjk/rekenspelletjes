@@ -21,6 +21,8 @@ test('mixedSumsGameVariants has expected keys', () => {
     'ah',
     'ai',
     'aj',
+    'ak',
+    'al',
     'ba',
     'bb',
     'bc',
@@ -31,6 +33,8 @@ test('mixedSumsGameVariants has expected keys', () => {
     'bh',
     'bi',
     'bj',
+    'bk',
+    'bl',
   ]);
 });
 

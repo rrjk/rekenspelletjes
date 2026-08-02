@@ -1,11 +1,22 @@
 import { LitElement, html, css } from 'lit';
 import type { CSSResultGroup, HTMLTemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
 
 import { type TimeCode, stringToTimeCode } from '../TimeCodes';
 import { getAdditionSubstractionWholeDecadeGameVariant } from './AdditionSubstractionWholeDecadeGameVariants';
 import '../IconHourglassButtonV2';
 import './AdditionSubstractionWholeDecadeGameIcon';
+import { RenderGameIconFunction } from '../RenderGameIconFunction';
+
+export const renderAdditionSubstractionWholeDecadeGameHourglassGameIcon: RenderGameIconFunction =
+  (variant, classes, timeCode) => {
+    return html`<addition-substraction-whole-decade-game-hourglass-game-icon
+      class=${classMap(classes)}
+      .variant=${variant}
+      .timeCode=${timeCode}
+    ></addition-substraction-whole-decade-game-hourglass-game-icon>`;
+  };
 
 @customElement('addition-substraction-whole-decade-game-hourglass-game-icon')
 export class AdditionSubstractionWholeDecadeGameHourglassGameIcon extends LitElement {

@@ -1,8 +1,8 @@
 import { LitElement, html, css, unsafeCSS, nothing } from 'lit';
 import type { HTMLTemplateResult, CSSResultGroup } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import './NumberLine';
-import { Color, getColorInfo } from './Colors';
+import '../NumberLine';
+import { Color, getColorInfo } from '../Colors';
 
 type TickMarkType = 'noTickMark' | 'tickMark1' | 'tickMark5' | 'tickMark10';
 
@@ -44,7 +44,7 @@ export class JumpingJanWithTextOverlay extends LitElement {
       .numberlineNoTickMark {
         background-image: url('${unsafeCSS(
           new URL(
-            '../images/numberline-icon-no-tickmarks.png',
+            '../../images/numberline-icon-no-tickmarks.png',
             import.meta.url,
           ),
         )}');
@@ -52,7 +52,7 @@ export class JumpingJanWithTextOverlay extends LitElement {
       .numberlineTickMark1 {
         background-image: url('${unsafeCSS(
           new URL(
-            '../images/numberline-icon-one-five-ten-tickmarks.png',
+            '../../images/numberline-icon-one-five-ten-tickmarks.png',
             import.meta.url,
           ),
         )}');
@@ -60,7 +60,7 @@ export class JumpingJanWithTextOverlay extends LitElement {
       .numberlineTickMark5 {
         background-image: url('${unsafeCSS(
           new URL(
-            '../images/numberline-icon-five-ten-tickmarks.png',
+            '../../images/numberline-icon-five-ten-tickmarks.png',
             import.meta.url,
           ),
         )}');
@@ -68,7 +68,7 @@ export class JumpingJanWithTextOverlay extends LitElement {
       .numberlineTickMark10 {
         background-image: url('${unsafeCSS(
           new URL(
-            '../images/numberline-icon-ten-tickmarks.png',
+            '../../images/numberline-icon-ten-tickmarks.png',
             import.meta.url,
           ),
         )}');
@@ -89,7 +89,7 @@ export class JumpingJanWithTextOverlay extends LitElement {
         margin: 2px;
         padding: 0;
         background-image: url('${unsafeCSS(
-          new URL('../images/Mompitz Jan_Ballon.png', import.meta.url),
+          new URL('../../images/Mompitz Jan_Ballon.png', import.meta.url),
         )}');
       }
 

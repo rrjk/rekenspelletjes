@@ -13,7 +13,7 @@ import { create } from 'mutative';
 import {
   numberDigitsInNumber,
   numberWithActiveDigits,
-} from './NumberHelperFunctions';
+} from '../NumberHelperFunctions';
 
 export const fixedNumberFields = ['divisor', 'dividend'] as const;
 export type FixedNumberFields = (typeof fixedNumberFields)[number];

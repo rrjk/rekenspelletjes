@@ -46,7 +46,7 @@ export const numberlineArchesGameVariants: Record<
     operator: 'plus',
     split: 'noSplit',
     jumpsOfTen: 'noJumpsOfTen',
-    archesForIcon: [{ from: 13, to: 18 }],
+    archesForIcon: [{ from: 13, to: 17 }],
   },
   ac: {
     iconColor: 'apricot',
@@ -72,7 +72,7 @@ export const numberlineArchesGameVariants: Record<
     operator: 'minus',
     split: 'noSplit',
     jumpsOfTen: 'noJumpsOfTen',
-    archesForIcon: [{ from: 9, to: 3 }],
+    archesForIcon: [{ from: 7, to: 2 }],
   },
   bb: {
     iconColor: 'orange',

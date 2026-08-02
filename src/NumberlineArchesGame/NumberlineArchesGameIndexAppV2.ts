@@ -1,11 +1,18 @@
-import { html, css, LitElement } from 'lit';
+import { css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import type { CSSResultArray, HTMLTemplateResult } from 'lit';
+import type { CSSResultArray } from 'lit';
+import type { TimeCode } from '../TimeCodes';
 
-import './NumberlineArchesGameHourglassGameIcon';
+import {
+  VariantIndexAppBase,
+  type VariantSections,
+} from '../IndexAppV2/VariantIndexAppBase';
+import { renderNumberlineArchesGameHourglassGameIcon } from './NumberlineArchesGameHourglassGameIcon';
 
+/** Supported logical page keys for this variant index app. */
 type IndexPage = 'plusPage' | 'minusPage';
 
+/** Converts a raw attribute value to a valid index page key. */
 export function convertIndexPage(value: string | null): IndexPage {
   switch (value) {
     case 'plusPage':
@@ -50,60 +57,44 @@ const sections: IndexPageType = {
   ],
 };
 
-const durations = ['b', 'c'];
+/** Time codes shown for each variant as a left/right icon pair. */
+const durations: TimeCode[] = ['b', 'c'];
 
+/**
+ * Variant index app for Numberline Arches Game.
+ *
+ * This class supplies page selection, section data, and the icon renderer.
+ * Rendering and layout are inherited from `VariantIndexAppBase`.
+ */
 @customElement('numberline-arches-game-index-app-v2')
-export class NumberlineArchesGameIndexApp extends LitElement {
+export class NumberlineArchesGameIndexApp extends VariantIndexAppBase<IndexPage> {
   @property({ converter: convertIndexPage })
   accessor indexPage: IndexPage = 'plusPage';
 
+  protected get selectedPage(): IndexPage {
+    return this.indexPage;
+  }
+
+  protected get sectionsByPage(): VariantSections<IndexPage> {
+    return sections;
+  }
+
+  protected override get timeCodes(): TimeCode[] {
+    return durations;
+  }
+
+  protected get iconRenderer() {
+    return renderNumberlineArchesGameHourglassGameIcon;
+  }
+
   static get styles(): CSSResultArray {
     return [
+      super.styles,
       css`
-        :host {
-          font-size: x-large;
-        }
-        .buttonTable {
-          position: relative;
-          display: flex;
-          row-gap: 10px;
-          flex-wrap: wrap;
-          justify-content: space-around;
-          width: min(400px, 90vw);
-        }
         numberline-arches-game-hourglass-game-icon {
-          width: 47%;
+          min-width: 0;
         }
       `,
     ];
-  }
-
-  renderRow(variant: string): HTMLTemplateResult {
-    return html`
-      <numberline-arches-game-hourglass-game-icon
-        variant=${variant}
-        timeCode=${durations[0]}
-      ></numberline-arches-game-hourglass-game-icon>
-      <numberline-arches-game-hourglass-game-icon
-        variant=${variant}
-        timeCode=${durations[1]}
-      ></numberline-arches-game-hourglass-game-icon>
-    `;
-  }
-
-  render(): HTMLTemplateResult[] {
-    const renderItems: HTMLTemplateResult[] = [];
-    for (const section of sections[this.indexPage]) {
-      renderItems.push(html`
-        <h2>${section.title}</h2>
-        <div class="buttonTable">
-          ${section.rows.map(row => this.renderRow(row))}
-        </div>
-      `);
-    }
-    renderItems.push(
-      html` <p><a href="index.html">Terug naar het hoofdmenu</a></p>`,
-    );
-    return renderItems;
   }
 }

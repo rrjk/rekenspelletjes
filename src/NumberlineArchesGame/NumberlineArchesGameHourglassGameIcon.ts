@@ -1,11 +1,22 @@
 import { LitElement, html, css } from 'lit';
 import type { CSSResultGroup, HTMLTemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
 
 import { type TimeCode, stringToTimeCode } from '../TimeCodes';
 import { getNumberlineArchesGameVariant } from './NumberlineArchesGameVariants';
 import '../IconHourglassButtonV2';
 import './NumberlineArchesGameIcon';
+import { RenderGameIconFunction } from '../RenderGameIconFunction';
+
+export const renderNumberlineArchesGameHourglassGameIcon: RenderGameIconFunction =
+  (variant, classes, timeCode) => {
+    return html`<numberline-arches-game-hourglass-game-icon
+      class=${classMap(classes)}
+      .variant=${variant}
+      .timeCode=${timeCode}
+    ></numberline-arches-game-hourglass-game-icon>`;
+  };
 
 @customElement('numberline-arches-game-hourglass-game-icon')
 export class NumberlineArchesGameHourglassGameIcon extends LitElement {
