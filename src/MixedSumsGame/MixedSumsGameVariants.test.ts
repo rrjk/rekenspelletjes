@@ -43,7 +43,9 @@ test('getMixedSumsGameVariant for aa', () => {
   expect(extendedVariant.icon).toBe('puzzlePiece');
   expect(extendedVariant.iconColor).toBe('lavender');
   expect(extendedVariant.maxAnswer).toBe(10);
-  expect(extendedVariant.maxTable).toBe(10);
+  expect(extendedVariant.eligibleTables).toStrictEqual([
+    2, 3, 4, 5, 6, 7, 8, 9, 10,
+  ]);
   expect(extendedVariant.operators).toStrictEqual(['plus', 'minus']);
   expect(extendedVariant.mainCode).toBe('AC');
   expect(extendedVariant.description).toBe(
@@ -56,7 +58,6 @@ test('getMixedSumsGameVariant for ab', () => {
   expect(extendedVariant.icon).toBe('puzzlePiece');
   expect(extendedVariant.iconColor).toBe('red');
   expect(extendedVariant.maxAnswer).toBe(100);
-  expect(extendedVariant.maxTable).toBe(10);
   expect(extendedVariant.operators).toStrictEqual(['plus', 'minus']);
   expect(extendedVariant.mainCode).toBe('AC');
   expect(extendedVariant.description).toBe(
@@ -69,7 +70,6 @@ test('getMixedSumsGameVariant for ac', () => {
   expect(extendedVariant.icon).toBe('puzzlePiece');
   expect(extendedVariant.iconColor).toBe('orange');
   expect(extendedVariant.maxAnswer).toBe(1000);
-  expect(extendedVariant.maxTable).toBe(10);
   expect(extendedVariant.operators).toStrictEqual(['plus', 'minus']);
   expect(extendedVariant.mainCode).toBe('AC');
   expect(extendedVariant.description).toBe(
@@ -82,7 +82,9 @@ test('getMixedSumsGameVariant for ad', () => {
   expect(extendedVariant.icon).toBe('puzzlePiece');
   expect(extendedVariant.iconColor).toBe('yellow');
   expect(extendedVariant.maxAnswer).toBe(10);
-  expect(extendedVariant.maxTable).toBe(10);
+  expect(extendedVariant.eligibleTables).toStrictEqual([
+    2, 3, 4, 5, 6, 7, 8, 9, 10,
+  ]);
   expect(extendedVariant.operators).toStrictEqual(['times', 'divide']);
   expect(extendedVariant.mainCode).toBe('AC');
   expect(extendedVariant.description).toBe(
@@ -95,7 +97,6 @@ test('getMixedSumsGameVariant for ba', () => {
   expect(extendedVariant.icon).toBe('rectangle');
   expect(extendedVariant.iconColor).toBe('lavender');
   expect(extendedVariant.maxAnswer).toBe(10);
-  expect(extendedVariant.maxTable).toBe(10);
   expect(extendedVariant.operators).toStrictEqual(['plus', 'minus']);
   expect(extendedVariant.mainCode).toBe('AD');
   expect(extendedVariant.description).toBe(
@@ -108,7 +109,9 @@ test('getMixedSumsGameVariant for af', () => {
   expect(extendedVariant.icon).toBe('puzzlePiece');
   expect(extendedVariant.iconColor).toBe('green');
   expect(extendedVariant.maxAnswer).toBe(100);
-  expect(extendedVariant.maxTable).toBe(10);
+  expect(extendedVariant.eligibleTables).toStrictEqual([
+    2, 3, 4, 5, 6, 7, 8, 9, 10,
+  ]);
   expect(extendedVariant.operators).toStrictEqual([
     'plus',
     'minus',
@@ -119,6 +122,25 @@ test('getMixedSumsGameVariant for af', () => {
   expect(extendedVariant.description).toBe(
     'Gemengde plus, min, keer en gedeeld door sommen met antwoorden tot en met 100 en tafels tot en met 10.',
   );
+});
+
+test('getMixedSumsGameVariant supports explicit table lists', () => {
+  mixedSumsGameVariants.zz = {
+    icon: 'puzzlePiece',
+    iconColor: 'lavender',
+    maxAnswer: 10,
+    tables: [2, 5, 7],
+    operators: ['times', 'divide'],
+  };
+
+  const extendedVariant = getMixedSumsGameVariant('zz');
+
+  expect(extendedVariant.eligibleTables).toStrictEqual([2, 5, 7]);
+  expect(extendedVariant.description).toBe(
+    'Gemengde keer en gedeeld door sommen met tafels 2, 5 en 7.',
+  );
+
+  Reflect.deleteProperty(mixedSumsGameVariants, 'zz');
 });
 
 test('getMixedSumsGameVariant for unknown variant throws error', () => {

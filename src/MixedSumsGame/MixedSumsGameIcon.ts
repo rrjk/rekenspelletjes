@@ -16,7 +16,7 @@ interface IconInfo {
   icon: 'rectangle' | 'puzzlePiece';
   iconColor: Color;
   maxAnswer: number;
-  maxTable: number;
+  eligibleTables: number[];
   excludeMaxs: boolean;
   operators: Operator[];
 }
@@ -110,20 +110,21 @@ export class MixedSumsGameIcon extends LitElement {
 
   private renderMaxes(iconInfo: IconInfo) {
     const maxs: SVGTemplateResult[] = [];
+    const maxTable = iconInfo.eligibleTables.at(-1) ?? 10;
     if (
       !iconInfo.excludeMaxs &&
       iconInfo.operators.some(op => op === 'plus' || op === 'minus')
-    )
+    ) {
       maxs.push(
         svg`<text class="number" x="55" y="43">${iconInfo.maxAnswer}</text>`,
       );
+    }
     if (
       !iconInfo.excludeMaxs &&
       iconInfo.operators.some(op => op === 'times' || op === 'divide')
-    )
-      maxs.push(
-        svg`<text class="number" x="54" y="88">${iconInfo.maxTable}</text>`,
-      );
+    ) {
+      maxs.push(svg`<text class="number" x="54" y="88">${maxTable}</text>`);
+    }
     return maxs;
   }
 
@@ -171,7 +172,7 @@ export class MixedSumsGameIcon extends LitElement {
       icon: 'puzzlePiece',
       iconColor: 'green',
       maxAnswer: 10,
-      maxTable: 10,
+      eligibleTables: [],
       excludeMaxs: true,
       operators: ['plus', 'minus', 'times', 'divide'],
     };

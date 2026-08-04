@@ -23,6 +23,9 @@ test('sortingGameVariants has expected keys', () => {
     'fa',
     'fb',
     'fc', // Section F: Decimal numbers
+    'ga',
+    'gb',
+    'gc', // Section G: Numbers 1-20
   ]);
 });
 

@@ -178,7 +178,7 @@ export class MixedSumsGameApp extends TimeLimitedGame2 {
     // Empty string is handled by getMixedSumsGameVariant's fallback to defaultVariant
     const extendedVariantInfo = getMixedSumsGameVariant(variant);
 
-    this.eligibleTables = getRange(2, extendedVariantInfo.maxTable);
+    this.eligibleTables = extendedVariantInfo.eligibleTables;
 
     this.maximumNumber = extendedVariantInfo.maxAnswer;
     this.eligibleOperators = [...extendedVariantInfo.operators];

@@ -7,17 +7,29 @@ export const mixedSumIcon = ['rectangle', 'puzzlePiece'] as const;
 
 export type MixedSumIcon = (typeof mixedSumIcon)[number];
 
-interface VariantInfo {
+interface VariantBaseInfo {
   icon: MixedSumIcon;
   iconColor: Color;
   maxAnswer: number;
-  maxTable: number;
   operators: Operator[];
 }
 
-export interface ExtendedVariantInfo extends VariantInfo {
+type VariantTableInfo =
+  | {
+      maxTable: number;
+      tables?: never;
+    }
+  | {
+      maxTable?: never;
+      tables: number[];
+    };
+
+type VariantInfo = VariantBaseInfo & VariantTableInfo;
+
+export interface ExtendedVariantInfo extends VariantBaseInfo {
   mainCode: string;
   description: string;
+  eligibleTables: number[];
 }
 
 const defaultVariant: VariantInfo = {
@@ -27,6 +39,16 @@ const defaultVariant: VariantInfo = {
   maxTable: 10,
   operators: ['plus', 'minus'],
 };
+
+function createEligibleTables(variantInfo: VariantInfo): number[] {
+  if (variantInfo.tables !== undefined) return [...variantInfo.tables];
+
+  const eligibleTables: number[] = [];
+  for (let table = 2; table <= variantInfo.maxTable; table += 1) {
+    eligibleTables.push(table);
+  }
+  return eligibleTables;
+}
 
 export const mixedSumsGameVariants: Record<string, VariantInfo> = {
   aa: defaultVariant,
@@ -222,7 +244,13 @@ function determineSumCategoryText(variantInfo: VariantInfo) {
     variantInfo.operators.includes('divide') ||
     variantInfo.operators.includes('times')
   ) {
-    divideTimesTableText = `tafels tot en met ${variantInfo.maxTable}`;
+    if (variantInfo.tables !== undefined) {
+      divideTimesTableText = `tafels ${joinWithEn(
+        variantInfo.tables.map(table => table.toString()),
+      )}`;
+    } else {
+      divideTimesTableText = `tafels tot en met ${variantInfo.maxTable}`;
+    }
   }
   return { plusMinusSumMaximumText, divideTimesTableText };
 }
@@ -246,5 +274,15 @@ export function getMixedSumsGameVariant(variant: string): ExtendedVariantInfo {
 
   const description = `Gemengde ${joinWithEn(operatorWords)} sommen met ${plusMinusSumMaximumText}${enText}${divideTimesTableText}.`;
 
-  return { ...variantInfo, mainCode, description };
+  const eligibleTables = createEligibleTables(variantInfo);
+
+  return {
+    icon: variantInfo.icon,
+    iconColor: variantInfo.iconColor,
+    maxAnswer: variantInfo.maxAnswer,
+    operators: variantInfo.operators,
+    eligibleTables,
+    mainCode,
+    description,
+  };
 }
