@@ -69,3 +69,28 @@ export function getRange(lowest: number, highest: number): number[] {
   }
   return ret;
 }
+
+export function splitInContiguousRanges(numbers: number[]): [number, number][] {
+  if (numbers.length === 0) return [];
+  const sortedNumbers = [...numbers].sort((a, b) => a - b);
+  const ranges: [number, number][] = [];
+  let rangeStart = sortedNumbers[0];
+  let rangeEnd = sortedNumbers[0];
+
+  for (let i = 1; i < sortedNumbers.length; i++) {
+    const currentNumber = sortedNumbers[i];
+    if (currentNumber === rangeEnd + 1) {
+      // Extend the current range
+      rangeEnd = currentNumber;
+    } else {
+      // Close the current range and start a new one
+      ranges.push([rangeStart, rangeEnd]);
+      rangeStart = currentNumber;
+      rangeEnd = currentNumber;
+    }
+  }
+  // Push the last range
+  ranges.push([rangeStart, rangeEnd]);
+
+  return ranges;
+}

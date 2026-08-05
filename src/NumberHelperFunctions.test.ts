@@ -1,6 +1,7 @@
 import {
   numberDigitsInNumber,
   numberWithActiveDigits,
+  splitInContiguousRanges,
   splitInDigits,
 } from './NumberHelperFunctions';
 
@@ -77,4 +78,31 @@ test('Number with active digits - trailing zeros - 2 active digits', () => {
 
 test('Number with active digits - trailing zeros - max active digit', () => {
   expect(numberWithActiveDigits(1000, 4)).toEqual('1000');
+});
+
+test('Split in contiguous ranges - empty array', () => {
+  expect(splitInContiguousRanges([])).toEqual([]);
+});
+
+test('Split in contiguous ranges - single number', () => {
+  expect(splitInContiguousRanges([5])).toEqual([[5, 5]]);
+});
+
+test('Split in contiguous ranges - two numbers, not contiguous', () => {
+  expect(splitInContiguousRanges([5, 7])).toEqual([
+    [5, 5],
+    [7, 7],
+  ]);
+});
+
+test('Split in contiguous ranges - two numbers, contiguous', () => {
+  expect(splitInContiguousRanges([5, 6])).toEqual([[5, 6]]);
+});
+
+test('Split in contiguous ranges - multiple numbers, mixed', () => {
+  expect(splitInContiguousRanges([1, 6, 3, 5, 2, 8])).toEqual([
+    [1, 3],
+    [5, 6],
+    [8, 8],
+  ]);
 });
