@@ -12,3 +12,7 @@ export function convertJSON<T>(value: string | null): T {
   }
   throw new Error(`illegally formatted attribute provided`);
 }
+export function CapitalizeFirstLetter(str: string): string {
+  if (str.length === 0) return str;
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
