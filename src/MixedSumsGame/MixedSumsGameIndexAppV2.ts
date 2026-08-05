@@ -47,6 +47,10 @@ const sections: IndexPageType = {
       title: 'Gemengde sommen zonder puzzel',
       rows: ['ba', 'bb', 'bc', 'bi', 'bj', 'bd', 'be', 'bf', 'bg', 'bh'],
     },
+    {
+      title: 'Sommen met tafels',
+      rows: ['ca', 'cb'],
+    },
   ],
 };
 

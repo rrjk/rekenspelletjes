@@ -184,7 +184,7 @@ export class MixedSumsGameApp extends TimeLimitedGame2 {
     this.eligibleOperators = [...extendedVariantInfo.operators];
     this.gameLogger.setMainCode(extendedVariantInfo.mainCode);
     this.gameLogger.setSubCode(variant);
-    this.includePuzzle = extendedVariantInfo.icon === 'puzzlePiece';
+    this.includePuzzle = extendedVariantInfo.includePuzzle;
     this.gameText = extendedVariantInfo.description;
 
     this.determineMaxDigitsOperand1();

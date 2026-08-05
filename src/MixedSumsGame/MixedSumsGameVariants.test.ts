@@ -6,7 +6,11 @@ import {
 } from './MixedSumsGameVariants';
 
 test('mixedSumIcon contains expected values', () => {
-  expect(mixedSumIcon).toStrictEqual(['rectangle', 'puzzlePiece']);
+  expect(mixedSumIcon).toStrictEqual([
+    'rectangle',
+    'puzzlePiece',
+    'multiplicationIcon',
+  ]);
 });
 
 test('mixedSumsGameVariants has expected keys', () => {
@@ -35,6 +39,8 @@ test('mixedSumsGameVariants has expected keys', () => {
     'bj',
     'bk',
     'bl',
+    'ca',
+    'cb',
   ]);
 });
 
@@ -49,7 +55,7 @@ test('getMixedSumsGameVariant for aa', () => {
   expect(extendedVariant.operators).toStrictEqual(['plus', 'minus']);
   expect(extendedVariant.mainCode).toBe('AC');
   expect(extendedVariant.description).toBe(
-    'Gemengde plus en min sommen met antwoorden tot en met 10.',
+    'Plus en min sommen met antwoorden tot en met 10.',
   );
 });
 
@@ -61,7 +67,7 @@ test('getMixedSumsGameVariant for ab', () => {
   expect(extendedVariant.operators).toStrictEqual(['plus', 'minus']);
   expect(extendedVariant.mainCode).toBe('AC');
   expect(extendedVariant.description).toBe(
-    'Gemengde plus en min sommen met antwoorden tot en met 100.',
+    'Plus en min sommen met antwoorden tot en met 100.',
   );
 });
 
@@ -73,7 +79,7 @@ test('getMixedSumsGameVariant for ac', () => {
   expect(extendedVariant.operators).toStrictEqual(['plus', 'minus']);
   expect(extendedVariant.mainCode).toBe('AC');
   expect(extendedVariant.description).toBe(
-    'Gemengde plus en min sommen met antwoorden tot en met 1000.',
+    'Plus en min sommen met antwoorden tot en met 1000.',
   );
 });
 
@@ -88,7 +94,7 @@ test('getMixedSumsGameVariant for ad', () => {
   expect(extendedVariant.operators).toStrictEqual(['times', 'divide']);
   expect(extendedVariant.mainCode).toBe('AC');
   expect(extendedVariant.description).toBe(
-    'Gemengde keer en gedeeld door sommen met tafels tot en met 10.',
+    'Keer en gedeeld door sommen met de tafels tot en met 10.',
   );
 });
 
@@ -100,7 +106,7 @@ test('getMixedSumsGameVariant for ba', () => {
   expect(extendedVariant.operators).toStrictEqual(['plus', 'minus']);
   expect(extendedVariant.mainCode).toBe('AD');
   expect(extendedVariant.description).toBe(
-    'Gemengde plus en min sommen met antwoorden tot en met 10.',
+    'Plus en min sommen met antwoorden tot en met 10.',
   );
 });
 
@@ -120,13 +126,13 @@ test('getMixedSumsGameVariant for af', () => {
   ]);
   expect(extendedVariant.mainCode).toBe('AC');
   expect(extendedVariant.description).toBe(
-    'Gemengde plus, min, keer en gedeeld door sommen met antwoorden tot en met 100 en tafels tot en met 10.',
+    'Gemengde plus, min, keer en gedeeld door sommen met antwoorden tot en met 100 en de tafels tot en met 10.',
   );
 });
 
 test('getMixedSumsGameVariant supports explicit table lists', () => {
   mixedSumsGameVariants.zz = {
-    icon: 'puzzlePiece',
+    includePuzzle: false,
     iconColor: 'lavender',
     maxAnswer: 10,
     tables: [2, 5, 7],
@@ -137,7 +143,7 @@ test('getMixedSumsGameVariant supports explicit table lists', () => {
 
   expect(extendedVariant.eligibleTables).toStrictEqual([2, 5, 7]);
   expect(extendedVariant.description).toBe(
-    'Gemengde keer en gedeeld door sommen met tafels 2, 5 en 7.',
+    'Keer en gedeeld door sommen met de tafels van 2, 5 en 7.',
   );
 
   Reflect.deleteProperty(mixedSumsGameVariants, 'zz');
@@ -151,6 +157,10 @@ test('getMixedSumsGameVariant for unknown variant throws error', () => {
 
 // Test for MixedSumIcon type - since it's a type, we can test that values conform
 test('MixedSumIcon type validation', () => {
-  const validIcons: MixedSumIcon[] = ['rectangle', 'puzzlePiece'];
+  const validIcons: MixedSumIcon[] = [
+    'rectangle',
+    'puzzlePiece',
+    'multiplicationIcon',
+  ];
   expect(validIcons).toStrictEqual(mixedSumIcon);
 });
