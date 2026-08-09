@@ -41,6 +41,37 @@ test('mixedSumsGameVariants has expected keys', () => {
     'bl',
     'ca',
     'cb',
+    'cc',
+    'cd',
+    'ce',
+    'cf',
+    'cg',
+    'ch',
+    'ci',
+    'cj',
+    'ck',
+    'da',
+    'db',
+    'dc',
+    'dd',
+    'de',
+    'df',
+    'dg',
+    'dh',
+    'di',
+    'dj',
+    'dk',
+    'ea',
+    'eb',
+    'ec',
+    'ed',
+    'ee',
+    'ef',
+    'eg',
+    'eh',
+    'ei',
+    'ej',
+    'ek',
   ]);
 });
 
@@ -55,7 +86,7 @@ test('getMixedSumsGameVariant for aa', () => {
   expect(extendedVariant.operators).toStrictEqual(['plus', 'minus']);
   expect(extendedVariant.mainCode).toBe('AC');
   expect(extendedVariant.description).toBe(
-    'Plus en min sommen met antwoorden tot en met 10.',
+    'Plus en min sommen met antwoorden tot en met 10, waarbij het antwoord ingetypt moet worden.',
   );
 });
 
@@ -67,7 +98,7 @@ test('getMixedSumsGameVariant for ab', () => {
   expect(extendedVariant.operators).toStrictEqual(['plus', 'minus']);
   expect(extendedVariant.mainCode).toBe('AC');
   expect(extendedVariant.description).toBe(
-    'Plus en min sommen met antwoorden tot en met 100.',
+    'Plus en min sommen met antwoorden tot en met 100, waarbij het antwoord ingetypt moet worden.',
   );
 });
 
@@ -79,7 +110,7 @@ test('getMixedSumsGameVariant for ac', () => {
   expect(extendedVariant.operators).toStrictEqual(['plus', 'minus']);
   expect(extendedVariant.mainCode).toBe('AC');
   expect(extendedVariant.description).toBe(
-    'Plus en min sommen met antwoorden tot en met 1000.',
+    'Plus en min sommen met antwoorden tot en met 1000, waarbij het antwoord ingetypt moet worden.',
   );
 });
 
@@ -94,7 +125,7 @@ test('getMixedSumsGameVariant for ad', () => {
   expect(extendedVariant.operators).toStrictEqual(['times', 'divide']);
   expect(extendedVariant.mainCode).toBe('AC');
   expect(extendedVariant.description).toBe(
-    'Keer en gedeeld door sommen met de tafels tot en met 10.',
+    'Keer en gedeeld door sommen met de tafels tot en met 10, waarbij het antwoord ingetypt moet worden.',
   );
 });
 
@@ -106,7 +137,7 @@ test('getMixedSumsGameVariant for ba', () => {
   expect(extendedVariant.operators).toStrictEqual(['plus', 'minus']);
   expect(extendedVariant.mainCode).toBe('AD');
   expect(extendedVariant.description).toBe(
-    'Plus en min sommen met antwoorden tot en met 10.',
+    'Plus en min sommen met antwoorden tot en met 10, waarbij het antwoord ingetypt moet worden.',
   );
 });
 
@@ -126,7 +157,7 @@ test('getMixedSumsGameVariant for af', () => {
   ]);
   expect(extendedVariant.mainCode).toBe('AC');
   expect(extendedVariant.description).toBe(
-    'Gemengde plus, min, keer en gedeeld door sommen met antwoorden tot en met 100 en de tafels tot en met 10.',
+    'Gemengde plus, min, keer en gedeeld door sommen met antwoorden tot en met 100 en de tafels tot en met 10, waarbij het antwoord ingetypt moet worden.',
   );
 });
 
@@ -143,7 +174,7 @@ test('getMixedSumsGameVariant supports explicit table lists', () => {
 
   expect(extendedVariant.eligibleTables).toStrictEqual([2, 5, 7]);
   expect(extendedVariant.description).toBe(
-    'Keer en gedeeld door sommen met de tafels van 2, 5 en 7.',
+    'Keer en gedeeld door sommen met de tafels van 2, 5 en 7, waarbij het antwoord ingetypt moet worden.',
   );
 
   Reflect.deleteProperty(mixedSumsGameVariants, 'zz');

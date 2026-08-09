@@ -239,25 +239,246 @@ export const mixedSumsGameVariants: Record<string, VariantInfo> = {
   },
   ca: {
     includePuzzle: false,
-    iconColor: 'lavender',
+    iconColor: 'maroon',
     maxAnswer: 10,
-    tables: [5],
+    tables: [10],
     operators: ['times'],
   },
   cb: {
     includePuzzle: false,
-    iconColor: 'lavender',
+    iconColor: 'red',
     maxAnswer: 10,
-    tables: [5, 7, 6, 9, 10, 13, 14, 15, 18],
-    operators: ['times', 'divide', 'plus', 'minus'],
+    tables: [2],
+    operators: ['times'],
+  },
+  cc: {
+    includePuzzle: false,
+    iconColor: 'orange',
+    maxAnswer: 10,
+    tables: [5],
+    operators: ['times'],
+  },
+  cd: {
+    includePuzzle: false,
+    iconColor: 'olive',
+    maxAnswer: 10,
+    tables: [3],
+    operators: ['times'],
+  },
+  ce: {
+    includePuzzle: false,
+    iconColor: 'yellow',
+    maxAnswer: 10,
+    tables: [4],
+    operators: ['times'],
+  },
+  cf: {
+    includePuzzle: false,
+    iconColor: 'lime',
+    maxAnswer: 10,
+    tables: [2, 3, 4, 5, 10],
+    operators: ['times'],
+  },
+  cg: {
+    includePuzzle: false,
+    iconColor: 'green',
+    maxAnswer: 10,
+    tables: [6],
+    operators: ['times'],
+  },
+  ch: {
+    includePuzzle: false,
+    iconColor: 'mint',
+    maxAnswer: 10,
+    tables: [7],
+    operators: ['times'],
+  },
+  ci: {
+    includePuzzle: false,
+    iconColor: 'cyan',
+    maxAnswer: 10,
+    tables: [8],
+    operators: ['times'],
+  },
+  cj: {
+    includePuzzle: false,
+    iconColor: 'blue',
+    maxAnswer: 10,
+    tables: [9],
+    operators: ['times'],
+  },
+  ck: {
+    includePuzzle: false,
+    iconColor: 'purple',
+    maxAnswer: 10,
+    tables: [2, 3, 4, 5, 6, 7, 8, 9, 10],
+    operators: ['times'],
+  },
+  da: {
+    includePuzzle: false,
+    iconColor: 'maroon',
+    maxAnswer: 10,
+    tables: [10],
+    operators: ['divide'],
+  },
+  db: {
+    includePuzzle: false,
+    iconColor: 'red',
+    maxAnswer: 10,
+    tables: [2],
+    operators: ['divide'],
+  },
+  dc: {
+    includePuzzle: false,
+    iconColor: 'orange',
+    maxAnswer: 10,
+    tables: [5],
+    operators: ['divide'],
+  },
+  dd: {
+    includePuzzle: false,
+    iconColor: 'olive',
+    maxAnswer: 10,
+    tables: [3],
+    operators: ['divide'],
+  },
+  de: {
+    includePuzzle: false,
+    iconColor: 'yellow',
+    maxAnswer: 10,
+    tables: [4],
+    operators: ['divide'],
+  },
+  df: {
+    includePuzzle: false,
+    iconColor: 'lime',
+    maxAnswer: 10,
+    tables: [2, 3, 4, 5, 10],
+    operators: ['divide'],
+  },
+  dg: {
+    includePuzzle: false,
+    iconColor: 'green',
+    maxAnswer: 10,
+    tables: [6],
+    operators: ['divide'],
+  },
+  dh: {
+    includePuzzle: false,
+    iconColor: 'mint',
+    maxAnswer: 10,
+    tables: [7],
+    operators: ['divide'],
+  },
+  di: {
+    includePuzzle: false,
+    iconColor: 'cyan',
+    maxAnswer: 10,
+    tables: [8],
+    operators: ['divide'],
+  },
+  dj: {
+    includePuzzle: false,
+    iconColor: 'blue',
+    maxAnswer: 10,
+    tables: [9],
+    operators: ['divide'],
+  },
+  dk: {
+    includePuzzle: false,
+    iconColor: 'purple',
+    maxAnswer: 10,
+    tables: [2, 3, 4, 5, 6, 7, 8, 9, 10],
+    operators: ['divide'],
+  },
+  ea: {
+    includePuzzle: false,
+    iconColor: 'maroon',
+    maxAnswer: 10,
+    tables: [10],
+    operators: ['divide', 'times'],
+  },
+  eb: {
+    includePuzzle: false,
+    iconColor: 'red',
+    maxAnswer: 10,
+    tables: [2],
+    operators: ['divide', 'times'],
+  },
+  ec: {
+    includePuzzle: false,
+    iconColor: 'orange',
+    maxAnswer: 10,
+    tables: [5],
+    operators: ['divide', 'times'],
+  },
+  ed: {
+    includePuzzle: false,
+    iconColor: 'olive',
+    maxAnswer: 10,
+    tables: [3],
+    operators: ['divide', 'times'],
+  },
+  ee: {
+    includePuzzle: false,
+    iconColor: 'yellow',
+    maxAnswer: 10,
+    tables: [4],
+    operators: ['divide', 'times'],
+  },
+  ef: {
+    includePuzzle: false,
+    iconColor: 'lime',
+    maxAnswer: 10,
+    tables: [2, 3, 4, 5, 10],
+    operators: ['divide', 'times'],
+  },
+  eg: {
+    includePuzzle: false,
+    iconColor: 'green',
+    maxAnswer: 10,
+    tables: [6],
+    operators: ['divide', 'times'],
+  },
+  eh: {
+    includePuzzle: false,
+    iconColor: 'mint',
+    maxAnswer: 10,
+    tables: [7],
+    operators: ['divide', 'times'],
+  },
+  ei: {
+    includePuzzle: false,
+    iconColor: 'cyan',
+    maxAnswer: 10,
+    tables: [8],
+    operators: ['divide', 'times'],
+  },
+  ej: {
+    includePuzzle: false,
+    iconColor: 'blue',
+    maxAnswer: 10,
+    tables: [9],
+    operators: ['divide', 'times'],
+  },
+  ek: {
+    includePuzzle: false,
+    iconColor: 'purple',
+    maxAnswer: 10,
+    tables: [2, 3, 4, 5, 6, 7, 8, 9, 10],
+    operators: ['divide', 'times'],
   },
 };
 
 function determineMainCode(variantInfo: VariantInfo): string {
-  if (variantInfo.includePuzzle) {
+  if (variantInfo.maxTable && variantInfo.includePuzzle) {
     return 'AC';
-  } else {
+  } else if (variantInfo.maxTable && !variantInfo.includePuzzle) {
     return 'AD';
+  } else if (variantInfo.tables && variantInfo.operators.includes('divide')) {
+    return 'AF';
+  } else {
+    return 'AE';
   }
 }
 
@@ -285,9 +506,9 @@ function createMultiplicationGameDescription(
 ): string {
   const operatorWords = variantInfo.operators.map(el => operatorToDutch(el));
   if (variantInfo.maxTable !== undefined) {
-    return `${joinWithEn(operatorWords)} sommen met de tafels tot en met ${variantInfo.maxTable}.`;
+    return `${joinWithEn(operatorWords)} sommen met de tafels tot en met ${variantInfo.maxTable}, waarbij het antwoord ingetypt moet worden.`;
   } else if (variantInfo.tables !== undefined) {
-    return `${joinWithEn(operatorWords)} sommen met de ${createTableSetDescription(variantInfo.tables)}.`;
+    return `${joinWithEn(operatorWords)} sommen met de ${createTableSetDescription(variantInfo.tables)}, waarbij het antwoord ingetypt moet worden.`;
   } else {
     throw new UnexpectedValueError(
       variantInfo,
@@ -300,7 +521,7 @@ function createAdditionDescription(
   variantInfo: VariantInfo<AdditionOperator>,
 ): string {
   const operatorWords = variantInfo.operators.map(el => operatorToDutch(el));
-  return `${joinWithEn(operatorWords)} sommen met antwoorden tot en met ${variantInfo.maxAnswer}.`;
+  return `${joinWithEn(operatorWords)} sommen met antwoorden tot en met ${variantInfo.maxAnswer}, waarbij het antwoord ingetypt moet worden.`;
 }
 
 function createMixedOperatorsDescription(variantInfo: VariantInfo): string {
@@ -312,7 +533,7 @@ function createMixedOperatorsDescription(variantInfo: VariantInfo): string {
   } else {
     description += ` en de tafels tot en met ${variantInfo.maxTable}`;
   }
-  description += '.';
+  description += ', waarbij het antwoord ingetypt moet worden.';
   return description;
 }
 
