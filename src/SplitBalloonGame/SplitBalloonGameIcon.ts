@@ -42,10 +42,11 @@ export class SplitBalloonGameIcon extends LitElement {
       if (
         sorted.length === 4 &&
         sorted[0] === 3 &&
+        sorted[1] === 4 &&
         sorted[2] === 5 &&
         sorted[3] === 10
       ) {
-        splits.push('4 5', '5 10');
+        splits.push('3 4', '5 10');
       } else if (sorted.length === 5 && sorted[0] === 6 && sorted[4] === 10) {
         splits.push('6 7', '8 9 10');
       } else if (sorted.length === 8 && sorted[0] === 3 && sorted[7] === 10) {
