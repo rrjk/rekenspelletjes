@@ -55,6 +55,11 @@ export const gameCodes: GameInfoType[] = [
   { gameCode: 'AB', name: 'Hoeveel vingers spel' },
   { gameCode: 'AC', name: 'Gemengde sommen met puzzel' },
   { gameCode: 'AD', name: 'Gemengde sommen zonder puzzel' },
+  { gameCode: 'AE', name: 'Sommen met tafels - alleen vermenigvuldigen' },
+  {
+    gameCode: 'AF',
+    name: 'Sommen met tafels - delen en eventueel vermenigvuldigen',
+  },
 ];
 
 export function getGameDescription(gameCode: string): string {

@@ -12,7 +12,12 @@ import {
 import { renderMixedSumsGameHourglassGameIcon } from './MixedSumsHourglassGameIcon';
 
 /** Supported logical page keys for this variant index app. */
-type IndexPage = 'mixedSums';
+type IndexPage =
+  | 'mixedSums'
+  | 'timesTables'
+  | 'divideTables'
+  | 'timesTablesTill19'
+  | 'divideTablesTill19';
 
 /**
  * Converts a raw attribute value to a valid index page key.
@@ -22,6 +27,10 @@ type IndexPage = 'mixedSums';
 export function convertGame(value: string | null): IndexPage {
   switch (value) {
     case 'mixedSums':
+    case 'timesTables':
+    case 'divideTables':
+    case 'timesTablesTill19':
+    case 'divideTablesTill19':
       return value;
     default:
       return 'mixedSums';
@@ -33,9 +42,7 @@ interface SectionInfoType {
   rows: string[];
 }
 
-interface IndexPageType {
-  mixedSums: SectionInfoType[];
-}
+type IndexPageType = Record<IndexPage, SectionInfoType[]>;
 
 const sections: IndexPageType = {
   mixedSums: [
@@ -46,6 +53,38 @@ const sections: IndexPageType = {
     {
       title: 'Gemengde sommen zonder puzzel',
       rows: ['ba', 'bb', 'bc', 'bi', 'bj', 'bd', 'be', 'bf', 'bg', 'bh'],
+    },
+  ],
+  timesTables: [
+    {
+      title: 'Keersommen met de tafels tot en met 10',
+      rows: ['ca', 'cb', 'cc', 'cd', 'ce', 'cf', 'cg', 'ch', 'ci', 'cj', 'ck'],
+    },
+  ],
+  divideTables: [
+    {
+      title: 'Deelsommen met de tafels tot en met 10',
+      rows: ['da', 'db', 'dc', 'dd', 'de', 'df', 'dg', 'dh', 'di', 'dj', 'dk'],
+    },
+    {
+      title: 'Deel- en keersommen met de tafels tot en met 10',
+      rows: ['ea', 'eb', 'ec', 'ed', 'ee', 'ef', 'eg', 'eh', 'ei', 'ej', 'ek'],
+    },
+  ],
+  timesTablesTill19: [
+    {
+      title: 'Keersommen met de tafels van 11 t/m 19',
+      rows: ['fa', 'fb', 'fc', 'fd', 'fe', 'ff', 'fg', 'fh', 'fi', 'fj', 'fk'],
+    },
+  ],
+  divideTablesTill19: [
+    {
+      title: 'Deelsommen met de tafels van 11 t/m 19',
+      rows: ['ga', 'gb', 'gc', 'gd', 'ge', 'gf', 'gg', 'gh', 'gi', 'gj', 'gk'],
+    },
+    {
+      title: 'Deel- en keersommen met de tafels van 11 t/m 19',
+      rows: ['ha', 'hb', 'hc', 'hd', 'he', 'hf', 'hg', 'hh', 'hi', 'hj', 'hk'],
     },
   ],
 };
