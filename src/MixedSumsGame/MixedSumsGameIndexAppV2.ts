@@ -12,7 +12,12 @@ import {
 import { renderMixedSumsGameHourglassGameIcon } from './MixedSumsHourglassGameIcon';
 
 /** Supported logical page keys for this variant index app. */
-type IndexPage = 'mixedSums' | 'timesTables' | 'divideTables';
+type IndexPage =
+  | 'mixedSums'
+  | 'timesTables'
+  | 'divideTables'
+  | 'timesTablesTill19'
+  | 'divideTablesTill19';
 
 /**
  * Converts a raw attribute value to a valid index page key.
@@ -20,11 +25,12 @@ type IndexPage = 'mixedSums' | 'timesTables' | 'divideTables';
  * Invalid values fall back to the default Mixed Sums page.
  */
 export function convertGame(value: string | null): IndexPage {
-  console.log('convertGame', value);
   switch (value) {
     case 'mixedSums':
     case 'timesTables':
     case 'divideTables':
+    case 'timesTablesTill19':
+    case 'divideTablesTill19':
       return value;
     default:
       return 'mixedSums';
@@ -63,6 +69,22 @@ const sections: IndexPageType = {
     {
       title: 'Deel- en keersommen met de tafels tot en met 10',
       rows: ['ea', 'eb', 'ec', 'ed', 'ee', 'ef', 'eg', 'eh', 'ei', 'ej', 'ek'],
+    },
+  ],
+  timesTablesTill19: [
+    {
+      title: 'Keersommen met de tafels van 11 t/m 19',
+      rows: ['fa', 'fb', 'fc', 'fd', 'fe', 'ff', 'fg', 'fh', 'fi', 'fj', 'fk'],
+    },
+  ],
+  divideTablesTill19: [
+    {
+      title: 'Deelsommen met de tafels van 11 t/m 19',
+      rows: ['ga', 'gb', 'gc', 'gd', 'ge', 'gf', 'gg', 'gh', 'gi', 'gj', 'gk'],
+    },
+    {
+      title: 'Deel- en keersommen met de tafels van 11 t/m 19',
+      rows: ['ha', 'hb', 'hc', 'hd', 'he', 'hf', 'hg', 'hh', 'hi', 'hj', 'hk'],
     },
   ],
 };

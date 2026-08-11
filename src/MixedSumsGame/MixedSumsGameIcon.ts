@@ -181,7 +181,11 @@ export class MixedSumsGameIcon extends LitElement {
 
   private renderTableSets(iconInfo: IconInfo) {
     const tableSets: SVGTemplateResult[] = [];
-    if (iconInfo.icon === 'puzzlePiece' || iconInfo.icon === 'rectangle') {
+    if (
+      iconInfo.icon === 'puzzlePiece' ||
+      iconInfo.icon === 'rectangle' ||
+      this.generic
+    ) {
       return tableSets;
     }
 
@@ -247,6 +251,43 @@ export class MixedSumsGameIcon extends LitElement {
       }
     }
     return tableSets;
+  }
+
+  private renderGenericTexts(iconInfo: IconInfo) {
+    const genericTexts: SVGTemplateResult[] = [];
+    if (!this.generic) {
+      return genericTexts;
+    }
+    if (iconInfo.icon === 'puzzlePiece' || iconInfo.icon === 'rectangle') {
+      return genericTexts;
+    }
+    if (iconInfo.icon === 'multiplicationIcon') {
+      const contiguousTableRanges = splitInContiguousRanges(
+        iconInfo.eligibleTables,
+      );
+      const lowestTable = contiguousTableRanges[0][0];
+      const highestTable =
+        contiguousTableRanges[contiguousTableRanges.length - 1][1];
+
+      let textPos: { x: number; y: number }[] = [];
+      textPos = [
+        { x: 75, y: 20 },
+        { x: 75, y: 52 },
+        { x: 75, y: 84 },
+      ];
+      genericTexts.push(
+        svg`<text class="tableRange1Digit" x="${textPos[0].x}" y="${textPos[0].y}">${
+          lowestTable
+        }</text>`,
+      );
+      genericTexts.push(
+        svg`<text class="tableRange1Digit" x="${textPos[1].x}" y="${textPos[1].y}">t/m</text>`,
+      );
+      genericTexts.push(
+        svg`<text class="tableRange1Digit" x="${textPos[2].x}" y="${textPos[2].y}">${highestTable}</text>`,
+      );
+      return genericTexts;
+    }
   }
 
   private showTimesOperator(iconInfo: IconInfo): boolean {
@@ -390,6 +431,7 @@ export class MixedSumsGameIcon extends LitElement {
       <svg ViewBox="-5 -10 115 115">
         ${this.renderBackground(iconInfo)} ${this.renderOperators(iconInfo)}
         ${this.renderMaxes(iconInfo)} ${this.renderTableSets(iconInfo)}
+        ${this.renderGenericTexts(iconInfo)}
       </svg>
     `;
   }
