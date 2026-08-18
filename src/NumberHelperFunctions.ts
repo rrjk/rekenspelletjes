@@ -1,4 +1,6 @@
 /** Return number of decimal digits in number */
+export type NumberRange = { min: number; max: number };
+
 export function numberDigitsInNumber(nmbr: number): number {
   if (nmbr === 0) return 1;
   return Math.ceil(Math.log10(Math.abs(nmbr) + 1));
@@ -62,6 +64,35 @@ export function gcd(a: number, b: number): number {
   return gcd(b, a % b);
 }
 
+export function getRange(lowest: number, highest: number): number[];
+export function getRange(range: NumberRange): number[];
+export function getRange(
+  lowestOrRange: number | NumberRange,
+  highest?: number,
+): number[] {
+  let range: NumberRange;
+
+  if (typeof lowestOrRange === 'object') {
+    range = lowestOrRange;
+  } else if (typeof lowestOrRange === 'number' && typeof highest === 'number') {
+    range = { min: lowestOrRange, max: highest };
+  } else {
+    throw new Error(
+      'Invalid arguments provided to getRange. Provide either a NumberRange or two numbers (lowest and highest).',
+    );
+  }
+  const ret: number[] = [];
+  for (let i = range.min; i <= range.max; i++) {
+    ret.push(i);
+  }
+  return ret;
+}
+
+export function inRange(range: NumberRange, value: number): boolean {
+  return value >= range.min && value <= range.max;
+}
+
+/*
 export function getRange(lowest: number, highest: number): number[] {
   const ret: number[] = [];
   for (let i = lowest; i <= highest; i++) {
@@ -69,6 +100,7 @@ export function getRange(lowest: number, highest: number): number[] {
   }
   return ret;
 }
+*/
 
 export function splitInContiguousRanges(numbers: number[]): [number, number][] {
   if (numbers.length === 0) return [];
