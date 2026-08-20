@@ -54,9 +54,6 @@ function testPostconditionsCreatePlusSumWithSplit(
   expect(inRange(params.leftRange, result.leftOperand)).toBe(true);
   expect(inRange(params.rightRange, result.rightOperand)).toBe(true);
   expect(inRange(params.answerRange, result.answer)).toBe(true);
-  if (!plusSumWithSplit.isValid(result.leftOperand, result.rightOperand)) {
-    console.log('Invalid plus sum with split:', result);
-  }
   expect(
     plusSumWithSplit.isValid(result.leftOperand, result.rightOperand),
   ).toBe(true);

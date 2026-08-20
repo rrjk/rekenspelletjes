@@ -17,7 +17,8 @@ type IndexPage =
   | 'timesTables'
   | 'divideTables'
   | 'timesTablesTill19'
-  | 'divideTablesTill19';
+  | 'divideTablesTill19'
+  | 'mixedPlusMinus';
 
 /**
  * Converts a raw attribute value to a valid index page key.
@@ -31,6 +32,7 @@ export function convertGame(value: string | null): IndexPage {
     case 'divideTables':
     case 'timesTablesTill19':
     case 'divideTablesTill19':
+    case 'mixedPlusMinus':
       return value;
     default:
       return 'mixedSums';
@@ -48,11 +50,41 @@ const sections: IndexPageType = {
   mixedSums: [
     {
       title: 'Gemengde sommen met puzzel',
-      rows: ['aa', 'ab', 'ac', 'ai', 'aj', 'ad', 'ae', 'af', 'ag', 'ah'],
+      rows: [
+        'ak',
+        'al',
+        'aa',
+        'am',
+        'an',
+        'ab',
+        'ac',
+        'ai',
+        'aj',
+        'ad',
+        'ae',
+        'af',
+        'ag',
+        'ah',
+      ],
     },
     {
       title: 'Gemengde sommen zonder puzzel',
-      rows: ['ba', 'bb', 'bc', 'bi', 'bj', 'bd', 'be', 'bf', 'bg', 'bh'],
+      rows: [
+        'bk',
+        'bl',
+        'ba',
+        'bm',
+        'bn',
+        'bb',
+        'bc',
+        'bi',
+        'bj',
+        'bd',
+        'be',
+        'bf',
+        'bg',
+        'bh',
+      ],
     },
   ],
   timesTables: [
@@ -85,6 +117,20 @@ const sections: IndexPageType = {
     {
       title: 'Deel- en keersommen met de tafels van 11 t/m 19',
       rows: ['ha', 'hb', 'hc', 'hd', 'he', 'hf', 'hg', 'hh', 'hi', 'hj', 'hk'],
+    },
+  ],
+  mixedPlusMinus: [
+    {
+      title: 'Plussommen',
+      rows: ['ia', 'id', 'ig', 'ij', 'im', 'ja', 'jb'],
+    },
+    {
+      title: 'Minsommen',
+      rows: ['ib', 'ie', 'ih', 'ik', 'in', 'jc', 'jd'],
+    },
+    {
+      title: 'Plus- en minsommen door elkaar',
+      rows: ['ic', 'if', 'ii', 'il', 'io'],
     },
   ],
 };

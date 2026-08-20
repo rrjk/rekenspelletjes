@@ -177,11 +177,14 @@ export class MixedSumsGameApp extends TimeLimitedGame2 {
       );
     // Empty string is handled by getMixedSumsGameVariant's fallback to defaultVariant
     const extendedVariantInfo = getMixedSumsGameVariant(variant);
+    if ('operators' in extendedVariantInfo) {
+      this.eligibleTables = extendedVariantInfo.eligibleTables;
 
-    this.eligibleTables = extendedVariantInfo.eligibleTables;
-
-    this.maximumNumber = extendedVariantInfo.maxAnswer;
-    this.eligibleOperators = [...extendedVariantInfo.operators];
+      this.maximumNumber = extendedVariantInfo.maxAnswer;
+      this.eligibleOperators = [...extendedVariantInfo.operators];
+    } else {
+      throw new Error('Internal SW Error, V2 variants not yet supported');
+    }
     this.gameLogger.setMainCode(extendedVariantInfo.mainCode);
     this.gameLogger.setSubCode(variant);
     this.includePuzzle = extendedVariantInfo.includePuzzle;

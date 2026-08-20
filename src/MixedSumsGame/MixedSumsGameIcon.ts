@@ -7,7 +7,11 @@ import type {
 import { customElement, property } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 
-import { getMixedSumsGameVariant, MixedSumIcon } from './MixedSumsGameVariants';
+import {
+  getMixedSumsGameVariant,
+  isExtendedVariantInfoV1,
+  MixedSumIcon,
+} from './MixedSumsGameVariants';
 import { Color, getColorInfo } from '../Colors';
 import { Operator, operatorToSymbol } from '../Operator';
 import { pathPuzzlePiece } from '../PuzzlePiece';
@@ -24,6 +28,11 @@ interface IconInfo {
   maxAnswer: number;
   eligibleTables: number[];
   operators: Operator[];
+}
+
+interface IconInfoExampleSum {
+  iconColor: Color;
+  sumDescriptions: string[];
 }
 
 @customElement('mixed-sums-game-icon')
@@ -87,6 +96,21 @@ export class MixedSumsGameIcon extends LitElement {
           stroke-width: 3px;
         }
         text.tableRange1Digit {
+          font-size: 25px;
+          stroke-width: 3px;
+        }
+
+        text.typicalSum6Char {
+          font-size: 35px;
+          stroke-width: 4px;
+        }
+
+        text.typicalSum8Char {
+          font-size: 29px;
+          stroke-width: 4px;
+        }
+
+        text.typicalSum5Rows {
           font-size: 25px;
           stroke-width: 3px;
         }
@@ -391,21 +415,115 @@ export class MixedSumsGameIcon extends LitElement {
   }
 
   render(): HTMLTemplateResult {
-    /** This will be the icon info when no variant is selected, to be used on the front page */
-    let iconInfo: IconInfo = {
-      icon: 'puzzlePiece',
-      iconColor: 'green',
-      maxAnswer: 10,
-      eligibleTables: [],
-      operators: ['plus', 'minus', 'times', 'divide'],
+    if (this.variant === '') {
+      const iconInfo: IconInfo = {
+        icon: 'puzzlePiece',
+        iconColor: 'green',
+        maxAnswer: 10,
+        eligibleTables: [],
+        operators: ['plus', 'minus', 'times', 'divide'],
+      };
+      return this.renderV1(iconInfo);
+    } else {
+      const variantInfo = getMixedSumsGameVariant(this.variant);
+      if (isExtendedVariantInfoV1(variantInfo)) {
+        const iconInfo: IconInfo = {
+          ...variantInfo,
+        };
+        return this.renderV1(iconInfo);
+      } else {
+        const iconInfo: IconInfoExampleSum = {
+          iconColor: variantInfo.iconColor,
+          sumDescriptions: variantInfo.sumTypes.flatMap(
+            sumType => sumType.sumDescriptions,
+          ),
+        };
+        return this.renderWithExampleSums(iconInfo);
+      }
+    }
+  }
+
+  renderWithExampleSums(iconInfo: IconInfoExampleSum): HTMLTemplateResult {
+    const backgroundColor = getColorInfo(iconInfo.iconColor).mainColorCode;
+    return html`
+      <style>
+        :host {
+          --fill-color: ${backgroundColor};
+        }
+      </style>
+      <svg ViewBox="-5 -10 115 115">
+        ${this.renderRectangleWithCutCorners(0, -5, 105, 105, 12)}
+        ${this.renderTypicalSumns(iconInfo.sumDescriptions)}
+      </svg>
+    `;
+  }
+
+  renderTypicalSumns(typicalSums: string[]): SVGTemplateResult[] {
+    const ret: SVGTemplateResult[] = [];
+    let sumPos: { x: number; y: number }[] = [];
+    const cls = {
+      typicalSum6Char: false,
+      typicalSum8Char: false,
+      typicalSum5Rows: false,
     };
 
-    if (this.variant !== '') {
-      iconInfo = {
-        ...getMixedSumsGameVariant(this.variant),
-      };
+    switch (typicalSums.length) {
+      case 0:
+        throw new Error(`No typical sums provided`);
+      case 1:
+        sumPos = [{ x: 50, y: 52 }];
+        break;
+      case 2:
+        sumPos = [
+          { x: 50, y: 30 },
+          { x: 50, y: 70 },
+        ];
+        break;
+      case 3:
+        sumPos = [
+          { x: 50, y: 20 },
+          { x: 50, y: 52 },
+          { x: 50, y: 84 },
+        ];
+        break;
+      case 4:
+        sumPos = [
+          { x: 50, y: 12 },
+          { x: 50, y: 38 },
+          { x: 50, y: 62 },
+          { x: 50, y: 87 },
+        ];
+        break;
+    }
+    let maxLength = 0;
+    for (const typicalSum of typicalSums) {
+      if (typicalSum.length > maxLength) {
+        maxLength = typicalSum.length;
+      }
     }
 
+    if (typicalSums.length > 5) {
+      throw new Error(`Too many typical sums provided`);
+    } else if (typicalSums.length > 3) {
+      cls.typicalSum5Rows = true;
+    } else if (maxLength <= 6) {
+      cls.typicalSum6Char = true;
+    } else if (maxLength <= 8) {
+      cls.typicalSum8Char = true;
+    } else {
+      throw new Error(`There is a typical sum that is too long`);
+    }
+
+    for (const typicalSum of typicalSums) {
+      ret.push(
+        svg`<text class="${classMap(cls)}" x="${sumPos[ret.length].x}" y="${sumPos[ret.length].y}">${typicalSum}</text>`,
+      );
+    }
+    return ret;
+  }
+
+  renderV1(iconInfo: IconInfo): HTMLTemplateResult {
+    /** This will be the icon info when no variant is selected, to be used on the front page */
     let backgroundColor = getColorInfo(iconInfo.iconColor).mainColorCode;
     if (
       iconInfo.icon === 'multiplicationIcon' &&
