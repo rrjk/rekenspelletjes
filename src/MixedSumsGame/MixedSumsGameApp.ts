@@ -24,7 +24,7 @@ import '../DigitKeyboard';
 import { Operator, operators, operatorToDutch } from '../Operator';
 import { UnexpectedValueError } from '../UnexpectedValueError';
 import { classMap } from 'lit/directives/class-map.js';
-import { joinWithEn } from '../Utils';
+import { DecapitalizeFirstLetter, joinWithEn } from '../Utils';
 
 import {
   getMixedSumsGameVariant,
@@ -426,29 +426,38 @@ export class MixedSumsGameApp extends TimeLimitedGame2 {
       else timeDescription = `${this.gameTime} seconden`;
     }
 
-    let plusMinusDescription: HTMLTemplateResult | typeof nothing = nothing;
-    if (
-      this.eligibleOperators.includes('plus') ||
-      this.eligibleOperators.includes('minus')
-    )
-      plusMinusDescription = html`<p>
-        Het maximale antwoord was ${this.maximumNumber}.
-      </p>`;
-
-    let timesDivideDescription: HTMLTemplateResult | typeof nothing = nothing;
-    if (
-      this.eligibleOperators.includes('times') ||
-      this.eligibleOperators.includes('divide')
-    )
-      timesDivideDescription = html`<p>
-        De grootste tafel was ${this.maxTable}.
-      </p>`;
-
-    return html`<p>
+    if (this.sumParameters !== undefined) {
+      return html`<p>
         Je hebt ${timeDescription} gespeeld met
-        ${joinWithEn(this.eligibleOperators.map(elm => operatorToDutch(elm)))}.
-      </p>
-      ${plusMinusDescription} ${timesDivideDescription}`;
+        ${DecapitalizeFirstLetter(this.gameText)}.
+      </p>`;
+    } else {
+      let plusMinusDescription: HTMLTemplateResult | typeof nothing = nothing;
+      if (
+        this.eligibleOperators.includes('plus') ||
+        this.eligibleOperators.includes('minus')
+      )
+        plusMinusDescription = html`<p>
+          Het maximale antwoord was ${this.maximumNumber}.
+        </p>`;
+
+      let timesDivideDescription: HTMLTemplateResult | typeof nothing = nothing;
+      if (
+        this.eligibleOperators.includes('times') ||
+        this.eligibleOperators.includes('divide')
+      )
+        timesDivideDescription = html`<p>
+          De grootste tafel was ${this.maxTable}.
+        </p>`;
+
+      return html`<p>
+          Je hebt ${timeDescription} gespeeld met
+          ${joinWithEn(
+            this.eligibleOperators.map(elm => operatorToDutch(elm)),
+          )}.
+        </p>
+        ${plusMinusDescription} ${timesDivideDescription}`;
+    }
   }
 
   static get styles(): CSSResultArray {
