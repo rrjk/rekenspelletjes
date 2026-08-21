@@ -10,7 +10,7 @@ import {
   operatorToDutch,
   operatorToSymbol,
 } from '../Operator';
-import { AdditionSubstractionParameters } from '../SumCreationHelpersV2';
+import { AdditionSubstractionSumParameters } from '../SumCreationHelpersV2';
 import { UnexpectedValueError } from '../UnexpectedValueError';
 import { CapitalizeFirstLetter, joinWithEn } from '../Utils';
 
@@ -54,9 +54,7 @@ type VariantTableInfo =
 
 type SumType = {
   sumDescriptions: string[];
-  split: boolean;
-  operator?: Operator;
-} & AdditionSubstractionParameters;
+} & AdditionSubstractionSumParameters;
 
 type VariantInfoV1<T extends Operator = Operator> = VariantBaseInfo<T> &
   VariantTableInfo;
@@ -157,6 +155,155 @@ function createEligibleTables(variantInfo: VariantInfoV1): number[] {
   return eligibleTables;
 }
 
+const sumType3p4: SumType = {
+  sumDescriptions: [createSumString(3, 'plus', 4)],
+  requireSplit: false,
+  operator: 'plus',
+  leftRange: { min: 0, max: 10 },
+  rightRange: { min: 0, max: 9 },
+  answerRange: { min: 0, max: 10 },
+};
+
+const sumType7m5: SumType = {
+  sumDescriptions: [createSumString(7, 'minus', 5)],
+  requireSplit: false,
+  operator: 'minus',
+  leftRange: { min: 0, max: 10 },
+  rightRange: { min: 0, max: 9 },
+  answerRange: { min: 0, max: 10 },
+};
+
+const sumType13p4: SumType = {
+  sumDescriptions: [createSumString(13, 'plus', 4)],
+  requireSplit: false,
+  operator: 'plus',
+  leftRange: { min: 10, max: 20 },
+  rightRange: { min: 0, max: 9 },
+  answerRange: { min: 10, max: 20 },
+};
+
+const sumType17m5: SumType = {
+  sumDescriptions: [createSumString(17, 'minus', 5)],
+  requireSplit: false,
+  operator: 'minus',
+  leftRange: { min: 10, max: 20 },
+  rightRange: { min: 0, max: 9 },
+  answerRange: { min: 10, max: 20 },
+};
+
+const sumType6p8: SumType = {
+  sumDescriptions: [createSumString(6, 'plus', 8)],
+  requireSplit: true,
+  operator: 'plus',
+  leftRange: { min: 0, max: 10 },
+  rightRange: { min: 0, max: 9 },
+  answerRange: { min: 10, max: 20 },
+};
+
+const sumType12m3: SumType = {
+  sumDescriptions: [createSumString(12, 'minus', 3)],
+  requireSplit: true,
+  operator: 'minus',
+  leftRange: { min: 10, max: 20 },
+  rightRange: { min: 0, max: 9 },
+  answerRange: { min: 0, max: 10 },
+};
+
+const sumType38p5: SumType = {
+  sumDescriptions: [createSumString(38, 'plus', 5)],
+  requireSplit: true,
+  operator: 'plus',
+  leftRange: { min: 10, max: 99 },
+  rightRange: { min: 0, max: 9 },
+  answerRange: { min: 10, max: 100 },
+};
+
+const sumType53m7: SumType = {
+  sumDescriptions: [createSumString(53, 'minus', 7)],
+  requireSplit: true,
+  operator: 'minus',
+  leftRange: { min: 10, max: 100 },
+  rightRange: { min: 0, max: 9 },
+  answerRange: { min: 0, max: 99 },
+};
+
+const sumType47p38: SumType = {
+  sumDescriptions: [createSumString(47, 'plus', 38)],
+  requireSplit: true,
+  operator: 'plus',
+  leftRange: { min: 10, max: 99 },
+  rightRange: { min: 10, max: 99 },
+  answerRange: { min: 0, max: 100 },
+};
+
+const sumType65m49: SumType = {
+  sumDescriptions: [createSumString(65, 'minus', 49)],
+  requireSplit: true,
+  operator: 'minus',
+  leftRange: { min: 0, max: 99 },
+  rightRange: { min: 10, max: 99 },
+  answerRange: { min: 0, max: 99 },
+};
+
+const sumType3p4a13p4: SumType = {
+  sumDescriptions: [
+    createSumString(3, 'plus', 4, 2),
+    createSumString(13, 'plus', 4, 2),
+  ],
+  requireSplit: false,
+  operator: 'plus',
+  leftRange: { min: 0, max: 20 },
+  rightRange: { min: 0, max: 9 },
+  answerRange: { min: 0, max: 20 },
+};
+
+const sumType3p4a43p4: SumType = {
+  sumDescriptions: [
+    createSumString(3, 'plus', 4, 2),
+    createSumString(43, 'plus', 4, 2),
+  ],
+  requireSplit: false,
+  operator: 'plus',
+  leftRange: { min: 0, max: 99 },
+  rightRange: { min: 0, max: 9 },
+  answerRange: { min: 0, max: 99 },
+};
+
+const sumType6p8a36p8: SumType = {
+  sumDescriptions: [
+    createSumString(6, 'plus', 8, 2),
+    createSumString(36, 'plus', 8, 2),
+  ],
+  requireSplit: true,
+  operator: 'plus',
+  leftRange: { min: 0, max: 99 },
+  rightRange: { min: 0, max: 9 },
+  answerRange: { min: 0, max: 99 },
+};
+
+const sumType7m5a17m5: SumType = {
+  sumDescriptions: [
+    createSumString(7, 'minus', 5, 2),
+    createSumString(17, 'minus', 5, 2),
+  ],
+  requireSplit: false,
+  operator: 'minus',
+  leftRange: { min: 0, max: 20 },
+  rightRange: { min: 0, max: 9 },
+  answerRange: { min: 0, max: 20 },
+};
+
+const sumType7m5a37m5: SumType = {
+  sumDescriptions: [
+    createSumString(7, 'minus', 5, 2),
+    createSumString(37, 'minus', 5, 2),
+  ],
+  requireSplit: false,
+  operator: 'minus',
+  leftRange: { min: 0, max: 99 },
+  rightRange: { min: 0, max: 9 },
+  answerRange: { min: 0, max: 99 },
+};
 export const mixedSumsGameVariants: Record<string, VariantInfo> = {
   aa: defaultVariant,
   ab: {
@@ -814,354 +961,105 @@ export const mixedSumsGameVariants: Record<string, VariantInfo> = {
   ia: {
     includePuzzle: false,
     iconColor: 'red',
-    sumTypes: [
-      {
-        sumDescriptions: [createSumString(3, 'plus', 4)],
-        split: false,
-        operator: 'plus',
-        leftRange: { min: 0, max: 10 },
-        rightRange: { min: 0, max: 10 },
-        answerRange: { min: 0, max: 10 },
-      },
-    ],
+    sumTypes: [sumType3p4],
   },
   ib: {
     includePuzzle: false,
     iconColor: 'orange',
-    sumTypes: [
-      {
-        sumDescriptions: [createSumString(7, 'minus', 5)],
-        split: false,
-        operator: 'minus',
-        leftRange: { min: 0, max: 10 },
-        rightRange: { min: 0, max: 10 },
-        answerRange: { min: 0, max: 10 },
-      },
-    ],
+    sumTypes: [sumType7m5],
   },
   ic: {
     includePuzzle: false,
     iconColor: 'yellow',
-    sumTypes: [
-      {
-        sumDescriptions: [createSumString(3, 'plus', 4)],
-        split: false,
-        operator: 'plus',
-        leftRange: { min: 0, max: 10 },
-        rightRange: { min: 0, max: 10 },
-        answerRange: { min: 0, max: 10 },
-      },
-      {
-        sumDescriptions: [createSumString(7, 'minus', 5)],
-        split: false,
-        operator: 'minus',
-        leftRange: { min: 0, max: 10 },
-        rightRange: { min: 0, max: 10 },
-        answerRange: { min: 0, max: 10 },
-      },
-    ],
+    sumTypes: [sumType3p4, sumType7m5],
   },
   id: {
     includePuzzle: false,
     iconColor: 'lime',
-    sumTypes: [
-      {
-        sumDescriptions: [createSumString(13, 'plus', 4)],
-        split: false,
-        operator: 'plus',
-        leftRange: { min: 0, max: 10 },
-        rightRange: { min: 0, max: 10 },
-        answerRange: { min: 0, max: 10 },
-      },
-    ],
+    sumTypes: [sumType13p4],
   },
   ie: {
     includePuzzle: false,
     iconColor: 'green',
-    sumTypes: [
-      {
-        sumDescriptions: [createSumString(17, 'minus', 5)],
-        split: false,
-        operator: 'minus',
-        leftRange: { min: 0, max: 10 },
-        rightRange: { min: 0, max: 10 },
-        answerRange: { min: 0, max: 10 },
-      },
-    ],
+    sumTypes: [sumType17m5],
   },
   if: {
     includePuzzle: false,
     iconColor: 'cyan',
-    sumTypes: [
-      {
-        sumDescriptions: [createSumString(13, 'plus', 4)],
-        split: false,
-        operator: 'plus',
-        leftRange: { min: 0, max: 10 },
-        rightRange: { min: 0, max: 10 },
-        answerRange: { min: 0, max: 10 },
-      },
-      {
-        sumDescriptions: [createSumString(17, 'minus', 5)],
-        split: false,
-        operator: 'minus',
-        leftRange: { min: 0, max: 10 },
-        rightRange: { min: 0, max: 10 },
-        answerRange: { min: 0, max: 10 },
-      },
-    ],
+    sumTypes: [sumType13p4, sumType17m5],
   },
   ig: {
     includePuzzle: false,
     iconColor: 'olive',
-    sumTypes: [
-      {
-        sumDescriptions: [createSumString(6, 'plus', 8)],
-        split: false,
-        operator: 'plus',
-        leftRange: { min: 0, max: 10 },
-        rightRange: { min: 0, max: 10 },
-        answerRange: { min: 0, max: 10 },
-      },
-    ],
+    sumTypes: [sumType6p8],
   },
   ih: {
     includePuzzle: false,
     iconColor: 'brown',
-    sumTypes: [
-      {
-        sumDescriptions: [createSumString(12, 'minus', 3)],
-        split: false,
-        operator: 'minus',
-        leftRange: { min: 0, max: 10 },
-        rightRange: { min: 0, max: 10 },
-        answerRange: { min: 0, max: 10 },
-      },
-    ],
+    sumTypes: [sumType12m3],
   },
   ii: {
     includePuzzle: false,
     iconColor: 'maroon',
-    sumTypes: [
-      {
-        sumDescriptions: [createSumString(6, 'plus', 8)],
-        split: false,
-        operator: 'plus',
-        leftRange: { min: 0, max: 10 },
-        rightRange: { min: 0, max: 10 },
-        answerRange: { min: 0, max: 10 },
-      },
-      {
-        sumDescriptions: [createSumString(12, 'minus', 3)],
-        split: false,
-        operator: 'minus',
-        leftRange: { min: 0, max: 10 },
-        rightRange: { min: 0, max: 10 },
-        answerRange: { min: 0, max: 10 },
-      },
-    ],
+    sumTypes: [sumType6p8, sumType12m3],
   },
   ij: {
     includePuzzle: false,
     iconColor: 'lavender',
-    sumTypes: [
-      {
-        sumDescriptions: [createSumString(38, 'plus', 5)],
-        split: false,
-        operator: 'plus',
-        leftRange: { min: 0, max: 10 },
-        rightRange: { min: 0, max: 10 },
-        answerRange: { min: 0, max: 10 },
-      },
-    ],
+    sumTypes: [sumType38p5],
   },
   ik: {
     includePuzzle: false,
     iconColor: 'purple',
-    sumTypes: [
-      {
-        sumDescriptions: [createSumString(53, 'minus', 7)],
-        split: false,
-        operator: 'minus',
-        leftRange: { min: 0, max: 10 },
-        rightRange: { min: 0, max: 10 },
-        answerRange: { min: 0, max: 10 },
-      },
-    ],
+    sumTypes: [sumType53m7],
   },
   il: {
     includePuzzle: false,
     iconColor: 'magenta',
-    sumTypes: [
-      {
-        sumDescriptions: [createSumString(38, 'plus', 5)],
-        split: false,
-        operator: 'plus',
-        leftRange: { min: 0, max: 10 },
-        rightRange: { min: 0, max: 10 },
-        answerRange: { min: 0, max: 10 },
-      },
-      {
-        sumDescriptions: [createSumString(53, 'minus', 7)],
-        split: false,
-        operator: 'minus',
-        leftRange: { min: 0, max: 10 },
-        rightRange: { min: 0, max: 10 },
-        answerRange: { min: 0, max: 10 },
-      },
-    ],
+    sumTypes: [sumType38p5, sumType53m7],
   },
   im: {
     includePuzzle: false,
     iconColor: 'teal',
-    sumTypes: [
-      {
-        sumDescriptions: [createSumString(47, 'plus', 38)],
-        split: false,
-        operator: 'plus',
-        leftRange: { min: 0, max: 10 },
-        rightRange: { min: 0, max: 10 },
-        answerRange: { min: 0, max: 10 },
-      },
-    ],
+    sumTypes: [sumType47p38],
   },
   in: {
     includePuzzle: false,
     iconColor: 'mint',
-    sumTypes: [
-      {
-        sumDescriptions: [createSumString(65, 'minus', 49)],
-        split: false,
-        operator: 'minus',
-        leftRange: { min: 0, max: 10 },
-        rightRange: { min: 0, max: 10 },
-        answerRange: { min: 0, max: 10 },
-      },
-    ],
+    sumTypes: [sumType65m49],
   },
   io: {
     includePuzzle: false,
     iconColor: 'blue',
-    sumTypes: [
-      {
-        sumDescriptions: [createSumString(47, 'plus', 38)],
-        split: false,
-        operator: 'plus',
-        leftRange: { min: 0, max: 10 },
-        rightRange: { min: 0, max: 10 },
-        answerRange: { min: 0, max: 10 },
-      },
-      {
-        sumDescriptions: [createSumString(65, 'minus', 49)],
-        split: false,
-        operator: 'minus',
-        leftRange: { min: 0, max: 10 },
-        rightRange: { min: 0, max: 10 },
-        answerRange: { min: 0, max: 10 },
-      },
-    ],
+    sumTypes: [sumType47p38, sumType65m49],
   },
   ja: {
     includePuzzle: false,
     iconColor: 'malachite',
     sumTypes: [
-      {
-        sumDescriptions: [
-          createSumString(3, 'plus', 4, 2),
-          createSumString(13, 'plus', 4, 2),
-        ],
-        split: false,
-        operator: 'plus',
-        leftRange: { min: 0, max: 20 },
-        rightRange: { min: 0, max: 9 },
-        answerRange: { min: 0, max: 20 },
-      },
-      {
-        sumDescriptions: [createSumString(6, 'plus', 8, 2)],
-        split: true,
-        operator: 'plus',
-        leftRange: { min: 0, max: 20 },
-        rightRange: { min: 0, max: 9 },
-        answerRange: { min: 0, max: 20 },
-      },
+      sumType3p4a13p4,
+      { ...sumType6p8, sumDescriptions: [createSumString(6, 'plus', 8, 2)] },
     ],
   },
   jb: {
     includePuzzle: false,
     iconColor: 'amberFlame',
-    sumTypes: [
-      {
-        sumDescriptions: [
-          createSumString(3, 'plus', 4, 2),
-          createSumString(43, 'plus', 4, 2),
-        ],
-        split: false,
-        operator: 'plus',
-        leftRange: { min: 0, max: 20 },
-        rightRange: { min: 0, max: 9 },
-        answerRange: { min: 0, max: 20 },
-      },
-      {
-        sumDescriptions: [
-          createSumString(6, 'plus', 8, 2),
-          createSumString(36, 'plus', 8, 2),
-        ],
-        split: true,
-        operator: 'plus',
-        leftRange: { min: 0, max: 20 },
-        rightRange: { min: 0, max: 9 },
-        answerRange: { min: 0, max: 20 },
-      },
-    ],
+    sumTypes: [sumType3p4a43p4, sumType6p8a36p8],
   },
   jc: {
     includePuzzle: false,
     iconColor: 'fuchsiaFlame',
     sumTypes: [
-      {
-        sumDescriptions: [
-          createSumString(7, 'minus', 5, 2),
-          createSumString(17, 'minus', 5, 2),
-        ],
-        split: false,
-        operator: 'minus',
-        leftRange: { min: 0, max: 20 },
-        rightRange: { min: 0, max: 9 },
-        answerRange: { min: 0, max: 20 },
-      },
-      {
-        sumDescriptions: [createSumString(12, 'minus', 3, 2)],
-        split: true,
-        operator: 'minus',
-        leftRange: { min: 0, max: 20 },
-        rightRange: { min: 0, max: 9 },
-        answerRange: { min: 0, max: 20 },
-      },
+      sumType7m5a17m5,
+      { ...sumType12m3, sumDescriptions: [createSumString(12, 'minus', 3, 2)] },
     ],
   },
   jd: {
     includePuzzle: false,
     iconColor: 'brilliantAzure',
     sumTypes: [
-      {
-        sumDescriptions: [
-          createSumString(7, 'minus', 5, 2),
-          createSumString(37, 'minus', 5, 2),
-        ],
-        split: false,
-        operator: 'minus',
-        leftRange: { min: 0, max: 20 },
-        rightRange: { min: 0, max: 9 },
-        answerRange: { min: 0, max: 20 },
-      },
-      {
-        sumDescriptions: [createSumString(53, 'minus', 7, 2)],
-        split: true,
-        operator: 'minus',
-        leftRange: { min: 0, max: 20 },
-        rightRange: { min: 0, max: 9 },
-        answerRange: { min: 0, max: 20 },
-      },
+      sumType7m5a37m5,
+      { ...sumType53m7, sumDescriptions: [createSumString(53, 'minus', 7, 2)] },
     ],
   },
 };
@@ -1238,22 +1136,7 @@ function createMixedOperatorsDescription(variantInfo: VariantInfoV1): string {
 }
 
 function createGameDescriptionV2(variantInfo: VariantInfoV2): string {
-  if (variantInfo.sumTypes.length === 0) {
-    throw new Error('Variant must have at least one sumType');
-  } else if (variantInfo.sumTypes.length === 1) {
-    if (variantInfo.sumTypes[0].operator === 'times') {
-      throw new Error(
-        'Times operator is not yet supported in variants with SumType',
-      );
-    } else if (variantInfo.sumTypes[0].operator === 'divide') {
-      throw new Error(
-        'Divide operator is not yet supported in variants with SumType',
-      );
-    }
-  } else {
-    throw new Error('Variants with multiple sumTypes are not yet supported');
-  }
-  return '';
+  return variantInfo.sumTypes[0].sumDescriptions.join(', ');
 }
 
 function createGameDescription(variantInfo: VariantInfo): string {

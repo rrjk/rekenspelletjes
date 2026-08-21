@@ -2,7 +2,7 @@ import { expect, test } from '@jest/globals';
 import {
   randomMinusSumWithoutSplit,
   type Sum,
-  type AdditionSubstractionParameters,
+  type SumRangeParameters,
   minusSumWithoutSplit,
   minusSumWithSplit,
   plusSumWithoutSplit,
@@ -18,7 +18,7 @@ import { inRange } from './NumberHelperFunctions';
 const numberIterations = 1000; // 100 is enough for regression, use 1000 to test in case of progression
 
 function testPostconditionsCreateMinusSumWithoutSplit(
-  params: AdditionSubstractionParameters,
+  params: SumRangeParameters,
   result: Sum,
 ): void {
   // Check that the answer is correct
@@ -32,7 +32,7 @@ function testPostconditionsCreateMinusSumWithoutSplit(
 }
 
 function testPostconditionsCreateMinusSumWithSplit(
-  params: AdditionSubstractionParameters,
+  params: SumRangeParameters,
   result: Sum,
 ): void {
   // Check that the answer is correct
@@ -46,7 +46,7 @@ function testPostconditionsCreateMinusSumWithSplit(
 }
 
 function testPostconditionsCreatePlusSumWithSplit(
-  params: AdditionSubstractionParameters,
+  params: SumRangeParameters,
   result: Sum,
 ): void {
   // Check that the answer is correct
@@ -60,7 +60,7 @@ function testPostconditionsCreatePlusSumWithSplit(
 }
 
 function testPostconditionsCreatePlusSumWithoutSplit(
-  params: AdditionSubstractionParameters,
+  params: SumRangeParameters,
   result: Sum,
 ): void {
   // Check that the answer is correct
@@ -176,7 +176,7 @@ describe('randomMinusSumWithoutSplit', () => {
     const expectedAnswers = Array(11).fill(true, 0, 11);
 
     for (let i = 0; i < numberIterations; i++) {
-      const params: AdditionSubstractionParameters = {
+      const params: SumRangeParameters = {
         leftRange: { min: 0, max: 10 },
         rightRange: { min: 0, max: 9 },
         answerRange: { min: 0, max: 10 },
@@ -201,7 +201,7 @@ describe('randomMinusSumWithoutSplit', () => {
     const expectedAnswers = Array(11).fill(true, 0, 11);
 
     for (let i = 0; i < numberIterations; i++) {
-      const params: AdditionSubstractionParameters = {
+      const params: SumRangeParameters = {
         leftRange: { min: 10, max: 20 },
         rightRange: { min: 0, max: 9 },
         answerRange: { min: 10, max: 20 },
@@ -226,7 +226,7 @@ describe('randomMinusSumWithoutSplit', () => {
     const expectedAnswers = Array(1).fill(true);
 
     for (let i = 0; i < numberIterations; i++) {
-      const params: AdditionSubstractionParameters = {
+      const params: SumRangeParameters = {
         leftRange: { min: 11, max: 20 },
         rightRange: { min: 1, max: 10 },
         answerRange: { min: 10, max: 10 },
@@ -253,7 +253,7 @@ describe('randomMinusSumWithoutSplit', () => {
     const expectedAnswers = Array(11).fill(false, 0, 1).fill(true, 1, 11);
 
     for (let i = 0; i < numberIterations; i++) {
-      const params: AdditionSubstractionParameters = {
+      const params: SumRangeParameters = {
         leftRange: { min: 10, max: 10 },
         rightRange: { min: 0, max: 9 },
         answerRange: { min: 0, max: 10 },
@@ -278,7 +278,7 @@ describe('randomMinusSumWithoutSplit', () => {
     const expectedAnswers = Array(11).fill(true, 0, 11);
 
     for (let i = 0; i < numberIterations; i++) {
-      const params: AdditionSubstractionParameters = {
+      const params: SumRangeParameters = {
         leftRange: { min: 15, max: 25 },
         rightRange: { min: 0, max: 9 },
         answerRange: { min: 11, max: 21 },
@@ -312,7 +312,7 @@ describe('randomMinusSumWithSplit', () => {
       .fill(false, 10, 11);
 
     for (let i = 0; i < numberIterations; i++) {
-      const params: AdditionSubstractionParameters = {
+      const params: SumRangeParameters = {
         leftRange: { min: 10, max: 20 },
         rightRange: { min: 0, max: 9 },
         answerRange: { min: 0, max: 10 },
@@ -355,7 +355,7 @@ describe('randomMinusSumWithSplit', () => {
       .fill(false, 20, 21);
 
     for (let i = 0; i < numberIterations; i++) {
-      const params: AdditionSubstractionParameters = {
+      const params: SumRangeParameters = {
         leftRange: { min: 50, max: 70 },
         rightRange: { min: 20, max: 40 },
         answerRange: { min: 20, max: 50 },
@@ -383,7 +383,7 @@ describe('randomPlusSumWithoutSplit', () => {
     const expectedAnswers = Array(11).fill(true, 0, 11);
 
     for (let i = 0; i < numberIterations; i++) {
-      const params: AdditionSubstractionParameters = {
+      const params: SumRangeParameters = {
         leftRange: { min: 0, max: 10 },
         rightRange: { min: 0, max: 10 },
         answerRange: { min: 0, max: 10 },
@@ -408,7 +408,7 @@ describe('randomPlusSumWithoutSplit', () => {
     const expectedAnswers = Array(11).fill(true, 0, 11);
 
     for (let i = 0; i < numberIterations; i++) {
-      const params: AdditionSubstractionParameters = {
+      const params: SumRangeParameters = {
         leftRange: { min: 10, max: 20 },
         rightRange: { min: 0, max: 10 },
         answerRange: { min: 10, max: 20 },
@@ -444,7 +444,7 @@ describe('randomPlusSumWithSplit', () => {
       .fill(true, 1, 9)
       .fill(false, 9, 11);
     for (let i = 0; i < numberIterations; i++) {
-      const params: AdditionSubstractionParameters = {
+      const params: SumRangeParameters = {
         leftRange: { min: 0, max: 10 },
         rightRange: { min: 0, max: 10 },
         answerRange: { min: 10, max: 20 },
@@ -482,7 +482,7 @@ describe('randomPlusSumWithSplit', () => {
       .fill(false, 19, 21);
 
     for (let i = 0; i < numberIterations; i++) {
-      const params: AdditionSubstractionParameters = {
+      const params: SumRangeParameters = {
         leftRange: { min: 50, max: 70 },
         rightRange: { min: 10, max: 20 },
         answerRange: { min: 70, max: 90 },

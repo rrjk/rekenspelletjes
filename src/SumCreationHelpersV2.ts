@@ -1,13 +1,25 @@
 import { NumberRange } from './NumberHelperFunctions';
+import { AdditionOperator, Operator } from './Operator';
+import { UnexpectedValueError } from './UnexpectedValueError';
 
-export type Sum = { leftOperand: number; rightOperand: number; answer: number };
+export type Sum = {
+  leftOperand: number;
+  rightOperand: number;
+  answer: number;
+  operator: Operator;
+};
 
 /** Parameters for addition and substraction sums
  */
-export type AdditionSubstractionParameters = {
+export type SumRangeParameters = {
   leftRange: NumberRange;
   rightRange: NumberRange;
   answerRange: NumberRange;
+};
+
+export type AdditionSubstractionSumParameters = SumRangeParameters & {
+  requireSplit: boolean;
+  operator: AdditionOperator;
 };
 
 type SumRule = {
@@ -52,6 +64,8 @@ type ArithmeticOperation = {
     rightRange: NumberRange,
     answerRange: NumberRange,
   ): NumberRange | null;
+
+  getOperator(): Operator;
 };
 
 /* -------------------------------------------------------------------------
@@ -67,7 +81,7 @@ type ArithmeticOperation = {
  * It does not enumerate all possible pairs.
  */
 function randomArithmeticSum(
-  sumParameters: AdditionSubstractionParameters,
+  sumParameters: SumRangeParameters,
   /*  leftRange: NumberRange,
   rightRange: NumberRange,
   answerRange: NumberRange,*/
@@ -156,6 +170,7 @@ function randomArithmeticSum(
     leftOperand: left,
     rightOperand: right,
     answer,
+    operator: operation.getOperator(),
   };
 }
 
@@ -166,6 +181,9 @@ function randomArithmeticSum(
 const subtraction: ArithmeticOperation = {
   calculateAnswer(left, right) {
     return left - right;
+  },
+  getOperator() {
+    return 'minus';
   },
 
   getRightRange(left, rightRange, answerRange) {
@@ -190,6 +208,9 @@ const subtraction: ArithmeticOperation = {
 const addition: ArithmeticOperation = {
   calculateAnswer(left, right) {
     return left + right;
+  },
+  getOperator() {
+    return 'plus';
   },
 
   getRightRange(left, rightRange, answerRange) {
@@ -406,27 +427,45 @@ export const plusSumWithSplit: SumRule = {
  * ---------------------------------------------------------------------- */
 
 export function randomMinusSumWithoutSplit(
-  sumParameters: AdditionSubstractionParameters,
+  sumParameters: SumRangeParameters,
 ): Sum {
   return randomArithmeticSum(sumParameters, subtraction, minusSumWithoutSplit);
 }
 
 export function randomMinusSumWithSplit(
-  sumParameters: AdditionSubstractionParameters,
+  sumParameters: SumRangeParameters,
 ): Sum {
   return randomArithmeticSum(sumParameters, subtraction, minusSumWithSplit);
 }
 
 export function randomPlusSumWithoutSplit(
-  sumParameters: AdditionSubstractionParameters,
+  sumParameters: SumRangeParameters,
 ): Sum {
   return randomArithmeticSum(sumParameters, addition, plusSumWithoutSplit);
 }
 
-export function randomPlusSumWithSplit(
-  sumParameters: AdditionSubstractionParameters,
-): Sum {
+export function randomPlusSumWithSplit(sumParameters: SumRangeParameters): Sum {
   return randomArithmeticSum(sumParameters, addition, plusSumWithSplit);
+}
+
+export function randomAdditionSubstractionSum(
+  sumParameters: AdditionSubstractionSumParameters,
+): Sum {
+  if (sumParameters.operator === 'plus') {
+    if (sumParameters.requireSplit) {
+      return randomPlusSumWithSplit(sumParameters);
+    } else {
+      return randomPlusSumWithoutSplit(sumParameters);
+    }
+  } else if (sumParameters.operator === 'minus') {
+    if (sumParameters.requireSplit) {
+      return randomMinusSumWithSplit(sumParameters);
+    } else {
+      return randomMinusSumWithoutSplit(sumParameters);
+    }
+  } else {
+    throw new UnexpectedValueError(sumParameters.operator);
+  }
 }
 
 /* -------------------------------------------------------------------------
