@@ -432,14 +432,49 @@ export class MixedSumsGameIcon extends LitElement {
         };
         return this.renderV1(iconInfo);
       } else {
-        const iconInfo: IconInfoExampleSum = {
-          iconColor: variantInfo.iconColor,
-          sumDescriptions: variantInfo.sumTypes.flatMap(
-            sumType => sumType.sumDescriptions,
-          ),
-        };
-        return this.renderWithExampleSums(iconInfo);
+        if (!this.generic) {
+          const iconInfo: IconInfoExampleSum = {
+            iconColor: variantInfo.iconColor,
+            sumDescriptions: variantInfo.sumTypes.flatMap(
+              sumType => sumType.sumDescriptions,
+            ),
+          };
+          return this.renderWithExampleSums(iconInfo);
+        } else return this.renderGenericV2();
       }
+    }
+  }
+
+  renderGenericV2(): HTMLTemplateResult {
+    if (this.variant[0] === 'i') {
+      const backgroundColor = getColorInfo('cyan').mainColorCode;
+      const plusPosition = { x: 50, y: 35 };
+      const minusPosition = { x: 50, y: 75 };
+
+      return html`
+        <style>
+          :host {
+            --fill-color: ${backgroundColor};
+          }
+        </style>
+        <svg ViewBox="-5 -10 115 115">
+          ${this.renderRectangleWithCutCorners(0, -5, 105, 105, 12)}
+          <text class="operator active" x=${plusPosition.x} y=${plusPosition.y}>
+            ${operatorToSymbol('plus')}
+          </text>
+          <text
+            class="operator active"
+            x=${minusPosition.x}
+            y=${minusPosition.y}
+          >
+            ${operatorToSymbol('minus')}
+          </text>
+        </svg>
+      `;
+    } else {
+      throw new Error(
+        `Generic rendering for variant ${this.variant} not implemented`,
+      );
     }
   }
 
@@ -523,7 +558,6 @@ export class MixedSumsGameIcon extends LitElement {
   }
 
   renderV1(iconInfo: IconInfo): HTMLTemplateResult {
-    /** This will be the icon info when no variant is selected, to be used on the front page */
     let backgroundColor = getColorInfo(iconInfo.iconColor).mainColorCode;
     if (
       iconInfo.icon === 'multiplicationIcon' &&
