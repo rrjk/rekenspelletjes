@@ -36,6 +36,7 @@ const baseURLs: Partial<Record<string, URL>> = {
   AD: new URL('./GemengdeSommen.html', baseUrl),
   AE: new URL('./GemengdeSommen.html', baseUrl),
   AF: new URL('./GemengdeSommen.html', baseUrl),
+  AG: new URL('./GemengdeSommen.html', baseUrl),
   T: new URL('./KlikFotoOpGetallenlijn.html', baseUrl),
 };
 

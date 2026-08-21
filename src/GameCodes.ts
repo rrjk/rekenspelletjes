@@ -60,6 +60,10 @@ export const gameCodes: GameInfoType[] = [
     gameCode: 'AF',
     name: 'Sommen met tafels - delen en eventueel vermenigvuldigen',
   },
+  {
+    gameCode: 'AG',
+    name: 'Gemengde sommen - antwoorden intypen - gebaseerd op SumType',
+  },
 ];
 
 export function getGameDescription(gameCode: string): string {

@@ -1,9 +1,20 @@
 import {
+  ExtendedVariantInfo,
+  ExtendedVariantInfoV1,
+  isExtendedVariantInfoV1,
+} from './MixedSumsGameVariants';
+import {
   mixedSumIcon,
   mixedSumsGameVariants,
   getMixedSumsGameVariant,
   type MixedSumIcon,
 } from './MixedSumsGameVariants';
+
+function assertExtendedVariantInfoV1(
+  variant: ExtendedVariantInfo,
+): asserts variant is ExtendedVariantInfoV1 {
+  expect(isExtendedVariantInfoV1(variant)).toBe(true);
+}
 
 test('mixedSumIcon contains expected values', () => {
   expect(mixedSumIcon).toStrictEqual([
@@ -110,6 +121,7 @@ test('mixedSumsGameVariants has expected keys', () => {
 
 test('getMixedSumsGameVariant for aa', () => {
   const extendedVariant = getMixedSumsGameVariant('aa');
+  assertExtendedVariantInfoV1(extendedVariant);
   expect(extendedVariant.icon).toBe('puzzlePiece');
   expect(extendedVariant.iconColor).toBe('lavender');
   expect(extendedVariant.maxAnswer).toBe(10);
@@ -125,6 +137,7 @@ test('getMixedSumsGameVariant for aa', () => {
 
 test('getMixedSumsGameVariant for ab', () => {
   const extendedVariant = getMixedSumsGameVariant('ab');
+  assertExtendedVariantInfoV1(extendedVariant);
   expect(extendedVariant.icon).toBe('puzzlePiece');
   expect(extendedVariant.iconColor).toBe('red');
   expect(extendedVariant.maxAnswer).toBe(100);
@@ -137,6 +150,7 @@ test('getMixedSumsGameVariant for ab', () => {
 
 test('getMixedSumsGameVariant for ac', () => {
   const extendedVariant = getMixedSumsGameVariant('ac');
+  assertExtendedVariantInfoV1(extendedVariant);
   expect(extendedVariant.icon).toBe('puzzlePiece');
   expect(extendedVariant.iconColor).toBe('orange');
   expect(extendedVariant.maxAnswer).toBe(1000);
@@ -149,6 +163,7 @@ test('getMixedSumsGameVariant for ac', () => {
 
 test('getMixedSumsGameVariant for ad', () => {
   const extendedVariant = getMixedSumsGameVariant('ad');
+  assertExtendedVariantInfoV1(extendedVariant);
   expect(extendedVariant.icon).toBe('puzzlePiece');
   expect(extendedVariant.iconColor).toBe('yellow');
   expect(extendedVariant.maxAnswer).toBe(10);
@@ -164,6 +179,7 @@ test('getMixedSumsGameVariant for ad', () => {
 
 test('getMixedSumsGameVariant for ba', () => {
   const extendedVariant = getMixedSumsGameVariant('ba');
+  assertExtendedVariantInfoV1(extendedVariant);
   expect(extendedVariant.icon).toBe('rectangle');
   expect(extendedVariant.iconColor).toBe('lavender');
   expect(extendedVariant.maxAnswer).toBe(10);
@@ -176,6 +192,7 @@ test('getMixedSumsGameVariant for ba', () => {
 
 test('getMixedSumsGameVariant for af', () => {
   const extendedVariant = getMixedSumsGameVariant('af');
+  assertExtendedVariantInfoV1(extendedVariant);
   expect(extendedVariant.icon).toBe('puzzlePiece');
   expect(extendedVariant.iconColor).toBe('green');
   expect(extendedVariant.maxAnswer).toBe(100);
@@ -204,7 +221,7 @@ test('getMixedSumsGameVariant supports explicit table lists', () => {
   };
 
   const extendedVariant = getMixedSumsGameVariant('zz');
-
+  assertExtendedVariantInfoV1(extendedVariant);
   expect(extendedVariant.eligibleTables).toStrictEqual([2, 5, 7]);
   expect(extendedVariant.description).toBe(
     'Keer en gedeeld door sommen met de tafels van 2, 5 en 7, waarbij het antwoord ingetypt moet worden.',

@@ -1,13 +1,32 @@
 import { Color } from '../Colors';
-import { splitInContiguousRanges } from '../NumberHelperFunctions';
+import {
+  numberDigitsInNumber,
+  NumberRange,
+  splitInContiguousRanges,
+} from '../NumberHelperFunctions';
 import {
   MultiplicationOperator,
   AdditionOperator,
   Operator,
   operatorToDutch,
+  operatorToSymbol,
 } from '../Operator';
+import { AdditionSubstractionSumParameters } from '../SumCreationHelpersV2';
 import { UnexpectedValueError } from '../UnexpectedValueError';
 import { CapitalizeFirstLetter, joinWithEn } from '../Utils';
+
+function createSumString(
+  left: number,
+  operator: Operator,
+  right: number,
+  minDigitsLeft?: number,
+): string {
+  let nmbrSpacesLeft = 0;
+  if (minDigitsLeft !== undefined) {
+    nmbrSpacesLeft = minDigitsLeft - numberDigitsInNumber(left);
+  }
+  return `${'\u2007'.repeat(nmbrSpacesLeft)}${left}\u2009${operatorToSymbol(operator)}\u2009${right}`;
+}
 
 export const mixedSumIcon = [
   'rectangle',
@@ -34,26 +53,81 @@ type VariantTableInfo =
       tables: number[];
     };
 
-type VariantInfo<T extends Operator = Operator> = VariantBaseInfo<T> &
+type SumType = {
+  sumDescriptions: string[];
+} & AdditionSubstractionSumParameters;
+
+type VariantInfoV1<T extends Operator = Operator> = VariantBaseInfo<T> &
   VariantTableInfo;
+
+type VariantInfoV2 = {
+  includePuzzle: boolean;
+  iconColor: Color;
+  sumTypes: SumType[];
+};
+
+type VariantInfo<T extends Operator = Operator> =
+  | VariantInfoV1<T>
+  | VariantInfoV2;
+
+export function isVariantInfoV1(
+  variant: VariantInfo,
+): variant is VariantInfoV1 {
+  return 'operators' in variant;
+}
+
+export function isVariantInfoV2(
+  variant: VariantInfo,
+): variant is VariantInfoV2 {
+  return !('operators' in variant);
+}
 
 function isMultiplicationVariant(
   variant: VariantInfo,
 ): variant is VariantInfo<MultiplicationOperator> {
+  if (!('operators' in variant)) {
+    return false;
+  }
   return variant.operators.every(op => op === 'times' || op === 'divide');
 }
 
 function isAdditionVariant(
   variant: VariantInfo,
 ): variant is VariantInfo<AdditionOperator> {
+  if (!('operators' in variant)) {
+    return false;
+  }
   return variant.operators.every(op => op === 'plus' || op === 'minus');
 }
 
-export interface ExtendedVariantInfo extends VariantBaseInfo {
+export type ExtendedVariantInfoV1<T extends Operator = Operator> =
+  VariantBaseInfo<T> & {
+    icon: MixedSumIcon;
+    mainCode: string;
+    description: string;
+    eligibleTables: number[];
+  };
+
+export type ExtendedVariantInfoV2 = VariantInfoV2 & {
   icon: MixedSumIcon;
   mainCode: string;
   description: string;
-  eligibleTables: number[];
+};
+
+export type ExtendedVariantInfo<T extends Operator = Operator> =
+  | ExtendedVariantInfoV1<T>
+  | ExtendedVariantInfoV2;
+
+export function isExtendedVariantInfoV1(
+  variant: ExtendedVariantInfo,
+): variant is ExtendedVariantInfoV1 {
+  return 'operators' in variant;
+}
+
+export function isExtendedVariantInfoV2(
+  variant: ExtendedVariantInfo,
+): variant is ExtendedVariantInfoV2 {
+  return !('operators' in variant);
 }
 
 const defaultVariant: VariantInfo = {
@@ -64,7 +138,7 @@ const defaultVariant: VariantInfo = {
   operators: ['plus', 'minus'],
 };
 
-function createEligibleTables(variantInfo: VariantInfo): number[] {
+function createEligibleTables(variantInfo: VariantInfoV1): number[] {
   if (variantInfo.tables !== undefined) return [...variantInfo.tables];
 
   const eligibleTables: number[] = [];
@@ -74,6 +148,155 @@ function createEligibleTables(variantInfo: VariantInfo): number[] {
   return eligibleTables;
 }
 
+const sumType3p4: SumType = {
+  sumDescriptions: [createSumString(3, 'plus', 4)],
+  requireSplit: false,
+  operator: 'plus',
+  leftRange: { min: 0, max: 10 },
+  rightRange: { min: 0, max: 9 },
+  answerRange: { min: 0, max: 10 },
+};
+
+const sumType7m5: SumType = {
+  sumDescriptions: [createSumString(7, 'minus', 5)],
+  requireSplit: false,
+  operator: 'minus',
+  leftRange: { min: 0, max: 10 },
+  rightRange: { min: 0, max: 9 },
+  answerRange: { min: 0, max: 10 },
+};
+
+const sumType13p4: SumType = {
+  sumDescriptions: [createSumString(13, 'plus', 4)],
+  requireSplit: false,
+  operator: 'plus',
+  leftRange: { min: 10, max: 20 },
+  rightRange: { min: 0, max: 9 },
+  answerRange: { min: 10, max: 20 },
+};
+
+const sumType17m5: SumType = {
+  sumDescriptions: [createSumString(17, 'minus', 5)],
+  requireSplit: false,
+  operator: 'minus',
+  leftRange: { min: 10, max: 20 },
+  rightRange: { min: 0, max: 9 },
+  answerRange: { min: 10, max: 20 },
+};
+
+const sumType6p8: SumType = {
+  sumDescriptions: [createSumString(6, 'plus', 8)],
+  requireSplit: true,
+  operator: 'plus',
+  leftRange: { min: 0, max: 10 },
+  rightRange: { min: 0, max: 9 },
+  answerRange: { min: 10, max: 20 },
+};
+
+const sumType12m3: SumType = {
+  sumDescriptions: [createSumString(12, 'minus', 3)],
+  requireSplit: true,
+  operator: 'minus',
+  leftRange: { min: 10, max: 20 },
+  rightRange: { min: 0, max: 9 },
+  answerRange: { min: 0, max: 10 },
+};
+
+const sumType38p5: SumType = {
+  sumDescriptions: [createSumString(38, 'plus', 5)],
+  requireSplit: true,
+  operator: 'plus',
+  leftRange: { min: 10, max: 100 },
+  rightRange: { min: 0, max: 9 },
+  answerRange: { min: 10, max: 100 },
+};
+
+const sumType53m7: SumType = {
+  sumDescriptions: [createSumString(53, 'minus', 7)],
+  requireSplit: true,
+  operator: 'minus',
+  leftRange: { min: 10, max: 100 },
+  rightRange: { min: 0, max: 9 },
+  answerRange: { min: 0, max: 100 },
+};
+
+const sumType47p38: SumType = {
+  sumDescriptions: [createSumString(47, 'plus', 38)],
+  requireSplit: true,
+  operator: 'plus',
+  leftRange: { min: 10, max: 100 },
+  rightRange: { min: 10, max: 99 },
+  answerRange: { min: 0, max: 100 },
+};
+
+const sumType65m49: SumType = {
+  sumDescriptions: [createSumString(65, 'minus', 49)],
+  requireSplit: true,
+  operator: 'minus',
+  leftRange: { min: 0, max: 100 },
+  rightRange: { min: 10, max: 99 },
+  answerRange: { min: 0, max: 100 },
+};
+
+const sumType3p4a13p4: SumType = {
+  sumDescriptions: [
+    createSumString(3, 'plus', 4, 2),
+    createSumString(13, 'plus', 4, 2),
+  ],
+  requireSplit: false,
+  operator: 'plus',
+  leftRange: { min: 0, max: 20 },
+  rightRange: { min: 0, max: 9 },
+  answerRange: { min: 0, max: 20 },
+};
+
+const sumType3p4a43p4: SumType = {
+  sumDescriptions: [
+    createSumString(3, 'plus', 4, 2),
+    createSumString(43, 'plus', 4, 2),
+  ],
+  requireSplit: false,
+  operator: 'plus',
+  leftRange: { min: 0, max: 100 },
+  rightRange: { min: 0, max: 9 },
+  answerRange: { min: 0, max: 100 },
+};
+
+const sumType6p8a36p8: SumType = {
+  sumDescriptions: [
+    createSumString(6, 'plus', 8, 2),
+    createSumString(36, 'plus', 8, 2),
+  ],
+  requireSplit: true,
+  operator: 'plus',
+  leftRange: { min: 0, max: 100 },
+  rightRange: { min: 0, max: 9 },
+  answerRange: { min: 0, max: 100 },
+};
+
+const sumType7m5a17m5: SumType = {
+  sumDescriptions: [
+    createSumString(7, 'minus', 5, 2),
+    createSumString(17, 'minus', 5, 2),
+  ],
+  requireSplit: false,
+  operator: 'minus',
+  leftRange: { min: 0, max: 20 },
+  rightRange: { min: 0, max: 9 },
+  answerRange: { min: 0, max: 20 },
+};
+
+const sumType7m5a37m5: SumType = {
+  sumDescriptions: [
+    createSumString(7, 'minus', 5, 2),
+    createSumString(37, 'minus', 5, 2),
+  ],
+  requireSplit: false,
+  operator: 'minus',
+  leftRange: { min: 0, max: 100 },
+  rightRange: { min: 0, max: 9 },
+  answerRange: { min: 0, max: 100 },
+};
 export const mixedSumsGameVariants: Record<string, VariantInfo> = {
   aa: defaultVariant,
   ab: {
@@ -153,6 +376,21 @@ export const mixedSumsGameVariants: Record<string, VariantInfo> = {
     maxTable: 10,
     operators: ['minus'],
   },
+  am: {
+    includePuzzle: true,
+    iconColor: 'maroon',
+    maxAnswer: 100,
+    maxTable: 10,
+    operators: ['plus'],
+  },
+  an: {
+    includePuzzle: true,
+    iconColor: 'brown',
+    maxAnswer: 100,
+    maxTable: 10,
+    operators: ['minus'],
+  },
+
   ba: {
     includePuzzle: false,
     iconColor: 'lavender',
@@ -234,6 +472,20 @@ export const mixedSumsGameVariants: Record<string, VariantInfo> = {
     includePuzzle: false,
     iconColor: 'amberFlame',
     maxAnswer: 10,
+    maxTable: 10,
+    operators: ['minus'],
+  },
+  bm: {
+    includePuzzle: false,
+    iconColor: 'maroon',
+    maxAnswer: 100,
+    maxTable: 10,
+    operators: ['plus'],
+  },
+  bn: {
+    includePuzzle: false,
+    iconColor: 'brown',
+    maxAnswer: 100,
     maxTable: 10,
     operators: ['minus'],
   },
@@ -699,18 +951,126 @@ export const mixedSumsGameVariants: Record<string, VariantInfo> = {
     tables: [11, 12, 13, 14, 15, 16, 17, 18, 19],
     operators: ['divide', 'times'],
   },
+  ia: {
+    includePuzzle: false,
+    iconColor: 'red',
+    sumTypes: [sumType3p4],
+  },
+  ib: {
+    includePuzzle: false,
+    iconColor: 'orange',
+    sumTypes: [sumType7m5],
+  },
+  ic: {
+    includePuzzle: false,
+    iconColor: 'yellow',
+    sumTypes: [sumType3p4, sumType7m5],
+  },
+  id: {
+    includePuzzle: false,
+    iconColor: 'lime',
+    sumTypes: [sumType13p4],
+  },
+  ie: {
+    includePuzzle: false,
+    iconColor: 'green',
+    sumTypes: [sumType17m5],
+  },
+  if: {
+    includePuzzle: false,
+    iconColor: 'cyan',
+    sumTypes: [sumType13p4, sumType17m5],
+  },
+  ig: {
+    includePuzzle: false,
+    iconColor: 'olive',
+    sumTypes: [sumType6p8],
+  },
+  ih: {
+    includePuzzle: false,
+    iconColor: 'brown',
+    sumTypes: [sumType12m3],
+  },
+  ii: {
+    includePuzzle: false,
+    iconColor: 'maroon',
+    sumTypes: [sumType6p8, sumType12m3],
+  },
+  ij: {
+    includePuzzle: false,
+    iconColor: 'lavender',
+    sumTypes: [sumType38p5],
+  },
+  ik: {
+    includePuzzle: false,
+    iconColor: 'purple',
+    sumTypes: [sumType53m7],
+  },
+  il: {
+    includePuzzle: false,
+    iconColor: 'magenta',
+    sumTypes: [sumType38p5, sumType53m7],
+  },
+  im: {
+    includePuzzle: false,
+    iconColor: 'teal',
+    sumTypes: [sumType47p38],
+  },
+  in: {
+    includePuzzle: false,
+    iconColor: 'mint',
+    sumTypes: [sumType65m49],
+  },
+  io: {
+    includePuzzle: false,
+    iconColor: 'blue',
+    sumTypes: [sumType47p38, sumType65m49],
+  },
+  ja: {
+    includePuzzle: false,
+    iconColor: 'malachite',
+    sumTypes: [
+      sumType3p4a13p4,
+      { ...sumType6p8, sumDescriptions: [createSumString(6, 'plus', 8, 2)] },
+    ],
+  },
+  jb: {
+    includePuzzle: false,
+    iconColor: 'amberFlame',
+    sumTypes: [sumType3p4a43p4, sumType6p8a36p8],
+  },
+  jc: {
+    includePuzzle: false,
+    iconColor: 'fuchsiaFlame',
+    sumTypes: [
+      sumType7m5a17m5,
+      { ...sumType12m3, sumDescriptions: [createSumString(12, 'minus', 3, 2)] },
+    ],
+  },
+  jd: {
+    includePuzzle: false,
+    iconColor: 'brilliantAzure',
+    sumTypes: [
+      sumType7m5a37m5,
+      { ...sumType53m7, sumDescriptions: [createSumString(53, 'minus', 7, 2)] },
+    ],
+  },
 };
 
 function determineMainCode(variantInfo: VariantInfo): string {
-  if (variantInfo.maxTable && variantInfo.includePuzzle) {
-    return 'AC';
-  } else if (variantInfo.maxTable && !variantInfo.includePuzzle) {
-    return 'AD';
-  } else if (variantInfo.tables && variantInfo.operators.includes('divide')) {
-    return 'AF';
-  } else {
-    return 'AE';
-  }
+  if (isVariantInfoV1(variantInfo)) {
+    if (variantInfo.maxTable && variantInfo.includePuzzle) {
+      return 'AC';
+    } else if (variantInfo.maxTable && !variantInfo.includePuzzle) {
+      return 'AD';
+    } else if (variantInfo.tables && variantInfo.operators.includes('divide')) {
+      return 'AF';
+    } else {
+      return 'AE';
+    }
+  } else
+    // New style variant info with sumTypes
+    return 'AG';
 }
 
 export function createTableSetDescription(tables: number[]): string {
@@ -733,7 +1093,7 @@ export function createTableSetDescription(tables: number[]): string {
 }
 
 function createMultiplicationGameDescription(
-  variantInfo: VariantInfo<MultiplicationOperator>,
+  variantInfo: VariantInfoV1<MultiplicationOperator>,
 ): string {
   const operatorWords = variantInfo.operators.map(el => operatorToDutch(el));
   if (variantInfo.maxTable !== undefined) {
@@ -749,13 +1109,13 @@ function createMultiplicationGameDescription(
 }
 
 function createAdditionDescription(
-  variantInfo: VariantInfo<AdditionOperator>,
+  variantInfo: VariantInfoV1<AdditionOperator>,
 ): string {
   const operatorWords = variantInfo.operators.map(el => operatorToDutch(el));
   return `${joinWithEn(operatorWords)} sommen met antwoorden tot en met ${variantInfo.maxAnswer}, waarbij het antwoord ingetypt moet worden.`;
 }
 
-function createMixedOperatorsDescription(variantInfo: VariantInfo): string {
+function createMixedOperatorsDescription(variantInfo: VariantInfoV1): string {
   const operatorWords = variantInfo.operators.map(el => operatorToDutch(el));
   let description = `Gemengde ${joinWithEn(operatorWords)} sommen`;
   description += ` met antwoorden tot en met ${variantInfo.maxAnswer}`;
@@ -768,19 +1128,77 @@ function createMixedOperatorsDescription(variantInfo: VariantInfo): string {
   return description;
 }
 
+function createGameDescriptionV2(variantInfo: VariantInfoV2): string {
+  let ret = '';
+  let plus = false;
+  let minus = false;
+  let withSplit = false;
+  let withoutSplit = false;
+  const answerRange: NumberRange = { min: Infinity, max: -Infinity };
+  const rightOperandRange: NumberRange = { min: Infinity, max: -Infinity };
+
+  for (const sumType of variantInfo.sumTypes) {
+    if (sumType.operator === 'plus') {
+      plus = true;
+    } else if (sumType.operator === 'minus') {
+      minus = true;
+    }
+    if (sumType.requireSplit) {
+      withSplit = true;
+    } else {
+      withoutSplit = true;
+    }
+    answerRange.min = Math.min(answerRange.min, sumType.answerRange.min);
+    answerRange.max = Math.max(answerRange.max, sumType.answerRange.max);
+    rightOperandRange.min = Math.min(
+      rightOperandRange.min,
+      sumType.rightRange.min,
+    );
+    rightOperandRange.max = Math.max(
+      rightOperandRange.max,
+      sumType.rightRange.max,
+    );
+  }
+
+  if (plus && minus) {
+    ret = 'plus- en minsommen';
+  } else if (plus) {
+    ret = 'plussommen';
+  } else if (minus) {
+    ret = 'minsommen';
+  }
+
+  if (withSplit && withoutSplit) {
+    ret += ' met en zonder sprong over het tiental';
+  } else if (withSplit) {
+    ret += ' met sprong over het tiental';
+  } else if (withoutSplit) {
+    ret += ' zonder sprong over het tiental';
+  }
+
+  ret += `, antwoorden van ${answerRange.min} tot en met ${answerRange.max}`;
+  ret += `, en de rechterterm van ${rightOperandRange.min} tot en met ${rightOperandRange.max}.`;
+
+  return ret;
+}
+
 function createGameDescription(variantInfo: VariantInfo): string {
-  if (variantInfo.operators.length === 0) {
-    throw new Error('Variant must have at least one operator');
-  } else if (isMultiplicationVariant(variantInfo)) {
-    return createMultiplicationGameDescription(variantInfo);
-  } else if (isAdditionVariant(variantInfo)) {
-    return createAdditionDescription(variantInfo);
+  if (isVariantInfoV1(variantInfo)) {
+    if (variantInfo.operators.length === 0) {
+      throw new Error('Variant must have at least one operator');
+    } else if (isMultiplicationVariant(variantInfo)) {
+      return createMultiplicationGameDescription(variantInfo);
+    } else if (isAdditionVariant(variantInfo)) {
+      return createAdditionDescription(variantInfo);
+    } else {
+      return createMixedOperatorsDescription(variantInfo);
+    }
   } else {
-    return createMixedOperatorsDescription(variantInfo);
+    return createGameDescriptionV2(variantInfo);
   }
 }
 
-function determineIcon(variantInfo: VariantInfo): MixedSumIcon {
+function determineIcon(variantInfo: VariantInfoV1): MixedSumIcon {
   if (
     variantInfo.operators.includes('times') ||
     variantInfo.operators.includes('divide')
@@ -809,14 +1227,24 @@ export function getMixedSumsGameVariant(variant: string): ExtendedVariantInfo {
     throw new Error(`Unknown game variant: ${variant}`);
   }
 
-  return {
-    icon: determineIcon(variantInfo),
-    iconColor: variantInfo.iconColor,
-    maxAnswer: variantInfo.maxAnswer,
-    operators: variantInfo.operators,
-    includePuzzle: variantInfo.includePuzzle,
-    eligibleTables: createEligibleTables(variantInfo),
-    mainCode: determineMainCode(variantInfo),
-    description: CapitalizeFirstLetter(createGameDescription(variantInfo)),
-  };
+  if (isVariantInfoV1(variantInfo)) {
+    return {
+      icon: determineIcon(variantInfo),
+      iconColor: variantInfo.iconColor,
+      maxAnswer: variantInfo.maxAnswer,
+      operators: variantInfo.operators,
+      includePuzzle: variantInfo.includePuzzle,
+      eligibleTables: createEligibleTables(variantInfo),
+      mainCode: determineMainCode(variantInfo),
+      description: CapitalizeFirstLetter(createGameDescription(variantInfo)),
+    };
+  } else {
+    return {
+      ...variantInfo,
+      icon: 'multiplicationIcon',
+      iconColor: variantInfo.iconColor,
+      mainCode: determineMainCode(variantInfo),
+      description: CapitalizeFirstLetter(createGameDescriptionV2(variantInfo)),
+    };
+  }
 }

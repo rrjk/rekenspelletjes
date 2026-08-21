@@ -24,9 +24,16 @@ import '../DigitKeyboard';
 import { Operator, operators, operatorToDutch } from '../Operator';
 import { UnexpectedValueError } from '../UnexpectedValueError';
 import { classMap } from 'lit/directives/class-map.js';
-import { joinWithEn } from '../Utils';
+import { DecapitalizeFirstLetter, joinWithEn } from '../Utils';
 
-import { getMixedSumsGameVariant } from './MixedSumsGameVariants';
+import {
+  getMixedSumsGameVariant,
+  isExtendedVariantInfoV1,
+} from './MixedSumsGameVariants';
+import {
+  AdditionSubstractionSumParameters,
+  randomAdditionSubstractionSum,
+} from '../SumCreationHelpersV2';
 
 const allEnabledDigits = [
   false,
@@ -79,6 +86,9 @@ export class MixedSumsGameApp extends TimeLimitedGame2 {
   private eligibleTables: number[] = []; // We use an array as we need to often select a element randomly and hence need direct access
   private maximumNumber = 10;
   private gameText = '';
+
+  private sumParameters: AdditionSubstractionSumParameters[] | undefined =
+    undefined;
 
   private lastAnswerUsed = 0;
   private lastOperatorUsed: Operator = 'times';
@@ -145,26 +155,47 @@ export class MixedSumsGameApp extends TimeLimitedGame2 {
 
   /** Determine maximum number of digits for operand 1 */
   determineMaxDigitsAnswer() {
-    this.maxDigitsAnswer = -1;
-    if (this.eligibleOperators.includes('divide')) {
-      this.maxDigitsAnswer = Math.max(this.maxDigitsAnswer, 2);
-    }
-    if (this.eligibleOperators.includes('times')) {
-      const maxTable = this.eligibleTables.reduce((max, currentValue) =>
-        Math.max(max, currentValue),
+    if (this.sumParameters === undefined) {
+      this.maxDigitsAnswer = -1;
+      if (this.eligibleOperators.includes('divide')) {
+        this.maxDigitsAnswer = Math.max(this.maxDigitsAnswer, 2);
+      }
+      if (this.eligibleOperators.includes('times')) {
+        const maxTable = this.eligibleTables.reduce((max, currentValue) =>
+          Math.max(max, currentValue),
+        );
+        this.maxDigitsAnswer = Math.max(
+          this.maxDigitsAnswer,
+          numberDigitsInNumber(10 * maxTable),
+        );
+      }
+      if (
+        this.eligibleOperators.includes('plus') ||
+        this.eligibleOperators.includes('minus')
+      ) {
+        this.maxDigitsAnswer = Math.max(
+          this.maxDigitsAnswer,
+          numberDigitsInNumber(this.maximumNumber),
+        );
+      }
+    } else {
+      this.maxDigitsAnswer = numberDigitsInNumber(
+        this.sumParameters.reduce(
+          (max, sumType) => Math.max(max, sumType.answerRange.max),
+          0,
+        ),
       );
-      this.maxDigitsAnswer = Math.max(
-        this.maxDigitsAnswer,
-        numberDigitsInNumber(10 * maxTable),
+      this.maxDigitsOperand1 = numberDigitsInNumber(
+        this.sumParameters.reduce(
+          (max, sumType) => Math.max(max, sumType.leftRange.max),
+          0,
+        ),
       );
-    }
-    if (
-      this.eligibleOperators.includes('plus') ||
-      this.eligibleOperators.includes('minus')
-    ) {
-      this.maxDigitsAnswer = Math.max(
-        this.maxDigitsAnswer,
-        numberDigitsInNumber(this.maximumNumber),
+      this.maxDigitsOperand2 = numberDigitsInNumber(
+        this.sumParameters.reduce(
+          (max, sumType) => Math.max(max, sumType.rightRange.max),
+          0,
+        ),
       );
     }
   }
@@ -177,16 +208,18 @@ export class MixedSumsGameApp extends TimeLimitedGame2 {
       );
     // Empty string is handled by getMixedSumsGameVariant's fallback to defaultVariant
     const extendedVariantInfo = getMixedSumsGameVariant(variant);
+    if (isExtendedVariantInfoV1(extendedVariantInfo)) {
+      this.eligibleTables = extendedVariantInfo.eligibleTables;
 
-    this.eligibleTables = extendedVariantInfo.eligibleTables;
-
-    this.maximumNumber = extendedVariantInfo.maxAnswer;
-    this.eligibleOperators = [...extendedVariantInfo.operators];
+      this.maximumNumber = extendedVariantInfo.maxAnswer;
+      this.eligibleOperators = [...extendedVariantInfo.operators];
+    } else {
+      this.sumParameters = extendedVariantInfo.sumTypes;
+    }
     this.gameLogger.setMainCode(extendedVariantInfo.mainCode);
     this.gameLogger.setSubCode(variant);
     this.includePuzzle = extendedVariantInfo.includePuzzle;
     this.gameText = extendedVariantInfo.description;
-
     this.determineMaxDigitsOperand1();
     this.determineMaxDigitsOperand2();
     this.determineMaxDigitsAnswer();
@@ -330,15 +363,33 @@ export class MixedSumsGameApp extends TimeLimitedGame2 {
     return pickedOperator;
   }
 
+  determineSumAdditionSubtraction() {
+    if (this.sumParameters === undefined) {
+      throw new Error('Internal SW Error, sumParameters is undefined');
+    }
+    const randomSumType = randomFromSet(this.sumParameters);
+    const sum = randomAdditionSubstractionSum(randomSumType);
+    this.operator = sum.operator;
+    this.operand1 = sum.leftOperand;
+    this.operand2 = sum.rightOperand;
+    this.answer = sum.answer;
+  }
+
+  determineSumLegacy() {
+    if (this.operator === 'plus') this.determineOperandsForPlus();
+    else if (this.operator === 'minus') this.determineOperandsForMinus();
+    else if (this.operator === 'times') this.determineOperandsForTimes();
+    else if (this.operator === 'divide') this.determineOperandsForDivision();
+    else throw new UnexpectedValueError(this.operator);
+  }
+
   newRound() {
     this.operator = this.determineOperator();
     let tryCounter = 0;
     while (this.answer === this.lastAnswerUsed && tryCounter < 10) {
-      if (this.operator === 'plus') this.determineOperandsForPlus();
-      else if (this.operator === 'minus') this.determineOperandsForMinus();
-      else if (this.operator === 'times') this.determineOperandsForTimes();
-      else if (this.operator === 'divide') this.determineOperandsForDivision();
-      else throw new UnexpectedValueError(this.operator);
+      if (this.sumParameters !== undefined)
+        this.determineSumAdditionSubtraction();
+      else this.determineSumLegacy();
       tryCounter += 1;
     }
     this.lastAnswerUsed = this.answer;
@@ -375,29 +426,38 @@ export class MixedSumsGameApp extends TimeLimitedGame2 {
       else timeDescription = `${this.gameTime} seconden`;
     }
 
-    let plusMinusDescription: HTMLTemplateResult | typeof nothing = nothing;
-    if (
-      this.eligibleOperators.includes('plus') ||
-      this.eligibleOperators.includes('minus')
-    )
-      plusMinusDescription = html`<p>
-        Het maximale antwoord was ${this.maximumNumber}.
-      </p>`;
-
-    let timesDivideDescription: HTMLTemplateResult | typeof nothing = nothing;
-    if (
-      this.eligibleOperators.includes('times') ||
-      this.eligibleOperators.includes('divide')
-    )
-      timesDivideDescription = html`<p>
-        De grootste tafel was ${this.maxTable}.
-      </p>`;
-
-    return html`<p>
+    if (this.sumParameters !== undefined) {
+      return html`<p>
         Je hebt ${timeDescription} gespeeld met
-        ${joinWithEn(this.eligibleOperators.map(elm => operatorToDutch(elm)))}.
-      </p>
-      ${plusMinusDescription} ${timesDivideDescription}`;
+        ${DecapitalizeFirstLetter(this.gameText)}.
+      </p>`;
+    } else {
+      let plusMinusDescription: HTMLTemplateResult | typeof nothing = nothing;
+      if (
+        this.eligibleOperators.includes('plus') ||
+        this.eligibleOperators.includes('minus')
+      )
+        plusMinusDescription = html`<p>
+          Het maximale antwoord was ${this.maximumNumber}.
+        </p>`;
+
+      let timesDivideDescription: HTMLTemplateResult | typeof nothing = nothing;
+      if (
+        this.eligibleOperators.includes('times') ||
+        this.eligibleOperators.includes('divide')
+      )
+        timesDivideDescription = html`<p>
+          De grootste tafel was ${this.maxTable}.
+        </p>`;
+
+      return html`<p>
+          Je hebt ${timeDescription} gespeeld met
+          ${joinWithEn(
+            this.eligibleOperators.map(elm => operatorToDutch(elm)),
+          )}.
+        </p>
+        ${plusMinusDescription} ${timesDivideDescription}`;
+    }
   }
 
   static get styles(): CSSResultArray {
