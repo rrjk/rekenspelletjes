@@ -52,7 +52,7 @@ export class SumTypeIndexApp3p4 extends SumTypeIndexApp<Game> {
           rows: [
             {
               game: 'mixed-sums',
-              variant: 'bk',
+              variant: 'ia',
               timeCodes: ['a', 'b'],
             },
           ],

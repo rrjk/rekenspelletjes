@@ -47,6 +47,16 @@ export class SumTypeIndexApp17m5 extends SumTypeIndexApp<Game> {
             },
           ],
         },
+        {
+          title: 'Antwoord typen',
+          rows: [
+            {
+              game: 'mixed-sums',
+              variant: 'ie',
+              timeCodes: ['a', 'b'],
+            },
+          ],
+        },
       ],
     };
   }
