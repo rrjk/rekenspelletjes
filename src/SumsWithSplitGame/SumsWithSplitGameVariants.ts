@@ -11,7 +11,7 @@ interface SumsWithSplitGameVariantInfo {
 
 // Default: aa
 const defaultVariant: SumsWithSplitGameVariantInfo = {
-  iconColor: 'yellow',
+  iconColor: 'olive',
   game: 'split1Till20',
   operators: ['plus'],
   showSplits: 'showSplits',
@@ -25,13 +25,13 @@ export const sumsWithSplitGameVariants: Record<
   // Section A: Tot 20 met splitsen
   aa: defaultVariant,
   ab: {
-    iconColor: 'orange',
+    iconColor: 'brown',
     game: 'split1Till20',
     operators: ['minus'],
     showSplits: 'showSplits',
   },
   ac: {
-    iconColor: 'red',
+    iconColor: 'maroon',
     game: 'split1Till20',
     operators: ['plus', 'minus'],
     showSplits: 'showSplits',
@@ -59,19 +59,19 @@ export const sumsWithSplitGameVariants: Record<
 
   // Section B: Tot 100 (enkel splitsen) met splitsen
   ba: {
-    iconColor: 'pink',
+    iconColor: 'lavender',
     game: 'split1Till100',
     operators: ['plus'],
     showSplits: 'showSplits',
   },
   bb: {
-    iconColor: 'apricot',
+    iconColor: 'purple',
     game: 'split1Till100',
     operators: ['minus'],
     showSplits: 'showSplits',
   },
   bc: {
-    iconColor: 'beige',
+    iconColor: 'magenta',
     game: 'split1Till100',
     operators: ['plus', 'minus'],
     showSplits: 'showSplits',
@@ -99,19 +99,19 @@ export const sumsWithSplitGameVariants: Record<
 
   // Section C: Tot 100 (dubbel splitsen) met splitsen
   ca: {
-    iconColor: 'lime',
+    iconColor: 'teal',
     game: 'split2Till100',
     operators: ['plus'],
     showSplits: 'showSplits',
   },
   cb: {
-    iconColor: 'green',
+    iconColor: 'mint',
     game: 'split2Till100',
     operators: ['minus'],
     showSplits: 'showSplits',
   },
   cc: {
-    iconColor: 'cyan',
+    iconColor: 'blue',
     game: 'split2Till100',
     operators: ['plus', 'minus'],
     showSplits: 'showSplits',
