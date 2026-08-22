@@ -33,107 +33,168 @@ export class SumTypeIndexApp631b663afef2465682791deeb397e071 extends GoalCardInd
           title: 'Rekenspelletjes',
           rows: [
             {
-              game: 'split-game',
-              variant: 'bc',
-              timeCode: 'a',
+              entries: [
+                {
+                  game: 'split-game',
+                  variant: 'bc',
+                  timeCode: 'a',
+                },
+              ],
             },
             {
-              game: 'addition-substraction-within-decade',
-              variant: 'aa',
-              timeCode: 'a',
+              entries: [
+                {
+                  game: 'addition-substraction-within-decade',
+                  variant: 'aa',
+                  timeCode: 'a',
+                },
+                {
+                  game: 'mixed-sums',
+                  variant: 'ia',
+                  timeCode: 'a',
+                },
+              ],
             },
             {
-              game: 'mixed-sums',
-              variant: 'ia',
-              timeCode: 'a',
-            },
-
-            {
-              game: 'addition-substraction-within-decade',
-              variant: 'ba',
-              timeCode: 'a',
-            },
-            {
-              game: 'mixed-sums',
-              variant: 'id',
-              timeCode: 'a',
+              entries: [
+                {
+                  game: 'addition-substraction-within-decade',
+                  variant: 'ba',
+                  timeCode: 'a',
+                },
+                {
+                  game: 'mixed-sums',
+                  variant: 'id',
+                  timeCode: 'a',
+                },
+              ],
             },
             {
-              game: 'sums-with-split',
-              variant: 'aa',
-              timeCode: 'a',
+              entries: [
+                {
+                  game: 'sums-with-split',
+                  variant: 'aa',
+                  timeCode: 'a',
+                },
+                {
+                  game: 'mixed-sums',
+                  variant: 'ig',
+                  timeCode: 'a',
+                },
+              ],
             },
             {
-              game: 'mixed-sums',
-              variant: 'ig',
-              timeCode: 'a',
+              entries: [
+                {
+                  game: 'mixed-sums',
+                  variant: 'ja',
+                  timeCode: 'a',
+                },
+              ],
             },
             {
-              game: 'mixed-sums',
-              variant: 'ja',
-              timeCode: 'a',
+              entries: [
+                {
+                  game: 'mixed-sums',
+                  variant: 'jb',
+                  timeCode: 'a',
+                },
+              ],
             },
             {
-              game: 'mixed-sums',
-              variant: 'jb',
-              timeCode: 'a',
+              entries: [
+                {
+                  game: 'addition-substraction-within-decade',
+                  variant: 'ab',
+                  timeCode: 'a',
+                },
+                {
+                  game: 'mixed-sums',
+                  variant: 'ib',
+                  timeCode: 'a',
+                },
+              ],
             },
             {
-              game: 'addition-substraction-within-decade',
-              variant: 'ab',
-              timeCode: 'a',
+              entries: [
+                {
+                  game: 'addition-substraction-within-decade',
+                  variant: 'bb',
+                  timeCode: 'a',
+                },
+                {
+                  game: 'mixed-sums',
+                  variant: 'ie',
+                  timeCode: 'a',
+                },
+              ],
             },
             {
-              game: 'mixed-sums',
-              variant: 'ib',
-              timeCode: 'a',
+              entries: [
+                {
+                  game: 'sums-with-split',
+                  variant: 'ab',
+                  timeCode: 'a',
+                },
+                {
+                  game: 'mixed-sums',
+                  variant: 'ih',
+                  timeCode: 'a',
+                },
+              ],
             },
             {
-              game: 'addition-substraction-within-decade',
-              variant: 'bb',
-              timeCode: 'a',
+              entries: [
+                {
+                  game: 'mixed-sums',
+                  variant: 'jc',
+                  timeCode: 'a',
+                },
+              ],
             },
             {
-              game: 'mixed-sums',
-              variant: 'ie',
-              timeCode: 'a',
+              entries: [
+                {
+                  game: 'mixed-sums',
+                  variant: 'jd',
+                  timeCode: 'a',
+                },
+              ],
             },
             {
-              game: 'sums-with-split',
-              variant: 'ab',
-              timeCode: 'a',
-            },
-            {
-              game: 'mixed-sums',
-              variant: 'ih',
-              timeCode: 'a',
-            },
-            {
-              game: 'mixed-sums',
-              variant: 'jc',
-              timeCode: 'a',
-            },
-            {
-              game: 'mixed-sums',
-              variant: 'jd',
-              timeCode: 'a',
-            },
-
-            {
-              game: 'balloon-game',
-              variant: 'ak',
-              timeCode: 'b',
-            },
-            {
-              game: 'mixed-sums',
-              variant: 'ck',
-              timeCode: 'b',
+              entries: [
+                {
+                  game: 'balloon-game',
+                  variant: 'ak',
+                  timeCode: 'b',
+                },
+                {
+                  game: 'mixed-sums',
+                  variant: 'ck',
+                  timeCode: 'b',
+                },
+              ],
             },
           ],
         },
       ],
     };
   }
+  /*            
+           
+
+
+
+
+
+
+ 
+
+
+          ],
+        },
+      ],
+    };*/
 
   iconFunctions: Record<Game, RenderGameIconFunction> = {
     'addition-substraction-within-decade':
