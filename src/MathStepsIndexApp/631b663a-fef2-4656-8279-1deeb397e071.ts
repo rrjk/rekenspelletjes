@@ -1,6 +1,6 @@
 import { customElement } from 'lit/decorators.js';
 
-import { SumTypeIndexApp, IndexPageType } from './sumTypeIndexApp';
+import { type IndexPageType, GoalCardIndexApp } from './GoalCardIndexApp';
 
 import { renderMixedSumsGameHourglassGameIcon } from '../MixedSumsGame/MixedSumsHourglassGameIcon';
 import { renderAdditionSubstractionWithinDecadeGameHourglassGameIcon } from '../AdditionSubstractionWithinDecadeGame/AdditionSubstractionWithinDecadeGameHourglassGameIcon';
@@ -21,9 +21,9 @@ const game = [
 export type Game = (typeof game)[number];
 
 @customElement('sumtype-index-app-631b663a-fef2-4656-8279-1deeb397e071')
-export class SumTypeIndexApp631b663afef2465682791deeb397e071 extends SumTypeIndexApp<Game> {
+export class SumTypeIndexApp631b663afef2465682791deeb397e071 extends GoalCardIndexApp<Game> {
   get pageTitle(): string {
-    return `Doelenkaart Silvester Bernadette  groep 6`;
+    return `Doelenkaart Silvester-Bernadette Bovenbouw`;
   }
 
   get sections(): IndexPageType<Game> {
@@ -35,82 +35,99 @@ export class SumTypeIndexApp631b663afef2465682791deeb397e071 extends SumTypeInde
             {
               game: 'split-game',
               variant: 'bc',
-              timeCodes: ['a'],
+              timeCode: 'a',
             },
             {
               game: 'addition-substraction-within-decade',
               variant: 'aa',
-              timeCodes: ['a'],
+              timeCode: 'a',
             },
             {
-              game: 'addition-substraction-within-decade',
-              variant: 'ab',
-              timeCodes: ['a'],
+              game: 'mixed-sums',
+              variant: 'ia',
+              timeCode: 'a',
             },
-            {
-              game: 'addition-substraction-within-decade',
-              variant: 'ac',
-              timeCodes: ['a'],
-            },
+
             {
               game: 'addition-substraction-within-decade',
               variant: 'ba',
-              timeCodes: ['a'],
+              timeCode: 'a',
             },
             {
-              game: 'addition-substraction-within-decade',
-              variant: 'bb',
-              timeCodes: ['a'],
-            },
-            {
-              game: 'addition-substraction-within-decade',
-              variant: 'bc',
-              timeCodes: ['a'],
+              game: 'mixed-sums',
+              variant: 'id',
+              timeCode: 'a',
             },
             {
               game: 'sums-with-split',
               variant: 'aa',
-              timeCodes: ['a'],
+              timeCode: 'a',
             },
             {
-              game: 'sums-with-split',
-              variant: 'ab',
-              timeCodes: ['a'],
-            },
-            {
-              game: 'sums-with-split',
-              variant: 'ac',
-              timeCodes: ['a'],
+              game: 'mixed-sums',
+              variant: 'ig',
+              timeCode: 'a',
             },
             {
               game: 'mixed-sums',
               variant: 'ja',
-              timeCodes: ['a'],
+              timeCode: 'a',
             },
             {
               game: 'mixed-sums',
               variant: 'jb',
-              timeCodes: ['a'],
+              timeCode: 'a',
+            },
+            {
+              game: 'addition-substraction-within-decade',
+              variant: 'ab',
+              timeCode: 'a',
+            },
+            {
+              game: 'mixed-sums',
+              variant: 'ib',
+              timeCode: 'a',
+            },
+            {
+              game: 'addition-substraction-within-decade',
+              variant: 'bb',
+              timeCode: 'a',
+            },
+            {
+              game: 'mixed-sums',
+              variant: 'ie',
+              timeCode: 'a',
+            },
+            {
+              game: 'sums-with-split',
+              variant: 'ab',
+              timeCode: 'a',
+            },
+            {
+              game: 'mixed-sums',
+              variant: 'ih',
+              timeCode: 'a',
             },
             {
               game: 'mixed-sums',
               variant: 'jc',
-              timeCodes: ['a'],
+              timeCode: 'a',
             },
             {
               game: 'mixed-sums',
               variant: 'jd',
-              timeCodes: ['a'],
+              timeCode: 'a',
             },
+
             {
               game: 'balloon-game',
               variant: 'ak',
-              timeCodes: ['a'],
+              timeCode: 'b',
             },
             {
               game: 'mixed-sums',
               variant: 'ck',
-              timeCodes: ['a'],
+              timeCode: 'b',
             },
           ],
         },
