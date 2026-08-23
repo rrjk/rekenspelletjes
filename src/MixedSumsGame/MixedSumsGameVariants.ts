@@ -184,6 +184,24 @@ const sumType17m5: SumType = {
   answerRange: { min: 10, max: 20 },
 };
 
+const sumType43p4: SumType = {
+  sumDescriptions: [createSumString(43, 'plus', 4)],
+  requireSplit: false,
+  operator: 'plus',
+  leftRange: { min: 10, max: 99 },
+  rightRange: { min: 0, max: 9 },
+  answerRange: { min: 0, max: 100 },
+};
+
+const sumType37m5: SumType = {
+  sumDescriptions: [createSumString(37, 'minus', 5)],
+  requireSplit: false,
+  operator: 'minus',
+  leftRange: { min: 10, max: 99 },
+  rightRange: { min: 0, max: 9 },
+  answerRange: { min: 0, max: 100 },
+};
+
 const sumType6p8: SumType = {
   sumDescriptions: [createSumString(6, 'plus', 8)],
   requireSplit: true,
@@ -202,8 +220,8 @@ const sumType12m3: SumType = {
   answerRange: { min: 0, max: 10 },
 };
 
-const sumType38p5: SumType = {
-  sumDescriptions: [createSumString(38, 'plus', 5)],
+const sumType36p8: SumType = {
+  sumDescriptions: [createSumString(36, 'plus', 8)],
   requireSplit: true,
   operator: 'plus',
   leftRange: { min: 10, max: 100 },
@@ -211,8 +229,8 @@ const sumType38p5: SumType = {
   answerRange: { min: 10, max: 100 },
 };
 
-const sumType53m7: SumType = {
-  sumDescriptions: [createSumString(53, 'minus', 7)],
+const sumType52m3: SumType = {
+  sumDescriptions: [createSumString(52, 'minus', 3)],
   requireSplit: true,
   operator: 'minus',
   leftRange: { min: 10, max: 100 },
@@ -999,17 +1017,17 @@ export const mixedSumsGameVariants: Record<string, VariantInfo> = {
   ij: {
     includePuzzle: false,
     iconColor: 'lavender',
-    sumTypes: [sumType38p5],
+    sumTypes: [sumType36p8],
   },
   ik: {
     includePuzzle: false,
     iconColor: 'purple',
-    sumTypes: [sumType53m7],
+    sumTypes: [sumType52m3],
   },
   il: {
     includePuzzle: false,
     iconColor: 'magenta',
-    sumTypes: [sumType38p5, sumType53m7],
+    sumTypes: [sumType36p8, sumType52m3],
   },
   im: {
     includePuzzle: false,
@@ -1025,6 +1043,21 @@ export const mixedSumsGameVariants: Record<string, VariantInfo> = {
     includePuzzle: false,
     iconColor: 'blue',
     sumTypes: [sumType47p38, sumType65m49],
+  },
+  ip: {
+    includePuzzle: false,
+    iconColor: 'pink',
+    sumTypes: [sumType43p4],
+  },
+  iq: {
+    includePuzzle: false,
+    iconColor: 'apricot',
+    sumTypes: [sumType37m5],
+  },
+  ir: {
+    includePuzzle: false,
+    iconColor: 'beige',
+    sumTypes: [sumType43p4, sumType37m5],
   },
   ja: {
     includePuzzle: false,
@@ -1052,7 +1085,7 @@ export const mixedSumsGameVariants: Record<string, VariantInfo> = {
     iconColor: 'brilliantAzure',
     sumTypes: [
       sumType7m5a37m5,
-      { ...sumType53m7, sumDescriptions: [createSumString(53, 'minus', 7, 2)] },
+      { ...sumType52m3, sumDescriptions: [createSumString(52, 'minus', 3, 2)] },
     ],
   },
 };

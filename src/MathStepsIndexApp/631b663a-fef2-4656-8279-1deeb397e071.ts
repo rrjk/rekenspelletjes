@@ -78,6 +78,20 @@ export class SumTypeIndexApp631b663afef2465682791deeb397e071 extends GoalCardInd
             {
               entries: [
                 {
+                  game: 'addition-substraction-within-decade',
+                  variant: 'ca',
+                  timeCode: 'a',
+                },
+                {
+                  game: 'mixed-sums',
+                  variant: 'ip',
+                  timeCode: 'a',
+                },
+              ],
+            },
+            {
+              entries: [
+                {
                   game: 'sums-with-split',
                   variant: 'aa',
                   timeCode: 'a',
@@ -85,6 +99,20 @@ export class SumTypeIndexApp631b663afef2465682791deeb397e071 extends GoalCardInd
                 {
                   game: 'mixed-sums',
                   variant: 'ig',
+                  timeCode: 'a',
+                },
+              ],
+            },
+            {
+              entries: [
+                {
+                  game: 'sums-with-split',
+                  variant: 'ba',
+                  timeCode: 'a',
+                },
+                {
+                  game: 'mixed-sums',
+                  variant: 'ij',
                   timeCode: 'a',
                 },
               ],
@@ -138,6 +166,20 @@ export class SumTypeIndexApp631b663afef2465682791deeb397e071 extends GoalCardInd
             {
               entries: [
                 {
+                  game: 'addition-substraction-within-decade',
+                  variant: 'cb',
+                  timeCode: 'a',
+                },
+                {
+                  game: 'mixed-sums',
+                  variant: 'iq',
+                  timeCode: 'a',
+                },
+              ],
+            },
+            {
+              entries: [
+                {
                   game: 'sums-with-split',
                   variant: 'ab',
                   timeCode: 'a',
@@ -145,6 +187,20 @@ export class SumTypeIndexApp631b663afef2465682791deeb397e071 extends GoalCardInd
                 {
                   game: 'mixed-sums',
                   variant: 'ih',
+                  timeCode: 'a',
+                },
+              ],
+            },
+            {
+              entries: [
+                {
+                  game: 'sums-with-split',
+                  variant: 'bb',
+                  timeCode: 'a',
+                },
+                {
+                  game: 'mixed-sums',
+                  variant: 'ik',
                   timeCode: 'a',
                 },
               ],

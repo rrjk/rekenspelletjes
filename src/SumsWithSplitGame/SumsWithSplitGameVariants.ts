@@ -163,8 +163,8 @@ function getExampleSums(variantInfo: SumsWithSplitGameVariantInfo): {
     plusExample = '6+8';
     minusExample = '12−3';
   } else if (variantInfo.game === 'split1Till100') {
-    plusExample = '38+5';
-    minusExample = '53−7';
+    plusExample = '36+8';
+    minusExample = '52−3';
   } else {
     plusExample = '47+38';
     minusExample = '65−49';
