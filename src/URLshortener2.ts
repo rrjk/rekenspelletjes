@@ -58,4 +58,5 @@ if (key) {
     if (time !== undefined) newUrl.searchParams.append('time', `${time}`);
   }
 }
-window.location.href = newUrl.href;
+//window.location.href = newUrl.href;
+window.location.replace(newUrl.href);

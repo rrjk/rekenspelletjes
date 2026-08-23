@@ -8,6 +8,7 @@ import { RenderGameIconFunction } from '../RenderGameIconFunction';
 import { renderSplitBalloonGameHourglassGameIcon } from '../SplitBalloonGame/SplitBalloonGameHourglassGameIcon';
 import { renderSumsWithSplitGameHourglassGameIcon } from '../SumsWithSplitGame/SumsWithSplitGameHourglassGameIcon';
 import { renderMultiplicationTablesBalloonHourglassGameIcon } from '../MultiplicationTablesBalloonGame/MultiplicationTablesBalloonHourglassGameIcon';
+import { storeMenuPage } from '../NavigationHelper';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const game = [
@@ -22,6 +23,11 @@ export type Game = (typeof game)[number];
 
 @customElement('sumtype-index-app-631b663a-fef2-4656-8279-1deeb397e071')
 export class SumTypeIndexApp631b663afef2465682791deeb397e071 extends GoalCardIndexApp<Game> {
+  constructor() {
+    super();
+    storeMenuPage();
+  }
+
   get pageTitle(): string {
     return `Doelenkaart Silvester-Bernadette Bovenbouw`;
   }
@@ -180,21 +186,6 @@ export class SumTypeIndexApp631b663afef2465682791deeb397e071 extends GoalCardInd
       ],
     };
   }
-  /*            
-           
-
-
-
-
-
-
- 
-
-
-          ],
-        },
-      ],
-    };*/
 
   iconFunctions: Record<Game, RenderGameIconFunction> = {
     'addition-substraction-within-decade':
