@@ -261,6 +261,20 @@ export class SumTypeIndexApp631b663afef2465682791deeb397e071 extends GoalCardInd
                 {
                   game: 'balloon-game',
                   variant: 'ak',
+                  timeCode: 'a',
+                },
+                {
+                  game: 'mixed-sums',
+                  variant: 'ck',
+                  timeCode: 'a',
+                },
+              ],
+            },
+            {
+              entries: [
+                {
+                  game: 'balloon-game',
+                  variant: 'ak',
                   timeCode: 'b',
                 },
                 {
