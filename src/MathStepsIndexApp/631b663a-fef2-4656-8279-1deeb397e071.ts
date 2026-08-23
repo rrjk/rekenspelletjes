@@ -36,7 +36,7 @@ export class SumTypeIndexApp631b663afef2465682791deeb397e071 extends GoalCardInd
     return {
       defaultPage: [
         {
-          title: 'Rekenspelletjes',
+          title: 'Splitsingen',
           rows: [
             {
               entries: [
@@ -47,6 +47,11 @@ export class SumTypeIndexApp631b663afef2465682791deeb397e071 extends GoalCardInd
                 },
               ],
             },
+          ],
+        },
+        {
+          title: 'Plussommen',
+          rows: [
             {
               entries: [
                 {
@@ -138,6 +143,20 @@ export class SumTypeIndexApp631b663afef2465682791deeb397e071 extends GoalCardInd
             {
               entries: [
                 {
+                  game: 'mixed-sums',
+                  variant: 'jb',
+                  timeCode: 'b',
+                },
+              ],
+            },
+          ],
+        },
+        {
+          title: 'Minsommen',
+          rows: [
+            {
+              entries: [
+                {
                   game: 'addition-substraction-within-decade',
                   variant: 'ab',
                   timeCode: 'a',
@@ -223,6 +242,20 @@ export class SumTypeIndexApp631b663afef2465682791deeb397e071 extends GoalCardInd
                 },
               ],
             },
+            {
+              entries: [
+                {
+                  game: 'mixed-sums',
+                  variant: 'jd',
+                  timeCode: 'b',
+                },
+              ],
+            },
+          ],
+        },
+        {
+          title: 'Keersommen',
+          rows: [
             {
               entries: [
                 {
