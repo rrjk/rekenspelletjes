@@ -7,14 +7,25 @@
       content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     />
     <title>Voorbeeld doelenkaarten</title>
+    <style>
+      .buttonTable {
+        position: relative;
+        display: grid;
+        gap: 10px 10px;
+        flex-wrap: wrap;
+        width: 450px;
+      }
+    </style>
   </head>
   <body>
-    <ul>
-      <li>
-        <a href="631b663a-fef2-4656-8279-1deeb397e071.html"
-          >Doelenkaart bovenbouw</a
-        >
-      </li>
-    </ul>
+    <script type="module" src="../src/IconLabelButton.ts"></script>
+    <div class="buttonTable">
+      <icon-label-button
+        title="Bovenbouw"
+        href="631b663a-fef2-4656-8279-1deeb397e071.html"
+      >
+        <img src="../images/empty.png" height="75px" alt="" />
+      </icon-label-button>
+    </div>
   </body>
 </html>
