@@ -49,17 +49,17 @@ export const additionSubstractionWithinDecadeGameVariants: Record<
   },
   // Section 3: Sommen tot de 100 (all decades)
   ca: {
-    iconColor: 'blue',
+    iconColor: 'pink',
     decades: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90],
     operators: ['plus'],
   },
   cb: {
-    iconColor: 'purple',
+    iconColor: 'apricot',
     decades: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90],
     operators: ['minus'],
   },
   cc: {
-    iconColor: 'magenta',
+    iconColor: 'beige',
     decades: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90],
     operators: ['plus', 'minus'],
   },
@@ -108,10 +108,10 @@ export function getExampleSums(
     }
   } else {
     // All decades (0-90)
-    if (hasPlus) text1 = '45+2';
+    if (hasPlus) text1 = '43+4';
     if (hasMinus) {
-      if (text1 === '') text1 = '77-3';
-      else text2 = '77-3';
+      if (text1 === '') text1 = '37-5';
+      else text2 = '37-5';
     }
   }
 

@@ -14,6 +14,7 @@ import type {
 } from './GameOverDialogV2';
 
 import { ChildNotFoundError } from './ChildNotFoundError';
+import { getMenuPage } from './NavigationHelper';
 
 export abstract class GameSkeleton extends LitElement {
   /** Number correct answers */
@@ -33,6 +34,13 @@ export abstract class GameSkeleton extends LitElement {
 
   private welcomeDialogRef: Ref<MessageDialogV2> = createRef();
   private gameOverDialogRef: Ref<GameOverDialogV2> = createRef();
+
+  private menuPage = 'index.html';
+
+  constructor() {
+    super();
+    this.menuPage = getMenuPage();
+  }
 
   /** Helper function to easily query for an element.
    *  @param query Querystring for the element.
@@ -83,7 +91,7 @@ export abstract class GameSkeleton extends LitElement {
   }
 
   handleGameOverDialogClose(evt: GameOverDialogCloseEvent) {
-    if (evt.action === 'NewGame') window.location.href = 'index.html';
+    if (evt.action === 'NewGame') window.location.href = this.menuPage;
     else if (evt.action === 'PlayAgain') this.startNewGame();
     else throw new Error(`Game over dialog exited with an unknown action`);
   }

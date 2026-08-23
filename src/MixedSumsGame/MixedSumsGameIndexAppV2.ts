@@ -122,15 +122,15 @@ const sections: IndexPageType = {
   mixedPlusMinus: [
     {
       title: 'Plussommen',
-      rows: ['ia', 'id', 'ig', 'ij', 'im', 'ja', 'jb'],
+      rows: ['ia', 'id', 'ip', 'ig', 'ij', 'im', 'ja', 'jb'],
     },
     {
       title: 'Minsommen',
-      rows: ['ib', 'ie', 'ih', 'ik', 'in', 'jc', 'jd'],
+      rows: ['ib', 'ie', 'iq', 'ih', 'ik', 'in', 'jc', 'jd'],
     },
     {
       title: 'Plus- en minsommen door elkaar',
-      rows: ['ic', 'if', 'ii', 'il', 'io'],
+      rows: ['ic', 'if', 'ir', 'ii', 'il', 'io'],
     },
   ],
 };
