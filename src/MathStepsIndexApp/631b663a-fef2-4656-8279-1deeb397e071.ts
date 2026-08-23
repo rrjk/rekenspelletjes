@@ -29,7 +29,7 @@ export class SumTypeIndexApp631b663afef2465682791deeb397e071 extends GoalCardInd
   }
 
   get pageTitle(): string {
-    return `Doelenkaart Silvester-Bernadette Bovenbouw`;
+    return `Doelenkaart Bovenbouw`;
   }
 
   get sections(): IndexPageType<Game> {
