@@ -30,13 +30,13 @@ test('getAdditionSubstractionWithinDecadeGameVariant for ba', () => {
 
 test('getAdditionSubstractionWithinDecadeGameVariant for ca', () => {
   const extendedVariant = getAdditionSubstractionWithinDecadeGameVariant('ca');
-  expect(extendedVariant.iconColor).toBe('blue');
+  expect(extendedVariant.iconColor).toBe('pink');
   expect(extendedVariant.decades).toStrictEqual([
     0, 10, 20, 30, 40, 50, 60, 70, 80, 90,
   ]);
   expect(extendedVariant.operators).toStrictEqual(['plus']);
   expect(extendedVariant.mainCode).toBe('A');
-  expect(extendedVariant.description).toBe('Sommen als 45+2');
+  expect(extendedVariant.description).toBe('Sommen als 43+4');
 });
 
 test('getAdditionSubstractionWithinDecadeGameVariant for ac (plus and minus)', () => {
