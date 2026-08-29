@@ -1,6 +1,6 @@
 import { customElement } from 'lit/decorators.js';
 
-import { type IndexPageType, GoalCardIndexApp } from './GoalCardIndexApp';
+import { type IndexPage, GoalCardIndexApp } from './GoalCardIndexApp';
 
 import { renderMixedSumsGameHourglassGameIcon } from '../MixedSumsGame/MixedSumsHourglassGameIcon';
 import { renderAdditionSubstractionWithinDecadeGameHourglassGameIcon } from '../AdditionSubstractionWithinDecadeGame/AdditionSubstractionWithinDecadeGameHourglassGameIcon';
@@ -32,7 +32,7 @@ export class SumTypeIndexApp631b663afef2465682791deeb397e071 extends GoalCardInd
     return `Doelenkaart Bovenbouw`;
   }
 
-  get sections(): IndexPageType<Game> {
+  get sections(): IndexPage<Game> {
     return {
       defaultPage: [
         {

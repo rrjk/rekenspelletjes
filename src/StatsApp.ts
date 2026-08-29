@@ -2,7 +2,7 @@ import { LitElement, html, css } from 'lit';
 import type { HTMLTemplateResult, CSSResultArray } from 'lit';
 
 import { customElement, state } from 'lit/decorators.js';
-import { getGameCodes, getGameDescription } from './GameCodes';
+import { getGameCodes, getGameDescription, isGameCode } from './GameCodes';
 import { getRange } from './NumberHelperFunctions';
 
 type TimeUnitType = 'monthly' | 'weekly';
@@ -119,14 +119,18 @@ export class StatsApp extends LitElement {
                 count: timeUnitCount.count,
               });
           }
-          this.stats.push({
-            gameCode: countInfo.game,
-            gameDescription: getGameDescription(countInfo.game),
-            gameCounts: countInfo.counts,
-            totalCount: countInfo.counts
-              .map(gc => gc.count)
-              .reduce((sum, c) => sum + c),
-          });
+          if (isGameCode(countInfo.game)) {
+            this.stats.push({
+              gameCode: countInfo.game,
+              gameDescription: getGameDescription(countInfo.game),
+              gameCounts: countInfo.counts,
+              totalCount: countInfo.counts
+                .map(gc => gc.count)
+                .reduce((sum, c) => sum + c),
+            });
+          } else {
+            throw new Error(`Unknown game code: ${countInfo.game}`);
+          }
         }
         this.grandTotal = this.totalsPerTimeUnit
           .map(t => t.count)

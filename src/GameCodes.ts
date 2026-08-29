@@ -1,9 +1,8 @@
-export type GameInfoType = {
-  gameCode: string;
-  name: string;
-};
-
-export const gameCodes: GameInfoType[] = [
+/** Array of game codes and their descriptions
+ * Never remove gamescodes from this array as that would make the integerrepresentations
+ * of the game codes invalid, which are used for the custom goal card indexes.
+ */
+export const gameCodes = [
   { gameCode: 'A', name: 'Vliegerspel: Plus- en minsommen binnen het tiental' },
   {
     gameCode: 'B',
@@ -64,9 +63,17 @@ export const gameCodes: GameInfoType[] = [
     gameCode: 'AG',
     name: 'Gemengde sommen - antwoorden intypen - gebaseerd op SumType',
   },
-];
+] as const;
 
-export function getGameDescription(gameCode: string): string {
+// Derived from the array above — never edited by hand.
+export type GameCode = (typeof gameCodes)[number]['gameCode'];
+
+export type GameInfoType = {
+  gameCode: GameCode;
+  name: string;
+};
+
+export function getGameDescription(gameCode: GameCode): string {
   let retValue = '';
   const gameInfo = gameCodes.find(el => el.gameCode === gameCode);
   if (gameInfo !== undefined) retValue = gameInfo.name;
@@ -74,10 +81,35 @@ export function getGameDescription(gameCode: string): string {
   return retValue;
 }
 
-export function getGameCodes(): string[] {
-  const retValue: string[] = [];
+export function getGameCodes(): GameCode[] {
+  const retValue: GameCode[] = [];
   for (const gc of gameCodes) {
     retValue.push(gc.gameCode);
   }
   return retValue;
+}
+
+export function isGameCode(value: string): value is GameCode {
+  return gameCodes.some(el => el.gameCode === value);
+}
+
+/** Find an integer representation of the game code based on its position in the list of game codes
+ * @param gameCode - gameCode for which an integer representation is needed
+ * @returns The integer representation of the game code
+ */
+export function getGameCodeAsNumber(gameCode: GameCode): number {
+  return getGameCodes().indexOf(gameCode);
+}
+
+/** Find the game code string based on its integer representation
+ * @param gameCodeAsNumber - The integer representation of the game code
+ * @returns The corresponding game code string
+ */
+
+export function getGameCodeAsString(gameCodeAsNumber: number): GameCode {
+  const gameCodesList = getGameCodes();
+  if (gameCodeAsNumber >= 0 && gameCodeAsNumber < gameCodesList.length) {
+    return gameCodesList[gameCodeAsNumber];
+  }
+  throw new Error(`Invalid game code number: ${gameCodeAsNumber}`);
 }

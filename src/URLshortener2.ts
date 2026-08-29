@@ -1,4 +1,5 @@
 import { timeCodeMapping, isTimeCode } from './TimeCodes';
+import { isGameCode, type GameCode } from './GameCodes';
 
 const urlParams = new URLSearchParams(window.location.search);
 const key = urlParams.keys().next().value;
@@ -7,7 +8,7 @@ const baseUrl = new URL('./Rekenspelletjes/', window.location.origin);
 
 const defaultUrl = new URL('./index.html', baseUrl);
 
-const baseURLs: Partial<Record<string, URL>> = {
+const baseURLs: Partial<Record<GameCode, URL>> = {
   A: new URL('./PlusMinBinnenTiental.html', baseUrl),
   AA: new URL('./DobbelsteenSpel.html', baseUrl),
   B: new URL('./PlusMinHeleTientallen.html', baseUrl),
@@ -26,6 +27,7 @@ const baseURLs: Partial<Record<string, URL>> = {
   Q: new URL('./AanklikkenInVolgorde.html', baseUrl),
   R: new URL('./SplitsenV2.html', baseUrl),
   S: new URL('./Sorteren.html', baseUrl),
+  T: new URL('./KlikFotoOpGetallenlijn.html', baseUrl),
   U: new URL('./SpringOpGetallenlijn.html', baseUrl),
   V: new URL('./SommenMetSplitsen.html', baseUrl),
   W: new URL('./SplitsenOpWaarde.html', baseUrl),
@@ -37,7 +39,6 @@ const baseURLs: Partial<Record<string, URL>> = {
   AE: new URL('./GemengdeSommen.html', baseUrl),
   AF: new URL('./GemengdeSommen.html', baseUrl),
   AG: new URL('./GemengdeSommen.html', baseUrl),
-  T: new URL('./KlikFotoOpGetallenlijn.html', baseUrl),
 };
 
 let newUrl = defaultUrl;
@@ -51,7 +52,9 @@ if (key) {
   let time: number | undefined = undefined;
   if (isTimeCode(timeCode)) time = timeCodeMapping[timeCode];
 
-  newUrl = baseURLs[mainCode] || defaultUrl;
+  if (isGameCode(mainCode)) {
+    newUrl = baseURLs[mainCode] || defaultUrl;
+  }
 
   if (newUrl !== defaultUrl) {
     newUrl.searchParams.append('variant', variant);

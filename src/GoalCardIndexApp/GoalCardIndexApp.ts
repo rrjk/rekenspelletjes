@@ -6,10 +6,11 @@ import type { TimeCode } from '../TimeCodes';
 
 import { RenderGameIconFunction } from '../RenderGameIconFunction';
 import { ClassInfo } from 'lit/directives/class-map.js';
+import { Row, SectionInfoList } from './SectionInfoType';
 
-type IndexPage = 'defaultPage';
+type PageName = 'defaultPage';
 
-export function convertIndexPage(value: string | null): IndexPage {
+export function convertIndexPage(value: string | null): PageName {
   switch (value) {
     case 'defaultPage':
       return value;
@@ -18,37 +19,20 @@ export function convertIndexPage(value: string | null): IndexPage {
   }
 }
 
-interface EntryType<Game> {
-  game: Game;
-  variant: string;
-  timeCode?: TimeCode;
-}
-
-interface RowType<Game> {
-  entries: EntryType<Game>[];
-}
-
-interface SectionInfoType<Game> {
-  title: string;
-  rows: RowType<Game>[];
-}
-
-export interface IndexPageType<Game> {
-  defaultPage: SectionInfoType<Game>[];
+export interface IndexPage<Game extends string> {
+  defaultPage: SectionInfoList<Game>;
 }
 
 export abstract class GoalCardIndexApp<Game extends string> extends LitElement {
   @property({ converter: convertIndexPage })
-  accessor indexPage: IndexPage = 'defaultPage';
+  accessor indexPage: PageName = 'defaultPage';
 
   get pageTitle(): string {
     return `To be set by subclass`;
   }
 
-  get sections(): IndexPageType<Game> {
-    return {
-      defaultPage: [],
-    };
+  protected get sections(): IndexPage<Game> {
+    return { defaultPage: [] };
   }
 
   static get styles(): CSSResultArray {
@@ -102,10 +86,11 @@ export abstract class GoalCardIndexApp<Game extends string> extends LitElement {
       rightGameIcon: position === 'right',
       centeredGameIcon: position === 'center',
     };
+
     return this.iconFunctions[game](variant, classes, timeCode);
   }
 
-  renderRow(row: RowType<Game>): HTMLTemplateResult {
+  renderRow(row: Row<Game>): HTMLTemplateResult {
     if (row.entries.length === 2) {
       return html`
         ${this.renderGameIcon(
