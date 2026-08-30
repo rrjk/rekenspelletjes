@@ -1,4 +1,4 @@
-import { HTMLTemplateResult } from 'lit';
+import { html, HTMLTemplateResult } from 'lit';
 import { ClassInfo } from 'lit/directives/class-map.js';
 import { TimeCode } from './TimeCodes';
 
@@ -13,3 +13,10 @@ export type RenderGameIconFunction = (
   classes: ClassInfo,
   timeCode?: TimeCode,
 ) => HTMLTemplateResult;
+
+export const renderNotImplemented: RenderGameIconFunction = (
+  variant,
+  classes,
+) => {
+  return html`<div class=${classes}>Not Implemented</div>`;
+};

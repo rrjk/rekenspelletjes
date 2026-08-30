@@ -4,298 +4,293 @@ import { type IndexPage, GoalCardIndexApp } from './GoalCardIndexApp';
 
 import { renderMixedSumsGameHourglassGameIcon } from '../MixedSumsGame/MixedSumsHourglassGameIcon';
 import { renderAdditionSubstractionWithinDecadeGameHourglassGameIcon } from '../AdditionSubstractionWithinDecadeGame/AdditionSubstractionWithinDecadeGameHourglassGameIcon';
-import { RenderGameIconFunction } from '../RenderGameIconFunction';
+import {
+  RenderGameIconFunction,
+  renderNotImplemented,
+} from '../RenderGameIconFunction';
 import { renderSplitBalloonGameHourglassGameIcon } from '../SplitBalloonGame/SplitBalloonGameHourglassGameIcon';
 import { renderSumsWithSplitGameHourglassGameIcon } from '../SumsWithSplitGame/SumsWithSplitGameHourglassGameIcon';
 import { renderMultiplicationTablesBalloonHourglassGameIcon } from '../MultiplicationTablesBalloonGame/MultiplicationTablesBalloonHourglassGameIcon';
 import { storeMenuPage } from '../NavigationHelper';
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const game = [
-  'split-game',
-  'addition-substraction-within-decade',
-  'mixed-sums',
-  'sums-with-split',
-  'balloon-game',
-] as const;
-
-export type Game = (typeof game)[number];
+import { GameCode, gameCodes } from '../GameCodes';
+import { encodeSectionInfoList } from './SectionInfoType';
 
 @customElement('sumtype-index-app-631b663a-fef2-4656-8279-1deeb397e071')
-export class SumTypeIndexApp631b663afef2465682791deeb397e071 extends GoalCardIndexApp<Game> {
+export class SumTypeIndexApp631b663afef2465682791deeb397e071 extends GoalCardIndexApp {
   constructor() {
     super();
     storeMenuPage();
+    console.log(encodeSectionInfoList(this.sections.defaultPage));
   }
 
   get pageTitle(): string {
     return `Doelenkaart Bovenbouw`;
   }
 
-  get sections(): IndexPage<Game> {
-    return {
-      defaultPage: [
-        {
-          title: 'Splitsingen',
-          rows: [
-            {
-              entries: [
-                {
-                  game: 'split-game',
-                  variant: 'bc',
-                  timeCode: 'a',
-                },
-              ],
-            },
-          ],
-        },
-        {
-          title: 'Plussommen',
-          rows: [
-            {
-              entries: [
-                {
-                  game: 'addition-substraction-within-decade',
-                  variant: 'aa',
-                  timeCode: 'a',
-                },
-                {
-                  game: 'mixed-sums',
-                  variant: 'ia',
-                  timeCode: 'a',
-                },
-              ],
-            },
-            {
-              entries: [
-                {
-                  game: 'addition-substraction-within-decade',
-                  variant: 'ba',
-                  timeCode: 'a',
-                },
-                {
-                  game: 'mixed-sums',
-                  variant: 'id',
-                  timeCode: 'a',
-                },
-              ],
-            },
-            {
-              entries: [
-                {
-                  game: 'addition-substraction-within-decade',
-                  variant: 'ca',
-                  timeCode: 'a',
-                },
-                {
-                  game: 'mixed-sums',
-                  variant: 'ip',
-                  timeCode: 'a',
-                },
-              ],
-            },
-            {
-              entries: [
-                {
-                  game: 'sums-with-split',
-                  variant: 'aa',
-                  timeCode: 'a',
-                },
-                {
-                  game: 'mixed-sums',
-                  variant: 'ig',
-                  timeCode: 'a',
-                },
-              ],
-            },
-            {
-              entries: [
-                {
-                  game: 'sums-with-split',
-                  variant: 'ba',
-                  timeCode: 'a',
-                },
-                {
-                  game: 'mixed-sums',
-                  variant: 'ij',
-                  timeCode: 'a',
-                },
-              ],
-            },
-            {
-              entries: [
-                {
-                  game: 'mixed-sums',
-                  variant: 'ja',
-                  timeCode: 'a',
-                },
-              ],
-            },
-            {
-              entries: [
-                {
-                  game: 'mixed-sums',
-                  variant: 'jb',
-                  timeCode: 'a',
-                },
-              ],
-            },
-            {
-              entries: [
-                {
-                  game: 'mixed-sums',
-                  variant: 'jb',
-                  timeCode: 'b',
-                },
-              ],
-            },
-          ],
-        },
-        {
-          title: 'Minsommen',
-          rows: [
-            {
-              entries: [
-                {
-                  game: 'addition-substraction-within-decade',
-                  variant: 'ab',
-                  timeCode: 'a',
-                },
-                {
-                  game: 'mixed-sums',
-                  variant: 'ib',
-                  timeCode: 'a',
-                },
-              ],
-            },
-            {
-              entries: [
-                {
-                  game: 'addition-substraction-within-decade',
-                  variant: 'bb',
-                  timeCode: 'a',
-                },
-                {
-                  game: 'mixed-sums',
-                  variant: 'ie',
-                  timeCode: 'a',
-                },
-              ],
-            },
-            {
-              entries: [
-                {
-                  game: 'addition-substraction-within-decade',
-                  variant: 'cb',
-                  timeCode: 'a',
-                },
-                {
-                  game: 'mixed-sums',
-                  variant: 'iq',
-                  timeCode: 'a',
-                },
-              ],
-            },
-            {
-              entries: [
-                {
-                  game: 'sums-with-split',
-                  variant: 'ab',
-                  timeCode: 'a',
-                },
-                {
-                  game: 'mixed-sums',
-                  variant: 'ih',
-                  timeCode: 'a',
-                },
-              ],
-            },
-            {
-              entries: [
-                {
-                  game: 'sums-with-split',
-                  variant: 'bb',
-                  timeCode: 'a',
-                },
-                {
-                  game: 'mixed-sums',
-                  variant: 'ik',
-                  timeCode: 'a',
-                },
-              ],
-            },
-            {
-              entries: [
-                {
-                  game: 'mixed-sums',
-                  variant: 'jc',
-                  timeCode: 'a',
-                },
-              ],
-            },
-            {
-              entries: [
-                {
-                  game: 'mixed-sums',
-                  variant: 'jd',
-                  timeCode: 'a',
-                },
-              ],
-            },
-            {
-              entries: [
-                {
-                  game: 'mixed-sums',
-                  variant: 'jd',
-                  timeCode: 'b',
-                },
-              ],
-            },
-          ],
-        },
-        {
-          title: 'Keersommen',
-          rows: [
-            {
-              entries: [
-                {
-                  game: 'balloon-game',
-                  variant: 'ak',
-                  timeCode: 'a',
-                },
-                {
-                  game: 'mixed-sums',
-                  variant: 'ck',
-                  timeCode: 'a',
-                },
-              ],
-            },
-            {
-              entries: [
-                {
-                  game: 'balloon-game',
-                  variant: 'ak',
-                  timeCode: 'b',
-                },
-                {
-                  game: 'mixed-sums',
-                  variant: 'ck',
-                  timeCode: 'b',
-                },
-              ],
-            },
-          ],
-        },
-      ],
-    };
-  }
+  sections: IndexPage = {
+    defaultPage: [
+      {
+        title: 'Splitsingen',
+        rows: [
+          {
+            entries: [
+              {
+                game: 'R',
+                variant: 'bc',
+                timeCode: 'a',
+              },
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Plussommen',
+        rows: [
+          {
+            entries: [
+              {
+                game: 'A',
+                variant: 'aa',
+                timeCode: 'a',
+              },
+              {
+                game: 'AG',
+                variant: 'ia',
+                timeCode: 'a',
+              },
+            ],
+          },
+          {
+            entries: [
+              {
+                game: 'A',
+                variant: 'ba',
+                timeCode: 'a',
+              },
+              {
+                game: 'AG',
+                variant: 'id',
+                timeCode: 'a',
+              },
+            ],
+          },
+          {
+            entries: [
+              {
+                game: 'A',
+                variant: 'ca',
+                timeCode: 'a',
+              },
+              {
+                game: 'AG',
+                variant: 'ip',
+                timeCode: 'a',
+              },
+            ],
+          },
+          {
+            entries: [
+              {
+                game: 'G',
+                variant: 'aa',
+                timeCode: 'a',
+              },
+              {
+                game: 'AG',
+                variant: 'ig',
+                timeCode: 'a',
+              },
+            ],
+          },
+          {
+            entries: [
+              {
+                game: 'G',
+                variant: 'ba',
+                timeCode: 'a',
+              },
+              {
+                game: 'AG',
+                variant: 'ij',
+                timeCode: 'a',
+              },
+            ],
+          },
+          {
+            entries: [
+              {
+                game: 'AG',
+                variant: 'ja',
+                timeCode: 'a',
+              },
+            ],
+          },
+          {
+            entries: [
+              {
+                game: 'AG',
+                variant: 'jb',
+                timeCode: 'a',
+              },
+            ],
+          },
+          {
+            entries: [
+              {
+                game: 'AG',
+                variant: 'jb',
+                timeCode: 'b',
+              },
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Minsommen',
+        rows: [
+          {
+            entries: [
+              {
+                game: 'A',
+                variant: 'ab',
+                timeCode: 'a',
+              },
+              {
+                game: 'AG',
+                variant: 'ib',
+                timeCode: 'a',
+              },
+            ],
+          },
+          {
+            entries: [
+              {
+                game: 'A',
+                variant: 'bb',
+                timeCode: 'a',
+              },
+              {
+                game: 'AG',
+                variant: 'ie',
+                timeCode: 'a',
+              },
+            ],
+          },
+          {
+            entries: [
+              {
+                game: 'A',
+                variant: 'cb',
+                timeCode: 'a',
+              },
+              {
+                game: 'AG',
+                variant: 'iq',
+                timeCode: 'a',
+              },
+            ],
+          },
+          {
+            entries: [
+              {
+                game: 'G',
+                variant: 'ab',
+                timeCode: 'a',
+              },
+              {
+                game: 'AG',
+                variant: 'ih',
+                timeCode: 'a',
+              },
+            ],
+          },
+          {
+            entries: [
+              {
+                game: 'G',
+                variant: 'bb',
+                timeCode: 'a',
+              },
+              {
+                game: 'AG',
+                variant: 'ik',
+                timeCode: 'a',
+              },
+            ],
+          },
+          {
+            entries: [
+              {
+                game: 'AG',
+                variant: 'jc',
+                timeCode: 'a',
+              },
+            ],
+          },
+          {
+            entries: [
+              {
+                game: 'AG',
+                variant: 'jd',
+                timeCode: 'a',
+              },
+            ],
+          },
+          {
+            entries: [
+              {
+                game: 'AG',
+                variant: 'jd',
+                timeCode: 'b',
+              },
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Keersommen',
+        rows: [
+          {
+            entries: [
+              {
+                game: 'D',
+                variant: 'ak',
+                timeCode: 'a',
+              },
+              {
+                game: 'AG',
+                variant: 'ck',
+                timeCode: 'a',
+              },
+            ],
+          },
+          {
+            entries: [
+              {
+                game: 'D',
+                variant: 'ak',
+                timeCode: 'b',
+              },
+              {
+                game: 'AG',
+                variant: 'ck',
+                timeCode: 'b',
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  };
 
-  iconFunctions: Record<Game, RenderGameIconFunction> = {
-    'addition-substraction-within-decade':
-      renderAdditionSubstractionWithinDecadeGameHourglassGameIcon,
-    'mixed-sums': renderMixedSumsGameHourglassGameIcon,
-    'split-game': renderSplitBalloonGameHourglassGameIcon,
-    'balloon-game': renderMultiplicationTablesBalloonHourglassGameIcon,
-    'sums-with-split': renderSumsWithSplitGameHourglassGameIcon,
+  iconFunctions: Record<GameCode, RenderGameIconFunction> = {
+    ...(Object.fromEntries(
+      gameCodes.map(code => [code, renderNotImplemented]),
+    ) as Record<GameCode, RenderGameIconFunction>),
+    A: renderAdditionSubstractionWithinDecadeGameHourglassGameIcon,
+    AG: renderMixedSumsGameHourglassGameIcon,
+    R: renderSplitBalloonGameHourglassGameIcon,
+    D: renderMultiplicationTablesBalloonHourglassGameIcon,
+    G: renderSumsWithSplitGameHourglassGameIcon,
   };
 }

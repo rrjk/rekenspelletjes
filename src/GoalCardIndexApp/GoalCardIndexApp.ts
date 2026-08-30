@@ -1,6 +1,7 @@
 import { html, css, LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
+import type { GameCode } from '../GameCodes';
 
 import type { TimeCode } from '../TimeCodes';
 
@@ -19,11 +20,11 @@ export function convertIndexPage(value: string | null): PageName {
   }
 }
 
-export interface IndexPage<Game extends string> {
-  defaultPage: SectionInfoList<Game>;
+export interface IndexPage {
+  defaultPage: SectionInfoList;
 }
 
-export abstract class GoalCardIndexApp<Game extends string> extends LitElement {
+export abstract class GoalCardIndexApp extends LitElement {
   @property({ converter: convertIndexPage })
   accessor indexPage: PageName = 'defaultPage';
 
@@ -31,9 +32,7 @@ export abstract class GoalCardIndexApp<Game extends string> extends LitElement {
     return `To be set by subclass`;
   }
 
-  protected get sections(): IndexPage<Game> {
-    return { defaultPage: [] };
-  }
+  protected sections: IndexPage = { defaultPage: [] };
 
   static get styles(): CSSResultArray {
     return [
@@ -73,10 +72,10 @@ export abstract class GoalCardIndexApp<Game extends string> extends LitElement {
     ];
   }
 
-  abstract iconFunctions: Record<Game, RenderGameIconFunction>;
+  abstract iconFunctions: Record<GameCode, RenderGameIconFunction>;
 
   renderGameIcon(
-    game: Game,
+    game: GameCode,
     variant: string,
     position: 'left' | 'right' | 'center' = 'center',
     timeCode?: TimeCode,
@@ -90,7 +89,7 @@ export abstract class GoalCardIndexApp<Game extends string> extends LitElement {
     return this.iconFunctions[game](variant, classes, timeCode);
   }
 
-  renderRow(row: Row<Game>): HTMLTemplateResult {
+  renderRow(row: Row): HTMLTemplateResult {
     if (row.entries.length === 2) {
       return html`
         ${this.renderGameIcon(
