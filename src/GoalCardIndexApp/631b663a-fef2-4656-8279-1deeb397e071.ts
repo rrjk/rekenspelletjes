@@ -2,25 +2,13 @@ import { customElement } from 'lit/decorators.js';
 
 import { type IndexPage, GoalCardIndexApp } from './GoalCardIndexApp';
 
-import { renderMixedSumsGameHourglassGameIcon } from '../MixedSumsGame/MixedSumsHourglassGameIcon';
-import { renderAdditionSubstractionWithinDecadeGameHourglassGameIcon } from '../AdditionSubstractionWithinDecadeGame/AdditionSubstractionWithinDecadeGameHourglassGameIcon';
-import {
-  RenderGameIconFunction,
-  renderNotImplemented,
-} from '../RenderGameIconFunction';
-import { renderSplitBalloonGameHourglassGameIcon } from '../SplitBalloonGame/SplitBalloonGameHourglassGameIcon';
-import { renderSumsWithSplitGameHourglassGameIcon } from '../SumsWithSplitGame/SumsWithSplitGameHourglassGameIcon';
-import { renderMultiplicationTablesBalloonHourglassGameIcon } from '../MultiplicationTablesBalloonGame/MultiplicationTablesBalloonHourglassGameIcon';
 import { storeMenuPage } from '../NavigationHelper';
-import { GameCode, gameCodes } from '../GameCodes';
-import { encodeSectionInfoList } from './SectionInfoType';
 
 @customElement('sumtype-index-app-631b663a-fef2-4656-8279-1deeb397e071')
 export class SumTypeIndexApp631b663afef2465682791deeb397e071 extends GoalCardIndexApp {
   constructor() {
     super();
     storeMenuPage();
-    console.log(encodeSectionInfoList(this.sections.defaultPage));
   }
 
   get pageTitle(): string {
@@ -281,16 +269,5 @@ export class SumTypeIndexApp631b663afef2465682791deeb397e071 extends GoalCardInd
         ],
       },
     ],
-  };
-
-  iconFunctions: Record<GameCode, RenderGameIconFunction> = {
-    ...(Object.fromEntries(
-      gameCodes.map(code => [code, renderNotImplemented]),
-    ) as Record<GameCode, RenderGameIconFunction>),
-    A: renderAdditionSubstractionWithinDecadeGameHourglassGameIcon,
-    AG: renderMixedSumsGameHourglassGameIcon,
-    R: renderSplitBalloonGameHourglassGameIcon,
-    D: renderMultiplicationTablesBalloonHourglassGameIcon,
-    G: renderSumsWithSplitGameHourglassGameIcon,
   };
 }
