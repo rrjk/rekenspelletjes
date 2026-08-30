@@ -82,34 +82,9 @@ export function getGameDescription(gameCode: GameCode): string {
 }
 
 export function getGameCodes(): GameCode[] {
-  const retValue: GameCode[] = [];
-  for (const gc of gameCodes) {
-    retValue.push(gc.gameCode);
-  }
-  return retValue;
+  return [...gameCodes.map(gc => gc.gameCode)];
 }
 
 export function isGameCode(value: string): value is GameCode {
   return gameCodes.some(el => el.gameCode === value);
-}
-
-/** Find an integer representation of the game code based on its position in the list of game codes
- * @param gameCode - gameCode for which an integer representation is needed
- * @returns The integer representation of the game code
- */
-export function getGameCodeAsNumber(gameCode: GameCode): number {
-  return getGameCodes().indexOf(gameCode);
-}
-
-/** Find the game code string based on its integer representation
- * @param gameCodeAsNumber - The integer representation of the game code
- * @returns The corresponding game code string
- */
-
-export function getGameCodeAsString(gameCodeAsNumber: number): GameCode {
-  const gameCodesList = getGameCodes();
-  if (gameCodeAsNumber >= 0 && gameCodeAsNumber < gameCodesList.length) {
-    return gameCodesList[gameCodeAsNumber];
-  }
-  throw new Error(`Invalid game code number: ${gameCodeAsNumber}`);
 }
