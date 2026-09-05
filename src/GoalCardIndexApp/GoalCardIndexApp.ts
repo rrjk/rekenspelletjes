@@ -6,30 +6,17 @@ import type { SectionInfoList } from './SectionInfoType';
 
 import './GoalCardWidget';
 
-type PageName = 'defaultPage';
-
-export function convertIndexPage(value: string | null): PageName {
-  switch (value) {
-    case 'defaultPage':
-      return value;
-    default:
-      return 'defaultPage';
-  }
-}
-
 export interface IndexPage {
   defaultPage: SectionInfoList;
 }
 
 export abstract class GoalCardIndexApp extends LitElement {
-  @property({ converter: convertIndexPage })
-  accessor indexPage: PageName = 'defaultPage';
-
   get pageTitle(): string {
     return `To be set by subclass`;
   }
 
-  protected sections: IndexPage = { defaultPage: [] };
+  @property({ type: Array })
+  protected accessor sections: SectionInfoList = [];
 
   static get styles(): CSSResultArray {
     return [
@@ -44,9 +31,7 @@ export abstract class GoalCardIndexApp extends LitElement {
   render(): HTMLTemplateResult {
     return html`
       <h1>${this.pageTitle}</h1>
-      <goal-card-widget
-        .sections=${this.sections[this.indexPage]}
-      ></goal-card-widget>
+      <goal-card-widget .sections=${this.sections}></goal-card-widget>
       <p>
         <a href="index.html">Terug naar het hoofdmenu</a>
       </p>

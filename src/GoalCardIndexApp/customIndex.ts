@@ -10,9 +10,7 @@ export class CustomIndexApp extends GoalCardIndexApp {
   parseUrlParameters(): void {
     const urlParams = new URLSearchParams(window.location.search);
     const encodedSectionInfoList = urlParams.get('d');
-    this.sections = {
-      defaultPage: decodeSectionInfoList(encodedSectionInfoList ?? ''),
-    };
+    this.sections = decodeSectionInfoList(encodedSectionInfoList ?? '');
   }
 
   constructor() {
