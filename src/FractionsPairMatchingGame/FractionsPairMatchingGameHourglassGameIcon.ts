@@ -11,6 +11,11 @@ import { RenderGameIconFunction } from '../RenderGameIconFunction';
 
 export const renderFractionsPairMatchingGameHourglassGameIcon: RenderGameIconFunction =
   (variant, classes, timeCode) => {
+    if (timeCode === undefined)
+      throw new Error(
+        'timeCode obligatory for Fractions Pair Matching Game Hourglass Game Icon',
+      );
+
     return html`<fractions-pair-matching-game-hourglass-game-icon
       class=${classMap(classes)}
       .variant=${variant}

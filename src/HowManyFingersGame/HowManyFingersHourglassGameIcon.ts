@@ -12,6 +12,11 @@ import { RenderGameIconFunction } from '../RenderGameIconFunction';
 
 export const renderHowManyFingersGameHourglassGameIcon: RenderGameIconFunction =
   (variant, classes, timeCode) => {
+    if (timeCode === undefined)
+      throw new Error(
+        'timeCode obligatory for How Many Fingers Game Hourglass Game Icon',
+      );
+
     return html`<how-many-fingers-hourglass-game-icon
       class=${classMap(classes)}
       .variant=${variant}
