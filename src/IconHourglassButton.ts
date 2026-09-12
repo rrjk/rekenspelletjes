@@ -3,7 +3,7 @@ import type { HTMLTemplateResult, CSSResultGroup } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
 /** Possible balloon colors */
-type TimeEnum = '1min' | '3min' | '5min';
+export type TimeEnum = '1min' | '3min' | '5min';
 
 @customElement('icon-hourglass-button')
 export class IconHourglassButton extends LitElement {
@@ -66,7 +66,7 @@ export class IconHourglassButton extends LitElement {
     return html`
       <a href=${url}>
         <slot></slot>
-        <img class="hourglass" alt=${timeText} src=${hourglassImage} />
+        <img class="hourglass" alt=${timeText} src=${hourglassImage.href} />
       </a>
     `;
   }
