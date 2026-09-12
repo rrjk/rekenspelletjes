@@ -6,6 +6,7 @@ import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
 import { Color, getColorInfo } from '../Colors';
 
+import { type TimeEnum } from '../IconHourglassButton';
 import '../IconHourglassButton';
 import '../FractionElement';
 import type { FractionPairMatchingGameType } from './FractionsPairMatchingGameVariants';
@@ -96,7 +97,7 @@ export class FractionsPairMatchingGameIndexApp extends LitElement {
   }
 
   renderButton(
-    duration: string,
+    duration: TimeEnum,
     shortCode: string,
     gameType: FractionPairMatchingGameType,
     color: Color,
@@ -155,7 +156,7 @@ export class FractionsPairMatchingGameIndexApp extends LitElement {
   }
 
   renderRow(
-    durations: string[],
+    durations: TimeEnum[],
     shortCodes: string[],
     gameType: FractionPairMatchingGameType,
     color: Color,
