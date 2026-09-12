@@ -10,7 +10,13 @@
     "useDefineForClassFields": false,
     "experimentalDecorators": false,
     "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "plugins": [
+      {
+        "name": "ts-lit-plugin",
+        "strict": true
+      }
+    ]
   },
   "$schema": "https://json.schemastore.org/tsconfig",
   "display": "Recommended"
