@@ -1,4 +1,4 @@
-import { html, css, nothing } from 'lit';
+import { html, css } from 'lit';
 
 import { customElement, state } from 'lit/decorators.js';
 import { ref } from 'lit/directives/ref.js';
@@ -639,8 +639,8 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
   }
 
   renderGameContent(): HTMLTemplateResult {
-    let belowArches: ArchType[] | typeof nothing = nothing;
-    let aboveArches: ArchType[] | typeof nothing = nothing;
+    let belowArches: ArchType[] | null = null;
+    let aboveArches: ArchType[] | null = null;
     if (this.operator === 'minus') belowArches = this.arches;
     else if (this.operator === 'plus') aboveArches = this.arches;
 
@@ -663,7 +663,6 @@ export class NumberlineArchesGameApp extends TimeLimitedGame2 {
           .belowArches=${belowArches}
           .numberBoxes=${this.numberBoxes}
           tickMarks="upToSingles"
-          aspectRatio="10"
         ></number-line-v2>
       </drop-target-container>
       <div id="archesBoxArea">${this.renderArchesBox()}</div>
