@@ -55,23 +55,23 @@ export class SimpleSumWidget extends LitElement {
 
   /** Operand 1 (left of the operator) */
   @property({ type: Number })
-  private accessor operand1 = 0;
+  accessor operand1 = 0;
 
   /** Operand 2 (right of the operator) */
   @property({ type: Number })
-  private accessor operand2 = 0;
+  accessor operand2 = 0;
 
   /** Operator to use in the sum */
   @property({ converter: convertOperator })
-  private accessor operator: Operator = 'times';
+  accessor operator: Operator = 'times';
 
   /** How many digits should be visible in the fill-in box */
   @property({ type: Number })
-  private accessor visibleDigits = 0;
+  accessor visibleDigits = 0;
 
   /** Should the fill-in box be shown as active (blue) or not */
   @property({ type: Boolean })
-  private accessor fillInActive = true;
+  accessor fillInActive = true;
 
   /** Number of digits that should be allocated for in the answer box
    * If equal to -1, the width will be determined based on the number of
@@ -81,7 +81,7 @@ export class SimpleSumWidget extends LitElement {
    * number of digits will be used.
    */
   @property({ type: Number })
-  private accessor minDigitsAnswer = -1;
+  accessor minDigitsAnswer = -1;
 
   /** Number of digits that should be allocated for in operand1
    * If equal to -1, the width will be determined based on the number of
@@ -91,7 +91,7 @@ export class SimpleSumWidget extends LitElement {
    * number of digits will be used.
    */
   @property({ type: Number })
-  private accessor minDigitsOperand1 = -1;
+  accessor minDigitsOperand1 = -1;
 
   /** Number of digits that should be allocated for in operand1
    * If equal to -1, the width will be determined based on the number of
@@ -101,11 +101,11 @@ export class SimpleSumWidget extends LitElement {
    * number of digits will be used.
    */
   @property({ type: Number })
-  private accessor minDigitsOperand2 = -1;
+  accessor minDigitsOperand2 = -1;
 
   /** Should the sum be visible, or just the equal sign and the answerbox */
   @property({ type: Boolean })
-  private accessor sumVisible = false;
+  accessor sumVisible = false;
 
   /** Answer to the sum */
   private get answer(): number {
