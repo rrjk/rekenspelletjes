@@ -186,7 +186,7 @@ export class GroupOfImages
         html`<div class="flexItem">
           <img
             class=${this.tallWideFlexItem}
-            src=${getImageInfo(this.image).url}
+            src=${getImageInfo(this.image).url.href}
             alt=${getImageInfo(this.image).name}
           />
         </div>`,

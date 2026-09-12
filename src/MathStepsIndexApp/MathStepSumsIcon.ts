@@ -89,7 +89,7 @@ export class MathStepSumsIcon extends LitElement {
 
   renderLink(): HTMLTemplateResult | typeof nothing {
     if (this.link) {
-      return html`<a class="stretched-link" href=${this.link}></a>`;
+      return html`<a class="stretched-link" href=${this.link.href}></a>`;
     }
     return nothing;
   }

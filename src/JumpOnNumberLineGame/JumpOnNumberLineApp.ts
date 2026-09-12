@@ -514,7 +514,7 @@ export class JumpOnNumberLineApp extends TimeLimitedGame2 {
       <img
         id="jan"
         alt="Mompitz"
-        src=${JumpOnNumberLineApp.janImage}
+        src=${JumpOnNumberLineApp.janImage.href}
         style="display: ${this.hideJan ? 'none' : 'block'};"
         class=${this.renderJanClass()}
       />
