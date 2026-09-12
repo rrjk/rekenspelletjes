@@ -6,6 +6,8 @@ import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
 import { Color } from '../Colors';
 
+import { type TimeEnum } from '../IconHourglassButton';
+
 import '../IconHourglassButton';
 import '../NumberedBalloon';
 
@@ -132,7 +134,7 @@ export class SplitBalloonGameIndexApp extends LitElement {
   }
 
   renderButton(
-    duration: string,
+    duration: TimeEnum,
     shortCode: string,
     splits: string[],
     color: Color,
@@ -164,7 +166,7 @@ export class SplitBalloonGameIndexApp extends LitElement {
   }
 
   renderRow(
-    durations: string[],
+    durations: TimeEnum[],
     shortCodes: string[],
     splits: string[],
     color: Color,
