@@ -11,6 +11,10 @@ import { RenderGameIconFunction } from '../RenderGameIconFunction';
 
 export const renderNumberlineArchesGameHourglassGameIcon: RenderGameIconFunction =
   (variant, classes, timeCode) => {
+    if (timeCode === undefined)
+      throw new Error(
+        'timeCode obligatory for Numberline Arches Game Hourglass Game Icon',
+      );
     return html`<numberline-arches-game-hourglass-game-icon
       class=${classMap(classes)}
       .variant=${variant}
