@@ -69,7 +69,6 @@ export abstract class TimeCountingGame extends GameSkeleton {
     return html`
       <div class="fullGame">
         <timer-bar
-          width:100%
           id="timerBar"
           numberOk=${this.numberOk}
           numberNok=${this.numberNok}
