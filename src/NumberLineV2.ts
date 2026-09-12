@@ -97,11 +97,11 @@ export class NumberLineV2
   accessor min = 0;
   @property({ type: Number })
   accessor max = 100;
-  @property({ converter: convertArchAttribute })
+  @property({ type: Array, converter: convertArchAttribute })
   accessor aboveArches: ArchType[] | null = null;
-  @property({ converter: convertArchAttribute })
+  @property({ type: Array, converter: convertArchAttribute })
   accessor belowArches: ArchType[] | null = null;
-  @property({ attribute: false })
+  @property({ type: Array, attribute: false })
   accessor numberBoxes: NumberBoxInfo[] | null = null;
   @property({ type: Number })
   accessor maxNumberBoxDepth = 2;

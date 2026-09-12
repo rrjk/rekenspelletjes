@@ -1,4 +1,4 @@
-import { html, css, LitElement, nothing } from 'lit';
+import { html, css, LitElement } from 'lit';
 
 import { customElement, property } from 'lit/decorators.js';
 
@@ -10,6 +10,7 @@ import { Color, getColorInfo } from '../Colors';
 import '../IconHourglassButton';
 import '../NumberLineV2';
 import { OperatorType } from './NumberlineArchesGameAppLink';
+import { type TimeEnum } from '../IconHourglassButton';
 
 type ArchesLocationType = 'below' | 'above';
 
@@ -161,7 +162,7 @@ export class NumberlineArchesGameIndexApp extends LitElement {
   }
 
   renderButton(
-    duration: string,
+    duration: TimeEnum,
     shortCode: string,
     min: number,
     max: number,
@@ -172,10 +173,10 @@ export class NumberlineArchesGameIndexApp extends LitElement {
     color: Color,
     description: string,
   ): HTMLTemplateResult {
-    let belowArches: ArchType[] | typeof nothing = nothing;
-    let aboveArches: ArchType[] | typeof nothing = nothing;
-    if (archesLocation === 'above') aboveArches = arches;
-    else if (archesLocation === 'below') belowArches = arches;
+    const belowArches: ArchType[] | null =
+      archesLocation === 'above' ? arches : null;
+    const aboveArches: ArchType[] | null =
+      archesLocation === 'below' ? arches : null;
 
     let iconNumberLineLength = 10;
     if (maxNumberline - minNumberline > 10) iconNumberLineLength = 20;
@@ -202,7 +203,7 @@ export class NumberlineArchesGameIndexApp extends LitElement {
   }
 
   renderRow(
-    durations: string[],
+    durations: TimeEnum[],
     shortCodes: string[],
     min: number,
     max: number,
