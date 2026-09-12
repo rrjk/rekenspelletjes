@@ -53,35 +53,17 @@ export class TestApp extends LitElement {
   }
 
   protected renderTest(): HTMLTemplateResult {
-    return html` <math-step-sums-icon
-        id="smallWide"
-        math-step="PlusMinusTill10"
-      ></math-step-sums-icon>
+    return html` <math-step-sums-icon id="smallWide"></math-step-sums-icon>
       <div class="space"></div>
-      <math-step-sums-icon
-        id="mediumWide"
-        math-step="PlusMinusTill10"
-      ></math-step-sums-icon>
+      <math-step-sums-icon id="mediumWide"></math-step-sums-icon>
       <div class="space"></div>
-      <math-step-sums-icon
-        id="largeWide"
-        math-step="PlusMinusTill10"
-      ></math-step-sums-icon>
+      <math-step-sums-icon id="largeWide"></math-step-sums-icon>
       <div class="space"></div>
-      <math-step-sums-icon
-        id="smallTall"
-        math-step="PlusMinusTill10"
-      ></math-step-sums-icon>
+      <math-step-sums-icon id="smallTall"></math-step-sums-icon>
       <div class="space"></div>
-      <math-step-sums-icon
-        id="mediumTall"
-        math-step="PlusMinusTill10"
-      ></math-step-sums-icon>
+      <math-step-sums-icon id="mediumTall"></math-step-sums-icon>
       <div class="space"></div>
-      <math-step-sums-icon
-        id="largeTall"
-        math-step="PlusMinusTill10"
-      ></math-step-sums-icon>`;
+      <math-step-sums-icon id="largeTall"></math-step-sums-icon>`;
   }
 
   protected render(): HTMLTemplateResult {
