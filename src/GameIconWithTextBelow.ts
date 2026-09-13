@@ -101,7 +101,7 @@ export class GameIconWithTextOnBelow extends LitElement {
       <div class="${this.image} ${this.image}${balloonColorClass}">
         <span class="textM">${this.textM}</span>
       </div>
-      <div class="textB">${this.textB}</span>
+      <span class="textB">${this.textB}</span>
     `;
   }
 }
