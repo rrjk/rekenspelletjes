@@ -8,6 +8,7 @@ import {
 } from './HowManyFingersGameVariants';
 import { getColorInfo } from '../Colors';
 import '../HandFace';
+import { PossibleNumberFingers } from '../HandFace';
 
 @customElement('how-many-fingers-game-icon')
 export class HowManyFingersGameIcon extends LitElement {
@@ -48,12 +49,13 @@ export class HowManyFingersGameIcon extends LitElement {
 
   private getRepresentativeFingerCount(
     variantInfo: HowManyFingersGameExtendedVariantInfo,
-  ): number {
+  ): PossibleNumberFingers {
     // For one hand variants (max <= 5), show a middle value (3-4)
     if (variantInfo.maxFingers <= 5) {
       const range = variantInfo.maxFingers - variantInfo.minFingers + 1;
       const middle = Math.floor(range / 2);
-      return variantInfo.minFingers + middle;
+      // Here we can be sure that the result of the following calculation is in fact within finger range.
+      return (variantInfo.minFingers + middle) as PossibleNumberFingers;
     }
     // For two hands variants (max > 5), show 7 fingers (representative)
     return 7;
