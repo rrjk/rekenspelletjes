@@ -9,6 +9,7 @@ import {
   unsafeCSS,
 } from 'lit';
 import { customElement } from 'lit/decorators.js';
+import { styleMap } from 'lit/directives/style-map.js';
 import { getColorInfo } from '../Colors';
 
 interface ButtonInfo {
@@ -327,25 +328,20 @@ export class MathWallIndexApp extends LitElement {
           height: 100%;
           width: 100%;
           box-sizing: border-box;
+          grid-column: var(--grid-column-start) / span var(--grid-column-span);
+          grid-row: var(--grid-row-start) / span var(--grid-row-span);
         }
       `,
-      MathWallIndexApp.phase1Buttons.map(
-        button => css`
-          div#${unsafeCSS(button.id)} {
-            grid-column: ${button.startColumn} / span ${button.width};
-            grid-row: ${button.startRow} / span ${button.height};
-          }
-        `,
-      ),
-      MathWallIndexApp.phase2Buttons.map(
-        button => css`
-          div#${unsafeCSS(button.id)} {
-            grid-column: ${button.startColumn} / span ${button.width};
-            grid-row: ${button.startRow} / span ${button.height};
-          }
-        `,
-      ),
     ];
+  }
+
+  buttonPositionStyle(button: ButtonInfo): Record<string, string> {
+    return {
+      '--grid-column-start': `${button.startColumn}`,
+      '--grid-column-span': `${button.width}`,
+      '--grid-row-start': `${button.startRow}`,
+      '--grid-row-span': `${button.height}`,
+    };
   }
 
   renderButton(button: ButtonInfo): HTMLTemplateResult {
@@ -354,7 +350,11 @@ export class MathWallIndexApp extends LitElement {
       import.meta.url,
     );
     return html`
-      <div class="button" id=${button.id}>
+      <div
+        class="button"
+        id=${button.id}
+        style=${styleMap(this.buttonPositionStyle(button))}
+      >
         ${button.content}
         <a href=${url.href} class="stretched-link"></a>
       </div>
