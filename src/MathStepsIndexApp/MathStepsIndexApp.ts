@@ -155,7 +155,6 @@ export class MathStepsIndexApp extends LitElement {
           border-radius: 10px;
           padding: 5px;
           color: white;
-          font-color: white;
         }
 
         summary::-webkit-details-marker {
@@ -219,7 +218,10 @@ export class MathStepsIndexApp extends LitElement {
       return html`
         <li class="active">
           <math-step-sums-icon
-            link="../../Rekenspelletjes/SumTypeIndex-${sumType.id}.html"
+            .link=${new URL(
+              `../../Rekenspelletjes/SumTypeIndex-${sumType.id}.html`,
+              import.meta.url,
+            )}
             description=${sumType.description}
             title=${sumType.title}
           ></math-step-sums-icon>
@@ -229,7 +231,6 @@ export class MathStepsIndexApp extends LitElement {
       return html`
         <li class="inactive">
           <math-step-sums-icon
-            link=""
             description="${sumType.description} (Wordt nog ontwikkeld)"
             title=${sumType.title}
           ></math-step-sums-icon>
@@ -243,7 +244,7 @@ export class MathStepsIndexApp extends LitElement {
       return this.renderSumType(sumType);
     });
     return html`
-      <details name="menu">
+      <details>
         <summary>
           <span class="arrow">▶</span>
           <math-step-sums-icon

@@ -11,7 +11,7 @@ export class MathStepSumsIcon extends LitElement {
   @property()
   accessor title = ``;
 
-  @property()
+  @property({ attribute: false })
   accessor link: URL | undefined = undefined;
 
   static get styles(): CSSResultGroup {
