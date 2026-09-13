@@ -9,17 +9,17 @@ import { Color, getColorInfo, stringToColor } from './Colors';
 @customElement('icon-clock-pair')
 export class IconClockPair extends LitElement {
   @property({ type: Boolean })
-  private accessor analog = false;
+  accessor analog = false;
   @property({ type: Boolean })
-  private accessor digital = false;
+  accessor digital = false;
   @property({ type: Boolean })
-  private accessor sentence = false;
+  accessor sentence = false;
   @property({ type: Number })
-  private accessor hours = 7;
+  accessor hours = 7;
   @property({ type: Number })
-  private accessor minutes = 10;
+  accessor minutes = 10;
   @property({ type: String, converter: stringToColor })
-  private accessor color: Color = 'grey';
+  accessor color: Color = 'grey';
 
   static get styles(): CSSResultGroup {
     return css`
@@ -84,14 +84,12 @@ export class IconClockPair extends LitElement {
             ></sentence-clock>`
           : ''}
         ${this.digital
-          ? html`
-        <digital-clock
-          hours=${this.hours}
-          minutes=${this.minutes}
-          useWords
-          style="top: 10%"
-          class=${cls}
-        ></digitak-clock>`
+          ? html` <digital-clock
+              hours=${this.hours}
+              minutes=${this.minutes}
+              style="top: 10%"
+              class=${cls}
+            ></digital-clock>`
           : ''}
       </div>
     `;
