@@ -8,7 +8,7 @@ import {
 } from './HowManyFingersGameVariants';
 import { getColorInfo } from '../Colors';
 import '../HandFace';
-import { PossibleNumberFingers } from '../HandFace';
+import { type PossibleNumberFingers } from '../HandFace';
 
 @customElement('how-many-fingers-game-icon')
 export class HowManyFingersGameIcon extends LitElement {
