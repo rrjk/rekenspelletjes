@@ -3,9 +3,9 @@
     "forceConsistentCasingInFileNames": true,
     "importHelpers": true,
     "removeComments": true,
-    "module": "es2020",
-    "moduleResolution": "node",
-    "target": "ES2023",
+    "module": "es2022",
+    "moduleResolution": "bundler",
+    "target": "es2024",
     "strict": true,
     "useDefineForClassFields": false,
     "experimentalDecorators": false,
@@ -17,7 +17,12 @@
         "strict": true,
         "globalAttributes": ["popovertarget", "popover"]
       }
-    ]
+    ],
+    "paths": {
+      "@web/rollup-plugin-import-meta-assets": [
+        "./node_modules/@web/rollup-plugin-import-meta-assets/dist/index.d.ts"
+      ]
+    }
   },
   "$schema": "https://json.schemastore.org/tsconfig",
   "display": "Recommended"
