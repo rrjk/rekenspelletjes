@@ -358,7 +358,6 @@ export class ClockPairingApp extends TimeLimitedGame2 {
   renderGameContent(): HTMLTemplateResult {
     return html`
       <dynamic-grid
-        numberInGroup="12"
         contentAspectRatio="1"
         padding="0"
         style="width: 100%; height: 100%; top: 0;"
