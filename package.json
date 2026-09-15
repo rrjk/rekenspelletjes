@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest",
-    "lint": "npm run typecheck && npm run lint:eslint && npm run lint:prettier",
+    "lint": "npm run typecheck && npm run lint:eslint && npm run lint:prettier && npm run lint:lit",
     "format": "npm run format:eslint && npm run format:prettier",
     "lint:eslint": "eslint",
     "lint:lit": "lit-analyzer \"src/**/*.ts\"",
@@ -97,15 +97,5 @@
     "lit-analyzer": {
       "vscode-css-languageservice": ">=6.3.10"
     }
-  },
-  "lint-staged": {
-    "*.ts": [
-      "eslint --cache",
-      "prettier --write"
-    ],
-    "*.js": [
-      "eslint --cache",
-      "prettier --write"
-    ]
   }
 }

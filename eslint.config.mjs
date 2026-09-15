@@ -9,6 +9,9 @@ import { defineConfig, globalIgnores } from 'eslint/config';
 import eslintConfigPrettier from 'eslint-config-prettier/flat';
 
 export default defineConfig([
+  {
+    ignores: ['.lintstagedrc.cjs'],
+  },
   globalIgnores(['dist/*', 'node_modules/*']),
   importX.flatConfigs.recommended,
   importX.flatConfigs.typescript,
