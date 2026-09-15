@@ -207,7 +207,6 @@ class ClickTheRightPhotoOnNumberLineApp extends TimeLimitedGame2 {
         ?showAll10Numbers=${this.numberLineParameters.showAll10Numbers}
         minimum=${this.numberLineParameters.minimum}
         maximum=${this.numberLineParameters.maximum}
-        width="95vw"
         .photoPositions=${this.positions}
         .disabledPositions=${this.disabledPositions}
         @photo-clicked=${(evt: CustomEvent) => this.handlePhotoClicked(evt)}
