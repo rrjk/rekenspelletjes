@@ -126,7 +126,6 @@ export class DropTargetBox
     else if (this.boxColor === 'purple') boxColorClass = 'boxPurple';
     return html`
       <div
-        alt="smallest box"
         class="box ${boxColorClass} box${this.size}${this.tallWide} ${this
           .highlighted === 'droppable'
           ? 'highlightDroppable'
