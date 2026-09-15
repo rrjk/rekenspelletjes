@@ -66,9 +66,6 @@ export class CombineToSolveSumGameIndexApp extends VariantIndexAppBase<IndexPage
     return [
       super.styles,
       css`
-        :host {
-        }
-
         combine-to-solve-sum-game-hourglass-game-icon {
           min-width: 0;
         }
