@@ -11,6 +11,11 @@ import { RenderGameIconFunction } from '../RenderGameIconFunction';
 
 export const renderAdditionSubstractionWithinDecadeGameHourglassGameIcon: RenderGameIconFunction =
   (variant, classes, timeCode) => {
+    if (timeCode === undefined)
+      throw new Error(
+        'timeCode obligatory for Addition Substratcion Within Decade Game Hourglass Game Icon',
+      );
+
     return html`<addition-substraction-within-decade-game-hourglass-game-icon
       class=${classMap(classes)}
       .variant=${variant}

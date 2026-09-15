@@ -6,6 +6,7 @@ import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
 import { Color } from './Colors';
 
+import { type TimeEnum } from './IconHourglassButton';
 import './IconHourglassButton';
 import './GameIconWithTextOverlay';
 import { Operator } from './SquaresBalloonGameLink';
@@ -131,7 +132,7 @@ export class HexagonGameIndexApp extends LitElement {
   }
 
   renderButton(
-    duration: string,
+    duration: TimeEnum,
     shortCode: string,
     operators: Operator[],
     maxBase: number,
@@ -167,7 +168,7 @@ export class HexagonGameIndexApp extends LitElement {
   }
 
   renderRow(
-    durations: string[],
+    durations: TimeEnum[],
     shortCodes: string[],
     operators: Operator[],
     maxBase: number,

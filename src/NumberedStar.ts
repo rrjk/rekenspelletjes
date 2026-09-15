@@ -19,7 +19,7 @@ export class NumberedStar extends LitElement {
   /** Strings to show, each array element will be shown on a separate row.
    * In case both a number and strings are provided, the strings will be shown
    */
-  @property({ converter: convertJSON<string[]> })
+  @property({ type: Array, converter: convertJSON<string[]> })
   accessor stringsToShow: string[] = [];
 
   /** Color of the star to use */

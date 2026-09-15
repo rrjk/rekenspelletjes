@@ -14,6 +14,11 @@ export const renderDieFaceGameHourglassGameIcon: RenderGameIconFunction = (
   classes,
   timeCode,
 ) => {
+  if (timeCode === undefined)
+    throw new Error(
+      'timeCode obligatory for Die Face Game Hourglass Game Icon',
+    );
+
   return html`<die-face-game-hourglass-game-icon
     class=${classMap(classes)}
     .variant=${variant}

@@ -12,6 +12,11 @@ import { RenderGameIconFunction } from '../RenderGameIconFunction';
 
 export const renderMultiplicationTablesBalloonHourglassGameIcon: RenderGameIconFunction =
   (variant, classes, timeCode) => {
+    if (timeCode === undefined)
+      throw new Error(
+        'timeCode obligatory for Multiplication Tables Balloon Game Hourglass Game Icon',
+      );
+
     return html`<multiplication-tables-balloon-hourglass-game-icon
       class=${classMap(classes)}
       .variant=${variant}

@@ -10,6 +10,8 @@ import '../IconHourglassButton';
 import './DivideWithSplitWidget';
 import type { FillInInfo, FixedNumberInfo } from './DivideWithSplitWidget';
 
+import { type TimeEnum } from '../IconHourglassButton';
+
 interface RowInfoType {
   description: string;
   shortCodes: string[];
@@ -114,7 +116,7 @@ export class DivisionWithSplitGameIndexApp extends LitElement {
   }
 
   renderButton(
-    duration: string,
+    duration: TimeEnum,
     shortCode: string,
     fixedNumbers: FixedNumberInfo,
     fillInNumbers: FillInInfo,
@@ -137,7 +139,7 @@ export class DivisionWithSplitGameIndexApp extends LitElement {
   }
 
   renderRow(
-    durations: string[],
+    durations: TimeEnum[],
     shortCodes: string[],
     fixedNumbers: FixedNumberInfo,
     fillInNumbers: FillInInfo,

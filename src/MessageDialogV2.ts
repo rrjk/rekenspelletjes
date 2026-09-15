@@ -118,7 +118,7 @@ export class MessageDialogV2 extends LitElement {
             <slot></slot>
           </div>
           <div id="image">
-            <img alt="Mompitz figuurtje" src=${this.imageUrl} />
+            <img alt="Mompitz figuurtje" src=${this.imageUrl.href} />
           </div>
           <button id="okButton" @click=${() => this.handleClick()}>
             ${this.buttonText}

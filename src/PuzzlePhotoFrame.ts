@@ -76,7 +76,6 @@ export class PuzzlePhotoFrame extends LitElement {
       const gridArea = `mini${i}`;
       ret.push(css`
         #${unsafeCSS(id)} {
-          backgound-color: #ffff00;
           grid-area: ${unsafeCSS(gridArea)};
         }
       `);

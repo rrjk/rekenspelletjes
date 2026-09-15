@@ -5,9 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest",
-    "lint": "npm run typecheck && npm run lint:eslint && npm run lint:prettier",
+    "lint": "npm run typecheck && npm run lint:eslint && npm run lint:prettier && npm run lint:lit",
     "format": "npm run format:eslint && npm run format:prettier",
     "lint:eslint": "eslint",
+    "lint:lit": "lit-analyzer \"src/**/*.ts\"",
     "format:eslint": "eslint --ext .js,.html,.ts . --fix --ignore-path .gitignore",
     "lint:prettier": "prettier \"**/*.ts\" --check --ignore-path .gitignore",
     "format:prettier": "prettier \"**/*.ts\" --write --ignore-path .gitignore",
@@ -71,6 +72,7 @@
     "husky": "^9.1.6",
     "jest": "^29.7.0",
     "lint-staged": "^16.0.0",
+    "lit-analyzer": "^2.0.3",
     "prettier": "^3.3.3",
     "rollup": "^4.24.0",
     "rollup-plugin-copy": "^3.5.0",
@@ -91,16 +93,9 @@
   "overrides": {
     "@web/dev-server-esbuild": {
       "esbuild": ">=0.24.0"
+    },
+    "lit-analyzer": {
+      "vscode-css-languageservice": ">=6.3.10"
     }
-  },
-  "lint-staged": {
-    "*.ts": [
-      "eslint --cache",
-      "prettier --write"
-    ],
-    "*.js": [
-      "eslint --cache",
-      "prettier --write"
-    ]
   }
 }

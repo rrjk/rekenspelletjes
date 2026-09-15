@@ -14,6 +14,11 @@ export const renderEggCountingGameHourglassGameIcon: RenderGameIconFunction = (
   classes,
   timeCode,
 ) => {
+  if (timeCode === undefined)
+    throw new Error(
+      'timeCode obligatory for Egg Counting Game Hourglass Game Icon',
+    );
+
   return html`<egg-counting-game-hourglass-game-icon
     class=${classMap(classes)}
     .variant=${variant}

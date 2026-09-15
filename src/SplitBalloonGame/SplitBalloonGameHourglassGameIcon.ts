@@ -15,6 +15,9 @@ export const renderSplitBalloonGameHourglassGameIcon: RenderGameIconFunction = (
   classes,
   timeCode,
 ) => {
+  if (!timeCode) {
+    throw new Error('Split balloon game requires a duration');
+  }
   return html`<split-balloon-game-hourglass-game-icon
     class=${classMap(classes)}
     .variant=${variant}

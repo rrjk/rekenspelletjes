@@ -1,4 +1,4 @@
-import { LitElement, html, css, nothing } from 'lit';
+import { LitElement, html, css } from 'lit';
 import type { HTMLTemplateResult, CSSResultGroup } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
@@ -64,8 +64,8 @@ export class NumberlineArchesGameIcon extends LitElement {
     const variantInfo: NumberlineArchesGameExtendedVariantInfo =
       getNumberlineArchesGameVariant(this.variant);
 
-    let belowArches: ArchType[] | typeof nothing = nothing;
-    let aboveArches: ArchType[] | typeof nothing = nothing;
+    let belowArches: ArchType[] | null = null;
+    let aboveArches: ArchType[] | null = null;
 
     if (variantInfo.operator === 'minus') {
       belowArches = variantInfo.archesForIcon;

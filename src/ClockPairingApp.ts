@@ -338,7 +338,7 @@ export class ClockPairingApp extends TimeLimitedGame2 {
       const imageUrl = clockInformation.addImage;
       mompitzContent = html`<div>
         <img
-          src=${imageUrl.url}
+          src=${imageUrl.url.href}
           alt="Mompitz figure"
           style="width: ${imageUrl.size}%; 
                  height: ${imageUrl.size}%; 
@@ -358,7 +358,6 @@ export class ClockPairingApp extends TimeLimitedGame2 {
   renderGameContent(): HTMLTemplateResult {
     return html`
       <dynamic-grid
-        numberInGroup="12"
         contentAspectRatio="1"
         padding="0"
         style="width: 100%; height: 100%; top: 0;"

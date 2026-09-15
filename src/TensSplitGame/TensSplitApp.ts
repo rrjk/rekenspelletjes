@@ -155,7 +155,7 @@ export class TensSplitApp extends TimeLimitedGame2 {
 
     return html` <div class="dummyRow"></div>
       <tens-split-widget
-        numberToSplit="${this.numberToSplit} "
+        numberToSplit=${this.numberToSplit}
         activeDigit=${this.activeDigit}
       ></tens-split-widget>
       <digit-keyboard

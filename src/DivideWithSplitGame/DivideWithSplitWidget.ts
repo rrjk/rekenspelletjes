@@ -249,10 +249,10 @@ function convertJSON<T>(value: string | null): T {
 
 @customElement('divide-with-split-widget')
 export class DivideWihSplitWidget extends LitElement {
-  @property({ converter: convertJSON<FixedNumberInfo> })
+  @property({ type: Object, converter: convertJSON<FixedNumberInfo> })
   accessor fixedNumbers = initFixedNumberInfo();
 
-  @property({ converter: convertJSON<FillInInfo> })
+  @property({ type: Object, converter: convertJSON<FillInInfo> })
   accessor fillInNumbers = initFillInInfo();
 
   @property({ type: String })

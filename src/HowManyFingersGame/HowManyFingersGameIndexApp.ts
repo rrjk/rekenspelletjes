@@ -4,6 +4,7 @@ import { customElement } from 'lit/decorators.js';
 
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
+import { type TimeEnum } from '../IconHourglassButton';
 import '../IconHourglassButton';
 import '../HandFace';
 import { PossibleNumberFingers } from './HowManyFingersGameAppLink';
@@ -72,7 +73,7 @@ export class HowManyFingersGameIndexApp extends LitElement {
   }
 
   renderButton(
-    duration: string,
+    duration: TimeEnum,
     shortCode: string,
     nmbrFingers: PossibleNumberFingers,
     description: string,
@@ -92,7 +93,7 @@ export class HowManyFingersGameIndexApp extends LitElement {
   }
 
   renderRow(
-    durations: string[],
+    durations: TimeEnum[],
     shortCodes: string[],
     nmbrFingers: PossibleNumberFingers,
     description: string,

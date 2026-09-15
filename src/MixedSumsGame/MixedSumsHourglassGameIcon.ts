@@ -15,6 +15,11 @@ export const renderMixedSumsGameHourglassGameIcon: RenderGameIconFunction = (
   classes,
   timeCode,
 ) => {
+  if (timeCode === undefined)
+    throw new Error(
+      'timeCode obligatory for Mixed Sums Game Hourglass Game Icon',
+    );
+
   return html`<mixed-sums-hourglass-game-icon
     class=${classMap(classes)}
     .variant=${variant}

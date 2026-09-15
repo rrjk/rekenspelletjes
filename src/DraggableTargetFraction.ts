@@ -17,9 +17,9 @@ export class DraggableTargetFraction
   @state()
   private accessor dropState: HighlightType = 'none';
 
-  @property()
+  @property({ type: Number })
   accessor numerator = 1;
-  @property()
+  @property({ type: Number })
   accessor denumerator = 2;
 
   get value() {

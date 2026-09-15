@@ -28,13 +28,13 @@ function convertFractionAttribute(value: string | null): Fraction {
 @customElement('fraction-element')
 export class FractionElement extends LitElement {
   @state()
-  private accessor highlightState: HighlightType = 'none';
+  accessor highlightState: HighlightType = 'none';
 
   @property({ converter: convertFractionAttribute })
-  private accessor fraction: Fraction = new Fraction(1, 2);
+  accessor fraction: Fraction = new Fraction(1, 2);
 
   @property()
-  private accessor representation: FractionRepresentation = 'fraction';
+  accessor representation: FractionRepresentation = 'fraction';
 
   private get barLength() {
     if (this.fraction.numerator > 99 || this.fraction.denumerator > 99)
@@ -59,16 +59,19 @@ export class FractionElement extends LitElement {
 
         text.numerator {
           font-size: 100px;
+          /* dominant-baseline is in fact correct, lit-plugin is outdated however, CLI has been patched not to raise an issue */
           dominant-baseline: alphabetic;
         }
 
         text.denumerator {
           font-size: 100px;
+          /* dominant-baseline is in fact correct, lit-plugin is outdated however, CLI has been patched not to raise an issue */
           dominant-baseline: hanging;
         }
 
         text.percentage {
           font-size: 70px;
+          /* dominant-baseline is in fact correct, lit-plugin is outdated however, CLI has been patched not to raise an issue */
           dominant-baseline: middle;
         }
 

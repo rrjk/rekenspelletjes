@@ -297,6 +297,7 @@ export class EggCountingApp extends TimeLimitedGame2 {
         }
 
         text {
+          /* dominant-baseline is in fact correct, lit-plugin is outdated however, CLI has been patched not to raise an issue */
           dominant-baseline: middle;
           font-size: 80px;
         }

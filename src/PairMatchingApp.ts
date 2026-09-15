@@ -11,12 +11,13 @@ import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
 import { TimeLimitedGame2 } from './TimeLimitedGame2';
 
-import './DraggableTargetSlotted';
 import './DynamicGrid';
 import type { DraggableTargetSlotted } from './DraggableTargetSlotted';
 import { ChildNotFoundError } from './ChildNotFoundError';
 import { DropEvent } from './DraggableElement';
 import { randomIntFromRange, shuffleArray } from './Randomizer';
+import { type DraggableTargetSlottedCellElement } from './DraggableTargetSlottedCellElement';
+import './DraggableTargetSlottedCellElement';
 
 /**
  * The game builds up a simple grid to keep numberOfPairs *2 gridElement. This grid will resize automatically.
@@ -68,10 +69,6 @@ interface BasicCellInfo {
 
 interface CellInfoInterface {
   equal(other: CellInfoInterface): boolean;
-}
-
-interface CellElement extends DraggableTargetSlotted {
-  gridIndex: number;
 }
 
 interface Cell<T> {
@@ -265,15 +262,15 @@ export abstract class PairMatchingApp<
     }
   }
 
-  private getCellElement(index: number): DraggableTargetSlotted {
+  private getCellElement(index: number): DraggableTargetSlottedCellElement {
     const elementName = this.serializeGridId(index);
     const cellElement = this.renderRoot.querySelector(
-      `draggable-target-slotted#${elementName}`,
+      `draggable-target-slotted-cell-element#${elementName}`,
     );
     if (cellElement === null) {
       throw new ChildNotFoundError(elementName, 'PairMatchingApp');
     }
-    return cellElement as DraggableTargetSlotted;
+    return cellElement as DraggableTargetSlottedCellElement;
   }
 
   serializeGridId(gridIndex: number) {
@@ -289,8 +286,8 @@ export abstract class PairMatchingApp<
 
   private setTargetsForCells() {
     const cellElements: {
-      exercise: DraggableTargetSlotted[];
-      answer: DraggableTargetSlotted[];
+      exercise: DraggableTargetSlottedCellElement[];
+      answer: DraggableTargetSlottedCellElement[];
     } = { exercise: [], answer: [] };
 
     this.gridItems.forEach((gridItem, index) => {
@@ -333,8 +330,8 @@ export abstract class PairMatchingApp<
     if (evt.dropType === 'dropWrong') return;
 
     const involvedElements = {
-      draggable: evt.draggableElement as CellElement,
-      target: evt.dropTargetElement as CellElement,
+      draggable: evt.draggableElement as DraggableTargetSlottedCellElement,
+      target: evt.dropTargetElement as DraggableTargetSlottedCellElement,
     };
     const involvedGridIndexes = {
       draggable: involvedElements.draggable.gridIndex,
@@ -418,20 +415,20 @@ export abstract class PairMatchingApp<
           container-name: draggable;
         }
 
-        draggable-target-slotted {
+        draggable-target-slotted-cell-element {
           aspect-ratio: 1/1;
           display: block;
           position: relative;
         }
 
         @container draggable (aspect-ratio <= 1) {
-          draggable-target-slotted {
+          draggable-target-slotted-cell-element {
             width: 50%;
           }
         }
 
         @container draggable (aspect-ratio > 1) {
-          draggable-target-slotted {
+          draggable-target-slotted-cell-element {
             height: 50%;
           }
         }
@@ -540,7 +537,7 @@ export abstract class PairMatchingApp<
 
       ret.push(
         html`<img class="miniMompitz ${classMap(imgClass)}" 
-              alt="Mompitz figure" src=${PairMatchingApp.imagesForMompitzCells[indexes[i]]}
+              alt="Mompitz figure" src=${PairMatchingApp.imagesForMompitzCells[indexes[i]].href}
               @animationend=${() => this.animationend(gridIndex)}></img>`,
       );
     }
@@ -584,7 +581,7 @@ export abstract class PairMatchingApp<
     return html` <div class="gridElement">
         ${miniMompitz}
         <div class="content">
-          <draggable-target-slotted
+          <draggable-target-slotted-cell-element
             id=${this.serializeGridId(gridIndex)}
             .gridIndex=${gridIndex}
             @dropped=${(evt: DropEvent) => this.handleDropped(evt)}
@@ -592,7 +589,7 @@ export abstract class PairMatchingApp<
             style="top: ${cell.basicInfo.top}%; left: ${cell.basicInfo.left}%;"
           >
             ${this.renderPairElement(cell.detailedInfo)}
-          </draggable-target-slotted>
+          </draggable-target-slotted-cell-element>
         </div>
       </div>
     </div>`;

@@ -14,6 +14,9 @@ export const renderDotCountingGameHourglassGameIcon: RenderGameIconFunction = (
   classes,
   timeCode,
 ) => {
+  if (!timeCode) {
+    throw new Error('Dot counting game requires a duration');
+  }
   return html`<dot-counting-game-hourglass-game-icon
     class=${classMap(classes)}
     .variant=${variant}

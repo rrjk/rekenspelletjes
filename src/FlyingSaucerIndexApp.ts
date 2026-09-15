@@ -6,6 +6,7 @@ import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
 import { Color } from './Colors';
 
+import { type TimeEnum } from './IconHourglassButton';
 import './IconHourglassButton';
 import './FlyingSaucer';
 
@@ -243,7 +244,7 @@ export class FlyingSaucerGameIndexApp extends LitElement {
   }
 
   renderButton(
-    duration: string,
+    duration: TimeEnum,
     shortCode: string,
     text: string,
     symbol1: string,
@@ -269,7 +270,7 @@ export class FlyingSaucerGameIndexApp extends LitElement {
   }
 
   renderRow(
-    durations: string[],
+    durations: TimeEnum[],
     shortCodes: string[],
     text: string,
     symbol1: string,

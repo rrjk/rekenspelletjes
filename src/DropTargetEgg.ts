@@ -2,7 +2,12 @@ import { LitElement, html, css } from 'lit';
 import type { HTMLTemplateResult, CSSResultGroup } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 
-import { DropTargetElementInterface, HighlightType } from './DraggableElement';
+import {
+  DropTarget,
+  DropTargetElementInterface,
+  HighlightType,
+} from './DraggableElement';
+import './DynamicGrid';
 
 type ItemType = 'egg' | 'eggCarton';
 
@@ -26,7 +31,7 @@ export class DropTargetEgg
   accessor itemType: ItemType = 'eggCarton';
 
   @property({ attribute: false })
-  accessor trashcanAreas: DropTargetElementInterface[] = [];
+  accessor trashcanAreas: readonly DropTarget[] = [];
 
   @state()
   accessor highlighted: HighlightType = 'none';
@@ -115,7 +120,7 @@ export class DropTargetEgg
               draggable="false"
               class=${this.itemType}
               alt=${this.itemType}
-              src=${imageURLs[this.itemType]}
+              src=${imageURLs[this.itemType].href}
             />
           </draggable-element>
         </div>`,

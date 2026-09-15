@@ -163,7 +163,7 @@ export class MompitzNumber extends LitElement {
               draggable="false"
               alt=${digitInfo.digit}
               class="digit ${digitInfo.narrow}"
-              src=${MompitzNumber.getUrl(digitInfo)}
+              src=${MompitzNumber.getUrl(digitInfo).href}
             />
           `,
         )}

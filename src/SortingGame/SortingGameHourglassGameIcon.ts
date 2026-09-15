@@ -14,6 +14,9 @@ export const renderSortingGameHourglassGameIcon: RenderGameIconFunction = (
   classes,
   timeCode,
 ) => {
+  if (!timeCode) {
+    throw new Error('Sorting game requires a duration');
+  }
   return html`<sorting-game-hourglass-game-icon
     class=${classMap(classes)}
     .variant=${variant}

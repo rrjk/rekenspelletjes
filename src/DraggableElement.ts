@@ -91,7 +91,7 @@ export class DraggableElement extends LitElement {
 
   private dropTargetInfoList: DropTargetInfo[] = [];
 
-  @property()
+  @property({ type: Array, attribute: false })
   accessor dropTargetList: readonly DropTarget[] | undefined = undefined;
 
   protected willUpdate(changedProperties: PropertyValues): void {

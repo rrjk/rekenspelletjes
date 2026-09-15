@@ -218,7 +218,7 @@ export class GameOverDialogV2 extends LitElement {
             </table>
           </div>
           <div id="image">
-            <img alt="Mompitz figuurtje" src=${this.imageUrl} />
+            <img alt="Mompitz figuurtje" src=${this.imageUrl.href} />
           </div>
           <div id="buttons">
             <button autofocus @click=${() => this.handleClickPlayAgain()}>

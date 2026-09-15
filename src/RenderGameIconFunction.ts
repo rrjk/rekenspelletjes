@@ -1,5 +1,5 @@
 import { html, HTMLTemplateResult } from 'lit';
-import { ClassInfo } from 'lit/directives/class-map.js';
+import { ClassInfo, classMap } from 'lit/directives/class-map.js';
 import { TimeCode } from './TimeCodes';
 
 /** Helper function to render the addition/subtraction within decade game hourglass game icon
@@ -18,5 +18,5 @@ export const renderNotImplemented: RenderGameIconFunction = (
   variant,
   classes,
 ) => {
-  return html`<div class=${classes}>Not Implemented</div>`;
+  return html`<div class=${classMap(classes)}>Not Implemented</div>`;
 };

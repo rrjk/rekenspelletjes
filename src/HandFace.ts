@@ -7,7 +7,7 @@ const possibleSingleHandNumberFingers = [1, 2, 3, 4, 5] as const;
 type PossibleSingleHandNumberFingers =
   (typeof possibleSingleHandNumberFingers)[number];
 
-const possibleDoubleHandNumberFingers = [6, 7, 8, 8, 10] as const;
+const possibleDoubleHandNumberFingers = [6, 7, 8, 9, 10] as const;
 type PossibleDoubleHandNumberFingers =
   (typeof possibleDoubleHandNumberFingers)[number];
 
@@ -90,17 +90,27 @@ export class HandFace extends LitElement {
   }
 
   renderOneHand(numberFingers: PossibleSingleHandNumberFingers) {
-    return html`<img class="oneHand" src=${leftHandImages.get(numberFingers)?.href}></img>`;
+    const imgSrc = leftHandImages.get(numberFingers)?.href;
+    if (!imgSrc)
+      throw new Error(
+        'Internal SW error - no image available for number of fingers',
+      );
+    return html`<img class="oneHand" src=${imgSrc}></img>`;
   }
 
   renderTwoHands(numberFingers: PossibleDoubleHandNumberFingers) {
-    const numberFingersPerHand: PossibleSingleHandNumberFingers[] = [
-      5,
-      (numberFingers - 5) as PossibleSingleHandNumberFingers, // As numberFingers is between 6 and 10, numberFinger-5 must be between 1 and 5
-    ];
+    const imgSrcLeft = leftHandImages.get(5)?.href;
+    const imgSrcRight = rightHandImages.get(
+      (numberFingers - 5) as PossibleSingleHandNumberFingers,
+    )?.href; // As numberFingers is between 6 and 10, numberFinger-5 must be between 1 and 5
+    if (!imgSrcLeft || !imgSrcRight)
+      throw new Error(
+        'Internal SW error - no image available for number of fingers',
+      );
+
     return html`
-      <img src=${leftHandImages.get(numberFingersPerHand[0])}></img>
-      <img src=${rightHandImages.get(numberFingersPerHand[1])}></img>
+      <img src=${imgSrcLeft}></img>
+      <img src=${imgSrcRight}></img>
     `;
   }
 
