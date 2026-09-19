@@ -16,7 +16,7 @@ export abstract class GoalCardIndexApp extends LitElement {
   }
 
   @property({ type: Array })
-  protected accessor sections: SectionInfoList = [];
+  accessor sections: SectionInfoList = [];
 
   static get styles(): CSSResultArray {
     return [

@@ -19,8 +19,8 @@ import { renderMixedSumsGameHourglassGameIcon } from '../MixedSumsGame/MixedSums
 import { renderAdditionSubstractionWithinDecadeGameHourglassGameIcon } from '../AdditionSubstractionWithinDecadeGame/AdditionSubstractionWithinDecadeGameHourglassGameIcon';
 
 @customElement('goal-card-widget')
-export abstract class GoalCardWidget extends LitElement {
-  @property()
+export class GoalCardWidget extends LitElement {
+  @property({ type: Array })
   accessor sections: SectionInfoList = [];
 
   static get styles(): CSSResultArray {
