@@ -1,4 +1,9 @@
-import { timeCodeMapping, isTimeCode } from './TimeCodes';
+import {
+  timeCodeMapping,
+  isTimeCode,
+  TimeCode,
+  stringToTimeCode,
+} from './TimeCodes';
 import { isGameCode, type GameCode } from './GameCodes';
 
 const urlParams = new URLSearchParams(window.location.search);
@@ -8,12 +13,19 @@ const baseUrl = new URL('./Rekenspelletjes/', window.location.origin);
 
 const defaultUrl = new URL('./index.html', baseUrl);
 
+export type GameInfo = {
+  game: GameCode;
+  variant: string;
+  timeCode?: TimeCode;
+};
+
 const baseURLs: Partial<Record<GameCode, URL>> = {
   A: new URL('./PlusMinBinnenTiental.html', baseUrl),
   B: new URL('./PlusMinHeleTientallen.html', baseUrl),
   C: new URL('./TafeltjesOefenenSpel.html', baseUrl),
   D: new URL('./TafeltjesOefenenSpel.html', baseUrl),
   E: new URL('./Sorteren.html', baseUrl),
+  // F not yet implemented for short urls with t
   G: new URL('./SommenMetSplitsen.html', baseUrl),
   H: new URL('./AanklikkenInVolgorde.html', baseUrl),
   I: new URL('./BreukenPaartjesSpel.html', baseUrl),
@@ -75,27 +87,20 @@ export function gameInfoToUrl(
  * @param url The game URL to inspect.
  * @returns The matching game code, variant, and optional time-code key.
  */
-export function urlToGameInfo(url: URL): {
-  gameCode: GameCode | null;
-  variant: string;
-  timeCode?: string;
-} {
+export function urlToGameInfo(url: URL): GameInfo | null {
   const matchingKey = Object.entries(baseURLs).find(
     ([, base]) => base && url.href.startsWith(base.href),
   )?.[0];
 
-  const gameCode = matchingKey && isGameCode(matchingKey) ? matchingKey : null;
+  const game = matchingKey && isGameCode(matchingKey) ? matchingKey : null;
 
   const variant = url.searchParams.get('variant') || 'a';
 
   const time = url.searchParams.get('time');
-  const timeCode = time
-    ? Object.entries(timeCodeMapping).find(
-        ([, value]) => `${value}` === time,
-      )?.[0]
-    : undefined;
+  const timeCode = stringToTimeCode(time);
 
-  return { gameCode, variant, timeCode };
+  if (game === null) return null;
+  return { game, variant, timeCode };
 }
 
 /**
@@ -117,4 +122,46 @@ export function redirect() {
       newUrl = gameInfoToUrl(mainCode, variant, timeCode);
   }
   window.location.replace(newUrl.href);
+}
+
+const SHORT_URL_CODE =
+  /^(?<game>[A-Z]{1,2})-(?<variant>[a-z]{1,2})-(?<time>[a-z])\/?$/;
+
+/**
+ *   Extracts game information from a game URL.
+ *
+ * @param url - URL to extract gameinfo from
+ * @returns gameInfo contained in the URL or null if the URL is not a valid short URL
+ */
+export function shortUrlToGameInfo(url: URL): GameInfo | null {
+  if (url.pathname !== '/t') return null;
+  const groups = SHORT_URL_CODE.exec(url.search.slice(1))?.groups;
+  if (!groups) return null;
+  const game = groups.game;
+  const variant = groups.variant;
+  const timeCode = groups.time;
+
+  if (!isGameCode(game) || !isTimeCode(timeCode)) return null;
+  return { game, variant, timeCode };
+}
+
+/**
+ *   Extracts game information from a game URL.
+ *
+ * @param gameInfo Game info for the URL to create
+ * @returns The short URL of the selected game.
+ */
+export function gameInfoToShortUrl(gameInfo: GameInfo): URL {
+  return new URL(
+    `./t?${gameInfo.game}-${gameInfo.variant}-${gameInfo.timeCode}/`,
+    window.location.origin,
+  );
+}
+
+/** Determine whether an URL is a valid short URL.
+ * @param url - URL to check
+ * @return URL is a valid short URL.
+ */
+export function isValidShortUrl(url: URL): boolean {
+  return shortUrlToGameInfo(url) !== null;
 }

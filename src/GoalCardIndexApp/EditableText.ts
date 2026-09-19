@@ -10,7 +10,7 @@ import {
 } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { createRef, ref, Ref } from 'lit/directives/ref.js';
-import { renderEditIcon } from '../EditIcon';
+import { renderEditIcon } from '../Icons';
 
 /** Custom element to show text on the page that can be edited
  * @cssprop [--font-size=1em] - Font size for the editable text
