@@ -71,3 +71,36 @@ export function renderTranscanIcon(): HTMLTemplateResult {
     </svg>
   `;
 }
+
+export function renderPlusIcon(): HTMLTemplateResult {
+  return html`
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 100 100"
+      width="100%"
+      height="100%"
+    >
+      <!-- Plus Icon with matching rounded corner style -->
+      <path
+        d="M 50 15 
+       C 53.87 15 57 18.13 57 22 
+       L 57 43 
+       L 78 43 
+       C 81.87 43 85 46.13 85 50 
+       C 85 53.87 81.87 57 78 57 
+       L 57 57 
+       L 57 78 
+       C 57 81.87 53.87 85 50 85 
+       C 46.13 85 43 81.87 43 78 
+       L 43 57 
+       L 22 57 
+       C 18.13 57 15 53.87 15 50 
+       C 15 46.13 18.13 43 22 43 
+       L 43 43 
+       L 43 22 
+       C 43 18.13 46.13 15 50 15 Z"
+        fill="currenColor"
+      />
+    </svg>
+  `;
+}

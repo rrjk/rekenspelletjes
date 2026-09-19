@@ -30,10 +30,10 @@ import { hourGlassIcons, TimeCode } from '../TimeCodes';
 type ValidationIssue = 'noIssues' | 'invalidLink' | 'gameNotSupported';
 
 /** Editable game icon card
- * @fires {Event<Entry>} game-changed - Fired when the game or time is changed.
+ * @fires game-changed - Fired when the game or time is changed.
  * @fires icon-deleted - Fired when the icon is deleted.
  */
-@customElement('editable-game-icon-card')
+@customElement('editable-game-icon')
 export class EditableGameIconCard extends LitElement {
   /** GameInfo for the icon */
   @property({ type: Object, converter: convertJSON<Entry> })
