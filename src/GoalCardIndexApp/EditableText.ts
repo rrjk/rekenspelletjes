@@ -41,25 +41,39 @@ export abstract class EditableText extends LitElement {
       css`
         :host {
           display: flex;
+          align-items: center;
           column-gap: 10px;
           font-size: var(--font-size, 1em);
           font-weight: var(--font-weight, normal);
+          font-family:
+            Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
         }
 
         svg {
-          height: calc(0.9 * var(--font-size, 1em));
+          height: calc(1.5 * var(--font-size, 1em));
           aspect-ratio: 1;
         }
 
         button {
+          height: calc(1.7 * var(--font-size, 1em));
+          aspect-ratio: 1;
           padding: 0;
-          border: 0px;
+          border: 1px solid black;
+          border-radius: calc(0.5 * var(--font-size, 1em));
           background-color: transparent;
         }
 
         input {
+          width: 100%;
+          border: 1px;
           font-size: var(--font-size, 1em);
           font-weight: var(--font-weight, normal);
+          font-family:
+            Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        }
+
+        span {
+          border: 1px solid transparent;
         }
       `,
     ];

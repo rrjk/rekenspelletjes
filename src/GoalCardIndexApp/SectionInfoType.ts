@@ -2,6 +2,7 @@ import { TimeCode } from '../TimeCodes';
 import { GameCode, isGameCode } from '../GameCodes';
 import { BitWriter, BitReader } from '../BitIO';
 import { UnexpectedValueError } from '../UnexpectedValueError';
+import { GameInfo } from '../URLshortener2';
 
 export type Entry = {
   game: GameCode;
@@ -10,7 +11,7 @@ export type Entry = {
 };
 
 export type Row = {
-  entries: Entry[];
+  entries: GameInfo[];
 };
 
 export type SectionInfo = {

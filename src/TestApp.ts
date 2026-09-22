@@ -3,38 +3,45 @@ import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
 import { customElement, state } from 'lit/decorators.js';
 
-import './GoalCardIndexApp/EditableText';
-import './GoalCardIndexApp/EditableGoalCardRow';
-import './GoalCardIndexApp/EditableGameIcon';
-import { GameInfo } from './URLshortener2';
+import './GoalCardIndexApp/EditableGoalCardSection';
+import { SectionInfo } from './GoalCardIndexApp/SectionInfoType';
 
 @customElement('test-app')
 export class TestApp extends LitElement {
   @state()
-  accessor gameInfo: GameInfo[] = [
-    { game: 'A', variant: 'aa', timeCode: 'a' },
-    { game: 'A', variant: 'ab', timeCode: 'a' },
-  ];
+  accessor sectionInfo: SectionInfo = {
+    title: 'TestTitel',
+    rows: [
+      {
+        entries: [{ game: 'A', variant: 'aa', timeCode: 'a' }],
+      },
+      {
+        entries: [{ game: 'B', variant: 'aa', timeCode: 'a' }],
+      },
+      {
+        entries: [{ game: 'C', variant: 'aa', timeCode: 'a' }],
+      },
+    ],
+  };
 
   static get styles(): CSSResultArray {
     return [css``];
   }
 
-  onGamesChanged(updatedGames: GameInfo[]) {
-    this.gameInfo = updatedGames;
+  onSectionChanged(updatedSection: SectionInfo) {
+    this.sectionInfo = updatedSection;
   }
 
   protected renderTest(): HTMLTemplateResult {
     return html`
-      <editable-goalcard-row
-        .games=${this.gameInfo}
-        @games-changed=${(e: CustomEvent<GameInfo[]>) =>
-          this.onGamesChanged(e.detail)}
-        @row-deleted=${() => {
-          console.warn('row-deleted');
+      <editable-goalcard-section
+        .section=${this.sectionInfo}
+        @section-changed=${(e: CustomEvent<SectionInfo>) =>
+          this.onSectionChanged(e.detail)}
+        @section-deleted=${() => {
+          console.warn('section-deleted');
         }}
-      ></editable-goalcard-row>
-      <h2>Piet</h2>
+      ></editable-goalcard-section>
     `;
   }
 
