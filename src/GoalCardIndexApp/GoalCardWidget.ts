@@ -1,22 +1,14 @@
 import { html, css, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
-import { gameCodes, type GameCode } from '../GameCodes';
+import { type GameCode } from '../GameCodes';
 
 import type { TimeCode } from '../TimeCodes';
 
-import {
-  RenderGameIconFunction,
-  renderNotImplemented,
-} from '../RenderGameIconFunction';
 import { ClassInfo } from 'lit/directives/class-map.js';
 import { Row, SectionInfoList } from './SectionInfoType';
 
-import { renderSplitBalloonGameHourglassGameIcon } from '../SplitBalloonGame/SplitBalloonGameHourglassGameIcon';
-import { renderSumsWithSplitGameHourglassGameIcon } from '../SumsWithSplitGame/SumsWithSplitGameHourglassGameIcon';
-import { renderMultiplicationTablesBalloonHourglassGameIcon } from '../MultiplicationTablesBalloonGame/MultiplicationTablesBalloonHourglassGameIcon';
-import { renderMixedSumsGameHourglassGameIcon } from '../MixedSumsGame/MixedSumsHourglassGameIcon';
-import { renderAdditionSubstractionWithinDecadeGameHourglassGameIcon } from '../AdditionSubstractionWithinDecadeGame/AdditionSubstractionWithinDecadeGameHourglassGameIcon';
+import { getIconRenderFunction } from '../IconFunctionsPerGameCode';
 
 @customElement('goal-card-widget')
 export class GoalCardWidget extends LitElement {
@@ -61,18 +53,6 @@ export class GoalCardWidget extends LitElement {
     ];
   }
 
-  iconFunctions: Record<GameCode, RenderGameIconFunction> = {
-    ...(Object.fromEntries(
-      gameCodes.map(code => [code, renderNotImplemented]),
-    ) as Record<GameCode, RenderGameIconFunction>),
-    A: renderAdditionSubstractionWithinDecadeGameHourglassGameIcon,
-    AG: renderMixedSumsGameHourglassGameIcon,
-    AE: renderMixedSumsGameHourglassGameIcon,
-    R: renderSplitBalloonGameHourglassGameIcon,
-    G: renderSumsWithSplitGameHourglassGameIcon,
-    D: renderMultiplicationTablesBalloonHourglassGameIcon,
-  };
-
   renderGameIcon(
     game: GameCode,
     variant: string,
@@ -85,7 +65,7 @@ export class GoalCardWidget extends LitElement {
       centeredGameIcon: position === 'center',
     };
 
-    return this.iconFunctions[game](variant, classes, timeCode);
+    return getIconRenderFunction(game)(variant, classes, timeCode);
   }
 
   renderRow(row: Row): HTMLTemplateResult {

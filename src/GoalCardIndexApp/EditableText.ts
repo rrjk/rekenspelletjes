@@ -1,5 +1,3 @@
-/* eslint-disable max-classes-per-file */
-
 import {
   css,
   CSSResultArray,
@@ -16,6 +14,7 @@ import { renderEditIcon } from '../Icons';
  * @cssprop [--font-size=1em] - Font size for the editable text
  * @cssprop [--font-weigt=normal] - Font weight for the editable text
  * @property value - Text to show
+ * @fires value-changed
  */
 @customElement('editable-text')
 export abstract class EditableText extends LitElement {
@@ -92,7 +91,9 @@ export abstract class EditableText extends LitElement {
 
   onBlur() {
     if (this.draftValue !== this.value) {
-      this.dispatchEvent(new ValueChangedEvent(this.draftValue));
+      this.dispatchEvent(
+        new CustomEvent<string>('value-changed', { detail: this.draftValue }),
+      );
     }
     this.editInProgress = false;
   }
@@ -134,13 +135,5 @@ export abstract class EditableText extends LitElement {
         />
       `;
     }
-  }
-}
-
-export class ValueChangedEvent extends Event {
-  value: string;
-  constructor(value: string) {
-    super('value-changed', { bubbles: true, composed: true });
-    this.value = value;
   }
 }

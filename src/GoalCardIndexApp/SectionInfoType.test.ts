@@ -1,22 +1,23 @@
 import {
-  decodeSectionInfoList,
-  encodeSectionInfoList,
+  decodeGoalCardInfo,
+  encodeGoalCardInfo,
   oneOrTwoLetterToVal,
   readEntryFromBits,
   readGameFromBits,
-  readSectionTitleFromBits,
+  readTextFromBits,
   readTimeCodeFromBits,
   readVariantFromBits,
   valToOneOrTwoLetter,
   writeEntryAsBits,
   writeGameAsBits,
-  writeSectionTitleAsBits,
+  writeTextAsBits,
   writeTimeCodeAsBits,
   writeVariantAsBits,
 } from './SectionInfoType';
 import { BitReader, BitWriter } from '../BitIO';
 import type {
   Entry,
+  GoalCardInfo,
   Row,
   SectionInfo,
   SectionInfoList,
@@ -94,9 +95,9 @@ test('section title round-trips through bit encoding', () => {
 
   for (const value of values) {
     const writer = new BitWriter();
-    writeSectionTitleAsBits(writer, value);
+    writeTextAsBits(writer, value);
     const reader = new BitReader(writer.toBase64Url());
-    expect(readSectionTitleFromBits(reader)).toBe(value);
+    expect(readTextFromBits(reader)).toBe(value);
   }
 });
 
@@ -126,33 +127,36 @@ test('entry round-trips through bit encoding', () => {
 });
 
 test('section list round-trips through bit encoding', () => {
-  const sections: SectionInfoList = [
-    {
-      title: 'Keersommen',
-      rows: [
-        {
-          entries: [
-            { game: 'A', variant: 'ab', timeCode: 'a' },
-            { game: 'AG', variant: 'ak', timeCode: 'b' },
-          ],
-        },
-        {
-          entries: [{ game: 'D', variant: 'zz', timeCode: undefined }],
-        },
-      ],
-    },
-    {
-      title: 'Minsommen',
-      rows: [
-        {
-          entries: [{ game: 'A', variant: 'cd', timeCode: 'c' }],
-        },
-      ],
-    },
-  ];
+  const goalCardInfo: GoalCardInfo = {
+    goalCardTitle: 'This is the test title',
+    sections: [
+      {
+        title: 'Keersommen',
+        rows: [
+          {
+            entries: [
+              { game: 'A', variant: 'ab', timeCode: 'a' },
+              { game: 'AG', variant: 'ak', timeCode: 'b' },
+            ],
+          },
+          {
+            entries: [{ game: 'D', variant: 'zz', timeCode: undefined }],
+          },
+        ],
+      },
+      {
+        title: 'Minsommen',
+        rows: [
+          {
+            entries: [{ game: 'A', variant: 'cd', timeCode: 'c' }],
+          },
+        ],
+      },
+    ],
+  };
 
-  const encoded = encodeSectionInfoList(sections);
-  expect(decodeSectionInfoList(encoded)).toEqual(sections);
+  const encoded = encodeGoalCardInfo(goalCardInfo);
+  expect(decodeGoalCardInfo(encoded)).toEqual(goalCardInfo);
 });
 
 test('Entry describes a valid game entry payload', () => {

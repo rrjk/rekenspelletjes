@@ -3,7 +3,6 @@ import { customElement, property } from 'lit/decorators.js';
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 import { Row, SectionInfo } from './SectionInfoType';
 
-import { type ValueChangedEvent } from './EditableText';
 import './EditableText';
 import './EditableGoalCardRow';
 import { GameInfo } from '../URLshortener2';
@@ -92,10 +91,10 @@ export class EditableGoalCardSection extends LitElement {
     );
   }
 
-  onTitleChange(e: ValueChangedEvent) {
+  onTitleChange(updatedTitle: string) {
     const updatedSection: SectionInfo = {
       ...this.section,
-      title: e.value,
+      title: updatedTitle,
     };
     this.dispatchEvent(
       new CustomEvent<SectionInfo>('section-changed', {
@@ -156,7 +155,8 @@ export class EditableGoalCardSection extends LitElement {
       </div>
       <editable-text
         value=${this.section.title}
-        @value-changed=${(e: ValueChangedEvent) => this.onTitleChange(e)}
+        @value-changed=${(e: CustomEvent<string>) =>
+          this.onTitleChange(e.detail)}
       >
       </editable-text>
       <div class="buttonTable">

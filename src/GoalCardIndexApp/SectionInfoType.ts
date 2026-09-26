@@ -19,9 +19,14 @@ export type SectionInfo = {
   rows: Row[];
 };
 
+export type GoalCardInfo = {
+  goalCardTitle: string;
+  sections: SectionInfo[];
+};
+
 export type SectionInfoList = SectionInfo[];
 
-const sectionInfoListVersion = 0;
+const goalCardInfoVersion = 0;
 
 /** Transform a letter (A-Z or a-z) into its corresponding 1-based position in the alphabet.
  * A corresponds to 1, B to 2, ..., Z to 26.
@@ -132,12 +137,12 @@ export function readTimeCodeFromBits(r: BitReader): TimeCode | undefined {
 
 const titleAsBitsEscapeCode = 127; // Outside the printable ASCII range (32-126)
 
-export function writeSectionTitleAsBits(w: BitWriter, sectionTitle: string) {
-  if (sectionTitle.length > 64) {
-    throw new Error(`Section title too long: ${sectionTitle}`);
+export function writeTextAsBits(w: BitWriter, text: string) {
+  if (text.length > 64) {
+    throw new Error(`Text too long: ${text}`);
   }
-  w.write(sectionTitle.length, 6); // Up to 64 characters.
-  for (const ch of sectionTitle) {
+  w.write(text.length, 6); // Up to 64 characters.
+  for (const ch of text) {
     const code = ch.charCodeAt(0);
     if (code >= 32 && code <= 126) {
       // Within printable ASCII range
@@ -153,9 +158,9 @@ export function writeSectionTitleAsBits(w: BitWriter, sectionTitle: string) {
   }
 }
 
-export function readSectionTitleFromBits(r: BitReader): string {
+export function readTextFromBits(r: BitReader): string {
   const length = r.read(6);
-  let sectionTitle = '';
+  let text = '';
   for (let i = 0; i < length; i++) {
     const code = r.read(7);
     if (code === titleAsBitsEscapeCode) {
@@ -164,12 +169,12 @@ export function readSectionTitleFromBits(r: BitReader): string {
       for (let j = 0; j < byteLength; j++) {
         bytes[j] = r.read(8);
       }
-      sectionTitle += new TextDecoder().decode(bytes);
+      text += new TextDecoder().decode(bytes);
     } else {
-      sectionTitle += String.fromCharCode(code);
+      text += String.fromCharCode(code);
     }
   }
-  return sectionTitle;
+  return text;
 }
 
 export function writeEntryAsBits(w: BitWriter, entry: Entry) {
@@ -185,19 +190,21 @@ export function readEntryFromBits(r: BitReader): Entry {
   return { game, variant, timeCode };
 }
 
-export function encodeSectionInfoList(sections: SectionInfoList): string {
+export function encodeGoalCardInfo(goalCardInfo: GoalCardInfo): string {
   const w = new BitWriter();
-  w.write(sectionInfoListVersion, 4); // Write the version (3 bits should be enough for small version numbers)
+  w.write(goalCardInfoVersion, 4); // Write the version (4 bits should be enough for small version numbers)
 
-  const nmbrSections = sections.length;
+  writeTextAsBits(w, goalCardInfo.goalCardTitle);
+
+  const nmbrSections = goalCardInfo.sections.length;
   if (nmbrSections > 15) {
     // 4 bits can represent up to 15 sections
     throw new Error(`Too many sections: ${nmbrSections}`);
   }
   w.write(nmbrSections, 4);
 
-  for (const section of sections) {
-    writeSectionTitleAsBits(w, section.title);
+  for (const section of goalCardInfo.sections) {
+    writeTextAsBits(w, section.title);
     const nmbrRows = section.rows.length;
     if (nmbrRows > 31) {
       // 5 bits can represent up to 31 rows
@@ -219,17 +226,20 @@ export function encodeSectionInfoList(sections: SectionInfoList): string {
   return w.toBase64Url();
 }
 
-export function decodeSectionInfoList(encoded: string): SectionInfoList {
+export function decodeGoalCardInfo(encoded: string): GoalCardInfo {
   const r = new BitReader(encoded);
   const version = r.read(4);
-  if (version !== sectionInfoListVersion) {
+  if (version !== goalCardInfoVersion) {
     throw new Error(`Unsupported version: ${version}`);
   }
 
+  const goalCardInfo: GoalCardInfo = { goalCardTitle: '', sections: [] };
+
+  goalCardInfo.goalCardTitle = readTextFromBits(r);
+
   const nmbrSections = r.read(4);
-  const sections: SectionInfoList = [];
   for (let i = 0; i < nmbrSections; i++) {
-    const title = readSectionTitleFromBits(r);
+    const title = readTextFromBits(r);
     const nmbrRows = r.read(5);
     const rows: Row[] = [];
     for (let j = 0; j < nmbrRows; j++) {
@@ -240,7 +250,7 @@ export function decodeSectionInfoList(encoded: string): SectionInfoList {
       }
       rows.push({ entries });
     }
-    sections.push({ title, rows });
+    goalCardInfo.sections.push({ title, rows });
   }
-  return sections;
+  return goalCardInfo;
 }

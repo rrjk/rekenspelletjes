@@ -1,16 +1,21 @@
-import { customElement } from 'lit/decorators.js';
+import { customElement, state } from 'lit/decorators.js';
 
 import { GoalCardIndexApp } from './GoalCardIndexApp';
 
-import { decodeSectionInfoList } from './SectionInfoType';
+import { decodeGoalCardInfo } from './SectionInfoType';
 import { storeMenuPage } from '../NavigationHelper';
 
 @customElement('custom-index-app')
 export class CustomIndexApp extends GoalCardIndexApp {
+  @state()
+  accessor goalCardTitle = '';
+
   parseUrlParameters(): void {
     const urlParams = new URLSearchParams(window.location.search);
     const encodedSectionInfoList = urlParams.get('d');
-    this.sections = decodeSectionInfoList(encodedSectionInfoList ?? '');
+    const goalCardInfo = decodeGoalCardInfo(encodedSectionInfoList ?? '');
+    this.sections = goalCardInfo.sections;
+    this.goalCardTitle = goalCardInfo.goalCardTitle;
   }
 
   constructor() {
@@ -20,6 +25,6 @@ export class CustomIndexApp extends GoalCardIndexApp {
   }
 
   get pageTitle(): string {
-    return `Doelenkaart`;
+    return this.goalCardTitle;
   }
 }
