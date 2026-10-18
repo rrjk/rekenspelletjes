@@ -128,7 +128,7 @@ test('entry round-trips through bit encoding', () => {
 
 test('section list round-trips through bit encoding', () => {
   const goalCardInfo: GoalCardInfo = {
-    goalCardTitle: 'This is the test title',
+    title: 'This is the test title',
     sections: [
       {
         title: 'Keersommen',

@@ -8,11 +8,12 @@ import './EditableGoalCardRow';
 import { GameInfo } from '../URLshortener2';
 import { renderPlusIcon, renderTranscanIcon } from '../Icons';
 
-/** Editable goal card widget
+/** Editable goal card section
  * @event section-changed  - Fired when the content of the section changes
  */
 @customElement('editable-goalcard-section')
 export class EditableGoalCardSection extends LitElement {
+  /** Section to show and make editable */
   @property({ type: Object, attribute: false })
   accessor section: SectionInfo = { title: 'Blok titel', rows: [] };
 

@@ -15,7 +15,7 @@ export class CustomIndexApp extends GoalCardIndexApp {
     const encodedSectionInfoList = urlParams.get('d');
     const goalCardInfo = decodeGoalCardInfo(encodedSectionInfoList ?? '');
     this.sections = goalCardInfo.sections;
-    this.goalCardTitle = goalCardInfo.goalCardTitle;
+    this.goalCardTitle = goalCardInfo.title;
   }
 
   constructor() {

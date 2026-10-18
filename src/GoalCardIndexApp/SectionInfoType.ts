@@ -20,7 +20,7 @@ export type SectionInfo = {
 };
 
 export type GoalCardInfo = {
-  goalCardTitle: string;
+  title: string;
   sections: SectionInfo[];
 };
 
@@ -194,7 +194,7 @@ export function encodeGoalCardInfo(goalCardInfo: GoalCardInfo): string {
   const w = new BitWriter();
   w.write(goalCardInfoVersion, 4); // Write the version (4 bits should be enough for small version numbers)
 
-  writeTextAsBits(w, goalCardInfo.goalCardTitle);
+  writeTextAsBits(w, goalCardInfo.title);
 
   const nmbrSections = goalCardInfo.sections.length;
   if (nmbrSections > 15) {
@@ -233,9 +233,9 @@ export function decodeGoalCardInfo(encoded: string): GoalCardInfo {
     throw new Error(`Unsupported version: ${version}`);
   }
 
-  const goalCardInfo: GoalCardInfo = { goalCardTitle: '', sections: [] };
+  const goalCardInfo: GoalCardInfo = { title: '', sections: [] };
 
-  goalCardInfo.goalCardTitle = readTextFromBits(r);
+  goalCardInfo.title = readTextFromBits(r);
 
   const nmbrSections = r.read(4);
   for (let i = 0; i < nmbrSections; i++) {
