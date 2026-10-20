@@ -24,6 +24,43 @@ import {
   renderNotImplemented,
 } from './RenderGameIconFunction';
 
+/** Indication whether a game is time based or not per game code. */
+export const timeBasedGame: Record<GameCode, boolean> = {
+  A: true,
+  B: true,
+  C: true,
+  D: true,
+  E: true,
+  F: false, // No shorturl for F NOT IMPLEMENTED
+  G: true,
+  H: false,
+  I: true,
+  J: true,
+  K: true,
+  L: false, // No shorturl for L NOT IMPLEMENTED
+  M: true,
+  N: false,
+  O: true,
+  P: false,
+  Q: false,
+  R: true,
+  S: true,
+  T: true,
+  U: true,
+  V: true,
+  W: true,
+  X: true,
+  Y: false, // No shorturl for Y NOT IMPLEMENTED
+  Z: true,
+  AA: true,
+  AB: true,
+  AC: true,
+  AD: true,
+  AE: true,
+  AF: true,
+  AG: true,
+};
+
 const iconFunctions: Record<GameCode, RenderGameIconFunction> = {
   A: renderAdditionSubstractionWithinDecadeGameHourglassGameIcon,
   B: renderAdditionSubstractionWholeDecadeGameHourglassGameIcon,

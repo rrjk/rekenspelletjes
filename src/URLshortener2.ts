@@ -5,6 +5,7 @@ import {
   stringToTimeCode,
 } from './TimeCodes';
 import { isGameCode, type GameCode } from './GameCodes';
+import { timeBasedGame } from './IconFunctionsPerGameCode';
 
 const urlParams = new URLSearchParams(window.location.search);
 const key = urlParams.keys().next().value;
@@ -97,7 +98,8 @@ export function urlToGameInfo(url: URL): GameInfo | null {
   const variant = url.searchParams.get('variant') || 'a';
 
   const time = url.searchParams.get('time');
-  const timeCode = stringToTimeCode(time);
+
+  const timeCode = time ? stringToTimeCode(time) : undefined;
 
   if (game === null) return null;
   return { game, variant, timeCode };
@@ -124,29 +126,31 @@ export function redirect() {
   window.location.replace(newUrl.href);
 }
 
-const SHORT_URL_CODE =
-  /^(?<game>[A-Z]{1,2})-(?<variant>[a-z]{1,2})-(?<time>[a-z])\/?$/;
+const SHORT_URL_WITH_TIME_CODE =
+  /^(?<game>[A-Z]{1,2})-(?<variant>[a-z]{1,2})(?:-(?<time>[a-c]))?\/?$/;
 
 /**
- *   Extracts game information from a game URL.
+ *   Extracts game information from a game URL that does not include a timecode.
  *
  * @param url - URL to extract gameinfo from
  * @returns gameInfo contained in the URL or null if the URL is not a valid short URL
  */
 export function shortUrlToGameInfo(url: URL): GameInfo | null {
   if (url.pathname !== '/t') return null;
-  const groups = SHORT_URL_CODE.exec(url.search.slice(1))?.groups;
+  const groups = SHORT_URL_WITH_TIME_CODE.exec(url.search.slice(1))?.groups;
   if (!groups) return null;
   const game = groups.game;
   const variant = groups.variant;
   const timeCode = groups.time;
 
-  if (!isGameCode(game) || !isTimeCode(timeCode)) return null;
+  if (!isGameCode(game) || (timeCode !== undefined && !isTimeCode(timeCode)))
+    return null;
+  if (timeBasedGame[game] && timeCode === undefined) return null;
   return { game, variant, timeCode };
 }
 
 /**
- *   Extracts game information from a game URL.
+ *   Create a game url from gameInfo.
  *
  * @param gameInfo Game info for the URL to create
  * @returns The short URL of the selected game.

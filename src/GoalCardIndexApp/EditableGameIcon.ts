@@ -13,6 +13,7 @@ import { convertJSON } from '../Utils';
 import {
   getIconRenderFunction,
   iconRenderFunctionSupported,
+  timeBasedGame,
 } from '../IconFunctionsPerGameCode';
 import { renderEditIcon, renderTranscanIcon } from '../Icons';
 import { createRef, ref, Ref } from 'lit/directives/ref.js';
@@ -126,11 +127,11 @@ export class EditableGameIconCard extends LitElement {
 
         div.validationMessage {
           color: red;
-          font-size: 0.7em;
+          font-size: 0.5em;
         }
 
         div.helpMessage {
-          font-size: 0.7em;
+          font-size: 0.5em;
         }
 
         img {
@@ -260,6 +261,20 @@ export class EditableGameIconCard extends LitElement {
     `;
   }
 
+  renderTimeButtons(): HTMLTemplateResult {
+    return html`
+      <button id="timeA" @click=${() => this.onTimeChange('a')}>
+        <img src=${hourGlassIcons.a.href} />
+      </button>
+      <button id="timeB" @click=${() => this.onTimeChange('b')}>
+        <img src=${hourGlassIcons.b.href} />
+      </button>
+      <button id="timeC" @click=${() => this.onTimeChange('c')}>
+        <img src=${hourGlassIcons.c.href} />
+      </button>
+    `;
+  }
+
   render() {
     const iconRenderFunction = getIconRenderFunction(this.gameInfo.game);
     let iconArea: HTMLTemplateResult | typeof nothing = nothing;
@@ -279,15 +294,7 @@ export class EditableGameIconCard extends LitElement {
       <button id="edit" @click=${() => this.onClickEdit()}>
         ${renderEditIcon()}
       </button>
-      <button id="timeA" @click=${() => this.onTimeChange('a')}>
-        <img src=${hourGlassIcons.a.href} />
-      </button>
-      <button id="timeB" @click=${() => this.onTimeChange('b')}>
-        <img src=${hourGlassIcons.b.href} />
-      </button>
-      <button id="timeC" @click=${() => this.onTimeChange('c')}>
-        <img src=${hourGlassIcons.c.href} />
-      </button>
+      ${timeBasedGame[this.gameInfo.game] ? this.renderTimeButtons() : nothing}
       <div id="icon">${iconArea}</div>`;
   }
 }
