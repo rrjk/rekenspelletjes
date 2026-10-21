@@ -1,69 +1,48 @@
 import { html, css, LitElement } from 'lit';
 import type { CSSResultArray, HTMLTemplateResult } from 'lit';
 
-import { customElement } from 'lit/decorators.js';
+import { customElement, state } from 'lit/decorators.js';
 
-import './MathStepsIndexApp/MathStepSumsIcon';
+import './GoalCardIndexApp/EditableGoalCardSection';
+import { SectionInfo } from './GoalCardIndexApp/SectionInfoType';
 
 @customElement('test-app')
 export class TestApp extends LitElement {
+  @state()
+  accessor sectionInfo: SectionInfo = {
+    title: 'TestTitel',
+    rows: [
+      {
+        entries: [{ game: 'A', variant: 'aa', timeCode: 'a' }],
+      },
+      {
+        entries: [{ game: 'B', variant: 'aa', timeCode: 'a' }],
+      },
+      {
+        entries: [{ game: 'C', variant: 'aa', timeCode: 'a' }],
+      },
+    ],
+  };
+
   static get styles(): CSSResultArray {
-    return [
-      css`
-        :host {
-          width: 100%;
-          height: 100%;
-          display: block;
-          padding: 20px;
-        }
+    return [css``];
+  }
 
-        div.space {
-          display: block;
-          position: relative;
-          height: 20px;
-        }
-
-        math-step-sums-icon#largeWide {
-          width: 800px;
-          height: 36px;
-        }
-        math-step-sums-icon#mediumWide {
-          width: 500px;
-          height: 24px;
-        }
-        math-step-sums-icon#smallWide {
-          width: 300px;
-          height: 12px;
-        }
-
-        math-step-sums-icon#largeTall {
-          width: 636px;
-          height: 50px;
-        }
-        math-step-sums-icon#mediumTall {
-          width: 424px;
-          height: 40px;
-        }
-        math-step-sums-icon#smallTall {
-          width: 212px;
-          height: 30px;
-        }
-      `,
-    ];
+  onSectionChanged(updatedSection: SectionInfo) {
+    this.sectionInfo = updatedSection;
   }
 
   protected renderTest(): HTMLTemplateResult {
-    return html` <math-step-sums-icon id="smallWide"></math-step-sums-icon>
-      <div class="space"></div>
-      <math-step-sums-icon id="mediumWide"></math-step-sums-icon>
-      <div class="space"></div>
-      <math-step-sums-icon id="largeWide"></math-step-sums-icon>
-      <div class="space"></div>
-      <math-step-sums-icon id="smallTall"></math-step-sums-icon>
-      <div class="space"></div>
-      <math-step-sums-icon id="mediumTall"></math-step-sums-icon>
-      <div class="space"></div>
-      <math-step-sums-icon id="largeTall"></math-step-sums-icon>`;
+    return html`
+      <editable-goalcard-section
+        .section=${this.sectionInfo}
+        @section-changed=${(e: CustomEvent<SectionInfo>) =>
+          this.onSectionChanged(e.detail)}
+        @section-deleted=${() => {
+          console.warn('section-deleted');
+        }}
+      ></editable-goalcard-section>
+    `;
   }
 
   protected render(): HTMLTemplateResult {

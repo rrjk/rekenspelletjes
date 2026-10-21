@@ -15,10 +15,7 @@ const defaultVariant: AdditionSubstractionWithinDecadeGameVariantInfo = {
   operators: ['plus'],
 };
 
-export const additionSubstractionWithinDecadeGameVariants: Record<
-  string,
-  AdditionSubstractionWithinDecadeGameVariantInfo
-> = {
+export const additionSubstractionWithinDecadeGameVariants = {
   // Section 1: Sommen tot de 10 (decade 0)
   aa: defaultVariant,
   ab: {
@@ -63,7 +60,23 @@ export const additionSubstractionWithinDecadeGameVariants: Record<
     decades: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90],
     operators: ['plus', 'minus'],
   },
-};
+} as const satisfies Record<
+  string,
+  AdditionSubstractionWithinDecadeGameVariantInfo
+>;
+
+export type AdditionSubstractionWithinDecadeGameVariantKey =
+  keyof typeof additionSubstractionWithinDecadeGameVariants;
+
+export const getAdditionSubstractionWithinDecadeGameVariantKeys = Object.keys(
+  additionSubstractionWithinDecadeGameVariants,
+) as AdditionSubstractionWithinDecadeGameVariantKey[];
+
+export function isAdditionSubstractionWithinDecadeGameVariantKey(
+  key: string,
+): key is AdditionSubstractionWithinDecadeGameVariantKey {
+  return Object.hasOwn(additionSubstractionWithinDecadeGameVariants, key);
+}
 
 export interface AdditionSubstractionWithinDecadeGameExtendedVariantInfo
   extends AdditionSubstractionWithinDecadeGameVariantInfo {
@@ -130,11 +143,20 @@ function createDescription(
   }
 }
 
+/** Get the game variant info for AdditionSubstractionWithinDecadeGame given a variant code.
+ * If variant is not a valid variant, the variant info for the first variant is returned.
+ * @param variant - variant code as string
+ * @returns variant info.
+ */
 export function getAdditionSubstractionWithinDecadeGameVariant(
   variant: string,
 ): AdditionSubstractionWithinDecadeGameExtendedVariantInfo {
+  let variantToUse: AdditionSubstractionWithinDecadeGameVariantKey =
+    getAdditionSubstractionWithinDecadeGameVariantKeys[0];
+  if (isAdditionSubstractionWithinDecadeGameVariantKey(variant))
+    variantToUse = variant;
   const variantInfo =
-    additionSubstractionWithinDecadeGameVariants[variant] || defaultVariant;
+    additionSubstractionWithinDecadeGameVariants[variantToUse];
   return {
     ...variantInfo,
     mainCode: determineMainCode(),

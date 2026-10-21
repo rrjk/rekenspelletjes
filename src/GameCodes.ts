@@ -1,9 +1,8 @@
-export type GameInfoType = {
-  gameCode: string;
-  name: string;
-};
-
-export const gameCodes: GameInfoType[] = [
+/** Array of game codes and their descriptions
+ * Never remove gamescodes from this array as that would make the integerrepresentations
+ * of the game codes invalid, which are used for the custom goal card indexes.
+ */
+export const gameCodes = [
   { gameCode: 'A', name: 'Vliegerspel: Plus- en minsommen binnen het tiental' },
   {
     gameCode: 'B',
@@ -64,9 +63,17 @@ export const gameCodes: GameInfoType[] = [
     gameCode: 'AG',
     name: 'Gemengde sommen - antwoorden intypen - gebaseerd op SumType',
   },
-];
+] as const;
 
-export function getGameDescription(gameCode: string): string {
+// Derived from the array above — never edited by hand.
+export type GameCode = (typeof gameCodes)[number]['gameCode'];
+
+export type GameInfoType = {
+  gameCode: GameCode;
+  name: string;
+};
+
+export function getGameDescription(gameCode: GameCode): string {
   let retValue = '';
   const gameInfo = gameCodes.find(el => el.gameCode === gameCode);
   if (gameInfo !== undefined) retValue = gameInfo.name;
@@ -74,10 +81,10 @@ export function getGameDescription(gameCode: string): string {
   return retValue;
 }
 
-export function getGameCodes(): string[] {
-  const retValue: string[] = [];
-  for (const gc of gameCodes) {
-    retValue.push(gc.gameCode);
-  }
-  return retValue;
+export function getGameCodes(): GameCode[] {
+  return [...gameCodes.map(gc => gc.gameCode)];
+}
+
+export function isGameCode(value: string): value is GameCode {
+  return gameCodes.some(el => el.gameCode === value);
 }
