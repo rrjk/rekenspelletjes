@@ -20,6 +20,14 @@ const defaultVariant: TensSplitGameVariantInfo = {
 // Export for testing
 export const tensSplitGameVariants: Record<string, TensSplitGameVariantInfo> = {
   aa: defaultVariant,
+  ab: {
+    minTens: 1,
+    maxTens: 4,
+    minUnits: 1,
+    maxUnits: 9,
+    iconNumberToSplit: 49,
+    iconActiveDigit: 4,
+  },
 };
 
 export interface TensSplitGameExtendedVariantInfo

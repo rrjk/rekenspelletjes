@@ -5,7 +5,7 @@ import {
 } from './TensSplitGameVariants';
 
 test('tensSplitGameVariants has expected keys', () => {
-  expect(Object.keys(tensSplitGameVariants)).toStrictEqual(['aa']);
+  expect(Object.keys(tensSplitGameVariants)).toStrictEqual(['aa', 'ab']);
 });
 
 test('getTensSplitGameVariant for aa', () => {
